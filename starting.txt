@@ -383,8 +383,8 @@ argument.
 		See also |-es|, which also disables most messages.
 
 --listen {addr}						*--listen*
-		Start |RPC| server on pipe or TCP address {addr}. Sets the
-		primary listen address |v:servername| to {addr}. |serverstart()|
+		Start |RPC| server on pipe or TCP address {addr}.
+		Sets the  primary listen address |v:servername| to {addr}. |serverstart()|
 
 ==============================================================================
 Initialization					*initialization* *startup*

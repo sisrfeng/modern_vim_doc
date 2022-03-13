@@ -136,10 +136,8 @@ multiple lines into one line.  You can repeat these commands (except `:j`) and
 undo them.
 
 These commands, except "gJ", insert one space in place of the <EOL> unless
-there is trailing white space or the next line starts with a ')'.  These
-commands, except "gJ", delete any leading white space on the next line.  If
-the 'joinspaces' option is on, these commands insert two spaces after a '.',
-'!' or '?'.
+there is trailing white space or
+the next line starts with a ')'.  These commands, except "gJ", delete any leading white space on the next line.  If the 'joinspaces' option is on, these commands insert two spaces after a '.',  '!' or '?'.
 The 'B' and 'M' flags in 'formatoptions' change the behavior for inserting
 spaces before and after a multibyte character |fo-table|.
 

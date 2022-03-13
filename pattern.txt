@@ -301,6 +301,8 @@ triggered.  In most cases this should be fine, but if a pattern is in use when
 it's used again it fails.  Usually this means there is something wrong with
 the pattern.
 
+这个网站不错 https://learnbyexample.gitbooks.io/vim-reference/content/Regular_Expressions.html
+	     https://learnbyexample.github.io/vim_reference/Regular-Expressions.html
 ==============================================================================
 2. The definition of a pattern		*search-pattern* *pattern* *[pattern]*
 					*regular-expression* *regexp* *Pattern*
@@ -309,31 +311,33 @@ the pattern.
 For starters, read chapter 27 of the user manual |usr_27.txt|.
 
 						*/bar* */\bar* */pattern*
-1. A pattern is one or more branches, separated by "\|".  It matches anything
+1. A pattern is one or more branches, separated by 💦\|💦.  It matches anything
    that matches one of the branches.  Example: "foo\|beep" matches "foo" and
    matches "beep".  If more than one branch matches, the first one is used.
 
    pattern ::=	    branch
-		or  branch \| branch
 		or  branch \| branch \| branch
 		etc.
 
 						*/branch* */\&*
-2. A branch is one or more concats, separated by "\&".  It matches the last
-   concat, but only if all the preceding concats also match at the same
-   position.  Examples:
-	"foobeep\&..." matches "foo" in "foobeep".
+                                       \& 由逻辑AND 发展过来吧
+				       少见, 可由\ze代替
+2. A branch is one or more concats, separated by "\&". 
+It matches the last  concat, but only if all the preceding concats also match at the same  position.  Examples:
+	"foobeep\&foo" matches "foo" in "foobeep" ,  but not in foo
+	A\&B B必须是A的substring?
+	💦foo\zebeep💦 也行 
+
 	".*Peter\&.*Bob" matches in a line containing both "Peter" and "Bob"
 
    branch ::=	    concat
-		or  concat \& concat
 		or  concat \& concat \& concat
 		etc.
 
 						*/concat*
 3. A concat is one or more pieces, concatenated.  It matches a match for the
    first piece, followed by a match for the second piece, etc.  Example:
-   "f[0-9]b", first matches "f", then a digit and then "b".
+   💦f[0-9]b💦, first matches "f", then a digit and then "b".
 
    concat  ::=	    piece
 		or  piece piece
@@ -349,8 +353,10 @@ For starters, read chapter 27 of the user manual |usr_27.txt|.
 		or  atom  multi
 
 						*/atom*
-5. An atom can be one of a long list of items.  Many atoms match one character
-   in the text.  It is often an ordinary character or a character class.
+						pattern的最小单位
+5. An atom can be one of a long list of items. 
+Many atoms match one character  in the text. 
+It is often an ordinary character or a character class.
    Parentheses can be used to make a pattern into an atom.  The "\z(\)"
    construct is only for syntax highlighting.
 
@@ -358,6 +364,9 @@ For starters, read chapter 27 of the user manual |usr_27.txt|.
 		or  \( pattern \)		|/\(|
 		or  \%( pattern \)		|/\%(|
 		or  \z( pattern \)		|/\z(|
+
+
+
 
 
 				*/\%#=* *two-engines* *NFA*
@@ -669,9 +678,9 @@ overview.
 	This can be tricky, because a match with following items will be done in the same position.  (比如例子2)
 	
 
-	Note that using "\&" works the same as using "\@=": "foo\&.." is the
-	same as "\(foo\)\@=..".  But using "\&" is easier, you don't need the
-	parentheses.
+	Note that using "\&" works the same as using "\@=":
+	"foo\&.." is the  same as "\(foo\)\@=..". 
+	But using "\&" is easier, you don't need the  parentheses.
 
 
 							*/\@!*
