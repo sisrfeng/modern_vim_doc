@@ -457,32 +457,15 @@ Visual blockwise command "I" |v_b_I|.
 ==============================================================================
 3. 'textwidth' and 'wrapmargin' options			*ins-textwidth*
 
-The 'textwidth' option can be used to automatically break a line before it
-gets too long.  
-If you then type more characters (not spaces or tabs), the
-last word will be put on a new line (unless it is the only word on the
-line).  If you set 'textwidth' to 0, this feature is disabled.
-
- 'wrapmargin' depends on the width of the  screen. 
- When using 'wrapmargin' this is equal to using 'textwidth' with a
-value equal to 🎹屏幕列数 - 'wrapmargin'🎹, where columns is the width of the
-screen.
-
-When 'textwidth' and 'wrapmargin' are both set, 'textwidth' is used.
-
-If you don't really want to break the line, but view the line wrapped at a
-convenient place, see the 'linebreak' option.
-
-The line is only broken automatically when using 🎹Insert mode🎹, or when
-appending to a line.  When in replace mode and the line length is not
-changed, the line will not be broken.
 
 Long lines are broken if you enter a non-white character after the margin.
-The situations where a line will be broken can be restricted by adding
-characters to the 'formatoptions' option:
+The situations where a line will be broken can be restricted by
+adding characters to the 'formatoptions' option:
 
 "l"  Only break a line if it was not longer than 'textwidth' when the insert
      started.
+	 这样方便保留(少数) 故意搞得很少的line
+
 "v"  Only break at a white character that has been entered during the
      current insert command.  This is mostly Vi-compatible.
 "lv" Only break if the line was not longer than 'textwidth' when the insert
@@ -1987,6 +1970,7 @@ NOTE: These commands cannot be used with |:global| or |:vglobal|.
 
 							*:r* *:re* *:read*
 :r[ead] [++opt] [name]
+
 			Insert the file [name] (default: current file) below
 			the cursor.
 			See |++opt| for the possible values of [++opt].
@@ -2007,15 +1991,19 @@ NOTE: These commands cannot be used with |:global| or |:vglobal|.
 			any '!' is replaced with the previous command |:!|.
 			See |++opt| for the possible values of [++opt].
 
-These commands insert the contents of a file, or the output of a command,
-into the buffer.  They can be undone.  They cannot be repeated with the "."
-command.  They work on a line basis, insertion starts below the line in which
-the cursor is, or below the specified line.  To insert text above the first
-line use the command ":0r {name}".
+These commands insert the contents of a file,
+or  the output of a command,
+into the buffer.
+ They can be undone.
+ They cannot be repeated with the "." command.
+ They work on a line basis,
+insertion starts below the line in which the cursor is,
+or  below the specified line.
+ To insert text above the first line use the command ":0r {name}".
 
-After the ":read" command, the cursor is left on the first non-blank in the
-first new line.  Unless in Ex mode, then the cursor is left on the last new
-line (sorry, this is Vi compatible).
+After the ":read" command,
+the cursor is left on the first non-blank in the first new line.
+ Unless in Ex mode,  then the cursor is left on the last new line (sorry,  this is Vi compatible).
 
 If a file name is given with ":r", it becomes the alternate file.  This can be
 used, for example, when you want to edit that file instead: ":e! #".  This can

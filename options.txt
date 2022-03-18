@@ -1528,17 +1528,24 @@ CTRL-N are used.
 	line, the remaining space is filled in the normal manner.
 	See 'preserveindent'.
 
+vim里的这些option, nvim扔了:
+*'cp'* *'nocompatible'* *'nocp'* *'compatible'* (Nvim is always "nocompatible".)
+但有下面这个cpoptions:
+
 						*'cpoptions'* *'cpo'* *cpo*
 'cpoptions' 'cpo'	string	(Vim default: "aABceFs_",
-				 Vi default: all flags)
+							 Vi default: all flags)
 			global
-	A sequence of single character flags.  When a character is present
-	this indicates Vi-compatible behavior.  This is used for things where
-	not being Vi-compatible is mostly or sometimes preferred.
+
+	A sequence of single character flags.
+	When a character is present this indicates 🔑Vi-compatible behavior🔑.
+
 	'cpoptions' stands for "compatible-options".
 	Commas can be added for readability.
-	To avoid problems with flags that are added in the future, use the
-	"+=" and "-=" feature of ":set" |add-option-flags|.
+
+	To avoid problems with flags that are added in the future,
+	use the "+=" and
+	"-=" feature of ":set" |add-option-flags|.
 
 	    contains	behavior	 
 								*cpo-a*
@@ -1558,18 +1565,21 @@ CTRL-N are used.
 			mapping, abbreviation, menu and autocmd commands.
 			See also |map_bar|.
 								*cpo-B*
-		B	A backslash has no special meaning in mappings,
-			abbreviations, user commands and the "to" part of the
-			menu commands.  Remove this flag to be able to use a
-			backslash like a CTRL-V.  For example, the command
+		B	A backslash has no special meaning in
+			mappings,
+			abbreviations,
+			user commands an
+			the "to" part of the  menu commands.
+			Remove this flag to be able to use a  backslash like a CTRL-V.  For example, the command
 			":map X \<Esc>" results in X being mapped to:
 				'B' included:	"\^["	 (^[ is a real <Esc>)
 				'B' excluded:	"<Esc>"  (5 characters)
 								*cpo-c*
 		c	Searching continues at the end of any match at the
 			cursor position, but not further than the start of the
-			next line.  When not present searching continues
-			one character from the cursor position.  With 'c'
+			next line. 
+			When not present
+			searching continues  one character from the cursor position.  With 'c'
 			"abababababab" only gets three matches when repeating
 			"/abab", without 'c' there are five matches.
 								*cpo-C*
@@ -1599,11 +1609,12 @@ CTRL-N are used.
 		f	When included, a ":read" command with a file name
 			argument will set the file name for the current buffer,
 			if the current buffer doesn't have a file name yet.
+
 								*cpo-F*
-		F	When included, a ":write" command with a file name
-			argument will set the file name for the current
-			buffer, if the current buffer doesn't have a file name
-			yet.  Also see |cpo-P|.
+			if the current buffer doesn't have a file name  yet, 
+			a ":write" command with a file name  argument will
+			set the file name for the current  buffer,
+			Also see |cpo-P|.
 								*cpo-i*
 		i	When included, interrupting the reading of a file will
 			leave it modified.
@@ -3660,17 +3671,18 @@ CTRL-N are used.
 'linebreak' 'lbr'	boolean	(default off)
 			local to window
 
-If on,
-Vim will wrap long lines at a character in 'breakat' rather than at the last character that fits on the screen.
+When the 'wrap' option is on:
 
-Unlike  'wrapmargin' and 'textwidth', this does 💛not insert <EOL>s💛 in the file,
+    If 'linebreak' is on,
+    Vim will wrap long lines at a character in 'breakat', rather than at the last character that fits on the screen.
+
+Unlike  'wrapmargin' and 'textwidth, this does 💛not insert <EOL>s💛 in the file,
 
 If 'breakindent' is set,
 line is visually indented.
 
 Then, the value  of 'showbreak' is used to put in front of wrapped lines.
 
-This option  is not used when the 'wrap' option is off.
 
 Note that <Tab> characters after an <EOL> are mostly not displayed  with the right amount of white space.
 
@@ -3839,13 +3851,19 @@ use:
 						*'magic'* *'nomagic'*
 'magic'			boolean	(default on)
 			global
+
 	Changes the special characters that can be used in search patterns.
 	See |pattern|.
-	WARNING: Switching this option off most likely breaks plugins!  That
-	is because many patterns assume it's on and will fail when it's off.
-	Only switch it off when working with old Vi scripts.  In any other
-	situation write patterns that work when 'magic' is on.  Include "\M"
-	when you want to |/\M|.
+	WARNING:
+	    Switching this option off most likely breaks plugins!
+	    That is because many patterns assume it's on and  will
+	    fail when it's off.
+
+	    Only switch it off when working with old Vi scripts.
+
+	 In any other situation,  write patterns that work when 'magic' is on.
+
+	 Include "\M" when you want to. (see |/\M|)
 
 						*'makeef'* *'mef'*
 'makeef' 'mef'		string	(default: "")
@@ -5723,31 +5741,32 @@ This is done in order for the signcolumn appearence not appear weird during line
 'softtabstop' 'sts'	number	(default 0)
 			local to buffer
 
-Number of spaces that a <Tab> counts for
-while performing editing operations,
-like inserting a <Tab> or using <BS>.
-It "feels" like <Tab>s are being inserted,
-while in fact a mix of spaces and <Tab>s is used.
-This is useful to keep the 'ts' setting at its standard value of 8,
-while being able to edit like it is set to 'sts'.
+    The value of 'softtabstop' will be ignored if |'varsofttabstop'| is set
+    to anything other than an empty string.
 
-However,  commands like "x" still work on the actual characters.
+    Number of spaces that a <Tab> counts for
+    while performing editing operations,
+    like inserting a <Tab> or using <BS>.
+    It "feels" like <Tab>s are being inserted,
+    while in fact a mix of spaces and <Tab>s is used.
+    This is useful to keep the 'ts' setting at its standard value of 8,
+    while being able to edit like it is set to 'sts'.
 
-if 'sts' is zero,
-	this feature is off.
+    However,  commands like "x" still work on the actual characters.
 
-if 'sts' < 0
-	the value of 'shiftwidth' is used.
+    if 'sts' is zero,
+	    this feature is off.
 
-'softtabstop' is set to 0 when the 'paste' option is set and
-restored when 'paste' is reset.
+    if 'sts' < 0
+	    the value of 'shiftwidth' is used.
 
-See also |ins-expandtab|.
- 
-The 'L' flag in 'cpoptions' changes how tabs are used when 'list' is set.
+    'softtabstop' is set to 0 when the 'paste' option is set and
+    restored when 'paste' is reset.
 
-	The value of 'softtabstop' will be ignored if |'varsofttabstop'| is set
-	to anything other than an empty string.
+    See also |ins-expandtab|.
+     
+    The 'L' flag in 'cpoptions' changes how tabs are used when 'list' is set.
+
 
 						*'spell'* *'nospell'*
 'spell'			boolean	(default off)
@@ -6281,9 +6300,10 @@ The 'L' flag in 'cpoptions' changes how tabs are used when 'list' is set.
 'tabstop' 'ts'		number	(default 8)
 			local to buffer
 
-The value of 'tabstop' will be ignored if |'vartabstop'| is set to  anything other than an empty string.
+The value of 'tabstop' will be ignored if
+|'vartabstop'| is set to  anything other than an empty string.
 
-这是真的输入space, 而softtabstop•
+这是真的输入space, 而softtabstop
 Number of spaces that a <Tab> in the file counts for.
 Also see |:retab| command,
 and 'softtabstop' option.
@@ -6291,30 +6311,31 @@ and 'softtabstop' option.
 	Note: Setting 'tabstop' to any other value than 🔑8🔑 can make your file
 	appear wrong in many places (e.g., when printing it).
 
+	我用python, 8空格缩进不现实
+
 There are four main ways to use tabs in Vim:
 
-1.
-Always keep 'tabstop' at 8,
-set 'softtabstop' and 'shiftwidth' to 4 (or 3 or whatever you prefer) and use 'noexpandtab'.
-Then Vim will use a mix of tabs and spaces,
-but typing <Tab> and <BS> will behave like a tab appears every 4 (or 3) characters.
+1.  傻逼方法:
+    Always keep 'tabstop' at 8,
+    set 'softtabstop' and 'shiftwidth' to 4 (or 3 or whatever you prefer) and use 'noexpandtab'.
+    Then Vim will use a mix of tabs and spaces,
+    but typing <Tab> and <BS> will behave like a tab appears every 4 (or 3) characters.
 
 2.
-Set 'tabstop' and 'shiftwidth' to whatever you prefer and use 'expandtab'.
-This way you will always insert spaces.
-The formatting will never be messed up when 'tabstop' is changed.
+	Set 'tabstop' and 'shiftwidth' to whatever you prefer and use 'expandtab'.
+	This way you will always insert spaces.
+	The formatting will never be messed up when 'tabstop' is changed.
 
 3.
-Set 'tabstop' and 'shiftwidth' to whatever you prefer and use a |modeline| to set these values when
-editing the file again. Only works when using Vim to edit the file.
+	Set 'tabstop' and 'shiftwidth' to whatever you prefer and use a |modeline| to set these values when
+	editing the file again. Only works when using Vim to edit the file.
 
 4.
-Always set 'tabstop' and 'shiftwidth' to the same value,
-and 'noexpandtab'.
-This should then work (for initial indents only)  for any tabstop setting that people use. 
-if you do this 
-	It might be nice to
-	have tabs after the first non-blank inserted as spaces
+	Always set 'tabstop' and 'shiftwidth' to the same value,
+	and 'noexpandtab'.
+	This should then work (for initial indents only)  for any tabstop setting that people use. 
+	if you do this 
+	It might be nice to  have tabs after the first non-blank inserted as spaces
 
 	Otherwise aligned comments will be wrong when 'tabstop' is  changed.
 
@@ -6483,18 +6504,23 @@ if you do this
 	for a search that hits the start or end of the file not being
 	displayed).  When reset: Remove 's' flag from 'shortmess' option.
 
+
 						*'textwidth'* *'tw'*
 'textwidth' 'tw'	number	(default 0)
 			local to buffer
-	Maximum width of text that is being inserted.  A longer line will be
-	broken after white space to get this width.  A zero value disables
-	this.
-	'textwidth' is set to 0 when the 'paste' option is set and restored
-	when 'paste' is reset.
+
+	When 'formatexpr' is set,  it will be used to break the line. (会覆盖textwidth?)
+	See also  |ins-textwidth|.
+
+	 A longer line will be broken after white space to get this width.
+
+	 A zero value disables this.
+
+	'textwidth' is set to 0 when the 'paste' option is set and
+	restored when 'paste' is reset.
 
 	When 'textwidth' is zero, 'wrapmargin' may be used. 
-	See also  'formatoptions' and |ins-textwidth|.
-	When 'formatexpr' is set it will be used to break the line.
+
 
 						*'thesaurus'* *'tsr'*
 'thesaurus' 'tsr'	string	(default "")
@@ -6716,20 +6742,25 @@ if you do this
 	written to disk (see |crash-recovery|).  Also used for the
 	|CursorHold| autocommand event.
 
+
 					*'varsofttabstop'* *'vsts'*
 'varsofttabstop' 'vsts'	string	(default "")
 			local to buffer
-	A list of the number of spaces that a <Tab> counts for while editing,
-	such as inserting a <Tab> or using <BS>.  It "feels" like variable-
-	width <Tab>s are being inserted, while in fact a mixture of spaces
-	and <Tab>s is used.  Tab widths are separated with commas, with the
-	final value applying to all subsequent tabs.
 
-	For example, when editing assembly language files where statements
-	start in the 8th column and comments in the 40th, it may be useful
-	to use the following:  
+    A list of the number of spaces that a <Tab> counts for  while editing,
+    such as inserting a <Tab> or  using <BS>.
+     It "feels" like variable- width <Tab>s are being inserted,
+    while 🔑in fact a mixture of spaces and  <Tab>s is used.🔑
+     Tab widths are separated with commas,
+    with the final value applying to all subsequent tabs.
+
+	少遇到的要用这个feature的情况:
+    when editing assembly language files where statements start in the 8th column and
+    comments in the 40th,
+    it may be useful to use the following:
 		:set varsofttabstop=8,32,8
- 	This will set soft tabstops at the 8th and 40th columns, and at every
+
+ 	This will set 🔑soft tabstops🔑 at the 8th and 40th columns, and at every
 	8th column thereafter.
 
 	Note that the value of |'softtabstop'| will be ignored while
@@ -6739,21 +6770,22 @@ if you do this
 'vartabstop' 'vts'	string	(default "")
 			local to buffer
 
-For example:  
-	:set vartabstop=4,20,10,8
-
-This will make the first tab 4 💛spaces wide💛,
-the second 20 spaces,
-the third 10 spaces,
-and all following tabs 8 spaces.
-
-A list of the number of spaces that a <Tab> in the file counts for,
-separated by commas.
-Each value corresponds to one tab,
-with the final value applying to all subsequent tabs.
-
 	Note that the value of |'tabstop'| will be ignored while 'vartabstop'
 	is set.
+
+	For example:  
+		:set vartabstop=4,20,10,8
+
+	This will make the first tab 4 💛spaces wide💛,
+	the second 20 spaces,
+	the third 10 spaces,
+	and all following tabs 8 spaces.
+
+	A list of the number of spaces that a <Tab> in the file counts for,
+	separated by commas.
+	Each value corresponds to one tab,
+	with the final value applying to all subsequent tabs.
+
 
 						*'verbose'* *'vbs'*
 'verbose' 'vbs'		number	(default 0)
@@ -7177,17 +7209,24 @@ but you will not get a warning for it.
 
 This option changes how text is displayed.
  It doesn't change the text in the buffer, see 'textwidth' for that.
-When on, lines longer than the width of the window will wrap and displaying continues on the next line.
-When off lines will not wrap  and only part of long lines will be displayed.
-When the cursor is  moved to a part that is not shown, the screen will scroll  horizontally.
-The line will be broken in the middle of a word if necessary.
 
-See 'linebreak' to get the break at a word boundary.
+When on,
+	lines longer than the width of the window will wrap and
+	displaying continues on the next line.
 
-To make scrolling horizontally a bit more useful, try this:  
-		:set sidescroll=5
-		:set listchars+=precedes:<,extends:>
- 	See 'sidescroll', 'listchars' and |wrap-off|.
+	See 'linebreak' to get the break at a word boundary.
+
+When off,
+	lines will not wrap  and
+	only part of long lines will be displayed.
+	When the cursor is  moved to a part that is not shown,
+	the screen will scroll  horizontally.
+	The line will be broken in the middle of a word if necessary.
+
+	To make scrolling horizontally a bit more useful, try this:  
+			:set sidescroll=5
+			:set listchars+=precedes:<,extends:>
+		See 'sidescroll', 'listchars' and |wrap-off|.
 
 	This option can't be set from a |modeline| when the 'diff' option is
 	on.
@@ -7196,20 +7235,23 @@ To make scrolling horizontally a bit more useful, try this:
 'wrapmargin' 'wm'	number	(default 0)
 					local to buffer
 
-叫marginwitdh更好, 和textwidth对应
-
-Number of characters from the right window border where wrapping starts.
-When typing text beyond this limit,
-an <EOL> will be inserted  and
-inserting continues on the next line.
-Options that add a margin,
-such as 'number' and  'foldcolumn',
-cause the text width to be further reduced.
 This is Vi compatible.
 
 When 'textwidth' is non-zero,
 this option is not used.
-See also 'formatoptions' and  |ins-textwidth|.
+
+/* 叫marginwitdh更好, 和textwidth对应 */
+
+	Number of characters from the right window border where wrapping starts.
+	When typing text beyond this limit,
+	🔑an <EOL> will be inserted🔑  and
+	inserting continues on the next line.
+
+	Options that add a margin,
+	such as 'number' and  'foldcolumn',
+	cause the text width to be further reduced.
+	See also 'formatoptions' and  |ins-textwidth|.
+
 
 				   *'wrapscan'* *'ws'* *'nowrapscan'* *'nows'*
 'wrapscan' 'ws'		boolean	(default on)			*E384* *E385*

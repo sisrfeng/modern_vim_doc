@@ -615,12 +615,17 @@ vim.regex({re})                                         *vim.regex()*
 Methods on the regex object:
 
 regex:match_str({str})                                  *regex:match_str()*
-        Match the string against the regex. If the string should match the
-        regex precisely, surround the regex with `^` and `$`.
-        If the was a match, the byte indices for the beginning and end of
-        the match is returned. When there is no match, `nil` is returned.
-        As any integer is truth-y, `regex:match()` can be directly used
-        as a condition in an if-statement.
+
+        Match the string against the regex.
+        If the string should match the regex precisely,
+        surround the regex with `^` and  `$`.
+        If the was a match,
+        the byte indices for the beginning and
+        end of the match is returned.
+        When there is no match,
+        `nil` is returned.
+        As any integer is truth-y,
+        `regex:match()` can be directly used as a condition in an if-statement.
 
 regex:match_line({bufnr}, {line_idx}[, {start}, {end}]) *regex:match_line()*
         Match line {line_idx} (zero-based) in buffer {bufnr}. If {start} and
