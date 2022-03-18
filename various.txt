@@ -393,17 +393,22 @@ g8			Print the hex values of the bytes used in the
 			not.
 
 						*:sil* *:silent* *:silent!*
-:sil[ent][!] {command}	Execute {command} silently.  Normal messages will not
-			be given or added to the message history.
-			When [!] is added, error messages will also be
-			skipped, and commands and mappings will not be aborted
-			when an error is detected.  |v:errmsg| is still set.
-			When [!] is not used, an error message will cause
-			further messages to be displayed normally.
-			Redirection, started with |:redir|, will continue as
-			usual, although there might be small differences.
-			This will allow redirecting the output of a command
-			without seeing it on the screen.  Example: >
+:sil[ent][!] {command} 
+
+Execute {command} silently.
+ Normal messages will not be given or added to the message history.
+When [!] is added,
+error messages will also be skipped,
+and commands and mappings will not be aborted when an error is detected.
+ |v:errmsg| is still set.
+When [!] is not used,
+an error message will cause further messages to be displayed normally.
+Redirection,
+started with |:redir|,
+will continue as usual,
+although there might be small differences.
+This will allow redirecting the output of a command without seeing it on the screen.
+ Example: >
 			    :redir >/tmp/foobar
 			    :silent g/Aap/p
 			    :redir END

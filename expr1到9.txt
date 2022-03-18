@@ -1,0 +1,445 @@
+expr1                           *expr1* *trinary* *E109*
+-----
+
+	expr2 ? expr1 : expr1
+
+	The expression before the '?' is evaluated to a number.  If it evaluates to
+	|TRUE|, the result is the value of the expression between the '?' and ':',
+	otherwise the result is the value of the expression after the ':'.
+	Example: >
+		:echo lnum == 1 ? "top" : lnum
+
+	Since the first expression is an "expr2", it cannot contain another ?:.  The
+	other two expressions can, thus allow for recursive use of ?:.
+	Example: >
+		:echo lnum == 1 ? "top" : lnum == 1000 ? "last" : lnum
+
+	To keep this readable, using |line-continuation| is suggested: >
+		:echo lnum == 1
+		:\  ? "top"
+		:\  : lnum == 1000
+		:\      ? "last"
+		:\      : lnum
+
+	You should always put a space before the ':', otherwise it can be mistaken for
+	use in a variable such as "a:1".
+
+
+expr2 and expr3                     *expr2* *expr3*
+---------------
+
+	expr3 || expr3 ..   logical OR      *expr-barbar*
+	expr4 && expr4 ..   logical AND     *expr-&&*
+
+	The "||" and "&&" operators take one argument on each side.  The arguments
+	are (converted to) Numbers.  The result is:
+
+		input            output ~
+	n1  n2      n1 || n2    n1 && n2 ~
+	|FALSE| |FALSE|     |FALSE|     |FALSE|
+	|FALSE| |TRUE|      |TRUE|      |FALSE|
+	|TRUE|  |FALSE|     |TRUE|      |FALSE|
+	|TRUE|  |TRUE|      |TRUE|      |TRUE|
+
+	The operators can be concatenated, for example: >
+
+		&nu || &list && &shell == "csh"
+
+	Note that "&&" takes precedence over "||", so this has the meaning of: >
+
+		&nu || (&list && &shell == "csh")
+
+	Once the result is known, the expression "short-circuits", that is, further
+	arguments are not evaluated.  This is like what happens in C.  For example: >
+
+		let a = 1
+		echo a || b
+
+	This is valid even if there is no variable called "b" because "a" is |TRUE|,
+	so the result must be |TRUE|.  Similarly below: >
+
+		echo exists("b") && b == "yes"
+
+	This is valid whether "b" has been defined or not.  The second clause will
+	only be evaluated if "b" has been defined.
+
+
+expr4                           *expr4*
+-----
+
+expr5 {cmp} expr5
+
+Compare two expr5 expressions, resulting in a 0 if it evaluates to false, or 1
+if it evaluates to true.
+
+            *expr-==*  *expr-!=*  *expr->*   *expr->=*
+            *expr-<*   *expr-<=*  *expr-=~*  *expr-!~*
+            *expr-==#* *expr-!=#* *expr->#*  *expr->=#*
+            *expr-<#*  *expr-<=#* *expr-=~#* *expr-!~#*
+            *expr-==?* *expr-!=?* *expr->?*  *expr->=?*
+            *expr-<?*  *expr-<=?* *expr-=~?* *expr-!~?*
+            *expr-is* *expr-isnot* *expr-is#* *expr-isnot#*
+            *expr-is?* *expr-isnot?*
+        use 'ignorecase'    match case     ignore case ~
+equal           ==      ==#     ==?
+not equal       !=      !=#     !=?
+greater than        >       >#      >?
+greater than or equal   >=      >=#     >=?
+smaller than        <       <#      <?
+smaller than or equal   <=      <=#     <=?
+regexp matches      =~      =~#     =~?
+regexp doesn't match    !~      !~#     !~?
+same instance       is      is#     is?
+different instance  isnot       isnot#      isnot?
+
+Examples:
+"abc" ==# "Abc"   evaluates to 0
+"abc" ==? "Abc"   evaluates to 1
+"abc" == "Abc"    evaluates to 1 if 'ignorecase' is set, 0 otherwise
+
+                            *E691* *E692*
+A |List| can only be compared with a |List| and only "equal", "not equal",
+"is" and "isnot" can be used.  This compares the values of the list,
+recursively.  Ignoring case means case is ignored when comparing item values.
+
+                            *E735* *E736*
+A |Dictionary| can only be compared with a |Dictionary| and only "equal", "not
+equal", "is" and "isnot" can be used.  This compares the key/values of the
+|Dictionary| recursively.  Ignoring case means case is ignored when comparing
+item values.
+
+                            *E694*
+A |Funcref| can only be compared with a |Funcref| and only "equal", "not
+equal", "is" and "isnot" can be used.  Case is never ignored.  Whether
+arguments or a Dictionary are bound (with a partial) matters.  The
+Dictionaries must also be equal (or the same, in case of "is") and the
+arguments must be equal (or the same).
+
+To compare Funcrefs to see if they refer to the same function, ignoring bound
+Dictionary and arguments, use |get()| to get the function name: >
+    if get(Part1, 'name') == get(Part2, 'name')
+       " Part1 and Part2 refer to the same function
+
+Using "is" or "isnot" with a |List|, |Dictionary| or |Blob| checks whether
+the expressions are referring to the same |List|, |Dictionary| or |Blob|
+instance.  A copy of a |List| is different from the original |List|.  When
+using "is" without a |List|, |Dictionary| or |Blob|, it is equivalent to
+using "equal", using "isnot" is equivalent to using "not equal".  Except that
+a different type means the values are different: >
+    echo 4 == '4'
+    1
+    echo 4 is '4'
+    0
+    echo 0 is []
+    0
+"is#"/"isnot#" and "is?"/"isnot?" can be used to match and ignore case.
+
+When comparing a String with a Number, the String is converted to a Number,
+and the comparison is done on Numbers.  This means that: >
+    echo 0 == 'x'
+    1
+because 'x' converted to a Number is zero.  However: >
+    echo [0] == ['x']
+    0
+Inside a List or Dictionary this conversion is not used.
+
+When comparing two Strings, this is done with strcmp() or stricmp().  This
+results in the mathematical difference (comparing byte values), not
+necessarily the alphabetical difference in the local language.
+
+When using the operators with a trailing '#', or the short version and
+'ignorecase' is off, the comparing is done with strcmp(): case matters.
+
+When using the operators with a trailing '?', or the short version and
+'ignorecase' is set, the comparing is done with stricmp(): case is ignored.
+
+'smartcase' is not used.
+
+The "=~" and "!~" operators match the lefthand argument with the righthand
+argument, which is used as a pattern.  See |pattern| for what a pattern is.
+This matching is always done like 'magic' was set and 'cpoptions' is empty, no
+matter what the actual value of 'magic' or 'cpoptions' is.  This makes scripts
+portable.  To avoid backslashes in the regexp pattern to be doubled, use a
+single-quote string, see |literal-string|.
+Since a string is considered to be a single line, a multi-line pattern
+(containing \n, backslash-n) will not match.  However, a literal NL character
+can be matched like an ordinary character.  Examples:
+    "foo\nbar" =~ "\n"  evaluates to 1
+    "foo\nbar" =~ "\\n" evaluates to 0
+
+
+expr5 and expr6                     *expr5* *expr6*
+---------------
+expr6 + expr6   Number addition, |List| or |Blob| concatenation *expr-+*
+expr6 - expr6   Number subtraction              *expr--*
+💚
+expr6 . expr6   String concatenation                *expr-.*
+💚
+
+💚
+expr6 .. expr6  String concatenation                *expr-..*
+💚
+
+For |Lists| only "+" is possible and then both expr6 must be a list.  The
+result is a new list with the two lists Concatenated.
+
+💛  For String concatenation ".." is preferred, since "." is ambiguous, it is also
+used for |Dict| member access and floating point numbers.  💛
+
+expr7 * expr7  Number multiplication                *expr-star*
+expr7 / expr7  Number division                  *expr-/*
+expr7 % expr7  Number modulo                    *expr-%*
+
+⛅  For all, except "." and "..", Strings are converted to Numbers.  ⛅
+
+For bitwise operators,  see |and()|, |or()| and |xor()|.
+
+Note the difference between "+" and ".":
+    "123" + "456" = 579
+    "123" . "456" = "123456"
+
+Since '.' has the same precedence as '+' and '-', you need to read: >
+    ⛅  1 . 90 + 90.0  ⛅
+As: >
+    (1 . 90) + 90.0
+That works, since the String "190" is automatically converted to the Number
+190, which can be added to the Float 90.0.  However: >
+    1 . 90 * 90.0
+Should be read as: >
+    1 . (90 * 90.0)
+Since '.' has lower precedence than '*'.  💚This does NOT work, since this
+attempts to concatenate a Float and a String💚.
+
+When dividing a Number by zero the result depends on the value:
+      0 / 0  = -0x80000000  (like NaN for Float)
+     >0 / 0  =  0x7fffffff  (like positive infinity)
+     <0 / 0  = -0x7fffffff  (like negative infinity)
+    (before Vim 7.2 it was always 0x7fffffff)
+
+When 64-bit Number support is enabled:
+      0 / 0  = -0x8000000000000000  (like NaN for Float)
+     >0 / 0  =  0x7fffffffffffffff  (like positive infinity)
+     <0 / 0  = -0x7fffffffffffffff  (like negative infinity)
+
+When the righthand side of '%' is zero, the result is 0.
+
+None of these work for |Funcref|s.
+
+. and % do not work for Float. *E804*
+
+
+expr7                           *expr7*
+-----
+! expr7         logical NOT     *expr-!*
+- expr7         unary minus     *expr-unary--*
++ expr7         unary plus      *expr-unary-+*
+
+For '!' |TRUE| becomes |FALSE|, |FALSE| becomes |TRUE| (one).
+For '-' the sign of the number is changed.
+For '+' the number is unchanged.
+
+A String will be converted to a Number first.
+
+These three can be repeated and mixed.  Examples:
+    !-1     == 0
+    !!8     == 1
+    --9     == 9
+
+
+expr8                           *expr8*
+-----
+
+This expression is either |expr9| or
+a sequence of the alternatives below,
+in any order.
+ E.g.,
+these are all possible:
+
+    expr8[expr1].name
+    expr8.name[expr1]
+    expr8(expr1, ...)[expr1].name
+    expr8->(expr1, ...)[expr1]
+
+Evaluation is always from left to right.
+
+
+expr8[expr1]        item of String or |List|    *expr-[]* *E111*
+                            *subscript*
+In legacy Vim script:
+If expr8 is a Number or String this results in a String that contains the
+expr1'th single byte from expr8.  expr8 is used as a String (a number is
+automatically converted to a String), expr1 as a Number.  This doesn't
+recognize multibyte encodings, see `byteidx()` for an alternative, or use
+`split()` to turn the string into a list of characters.  Example, to get the
+byte under the cursor: >
+    :let c = getline(".")[col(".") - 1]
+
+Index zero gives the first byte.  This is like it works in C.  Careful:
+text column numbers start with one!  Example, to get the byte under the
+cursor: >
+    :let c = getline(".")[col(".") - 1]
+
+If the length of the String is less than the index, the result is an empty
+String.  A negative index always results in an empty string (reason: backward
+compatibility).  Use [-1:] to get the last byte.
+
+If expr8 is a |List| then it results the item at index expr1.  See |list-index|
+for possible index values.  If the index is out of range this results in an
+error.  Example: >
+    :let item = mylist[-1]      " get last item
+
+Generally, if a |List| index is equal to or higher than the length of the
+|List|, or more negative than the length of the |List|, this results in an
+error.
+
+
+expr8[expr1a : expr1b]  substring or sublist        *expr-[:]*
+
+If expr8 is a String this results in the substring with the bytes or
+characters from expr1a to and including expr1b.  expr8 is used as a String,
+expr1a and expr1b are used as a Number.
+
+In legacy Vim script the indexes are byte indexes.  This doesn't recognize
+multibyte encodings, see |byteidx()| for computing the indexes.  If expr8 is
+a Number it is first converted to a String.
+
+If expr1a is omitted zero is used.  If expr1b is omitted the length of the
+string minus one is used.
+
+A negative number can be used to measure from the end of the string.  -1 is
+the last character, -2 the last but one, etc.
+
+If an index goes out of range for the string characters are omitted.  If
+expr1b is smaller than expr1a the result is an empty string.
+
+Examples: >
+    :let c = name[-1:]      " last byte of a string
+    :let c = name[0:-1]     " the whole string
+    :let c = name[-2:-2]        " last but one byte of a string
+    :let s = line(".")[4:]      " from the fifth byte to the end
+    :let s = s[:-3]         " remove last two bytes
+<
+                            *slice*
+If expr8 is a |List| this results in a new |List| with the items indicated by
+the indexes expr1a and expr1b.  This works like with a String, as explained
+just above. Also see |sublist| below.  Examples: >
+    :let l = mylist[:3]     " first four items
+    :let l = mylist[4:4]        " List with one item
+    :let l = mylist[:]      " shallow copy of a List
+
+If expr8 is a |Blob| this results in a new |Blob| with the bytes in the
+indexes expr1a and expr1b, inclusive.  Examples: >
+    :let b = 0zDEADBEEF
+    :let bs = b[1:2]        " 0zADBE
+    :let bs = b[]           " copy of 0zDEADBEEF
+
+Using expr8[expr1] or expr8[expr1a : expr1b] on a |Funcref| results in an
+error.
+
+Watch out for confusion between a namespace and a variable followed by a colon
+for a sublist: >
+    mylist[n:]     " uses variable n
+    mylist[s:]     " uses namespace s:, error!
+
+
+expr8.name      entry in a |Dictionary|     *expr-entry*
+
+If expr8 is a |Dictionary| and it is followed by a dot,
+then the following name will be used as a key in the |Dictionary|.
+ This is just like:
+expr8[name].
+
+The name must consist of alphanumeric characters, just like a variable name,
+but it may start with a number.  Curly braces cannot be used.
+
+There must not be white space before or after the dot.
+
+Examples: >
+    :let dict = {"one": 1, 2: "two"}
+    :echo dict.one      " shows "1"
+    :echo dict.2        " shows "two"
+    :echo dict .2       " error because of space before the dot
+
+Note that the dot is also used for String concatenation.  To avoid confusion
+always put spaces around the dot for String concatenation.
+
+
+expr8(expr1, ...)   |Funcref| function call
+
+When expr8 is a |Funcref| type variable, invoke the function it refers to.
+
+
+expr8->name([args]) method call         *method* *->*
+expr8->{lambda}([args])
+
+For methods that are also available as global functions this is the same as: >
+    name(expr8 [, args])
+There can also be methods specifically for the type of "expr8".
+
+This allows for chaining, passing the value that one method returns to the
+next method: >
+    mylist->filter(filterexpr)->map(mapexpr)->sort()->join()
+<
+Example of using a lambda: >
+    GetPercentage()->{x -> x * 100}()->printf('%d%%')
+<
+When using -> the |expr7| operators will be applied first, thus: >
+    -1.234->string()
+Is equivalent to: >
+    (-1.234)->string()
+And NOT: >
+    -(1.234->string())
+<
+                            *E274*
+"->name(" must not contain white space.  There can be white space before the
+"->" and after the "(", thus you can split the lines like this: >
+    mylist
+    \ ->filter(filterexpr)
+    \ ->map(mapexpr)
+    \ ->sort()
+    \ ->join()
+<
+
+                            *expr9*
+number
+------
+number          number constant         *expr-number*
+                *hex-number* *octal-number* *binary-number*
+
+Decimal, Hexadecimal (starting with 0x or 0X), Binary (starting with 0b or 0B)
+and Octal (starting with 0, 0o or 0O).
+
+                        *floating-point-format*
+Floating point numbers can be written in two forms:
+
+    [-+]{N}.{M}
+    [-+]{N}.{M}[eE][-+]{exp}
+
+{N} and {M} are numbers.  Both {N} and {M} must be present and can only
+contain digits.
+[-+] means there is an optional plus or minus sign.
+{exp} is the exponent, power of 10.
+Only a decimal point is accepted, not a comma.  No matter what the current
+locale is.
+
+Examples:
+    123.456
+    +0.0001
+    55.0
+    -0.123
+    1.234e03
+    1.0E-6
+    -3.1416e+88
+
+These are INVALID:
+    3.      empty {M}
+    1e40        missing .{M}
+
+Rationale:
+Before floating point was introduced, the text "123.456" was interpreted as
+the two numbers "123" and "456", both converted to a string and concatenated,
+resulting in the string "123456".  Since this was considered pointless, and we
+could not find it intentionally being used in Vim scripts, this backwards
+incompatibility was accepted in favor of being able to use the normal notation
+for floating point numbers.
+

@@ -190,20 +190,25 @@ l		or					*l*
 			|exclusive| motion.  Any count is ignored.
 
 							*$* *<End>* *<kEnd>*
-$  or <End>		To the end of the line.  When a count is given also go
-			[count - 1] lines downward, or as far is possible.
-			|inclusive| motion.  If a count of 2 or larger is
-			given and the cursor is on the last line, that is an
-			error and the cursor doesn't move.
-			In Visual mode the cursor goes to just after the last
-			character in the line.
-			When 'virtualedit' is active, "$" may move the cursor
-			back from past the end of the line to the last
-			character in the line.
+$  or <End>		
+
+To the end of the line.
+When a count is given also go [count - 1] lines downward,
+or
+as far is possible.
+|inclusive| motion.
+If a count of 2 or larger is given and the cursor is on the last line,
+that is an error and the cursor doesn't move.
+
+In Visual mode the cursor goes to just after the last character in the line.
+When 'virtualedit' is active,
+ "$" may move the cursor back from past the end of the line to the last character in the line.
 
 							*g_*
-g_			To the last non-blank character of the line and
-			[count - 1] lines downward |inclusive|.
+g_
+
+To the last non-blank character of the line (暂时用g$吧, 行末一般没有空格)and
+[count - 1] lines downward |inclusive|.
 
 							*g0* *g<Home>*
 g0 or g<Home>		When lines wrap ('wrap' on): To the first character of
@@ -223,29 +228,33 @@ g^			When lines wrap ('wrap' on): To the first non-blank
 			screen.  Differs from "^" when the first non-blank
 			character of the line is not on the screen.
 
-							*gm*
-gm			Like "g0", but half a screenwidth to the right (or as
-			much as possible).
+很少用, 直接用easy motion更快:
+								*gm*
+	gm			Like "g0", but half a screenwidth to the right (or as
+				much as possible).
 
-							*gM*
-gM			Like "g0", but to halfway the text of the line.
-			With a count: to this percentage of text in the line.
-			Thus "10gM" is near the start of the text and "90gM"
-			is near the end of the text.
+								*gM*
+	gM			Like "g0", but to 🔑halfway the text of the line🔑.
+				With a count: to this percentage of text in the line.
+				Thus "10gM" is near the start of the text and "90gM"
+				is near the end of the text.
 
 							*g$* *g<End>*
-g$ or g<End>		When lines wrap ('wrap' on): To the last character of
-			the screen line and [count - 1] screen lines downward
-			|inclusive|.  Differs from "$" when a line is wider
-			than the screen.
-			When lines don't wrap ('wrap' off): To the rightmost
-			character of the current line that is visible on the
-			screen.  Differs from "$" when the last character of
-			the line is not on the screen or when a count is used.
-			Additionally, vertical movements keep the column,
-			instead of going to the end of the line.
-			When 'virtualedit' is enabled moves to the end of the
-			screen line.
+g$ or g<End>
+
+When lines wrap ('wrap' on): To the last character of the screen line and
+[count - 1] screen lines downward |inclusive|.
+
+When 'virtualedit' is enabled:
+		moves to the end of the screen line.
+
+ Differs from "$":
+ 1. vertical movements keep the column, instead of going to the end of the line.
+
+ 2. when a line is wider than the screen:
+      	 When lines don't wrap ('wrap' off):
+      		To the rightmost character of the current line that is visible on the screen.
+        	 Differs from "$" when the last character of the line is not on the screen or when a count is used.
 
 							*bar*
 |			To screen column [count] in the current line.

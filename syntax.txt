@@ -3964,12 +3964,13 @@ The maximum number of syntax groups is 19999.
 7. :syntax arguments					*:syn-arguments*
 
 The :syntax commands that define syntax items take a number of arguments.
-The common ones are explained here.  The arguments may be given in any order
-and may be mixed with patterns.
+The common ones are explained here.
+The arguments may be given in any order  and  may be mixed with patterns.
 
-Not all commands accept all arguments.	This table shows which arguments
-can not be used for all commands:
-							*E395*
+Not all commands accept all arguments.
+This table shows which arguments can not be used for  all commands:
+
+*E395*
 		    contains  oneline	fold  display  extend concealends~
 :syntax keyword		 -	 -	 -	 -	 -      -
 :syntax match		yes	 -	yes	yes	yes     -
@@ -3986,32 +3987,34 @@ These arguments can be used for all three commands:
 	skipnl
 	skipempty
 
-conceal						*conceal* *:syn-conceal*
 
-When the "conceal" argument is given, the item is marked as concealable.
-Whether or not it is actually concealed depends on the value of the
-'conceallevel' option.  The 'concealcursor' option is used to decide whether
-concealable items in the current line are displayed unconcealed to be able to
-edit the line.
-Another way to conceal text is with |matchadd()|.
+*conceal* *:syn-conceal*
+conceal					   
 
-concealends						*:syn-concealends*
+	When the "conceal" argument is given,
+	the item is marked as concealable.
+	Whether or not it is actually concealed depends on the value of the 'conceallevel' option.
+	The 'concealcursor' option is used to decide whether concealable items in the current line are displayed unconcealed to be able to edit the line.
+	Another way to conceal text is with |matchadd()|.
 
-When the "concealends" argument is given, the start and end matches of
-the region, but not the contents of the region, are marked as concealable.
-Whether or not they are actually concealed depends on the setting on the
-'conceallevel' option. The ends of a region can only be concealed separately
-in this way when they have their own highlighting via "matchgroup"
+*:syn-concealends*
+concealends					   
 
-cchar							*:syn-cchar*
-							*E844*
-The "cchar" argument defines the character shown in place of the item
-when it is concealed (setting "cchar" only makes sense when the conceal
-argument is given.) If "cchar" is not set then the default conceal
-character defined in the 'listchars' option is used.  The character cannot be
-a control character such as Tab.  Example: >
-   :syntax match Entity "&amp;" conceal cchar=&
-See |hl-Conceal| for highlighting.
+	When the "concealends" argument is given,
+	the start and end matches of the region,
+	but not the contents of the region,
+	are marked as concealable.
+	Whether or not they are actually concealed depends on the setting on the 'conceallevel' option.
+	The ends of a region can only be concealed separately  in this way when they have their own highlighting via "matchgroup"
+
+*E844*  *:syn-cchar*
+cchar						   
+
+The "cchar" argument defines the character shown in place of the item when it is concealed (setting "cchar" only makes sense when the conceal argument is given.) If "cchar" is not set then the default conceal character defined in the 'listchars' option is used.
+The character cannot be  a control character such as Tab.
+	Example: >
+		   :syntax match Entity "&amp;" conceal cchar=&
+		See |hl-Conceal| for highlighting.
 
 contained						*:syn-contained*
 

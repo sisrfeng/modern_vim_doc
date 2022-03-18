@@ -1486,6 +1486,7 @@ lookup_section({settings}, {section})          *vim.lsp.util.lookup_section()*
 
                                   *vim.lsp.util.make_floating_popup_options()*
 make_floating_popup_options({width}, {height}, {opts})
+
                 Creates a table with sensible default options for a floating
                 window. The table can be passed to |nvim_open_win()|.
 

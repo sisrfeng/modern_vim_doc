@@ -307,6 +307,8 @@ LISTING PLACED SIGNS					*:sign-place-list*
 
 See |sign_getplaced()| for the equivalent Vim script function.
 
+
+
 :sign place file={fname}
 		List signs placed in file {fname}.
 		See remark above about {fname} |:sign-fname|.

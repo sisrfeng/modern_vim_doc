@@ -1107,48 +1107,53 @@ x	A single character, with no special meaning, matches itself
 	  in the old regexp engine. For example, searching by [\u3000-\u4000]
 	  after setting re=1 emits a E945 error. Prepending \%#=2 will fix it.
 	- A character class expression is evaluated to the set of characters
-	  belonging to that character class.  The following character classes
-	  are supported:
-		  Name	      Func	Contents  
-*[:alnum:]*	  [:alnum:]   isalnum	ASCII letters and digits
-*[:alpha:]*	  [:alpha:]   isalpha  	ASCII letters
-*[:blank:]*	  [:blank:]     	space and tab
-*[:cntrl:]*	  [:cntrl:]   iscntrl 	ASCII control characters
-*[:digit:]*	  [:digit:]     	decimal digits '0' to '9'
-*[:graph:]*	  [:graph:]   isgraph	ASCII printable characters excluding
-					space
-*[:lower:]*	  [:lower:]   (1)	lowercase letters (all letters when
-					'ignorecase' is used)
-*[:print:]*	  [:print:]   (2) 	printable characters including space
-*[:punct:]*	  [:punct:]   ispunct	ASCII punctuation characters
-*[:space:]*	  [:space:]     	whitespace characters: space, tab, CR,
-					NL, vertical tab, form feed
-*[:upper:]*	  [:upper:]   (3)	uppercase letters (all letters when
-					'ignorecase' is used)
-*[:xdigit:]*	  [:xdigit:]    	hexadecimal digits: 0-9, a-f, A-F
-*[:return:]*	  [:return:]		the <CR> character
-*[:tab:]*	  [:tab:]		the <Tab> character
-*[:escape:]*	  [:escape:]		the <Esc> character
-*[:backspace:]*	  [:backspace:]		the <BS> character
-*[:ident:]*	  [:ident:]		identifier character (same as "\i")
-*[:keyword:]*	  [:keyword:]		keyword character (same as "\k")
-*[:fname:]*	  [:fname:]		file name character (same as "\f")
-	  The square brackets in character class expressions are additional to
-	  the square brackets delimiting a collection.  For example, the
-	  following is a plausible pattern for a UNIX filename:
-	  "[-./[:alnum:]_~]\+".  That is, a list of at least one character,
-	  each of which is either '-', '.', '/', alphabetic, numeric, '_' or
-	  '~'.
-	  These items only work for 8-bit characters, except [:lower:] and
-	  [:upper:] also work for multibyte characters when using the new
-	  regexp engine.  See |two-engines|.  In the future these items may
-	  work for multibyte characters.  For now, to get all "alpha"
-	  characters you can use: [[:lower:][:upper:]].
+	  belonging to that character class. 
 
-	  The "Func" column shows what library function is used.  The
-	  implementation depends on the system.  Otherwise:
-	  (1) Uses islower() for ASCII and Vim builtin rules for other
-	  characters.
+The following 🔑character classes🔑  are supported:
+	              Name	           Func   	   Contents  
+*[:alnum:]*        [:alnum:]  	 isalnum  	   ASCII letters and digits
+*[:alpha:]*        [:alpha:]  	 isalpha        ASCII letters
+*[:blank:]*        [:blank:]  	   	     	   space and tab
+*[:cntrl:]*        [:cntrl:]  	 iscntrl  	   ASCII control characters
+*[:digit:]*        [:digit:]  	   	     	   decimal digits '0' to '9'
+*[:graph:]*        [:graph:]  	 isgraph  	   ASCII printable characters excluding  space
+*[:lower:]*        [:lower:]  	 (1)	     	   lowercase letters (all letters when  'ignorecase' is used)
+*[:print:]*        [:print:]  	 (2)      	   printable characters 💛including💛 space
+*[:punct:]*        [:punct:]  	 ispunct  	   ASCII punctuation characters
+*[:space:]*        [:space:]  	   	     	   whitespace characters: space, tab, CR,  NL, vertical tab, form feed
+*[:upper:]*        [:upper:]  	 (3)	     	   uppercase letters (all letters when  'ignorecase' is used)
+*[:xdigit:]*       [:xdigit:]    	 	      	   hexadecimal digits: 0-9, a-f, A-F
+*[:return:]*       [:return:]    	 	      	   the <CR> character
+*[:tab:]*          [:tab:]	      	 	      	   the <Tab> character
+*[:escape:]*       [:escape:]    	 	      	   the <Esc> character
+*[:backspace:]*    [:backspace:] 	 	      	   the <BS> character
+*[:ident:]*        [:ident:]     	 	      	   identifier character (same as "\i")
+*[:keyword:]*      [:keyword:]   	 	      	   keyword character (same as "\k")
+*[:fname:]*        [:fname:]     	 	      	   file name character (same as "\f")
+
+The square brackets in character class expressions are additional to the square brackets delimiting
+a collection.  For example,
+the following is a plausible pattern for a UNIX filename:
+	"[-./[:alnum:]_~]\+". 
+That is, a list of at least one character,  each of which is either
+	'-',
+	'.',
+	'/',
+	alphabetic,
+	numeric,
+	'_' or  '~'.
+These items only work for 8-bit characters,
+except [:lower:] and  [:upper:] also work for multibyte characters when using the new  regexp engine.
+See |two-engines|.
+
+In the future these items may  work for  multibyte characters.
+For now,
+to get all "alpha" characters you can use: [[:lower:][:upper:]].
+
+  The "Func" column shows what 🔑library function🔑 is used. 
+  The  implementation depends on the system. 
+  Otherwise:
+	  (1) Uses islower() for ASCII and Vim builtin rules for other  characters.
 	  (2) Uses Vim builtin rules
 	  (3) As with (1) but using isupper()
 							*/[[=* *[==]*

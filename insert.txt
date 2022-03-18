@@ -504,74 +504,106 @@ mode: hit "v", move to the end of the block, and type "gq".  See also |gq|.
 ==============================================================================
 4. 'expandtab', 'smarttab' and 'softtabstop' options	*ins-expandtab*
 
-If the 'expandtab' option is on, spaces will be used to fill the amount of
-whitespace of the tab.  If you want to enter a real <Tab>, type CTRL-V first
-(use CTRL-Q when CTRL-V is mapped |i_CTRL-Q|).
-The 'expandtab' option is off by default.  Note that in Replace mode, a single
-character is replaced with several spaces.  The result of this is that the
-number of characters in the line increases.  Backspacing will delete one
-space at a time.  The original character will be put back for only one space
-that you backspace over (the last one).
+'expandtab'
 
-							*ins-smarttab*
-When the 'smarttab' option is on, a <Tab> inserts 'shiftwidth' positions at
-the beginning of a line and 'tabstop' positions in other places.  This means
-that often spaces instead of a <Tab> character are inserted.  When 'smarttab'
-is off, a <Tab> always inserts 'tabstop' positions, and 'shiftwidth' is only
-used for ">>" and the like.
+If the 'expandtab' option is on,
+spaces will be used to fill the amount of whitespace of the tab.
+If you want to enter a real <Tab>,
+type CTRL-V first (use CTRL-Q when CTRL-V is mapped |i_CTRL-Q|).
 
-							*ins-softtabstop*
-When the 'softtabstop' option is non-zero, a <Tab> inserts 'softtabstop'
-positions, and a <BS> used to delete white space, will delete 'softtabstop'
-positions.  This feels like 'tabstop' was set to 'softtabstop', but a real
-<Tab> character still takes 'tabstop' positions, so your file will still look
-correct when used by other applications.
+The 'expandtab' option is off by default.
 
-If 'softtabstop' is non-zero, a <BS> will try to delete as much white space to
-move to the previous 'softtabstop' position, except when the previously
-inserted character is a space, then it will only delete the character before
-the cursor.  Otherwise you cannot always delete a single character before the
-cursor.  You will have to delete 'softtabstop' characters first, and then type
-extra spaces to get where you want to be.
+Note that in Replace mode,  a single character is replaced with several spaces.
+The result of this is that the number of characters in the line increases.
+
+Backspacing will delete one space at a time.
+The original character will be put back for only one space that you backspace over (the last one).
+
+
+*ins-smarttab*
+
+When the 'smarttab' option is on,
+  a <Tab> inserts:
+	'shiftwidth' positions at the beginning of a line and
+	'tabstop'    positions in other places.
+	This means that
+	often spaces instead of a <Tab> character are inserted.
+	什么时候会insert真的Tab?
+
+When 'smarttab' is off,
+	'shiftwidth' is only used for ">>" and  the like.
+	a <Tab> always inserts 'tabstop' positions,
+
+*ins-softtabstop*
+
+When the 'softtabstop' option is non-zero,
+a <Tab> inserts 'softtabstop' 🔑positions🔑 不是空格, 是position
+a <BS> used to delete white space,  will delete 'softtabstop' positions.
+
+This feels like 'tabstop' was set to 'softtabstop',
+but a real <Tab> character (要i_ctrl_v输入?) still takes 'tabstop' positions,
+so your file will still look correct when used by other applications.
+
+If 'softtabstop' is non-zero,
+a <BS> will try to delete as much white space to move to the previous 'softtabstop' position,
+except when the previously inserted character is a space,
+then it will only delete the character before the cursor.
+
+
+Otherwise(If 'softtabstop' is 0?) you cannot always delete a single character before the cursor.
+You will have to delete 'softtabstop' characters first,
+and then type extra spaces to get where you want to be.
 
 ==============================================================================
 5. Replace mode				*Replace* *Replace-mode* *mode-replace*
 
 Enter Replace mode with the "R" command in normal mode.
 
-In Replace mode, one character in the line is deleted for every character you
-type.  If there is no character to delete (at the end of the line), the
-typed character is appended (as in Insert mode).  Thus the number of
-characters in a line stays the same until you get to the end of the line.
-If a <NL> is typed, a line break is inserted and no character is deleted.
+In Replace mode,
+one character in the line is deleted for
+every character you type.
+
+ If there is no character to delete (at the end of the line),
+the typed character is appended (as in Insert mode).
+
+If a <NL> is typed,
+a line break is inserted and
+no character is deleted.
 
 Be careful with <Tab> characters.  If you type a normal printing character in
 its place, the number of characters is still the same, but the number of
 columns will become smaller.
 
-If you delete characters in Replace mode (with <BS>, CTRL-W, or CTRL-U), what
-happens is that you delete the changes.  The characters that were replaced
-are restored.  If you had typed past the existing text, the characters you
-added are deleted.  This is effectively a character-at-a-time undo.
+If you delete characters in Replace mode (with <BS>,
+CTRL-W,
+or
+CTRL-U),
+what happens is that you delete the changes.
+ The characters that were replaced are restored.
+ If you had typed past the existing text,
+the characters you added are deleted.
+ This is effectively a character-at-a-time undo.
 
-If the 'expandtab' option is on, a <Tab> will replace one character with
-several spaces.  The result of this is that the number of characters in the
-line increases.  Backspacing will delete one space at a time.  The original
-character will be put back for only one space that you backspace over (the
-last one).
+If the 'expandtab' option is on,
+a <Tab> will replace one character with several spaces.
+ The result of this is that the number of characters in the line increases.
+ Backspacing will delete one space at a time.
+ The original character will be put back for only one space that you backspace over (the last one).
 
 ==============================================================================
 6. Virtual Replace mode		*vreplace-mode* *Virtual-Replace-mode*
 
 Enter Virtual Replace mode with the "gR" command in normal mode.
 
-Virtual Replace mode is similar to Replace mode, but instead of replacing
-actual characters in the file, you are replacing screen real estate, so that
-characters further on in the file never appear to move.
+Virtual Replace mode is similar to Replace mode,
+but instead of replacing actual characters in the file,
+you are replacing screen real estate,
+so that characters further on in the file never appear to move.
 
-So if you type a <Tab> it may replace several normal characters, and if you
-type a letter on top of a <Tab> it may not replace anything at all, since the
-<Tab> will still line up to the same place as before.
+So if you type a <Tab> it may replace several normal characters,
+and
+if you type a letter on top of a <Tab> it may not replace anything at all,
+since the <Tab> will still line up to the same place as before.
 
 Typing a <NL> still doesn't cause characters later in the file to appear to
 move.  The rest of the current line will be replaced by the <NL> (that is,
@@ -583,9 +615,15 @@ before the cursor are shifted sideways as normal, but characters later in the
 line still remain still.  CTRL-T will hide some of the old line under the
 shifted characters, but CTRL-D will reveal them again.
 
-As with Replace mode, using <BS> etc will bring back the characters that were
-replaced.  This still works in conjunction with 'smartindent', CTRL-T and
-CTRL-D, 'expandtab', 'smarttab', 'softtabstop', etc.
+As with Replace mode,
+using <BS> etc will bring back the characters that were replaced.
+ This still works in conjunction with 'smartindent',
+CTRL-T and
+CTRL-D,
+'expandtab',
+'smarttab',
+'softtabstop',
+etc.
 
 In 'list' mode, Virtual Replace mode acts as if it was not in 'list' mode,
 unless "L" is in 'cpoptions'.
@@ -596,8 +634,9 @@ appear to move are in List mode |'list'|, and occasionally when 'wrap' is set
 screen).  In other cases spaces may be inserted to avoid following characters
 to move.
 
-This mode is very useful for editing <Tab> separated columns in tables, for
-entering new data while keeping all the columns aligned.
+This mode is very useful for
+editing <Tab> separated columns in tables,
+for  entering new data while keeping all the columns aligned.
 
 ==============================================================================
 7. Insert mode completion				*ins-completion*

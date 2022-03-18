@@ -249,12 +249,16 @@ least the ones for Normal mode.  More about mappings in section |40.1|.
 ==============================================================================
 *05.5*	Adding a package			*add-package* *vimball-install*
 
-A package is a set of files that you can add to Vim.  There are two kinds of
-packages: optional and automatically loaded on startup.
+	A package is a set of files that you can add to Vim.
+	There are two kinds of packages:
+	optional and
+	automatically loaded on startup.
 
-The Vim distribution comes with a few packages that you can optionally use.
-For example, the vimball plugin.  This plugin supports creating and using
-vimballs (self-installing Vim plugin archives).
+	The Vim distribution comes with a few packages that you can optionally use.
+	For  example,
+	 the vimball plugin.
+	This plugin supports creating and
+	using vimballs (self-installing Vim plugin archives).
 
 To start using the vimball plugin, add one line to your vimrc file: >
 	packadd vimball
@@ -263,26 +267,30 @@ That's all!  You can also type the command to try it out.  Now you can find
 help about this plugin: >
 	:help vimball
 
-This works, because when `:packadd` loaded the plugin it also added the
-package directory in 'runtimepath', so that the help file can be found.  The
-tags for vimball's help are already created.  If you need to generate the help
-tags for a package, see the `:helptags` command.
+This works,  because when `:packadd` loaded the plugin it also added the package directory in 'runtimepath',
+so that the help file can be found.
+ The tags for  vimball's help are already created.
+ If you need to generate the help tags for  a package,
+see the `:helptags` command.
 
-You can find packages on the Internet in various places.  It usually comes as
-an archive or as a repository.  For an archive you can follow these steps:
+ You can find packages on the Internet in various places.
+ It usually comes as an archive or
+as a repository.
+ For  an archive you can follow these steps:
+
 	1. create the package directory: >
 		mkdir -p ~/.local/share/nvim/site/pack/fancy
 <	   "fancy" can be any name of your liking.  Use one that describes the
 	   package.
-	2. unpack the archive in that directory.  This assumes the top
-	   directory in the archive is "start": >
+	2. 
+	   unpack the archive in that directory.  This assumes the top  directory in the archive is "start": >
 	   	cd ~/.local/share/nvim/site/pack/fancy
 		unzip /tmp/fancy.zip
-<	   If the archive layout is different make sure that you end up with a
-	   path like this:
+<
+	   If the archive layout is different make sure that you end up with a  path like this:
 		~/.local/share/nvim/site/pack/fancy/start/fancytext/plugin/fancy.vim ~
-	   Here "fancytext" is the name of the package, it can be anything
-	   else.
+	   Here "fancytext" is the name of the package, it can be anything  else.
+
 
 More information about packages can be found here: |packages|.
 

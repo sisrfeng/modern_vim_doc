@@ -308,21 +308,21 @@ with the ":map" command.
 notation	meaning		    equivalent	decimal value(s)	~
 -----------------------------------------------------------------------
 <Nul>		zero			CTRL-@	  0 (stored as 10) *<Nul>*
-<BS>		backspace		CTRL-H	  8	*backspace*
-<Tab>		tab			CTRL-I	  9	*tab* *Tab*
-							*linefeed*
+<BS>		backspace		CTRL-H	  8   		    *backspace*
+<Tab>		tab			CTRL-I	  9		    *tab* *Tab*
+								    *linefeed*
 <NL>		linefeed		CTRL-J	 10 (used for <Nul>)
-<CR>		carriage return		CTRL-M	 13	*carriage-return*
-<Return>	same as <CR>				*<Return>*
-<Enter>		same as <CR>				*<Enter>*
-<Esc>		escape			CTRL-[	 27	*escape* *<Esc>*
-<Space>		space				 32	*space*
-<lt>		less-than		<	 60	*<lt>*
-<Bslash>	backslash		\	 92	*backslash* *<Bslash>*
-<Bar>		vertical bar		|	124	*<Bar>*
+<CR>		carriage return		CTRL-M	 13      	    *carriage-return*
+<Return>	same as <CR>			       		   *<Return>*
+<Enter>		same as <CR>			       		   *<Enter>*
+<Esc>		escape			CTRL-[	 27    		   *escape* *<Esc>*
+<Space>		space				 32    		   *space*
+<lt>		less-than		<	 60    		   *<lt>*
+<Bslash>	backslash		\	 92    		   *backslash* *<Bslash>*
+<Bar>		vertical bar		|	124    		   *<Bar>*
 <Del>		delete				127
-<CSI>		command sequence intro  ALT-Esc 155	*<CSI>*
-<xCSI>		CSI when typed in the GUI		*<xCSI>*
+<CSI>		command sequence intro  ALT-Esc 155    		   *<CSI>*
+<xCSI>		CSI when typed in the GUI	       		   *<xCSI>*
 
 <EOL>		end-of-line (can be <CR>, <NL> or <CR><NL>,
 		depends on system and 'fileformat')	*<EOL>*

@@ -6,8 +6,10 @@
 
 Differences between Nvim and Vim			       *vim-differences*
 
-Nvim differs from Vim in many ways, although editor and Vimscript (not
-Vim9script) features are mostly identical.  This document is a complete and
+Nvim differs from Vim in many ways,
+although editor  and
+Vimscript (not Vim9script) features are mostly identical.
+ This document is a complete and
 centralized reference of the differences.
 
 				      Type |gO| to see the table of contents.

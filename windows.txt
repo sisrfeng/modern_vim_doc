@@ -6,12 +6,10 @@
 
 Editing with multiple windows and buffers.		*windows* *buffers*
 
-The commands which have been added to use multiple windows and buffers are
-explained here.  Additionally, there are explanations for commands that work
-differently when used in combination with more than one window.
-
-The basics are explained in chapter 7 and 8 of the user manual |usr_07.txt|
-|usr_08.txt|.
+The commands which have been added to use multiple windows and buffers are explained here.
+There are explanations for commands that work differently when used in combination with more than one window.
+The basics are explained in chapter 7 and
+8 of the user manual |usr_07.txt| |usr_08.txt|.
 
                                       Type |gO| to see the table of contents.
 
@@ -224,7 +222,7 @@ window will appear.
 
 						*:vert* *:vertical*
 :vert[ical] {cmd}
-		Execute {cmd}.  If it contains a command that splits a window,
+		Execute {cmd}.  If it contains a command that 💛splits💛 a window,
 		it will be split vertically.
 		Doesn't work for |:execute| and |:normal|.
 
@@ -434,14 +432,14 @@ position is set to keep the same Visual area selected.
 These commands can also be executed with ":wincmd":
 
 :[count]winc[md] {arg}
-		Like executing CTRL-W [count] {arg}.  Example: >
-			:wincmd j
-<		Moves to the window below the current one.
-		This command is useful when a Normal mode cannot be used (for
-		the |CursorHold| autocommand event).  Or when a Normal mode
-		command is inconvenient.
-		The count can also be a window number.  Example: >
-			:exe nr . "wincmd w"
+
+Like executing CTRL-W [count] {arg}.  Example: >
+	:wincmd j
+ Moves to the window below the current one.
+This command is useful when a Normal mode cannot be used (for  the |CursorHold| autocommand event).
+ Or when a Normal mode command  is inconvenient.
+The count can also be a window number.  Example: >
+	:exe nr . "wincmd w"
 <		This goes to window "nr".
 
 ==============================================================================
@@ -836,30 +834,30 @@ the keyword under the cursor.
 ==============================================================================
 10. The preview window				*preview-window*
 
-The preview window is a special window to show (preview) another file.  It is
-normally a small window used to show an include file or definition of a
+The preview window is a special window to show (preview) another file. 
+It is  normally a small window used to show an include file or definition of a
 function.
 
-There can be only one preview window (per tab page).  It is created with one
-of the commands below.  The 'previewheight' option can be set to specify the
-height of the preview window when it's opened.  The 'previewwindow' option is
-set in the preview window to be able to recognize it.  The 'winfixheight'
-option is set to have it keep the same height when opening/closing other
-windows.
+There can be only one preview window (per tab page).
+ It is created with one of the commands below.
+ The 'previewheight' option can be set to specify the height of the preview window when it's opened.
+ The 'previewwindow' option is set in the preview window to be able to recognize it.
+ The 'winfixheight' option is set to have it keep the same height when opening/closing other windows.
 
 						*:pta* *:ptag*
 :pta[g][!] [tagname]
-		Does ":tag[!] [tagname]" and shows the found tag in a
-		"Preview" window without changing the current buffer or cursor
-		position.  If a "Preview" window already exists, it is re-used
-		(like a help window is).  If a new one is opened,
-		'previewheight' is used for the height of the window.   See
-		also |:tag|.
-		See below for an example. |CursorHold-example|
-		Small difference from |:tag|: When [tagname] is equal to the
-		already displayed tag, the position in the matching tag list
-		is not reset.  This makes the CursorHold example work after a
-		|:ptnext|.
+
+ Does ":tag[!] [tagname]" and shows the found tag in a "Preview" window without changing the current buffer or
+cursor  position.
+ If a "Preview" window already exists,
+ it is re-used (like a help window is).
+ If a new one is opened,
+'previewheight' is used for the height of the window.
+  See also |:tag|.
+ See below for an example.  |CursorHold-example|
+ Small difference from |:tag|: When [tagname] is equal to the already displayed tag,
+the position in the matching tag list is not reset.
+ This makes the CursorHold example work after a |:ptnext|.
 
 CTRL-W z					*CTRL-W_z*
 CTRL-W CTRL-Z					*CTRL-W_CTRL-Z* *:pc* *:pclose*
@@ -886,27 +884,32 @@ CTRL-W g }						*CTRL-W_g}*
 
 							*:ped* *:pedit*
 :ped[it][!] [++opt] [+cmd] {file}
-		Edit {file} in the preview window.  The preview window is
-		opened like with |:ptag|.  The current window and cursor
-		position isn't changed.  Useful example: >
+
+ Edit {file} in the preview window.
+ The preview window is opened like with |:ptag|.
+ The current window and cursor position isn't changed.
+ Useful example: >
 			:pedit +/fputc /usr/include/stdio.h
 <
 							*:ps* *:psearch*
 :[range]ps[earch][!] [count] [/]pattern[/]
-		Works like |:ijump| but shows the found match in the preview
-		window.  The preview window is opened like with |:ptag|.  The
-		current window and cursor position isn't changed.  Useful
-		example: >
-			:psearch popen
-<		Like with the |:ptag| command, you can use this to
-		automatically show information about the word under the
-		cursor.  This is less clever than using |:ptag|, but you don't
-		need a tags file and it will also find matches in system
-		include files.  Example: >
+
+ Works like |:ijump| but shows the found match in the preview window.
+ The preview window is opened like with |:ptag|.
+ The current window and cursor position isn't changed.
+ Useful example: >
+ :psearch popen
+<  
+ike with the |:ptag| command,
+you can use this to automatically show information about the word under the cursor.
+This is less clever than using |:ptag|,
+but you don't need a tags file and it will also find matches in system include files.
+ Example: >
   :au! CursorHold *.[ch] ++nested exe "silent! psearch " . expand("<cword>")
 <		Warning: This can be slow.
 
-Example						*CursorHold-example*  >
+Example						
+*CursorHold-example*  >
 
   :au! CursorHold *.[ch] ++nested exe "silent! ptag " . expand("<cword>")
 

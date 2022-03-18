@@ -113,6 +113,7 @@ CTRL-T			Jump to [count] older entry in the tag stack
 						*:po* *:pop* *E555* *E556*
 :[count]po[p][!]	Jump to [count] older entry in tag stack (default 1).
 			See |tag-!| for [!].
+			类似list的pop?
 
 :[count]ta[g][!]	Jump to [count] newer entry in tag stack (default 1).
 			See |tag-!| for [!].
