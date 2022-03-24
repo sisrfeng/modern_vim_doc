@@ -441,10 +441,13 @@ example, to add up all the numbers in a list: >
 
 
 1.4 Dictionaries ~
+又称为map?
                  *Dict* *dict* *Dictionaries* *Dictionary*
-A Dictionary is an associative array: Each entry has a key and a value.  The
-entry can be located with the key.  The entries are stored without a specific
-ordering.
+
+    A Dictionary is an associative array:
+    Each entry has a key and a value.
+    The entry can be located with the key.
+    The entries are stored without a specific ordering.
 
 
 Dictionary creation ~
@@ -1093,7 +1096,7 @@ There are several name spaces for variables.  Which one is to be used is
 specified by what is prepended:
 
 In a function: 没刻意声明, 就local to a function;
-		otherwise: global
+                otherwise: global
 
 |buffer-variable|    b:   Local to the current buffer.
 |window-variable|    w:   Local to the current window.
@@ -9186,7 +9189,7 @@ When substitute() is used recursively only the submatches in the current (deepes
 Examples: >
             :s/\d\+/\=submatch(0) + 1/
 < 
-	This finds the first number in the line and adds one to it.
+        This finds the first number in the line and adds one to it.
 
             :echo substitute(text, '\d\+', '\=submatch(0) + 1', '')
         A line break is included as a newline character.
@@ -9217,7 +9220,7 @@ When {pat} does not match in {string},
 {string} is returned unmodified.
 
 Example: >
-		:let &path = substitute(&path, ",\\=[^,]*$", "", "")
+                :let &path = substitute(&path, ",\\=[^,]*$", "", "")
 <       This removes the last component of the 'path' option. >
             :echo substitute("testing", ".*", "\\U\\0", "")
 <       results in "TESTING".
@@ -11369,7 +11372,7 @@ It is allowed to have a "while" or "if" command completely in the executed strin
  But, you can use '|' followed by a  comment.
 
  Example: > 
-	 :echo "foo" | "this is a comment
+         :echo "foo" | "this is a comment
 
 ==============================================================================
 8. Exception handling                   *exception-handling*
@@ -12265,12 +12268,14 @@ The exception handling concept requires that the command sequence causing the
 exception is aborted immediately and control is transferred to finally clauses
 and/or a catch clause.
 
-In the Vim script language there are cases where scripts and functions
-continue after an error: in functions without the "abort" flag or in a command
-after ":silent!", control flow goes to the following line, and outside
-functions, control flow goes to the line following the outermost ":endwhile"
-or ":endif".  On the other hand, errors should be catchable as exceptions
-(thus, requiring the immediate abortion).
+        In the Vim script language there are cases where
+        scripts and
+        functions continue after an error: in functions without the "abort" flag or
+        in a command after ":silent!",
+        control flow goes to the following line, and
+        outside functions, control flow goes to the line following the outermost ":endwhile" or
+        ":endif".
+        On the other hand, errors should be catchable as exceptions (thus, requiring the immediate abortion).
 
 This problem has been solved by converting errors to exceptions and using
 immediate abortion (if not suppressed by ":silent!") only when a try

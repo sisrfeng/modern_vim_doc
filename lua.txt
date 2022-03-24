@@ -11,20 +11,25 @@ Lua engine                                              *lua* *Lua*
 ==============================================================================
 INTRODUCTION                                            *lua-intro*
 
-The Lua 5.1 language is builtin and always available.  Try this command to get
-an idea of what lurks beneath: >
+The Lua 5.1 language is builtin and
+always available.
+Try this command to get an idea of what lurks beneath:
+>
 
     :lua print(vim.inspect(package.loaded))
 
-Nvim includes a "standard library" |lua-stdlib| for Lua.  It complements the
-"editor stdlib" (|functions| and Ex commands) and the |API|, all of which can
-be used from Lua code. A good overview of using Lua in neovim is given by
+Nvim includes a "standard library" |lua-stdlib| for Lua.
+It complements the "editor stdlib" (|functions| and
+Ex commands) and  the |API|,
+all of which can be used from Lua code.
+A good overview of using Lua in neovim is given by
 https://github.com/nanotee/nvim-lua-guide.
 
 Module conflicts are resolved by "last wins".  For example if both of these
 are on 'runtimepath':
     runtime/lua/foo.lua
     ~/.config/nvim/lua/foo.lua
+
 then `require('foo')` loads "~/.config/nvim/lua/foo.lua", and
 "runtime/lua/foo.lua" is not used.  See |lua-require| to understand how Nvim
 finds and loads Lua modules.  The conventions are similar to those of
@@ -100,7 +105,8 @@ Note:
 ==============================================================================
 Lua Syntax Information                                         *lua-syntax-help*
 
-While Lua has a simple syntax, there are a few things to understand,
+While Lua has a simple syntax,
+there are a few things to understand,
 particularly when looking at the documentation above.
 
                                                       *lua-syntax-call-function*
@@ -160,12 +166,13 @@ function without any parentheses. This is most often used to approximate
 ------------------------------------------------------------------------------
 LUA PLUGIN EXAMPLE                                      *lua-require-example*
 
-The following example plugin adds a command `:MakeCharBlob` which transforms 
-current buffer into a long `unsigned char` array.  Lua contains transformation 
-function in a module `lua/charblob.lua` which is imported in 
-`autoload/charblob.vim` (`require("charblob")`).  Example plugin is supposed 
-to be put into any directory from 'runtimepath', e.g. `~/.config/nvim` (in 
-this case `lua/charblob.lua` means `~/.config/nvim/lua/charblob.lua`).
+The following example plugin adds a command `:MakeCharBlob` which
+transforms current buffer into a long `unsigned char` array.
+Lua contains transformation function in a module `lua/charblob.lua` which
+is imported in `autoload/charblob.vim` (`require("charblob")`).
+Example plugin is supposed to be put into any directory from 'runtimepath',
+e.g.
+`~/.config/nvim` (in this case `lua/charblob.lua` means `~/.config/nvim/lua/charblob.lua`).
 
 autoload/charblob.vim: >
 
@@ -773,7 +780,7 @@ vim.str_utfindex({str}[, {index}])                      *vim.str_utfindex()*
         point each. An {index} in the middle of a UTF-8 sequence is rounded
         upwards to the end of that sequence.
 
-vim.str_byteindex({str}, {index}[, {use_utf16}])	*vim.str_byteindex()*
+vim.str_byteindex({str}, {index}[, {use_utf16}])        *vim.str_byteindex()*
         Convert UTF-32 or UTF-16 {index} to byte index. If {use_utf16} is not
         supplied, it defaults to false (use UTF-32). Returns the byte index.
 
@@ -781,7 +788,7 @@ vim.str_byteindex({str}, {index}[, {use_utf16}])	*vim.str_byteindex()*
         in the middle of a UTF-16 sequence is rounded upwards to the end of that
         sequence.
 
-vim.schedule({callback})				*vim.schedule()*
+vim.schedule({callback})                                *vim.schedule()*
         Schedules {callback} to be invoked soon by the main event-loop. Useful
         to avoid |textlock| or other temporary restrictions.
 
@@ -902,7 +909,7 @@ Nvim Lua provides an interface to Vimscript variables and functions, and
 editor commands and options.
 See also https://github.com/nanotee/nvim-lua-guide.
 
-vim.call({func}, {...})					*vim.call()*
+vim.call({func}, {...})                                 *vim.call()*
         Invokes |vim-function| or |user-function| {func} with arguments {...}.
         See also |vim.fn|.
         Equivalent to: >
@@ -922,15 +929,22 @@ vim.cmd({cmd})                                          *vim.cmd()*
               augroup END
             ]])
 
-vim.fn.{func}({...})					*vim.fn*
-        Invokes |vim-function| or |user-function| {func} with arguments {...}.
-        To call autoload functions, use the syntax: >
-            vim.fn['some#function']({...})
-<
-        Unlike vim.api.|nvim_call_function()| this converts directly between Vim
-        objects and Lua objects. If the Vim function returns a float, it will
-        be represented directly as a Lua number. Empty lists and dictionaries
-        both are represented by an empty table.
+vim.fn.{func}({...})                                    *vim.fn*
+
+        Invokes |vim-function| or
+        |user-function| {func} with arguments {...}.
+        To call autoload functions,
+        use the syntax:
+
+             vim.fn['some#function']({...}) 
+        
+        Unlike vim.api.|nvim_call_function()| this converts directly between Vim objects and
+        Lua objects.
+        If the Vim function returns a float,
+        it will be represented directly as a Lua number.
+        Empty lists and
+        dictionaries both are represented by
+        an empty table.
 
         Note: |v:null| values as part of the return value is represented as
         |vim.NIL| special value

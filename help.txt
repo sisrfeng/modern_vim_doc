@@ -1,55 +1,55 @@
-*help.txt*	Nvim
+*help.txt*      Nvim
 
-			VIM - main help file
-									 k
-      Move around:  Use the cursor keys, or "h" to go left,	       h   l
-		    "j" to go down, "k" to go up, "l" to go right.	 j
+                        VIM - main help file
+                                                                         k
+      Move around:  Use the cursor keys, or "h" to go left,            h   l
+                    "j" to go down, "k" to go up, "l" to go right.       j
 Close this window:  Use ":q<Enter>".
    Get out of Vim:  Use ":qa!<Enter>" (careful, all changes are lost!).
 
 Jump to a subject:  Position the cursor on a tag (e.g. |bars|) and hit CTRL-].
    With the mouse:  Double-click the left mouse button on a tag, e.g. |bars|.
-	Jump back:  Type CTRL-O.  Repeat to go further back.
+        Jump back:  Type CTRL-O.  Repeat to go further back.
 
 Get specific help:  It is possible to go directly to whatever you want help
-		    on, by giving an argument to the |:help| command.
-		    Prepend something to specify the context:  *help-context*
+                    on, by giving an argument to the |:help| command.
+                    Prepend something to specify the context:  *help-context*
 
-			  WHAT			PREPEND    EXAMPLE	~
-		      Normal mode command		   :help x
-		      Visual mode command	  v_	   :help v_u
-		      Insert mode command	  i_	   :help i_<Esc>
-		      Command-line command	  :	   :help :quit
-		      Command-line editing	  c_	   :help c_<Del>
-		      Vim command argument	  -	   :help -r
-		      Option			  '	   :help 'textwidth'
-		      Regular expression	  /	   :help /[
-		    See |help-summary| for more contexts and an explanation.
+                          WHAT                  PREPEND    EXAMPLE      ~
+                      Normal mode command                  :help x
+                      Visual mode command         v_       :help v_u
+                      Insert mode command         i_       :help i_<Esc>
+                      Command-line command        :        :help :quit
+                      Command-line editing        c_       :help c_<Del>
+                      Vim command argument        -        :help -r
+                      Option                      '        :help 'textwidth'
+                      Regular expression          /        :help /[
+                    See |help-summary| for more contexts and an explanation.
 
   Search for help:  Type ":help word", then hit CTRL-D to see matching
-		    help entries for "word".
-		    Or use ":helpgrep word". |:helpgrep|
+                    help entries for "word".
+                    Or use ":helpgrep word". |:helpgrep|
 
   Getting started:  Do the Vim tutor, a 30-minute interactive course for the
-		    basic commands, see |vimtutor|.
-		    Read the user manual from start to end: |usr_01.txt|
+                    basic commands, see |vimtutor|.
+                    Read the user manual from start to end: |usr_01.txt|
 
 Vim stands for Vi IMproved.  Most of Vim was made by Bram Moolenaar, but only
 through the help of many others.  See |credits|.
 ------------------------------------------------------------------------------
-						*doc-file-list* *Q_ct*
+                                                *doc-file-list* *Q_ct*
 BASIC:
-|quickref|	Overview of the most common commands you will use
-|tutor|		30-minute interactive course for beginners
-|copying|	About copyrights
-|iccf|		Helping poor children in Uganda
-|sponsor|	Sponsor Vim development, become a registered Vim user
-|www|		Vim on the World Wide Web
-|bugs|		Where to send bug reports
+|quickref|      Overview of the most common commands you will use
+|tutor|         30-minute interactive course for beginners
+|copying|       About copyrights
+|iccf|          Helping poor children in Uganda
+|sponsor|       Sponsor Vim development, become a registered Vim user
+|www|           Vim on the World Wide Web
+|bugs|          Where to send bug reports
 
 USER MANUAL: These files explain how to accomplish an editing task.
 
-|usr_toc.txt|	Table Of Contents
+|usr_toc.txt|   Table Of Contents
 
 Getting Started ~
 |usr_01.txt|  About the manuals
@@ -89,53 +89,53 @@ Tuning Vim ~
 |usr_45.txt|  Select your language
 
 
-REFERENCE MANUAL: These files explain every detail of Vim.	*reference_toc*
+REFERENCE MANUAL: These files explain every detail of Vim.      *reference_toc*
 
 General subjects ~
-|intro.txt|	general introduction to Vim; notation used in help files
-|nvim.txt|	Transitioning from Vim
-|help.txt|	overview and quick reference (this file)
-|helphelp.txt|	about using the help files
-|index.txt|	alphabetical index of all commands
-|help-tags|	all the tags you can jump to (index of tags)
-|tips.txt|	various tips on using Vim
-|message.txt|	(error) messages and explanations
-|develop.txt|	development of Nvim
-|debug.txt|	debugging Vim itself
-|uganda.txt|	Vim distribution conditions and what to do with your money
+|intro.txt|     general introduction to Vim; notation used in help files
+|nvim.txt|      Transitioning from Vim
+|help.txt|      overview and quick reference (this file)
+|helphelp.txt|  about using the help files
+|index.txt|     alphabetical index of all commands
+|help-tags|     all the tags you can jump to (index of tags)
+|tips.txt|      various tips on using Vim
+|message.txt|   (error) messages and explanations
+|develop.txt|   development of Nvim
+|debug.txt|     debugging Vim itself
+|uganda.txt|    Vim distribution conditions and what to do with your money
 
 Basic editing ~
-|starting.txt|	starting Vim, Vim command arguments, initialisation
-|editing.txt|	editing and writing files
-|motion.txt|	commands for moving around
-|scroll.txt|	scrolling the text in the window
-|insert.txt|	Insert and Replace mode
-|change.txt|	deleting and replacing text
-|undo.txt|	Undo and Redo
-|repeat.txt|	repeating commands, Vim scripts and debugging
-|visual.txt|	using the Visual mode (selecting a text area)
-|various.txt|	various remaining commands
-|recover.txt|	recovering from a crash
+|starting.txt|  starting Vim, Vim command arguments, initialisation
+|editing.txt|   editing and writing files
+|motion.txt|    commands for moving around
+|scroll.txt|    scrolling the text in the window
+|insert.txt|    Insert and Replace mode
+|change.txt|    deleting and replacing text
+|undo.txt|      Undo and Redo
+|repeat.txt|    repeating commands, Vim scripts and debugging
+|visual.txt|    using the Visual mode (selecting a text area)
+|various.txt|   various remaining commands
+|recover.txt|   recovering from a crash
 
 Advanced editing ~
-|cmdline.txt|	Command-line editing
-|options.txt|	description of all options
-|pattern.txt|	regexp patterns and search commands
-|map.txt|	key mapping and abbreviations
-|tagsrch.txt|	tags and special searches
-|windows.txt|	commands for using multiple windows and buffers
-|tabpage.txt|	commands for using multiple tab pages
-|spell.txt|	spell checking
-|diff.txt|	working with two to eight versions of the same file
-|autocmd.txt|	automatically executing commands on an event
-|eval.txt|	expression evaluation, conditional commands
-|fold.txt|	hide (fold) ranges of lines
-|lua.txt|	Lua API
-|api.txt|	Nvim API via RPC, Lua and VimL
+|cmdline.txt|   Command-line editing
+|options.txt|   description of all options
+|pattern.txt|   regexp patterns and search commands
+|map.txt|       key mapping and abbreviations
+|tagsrch.txt|   tags and special searches
+|windows.txt|   commands for using multiple windows and buffers
+|tabpage.txt|   commands for using multiple tab pages
+|spell.txt|     spell checking
+|diff.txt|      working with two to eight versions of the same file
+|autocmd.txt|   automatically executing commands on an event
+|eval.txt|      expression evaluation, conditional commands
+|fold.txt|      hide (fold) ranges of lines
+|lua.txt|       Lua API
+|api.txt|       Nvim API via RPC, Lua and VimL
 
 Special issues ~
-|testing.txt|	    testing Vim and Vim scripts
-|print.txt|	    printing
+|testing.txt|       testing Vim and Vim scripts
+|print.txt|         printing
 |remote_plugin.txt|   Nvim support for remote plugins
 
 Programming language support ~
@@ -154,38 +154,38 @@ Programming language support ~
 |ft_sql.txt|       about the SQL filetype plugin
 
 Language support ~
-|digraph.txt|	list of available digraphs
-|mbyte.txt|	multibyte text support
-|mlang.txt|	non-English language support
-|rileft.txt|	right-to-left editing mode
-|arabic.txt|	Arabic language support and editing
-|hebrew.txt|	Hebrew language support and editing
-|russian.txt|	Russian language support and editing
+|digraph.txt|   list of available digraphs
+|mbyte.txt|     multibyte text support
+|mlang.txt|     non-English language support
+|rileft.txt|    right-to-left editing mode
+|arabic.txt|    Arabic language support and editing
+|hebrew.txt|    Hebrew language support and editing
+|russian.txt|   Russian language support and editing
 
 GUI ~
-|gui.txt|	Graphical User Interface (GUI)
+|gui.txt|       Graphical User Interface (GUI)
 
 Interfaces ~
-|if_cscop.txt|	using Cscope with Vim
-|if_perl.txt|	Perl interface
-|if_pyth.txt|	Python interface
-|if_ruby.txt|	Ruby interface
-|sign.txt|	debugging signs
+|if_cscop.txt|  using Cscope with Vim
+|if_perl.txt|   Perl interface
+|if_pyth.txt|   Python interface
+|if_ruby.txt|   Ruby interface
+|sign.txt|      debugging signs
 
 Versions ~
-|vim_diff.txt|	Main differences between Nvim and Vim
-|vi_diff.txt|	Main differences between Vim and Vi
+|vim_diff.txt|  Main differences between Nvim and Vim
+|vi_diff.txt|   Main differences between Vim and Vi
 |deprecated.txt|  Deprecated items that have been or will be removed
 
 Other ~
-|terminal_emulator.txt|	Terminal buffers
-|term.txt|		Terminal UI
-|ui.txt|		Nvim UI protocol
-|channel.txt|		Nvim asynchronous IO
-|dev_style.txt|		Nvim style guide
-|job_control.txt|	Spawn and control multiple processes
+|terminal_emulator.txt| Terminal buffers
+|term.txt|              Terminal UI
+|ui.txt|                Nvim UI protocol
+|channel.txt|           Nvim asynchronous IO
+|dev_style.txt|         Nvim style guide
+|job_control.txt|       Spawn and control multiple processes
 
-						*standard-plugin-list*
+                                                *standard-plugin-list*
 Standard plugins ~
 |matchit.txt|      Extended |%| matching
 |pi_gzip.txt|      Reading and writing compressed files
@@ -197,10 +197,36 @@ Standard plugins ~
 |pi_tar.txt|       Tar file explorer
 |pi_zip.txt|       Zip archive explorer
 
-LOCAL ADDITIONS:				*local-additions*
+LOCAL ADDITIONS:                                *local-additions*
+|trans.txt|   Translate text using translate-shell in vim.
+|matchup.txt|    modern matching words
+|easy-align.txt|	easy-align	Last change: December 14 2014
+|vim-markdown|  Vim Markdown
+|NERDTree.txt|   A tree explorer plugin to rule the Vim world. Bwahahaha!!
+|fugitive.txt|  A Git wrapper so awesome, it should be illegal
+|coc-nvim.txt|					NodeJS client for Vim & Neovim.
+|anzu.txt|	A plug-in that displays the position information of search.
+|easymotion.txt|        Version 3.0
+|easymotion.txt|        Version 3.0
+|pairs.txt| For Vim version 7                          Last change: 16 August 2013
+|AutoPairs.txt|  Insert or delete brackets, parens, quotes in pair
+|operator-sandwich.txt|	The operator plugin to edit sandwiched textobjects.
+|sandwich.txt|				Last change:06-Feb-2022.
+|textobj-sandwich.txt|	The textobject plugin to select sandwiched texts.
+|nerdcommenter.txt|         Plugin for commenting code
+|leaderf.txt|   Quickly locate files, buffers, mrus, tags, ... in large project.
+|toggle-bool.txt| A short multi line description of your plugin
+|undotree.txt|  The undo history visualizer for VIM
+|far.vim|   Find And Replace
+|linediff.txt|	Diff two blocks of text
+|diffchar.txt|  Highlight the exact differences, based on characters and words
+|scriptease.txt|  Write Vim scripts with ease
+|devicons|
+|denite.txt|	Dark powered asynchronous unite all interfaces for NeoVim/Vim.
+|vimscript_lasterror.txt|  jump to the Vim script's last error.
 
 ------------------------------------------------------------------------------
-*bars*		Bars example
+*bars*          Bars example
 
 Now that you've jumped here with CTRL-] or a double mouse click, you can use
 CTRL-T, CTRL-O, g<RightMouse>, or <C-RightMouse> to go back to where you were.

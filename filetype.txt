@@ -566,21 +566,23 @@ Variables:
 *b:man_default_sects*       Comma-separated, ordered list of preferred sections.
                           For example in C one usually wants section 3 or 2: >
                                :let b:man_default_sections = '3,2'
-*g:man_hardwrap*            Hard-wrap to $MANWIDTH or window width if $MANWIDTH is
+*g:man_hardwrap*          Hard-wrap to $MANWIDTH or window width if $MANWIDTH is
                           empty. Enabled by default. Set |FALSE| to enable soft
                           wrapping.
 
 To use Nvim as a manpager: >
      export MANPAGER='nvim +Man!'
 
-Note that when running `man` from the shell and with that `MANPAGER` in your
-environment, `man` will pre-format the manpage using `groff`. Thus, Neovim
-will inevitably display the manual page 💚as it was passed to it from stdin💚. One
-of the caveats of this is that the width will _always_ be hard-wrapped and not
-soft wrapped 哪怕开了 `g:man_hardwrap=0`. You can set in your environment: >
-     export MANWIDTH=999
+Note that when running `man` from the shell and
+with that `MANPAGER` in your environment,
+`man` will pre-format the manpage using `groff`.
+Thus,  Neovim will inevitably display the manual page 💚as it was passed to it from stdin💚.
+The width will _always_ be hard-wrapped  (not soft wrapped) 哪怕开了 `g:man_hardwrap=0`.
+You can set in your environment:
 
-💚 So `groff`'s pre-formatting output will be the same as with `g:man_hardwrap=0` i.e soft-wrapped.💚
+	 export MANWIDTH=999
+
+💚 So `groff`'s pre-formatting output will be the same as with `g:man_hardwrap=0` 💚
 
 To disable bold highlighting: >
      :highlight link manBold Normal

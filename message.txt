@@ -663,7 +663,7 @@ text may be lost without recovery being possible.  Vim might run out of memory
 when this problem persists.
 
 							*E10*  >
-  \\ should be followed by /, ? or &
+  \ should be followed by /, ? or &
 
 A command line started with a backslash or the range of a command contained a
 backslash in a wrong place.  This is often caused by command-line continuation

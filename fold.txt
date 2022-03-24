@@ -1,10 +1,10 @@
 *fold.txt*      Nvim
 
 
-		  VIM REFERENCE MANUAL    by Bram Moolenaar
+                  VIM REFERENCE MANUAL    by Bram Moolenaar
 
 
-Folding						*Folding* *folding* *folds*
+Folding                                         *Folding* *folding* *folds*
 
 You can find an introduction on folding in chapter 28 of the user manual.
 |usr_28.txt|
@@ -12,7 +12,7 @@ You can find an introduction on folding in chapter 28 of the user manual.
                                       Type |gO| to see the table of contents.
 
 ==============================================================================
-1. Fold methods					*fold-methods*
+1. Fold methods                                 *fold-methods*
 
 The folding method can be set with the 'foldmethod' option.
 
@@ -22,15 +22,15 @@ the existing folds.  This can be used to first define the folds automatically
 and then change them manually.
 
 There are six methods to select folds:
-	manual		manually define folds
-	indent		more indent means a higher fold level
-	expr		specify an expression to define folds
-	syntax		folds defined by syntax highlighting
-	diff		folds for unchanged text
-	marker		folds defined by markers in the text
+        manual          manually define folds
+        indent          more indent means a higher fold level
+        expr            specify an expression to define folds
+        syntax          folds defined by syntax highlighting
+        diff            folds for unchanged text
+        marker          folds defined by markers in the text
 
 
-MANUAL						*fold-manual*
+MANUAL                                          *fold-manual*
 
 Use commands to manually define the fold regions.  This can also be used by a
 script that parses text to find folds.
@@ -43,7 +43,7 @@ The manual folds are lost when you abandon the file.  To save the folds use
 the |:mkview| command.  The view can be restored later with |:loadview|.
 
 
-INDENT						*fold-indent*
+INDENT                                          *fold-indent*
 
 The folds are automatically defined by the indent of the lines.
 
@@ -62,19 +62,19 @@ When you want to ignore lines in another way, use the "expr" method.  The
 |indent()| function can be used in 'foldexpr' to get the indent of a line.
 
 
-EXPR						*fold-expr*
+EXPR                                            *fold-expr*
 
 The folds are automatically defined by their foldlevel, like with the "indent"
 method.  The value of the 'foldexpr' option is evaluated to get the foldlevel
 of a line.  Examples:
 This will create a fold for all consecutive lines that start with a tab: >
-	:set foldexpr=getline(v:lnum)[0]==\"\\t\"
+        :set foldexpr=getline(v:lnum)[0]==\"\\t\"
 This will call a function to compute the fold level: >
-	:set foldexpr=MyFoldLevel(v:lnum)
+        :set foldexpr=MyFoldLevel(v:lnum)
 This will make a fold out of paragraphs separated by blank lines: >
-	:set foldexpr=getline(v:lnum)=~'^\\s*$'&&getline(v:lnum+1)=~'\\S'?'<1':1
+        :set foldexpr=getline(v:lnum)=~'^\\s*$'&&getline(v:lnum+1)=~'\\S'?'<1':1
 This does the same: >
-	:set foldexpr=getline(v:lnum-1)=~'^\\s*$'&&getline(v:lnum)=~'\\S'?'>1':1
+        :set foldexpr=getline(v:lnum-1)=~'^\\s*$'&&getline(v:lnum)=~'\\S'?'>1':1
 
 Note that backslashes must be used to escape characters that ":set" handles
 differently (space, backslash, double quote, etc., see |option-backslash|).
@@ -83,19 +83,19 @@ These are the conditions with which the expression is evaluated:
 - The current buffer and window are set for the line.
 - The variable "v:lnum" is set to the line number.
 - The result is used for the fold level in this way:
-  value			meaning ~
-  0			the line is not in a fold
-  1, 2, ..		the line is in a fold with this level
-  -1			the fold level is undefined, use the fold level of a
-			line before or after this line, whichever is the
-			lowest.
-  "="			use fold level from the previous line
-  "a1", "a2", ..	add one, two, .. to the fold level of the previous
-			line, use the result for the current line
-  "s1", "s2", ..	subtract one, two, .. from the fold level of the
-			previous line, use the result for the next line
-  "<1", "<2", ..	a fold with this level ends at this line
-  ">1", ">2", ..	a fold with this level starts at this line
+  value                 meaning ~
+  0                     the line is not in a fold
+  1, 2, ..              the line is in a fold with this level
+  -1                    the fold level is undefined, use the fold level of a
+                        line before or after this line, whichever is the
+                        lowest.
+  "="                   use fold level from the previous line
+  "a1", "a2", ..        add one, two, .. to the fold level of the previous
+                        line, use the result for the current line
+  "s1", "s2", ..        subtract one, two, .. from the fold level of the
+                        previous line, use the result for the next line
+  "<1", "<2", ..        a fold with this level ends at this line
+  ">1", ">2", ..        a fold with this level starts at this line
 
 It is not required to mark the start (end) of a fold with ">1" ("<1"), a fold
 will also start (end) when the fold level is higher (lower) than the fold
@@ -137,7 +137,7 @@ It may happen that folds are not updated properly.  You can use |zx| or |zX|
 to force updating folds.
 
 
-SYNTAX						*fold-syntax*
+SYNTAX                                          *fold-syntax*
 
 A fold is defined by syntax items that have the "fold" argument. |:syn-fold|
 
@@ -148,10 +148,10 @@ Be careful to specify proper syntax syncing.  If this is not done right, folds
 may differ from the displayed highlighting.  This is especially relevant when
 using patterns that match more than one line.  In case of doubt, try using
 brute-force syncing: >
-	:syn sync fromstart
+        :syn sync fromstart
 
 
-DIFF						*fold-diff*
+DIFF                                            *fold-diff*
 
 The folds are automatically defined for text that is not part of a change or
 close to a change.
@@ -163,14 +163,14 @@ one big fold.
 The 'diffopt' option can be used to specify the context.  That is, the number
 of lines between the fold and a change that are not included in the fold.  For
 example, to use a context of 8 lines: >
-	:set diffopt=filler,context:8
+        :set diffopt=filler,context:8
 The default context is six lines.
 
 When 'scrollbind' is also set, Vim will attempt to keep the same folds open in
 other diff windows, so that the same text is visible.
 
 
-MARKER						*fold-marker*
+MARKER                                          *fold-marker*
 
 Markers in the text tell where folds start and end.  This allows you to
 precisely specify the folds.  This will allow deleting and putting a fold,
@@ -181,15 +181,15 @@ This makes it possible to give a name to the fold.
 Markers can have a level included, or can use matching pairs.  Including a
 level is easier, you don't have to add end markers and avoid problems with
 non-matching marker pairs.  Example: >
-	/* global variables {{{1 */
-	int varA, varB;
+        /* global variables {{{1 */
+        int varA, varB;
 
-	/* functions {{{1 */
-	/* funcA() {{{2 */
-	void funcA() {}
+        /* functions {{{1 */
+        /* funcA() {{{2 */
+        void funcA() {}
 
-	/* funcB() {{{2 */
-	void funcB() {}
+        /* funcB() {{{2 */
+        void funcB() {}
 
 A fold starts at a "{{{" marker.  The following number specifies the fold
 level.  What happens depends on the difference between the current fold level
@@ -206,23 +206,23 @@ of the fold that ends.  The fold level of the following line will be one less
 than the indicated level.  Note that Vim doesn't look back to the level of the
 matching marker (that would take too much time).  Example: >
 
-	{{{1
-	fold level here is 1
-	{{{3
-	fold level here is 3
-	}}}3
-	fold level here is 2
+        {{{1
+        fold level here is 1
+        {{{3
+        fold level here is 3
+        }}}3
+        fold level here is 2
 
 You can also use matching pairs of "{{{" and "}}}" markers to define folds.
 Each "{{{" increases the fold level by one, each "}}}" decreases the fold
 level by one.  Be careful to keep the markers matching!  Example: >
 
-	{{{
-	fold level here is 1
-	{{{
-	fold level here is 2
-	}}}
-	fold level here is 1
+        {{{
+        fold level here is 1
+        {{{
+        fold level here is 2
+        }}}
+        fold level here is 1
 
 You can mix using markers with a number and without a number.  A useful way of
 doing this is to use numbered markers for large folds, and unnumbered markers
@@ -238,7 +238,7 @@ between Vim users.  Only change it when it is required for the file (e.g., it
 contains markers from another folding editor, or the default markers cause
 trouble for the language of the file).
 
-							*fold-create-marker*
+                                                        *fold-create-marker*
 "zf" can be used to create a fold defined by markers.  Vim will insert the
 markers for you.  Vim will append the start and end marker, as specified with
 'foldmarker'.  The markers are appended to the end of the line.
@@ -254,7 +254,7 @@ This does not work properly when:
 Generally it's not a good idea to let Vim create markers when you already have
 markers with a level number.
 
-							*fold-delete-marker*
+                                                        *fold-delete-marker*
 "zd" can be used to delete a fold defined by markers.  Vim will delete the
 markers for you.  Vim will search for the start and end markers, as specified
 with 'foldmarker', at the start and end of the fold.  When the text around the
@@ -267,48 +267,48 @@ This does not work properly when:
   at the same time.
 
 ==============================================================================
-2. Fold commands				*fold-commands* *E490*
+2. Fold commands                                *fold-commands* *E490*
 
 All folding commands start with "z".  Hint: the "z" looks like a folded piece
 of paper, if you look at it from the side.
 
 
 CREATING AND DELETING FOLDS ~
-							*zf* *E350*
+                                                        *zf* *E350*
 zf{motion}  or
-{Visual}zf	Operator to create a fold.
-		This only works when 'foldmethod' is "manual" or "marker".
-		The new fold will be closed for the "manual" method.
-		'foldenable' will be set.
-		Also see |fold-create-marker|.
+{Visual}zf      Operator to create a fold.
+                This only works when 'foldmethod' is "manual" or "marker".
+                The new fold will be closed for the "manual" method.
+                'foldenable' will be set.
+                Also see |fold-create-marker|.
 
-							*zF*
-zF		Create a fold for [count] lines.  Works like "zf".
+                                                        *zF*
+zF              Create a fold for [count] lines.  Works like "zf".
 
-:{range}fo[ld]						*:fold* *:fo*
-		Create a fold for the lines in {range}.  Works like "zf".
+:{range}fo[ld]                                          *:fold* *:fo*
+                Create a fold for the lines in {range}.  Works like "zf".
 
-							*zd* *E351*
-zd		Delete one fold at the cursor.  When the cursor is on a folded
-		line, that fold is deleted.  Nested folds are moved one level
-		up.  In Visual mode one level of all folds (partially) in the
-		selected area are deleted.
-		Careful: This easily deletes more folds than you expect and
-		there is no undo for manual folding.
-		This only works when 'foldmethod' is "manual" or "marker".
-		Also see |fold-delete-marker|.
+                                                        *zd* *E351*
+zd              Delete one fold at the cursor.  When the cursor is on a folded
+                line, that fold is deleted.  Nested folds are moved one level
+                up.  In Visual mode one level of all folds (partially) in the
+                selected area are deleted.
+                Careful: This easily deletes more folds than you expect and
+                there is no undo for manual folding.
+                This only works when 'foldmethod' is "manual" or "marker".
+                Also see |fold-delete-marker|.
 
-							*zD*
-zD		Delete folds recursively at the cursor.  In Visual mode all
-		folds (partially) in the selected area and all nested folds in
-		them are deleted.
-		This only works when 'foldmethod' is "manual" or "marker".
-		Also see |fold-delete-marker|.
+                                                        *zD*
+zD              Delete folds recursively at the cursor.  In Visual mode all
+                folds (partially) in the selected area and all nested folds in
+                them are deleted.
+                This only works when 'foldmethod' is "manual" or "marker".
+                Also see |fold-delete-marker|.
 
-							*zE* *E352*
-zE		Eliminate all folds in the window.
-		This only works when 'foldmethod' is "manual" or "marker".
-		Also see |fold-delete-marker|.
+                                                        *zE* *E352*
+zE              Eliminate all folds in the window.
+                This only works when 'foldmethod' is "manual" or "marker".
+                Also see |fold-delete-marker|.
 
 
 OPENING AND CLOSING FOLDS ~
@@ -316,159 +316,167 @@ OPENING AND CLOSING FOLDS ~
 A fold smaller than 'foldminlines' will always be displayed like it was open.
 Therefore the commands below may work differently on small folds.
 
-							*zo*
-zo		Open one fold under the cursor.  When a count is given, that
-		many folds deep will be opened.  In Visual mode one level of
-		folds is opened for all lines in the selected area.
+                                                        *zo*
+zo              Open one fold under the cursor.  When a count is given, that
+                many folds deep will be opened.  In Visual mode one level of
+                folds is opened for all lines in the selected area.
 
-							*zO*
-zO		Open all folds under the cursor recursively.  Folds that don't
-		contain the cursor line are unchanged.
-		In Visual mode it opens all folds that are in the selected
-		area, also those that are only partly selected.
+                                                        *zO*
+zO              Open all folds under the cursor recursively.  Folds that don't
+                contain the cursor line are unchanged.
+                In Visual mode it opens all folds that are in the selected
+                area, also those that are only partly selected.
 
-							*zc*
-zc		Close one fold under the cursor.  When a count is given, that
-		many folds deep are closed.  In Visual mode one level of folds
-		is closed for all lines in the selected area.
-		'foldenable' will be set.
+                                                        *zc*
+zc              Close one fold under the cursor.  When a count is given, that
+                many folds deep are closed.  In Visual mode one level of folds
+                is closed for all lines in the selected area.
+                'foldenable' will be set.
 
-							*zC*
-zC		Close all folds under the cursor recursively.  Folds that
-		don't contain the cursor line are unchanged.
-		In Visual mode it closes all folds that are in the selected
-		area, also those that are only partly selected.
-		'foldenable' will be set.
+                                                        *zC*
+zC              Close all folds under the cursor recursively.  Folds that
+                don't contain the cursor line are unchanged.
+                In Visual mode it closes all folds that are in the selected
+                area, also those that are only partly selected.
+                'foldenable' will be set.
 
-							*za*
-za		When on a closed fold: open it.  When folds are nested, you
-		may have to use "za" several times.  When a count is given,
-		that many closed folds are opened.
-		When on an open fold: close it and set 'foldenable'.  This
-		will only close one level, since using "za" again will open
-		the fold.  When a count is given that many folds will be
-		closed (that's not the same as repeating "za" that many
-		times).
+                                                        *za*
+za           
 
-							*zA*
-zA		When on a closed fold: open it recursively.
-		When on an open fold: close it recursively and set
-		'foldenable'.
+    When on a closed fold:
+                open it.
+                When folds are nested,
+                you may have to use "za" several times.
 
-							*zv*
-zv		View cursor line: Open just enough folds to make the line in
-		which the cursor is located not folded.
+                 When a count is given,
+                that many closed folds are opened.
 
-							*zx*
-zx		Update folds: Undo manually opened and closed folds: re-apply
-		'foldlevel', then do "zv": View cursor line.
-		Also forces recomputing folds.  This is useful when using
-		'foldexpr' and the buffer is changed in a way that results in
-		folds not to be updated properly.
+    When on an open fold:
+                close it and
+                set 'foldenable'.
 
-							*zX*
-zX		Undo manually opened and closed folds: re-apply 'foldlevel'.
-		Also forces recomputing folds, like |zx|.
+                 This will only close one level,  since using "za" again will open the fold.
+                 When a count is given that many folds will be closed (that's not the same as repeating "za" that many times).
 
-							*zm*
-zm		Fold more: Subtract |v:count1| from 'foldlevel'.  If 'foldlevel' was
-		already zero nothing happens.
-		'foldenable' will be set.
+                                                        *zA*
+zA              When on a closed fold: open it recursively.
+                When on an open fold: close it recursively and set
+                'foldenable'.
 
-							*zM*
-zM		Close all folds: set 'foldlevel' to 0.
-		'foldenable' will be set.
+                                                        *zv*
+zv              View cursor line: Open just enough folds to make the line in
+                which the cursor is located not folded.
 
-							*zr*
-zr		Reduce folding: Add |v:count1| to 'foldlevel'.
+                                                        *zx*
+zx              Update folds: Undo manually opened and closed folds: re-apply
+                'foldlevel', then do "zv": View cursor line.
+                Also forces recomputing folds.  This is useful when using
+                'foldexpr' and the buffer is changed in a way that results in
+                folds not to be updated properly.
 
-							*zR*
-zR		Open all folds.  This sets 'foldlevel' to highest fold level.
+                                                        *zX*
+zX              Undo manually opened and closed folds: re-apply 'foldlevel'.
+                Also forces recomputing folds, like |zx|.
 
-							*:foldo* *:foldopen*
+                                                        *zm*
+zm              Fold more: Subtract |v:count1| from 'foldlevel'.  If 'foldlevel' was
+                already zero nothing happens.
+                'foldenable' will be set.
+
+                                                        *zM*
+zM              Close all folds: set 'foldlevel' to 0.
+                'foldenable' will be set.
+
+                                                        *zr*
+zr              Reduce folding: Add |v:count1| to 'foldlevel'.
+
+                                                        *zR*
+zR              Open all folds.  This sets 'foldlevel' to highest fold level.
+
+                                                        *:foldo* *:foldopen*
 :{range}foldo[pen][!]
-		Open folds in {range}.  When [!] is added all folds are
-		opened.  Useful to see all the text in {range}.  Without [!]
-		one level of folds is opened.
+                Open folds in {range}.  When [!] is added all folds are
+                opened.  Useful to see all the text in {range}.  Without [!]
+                one level of folds is opened.
 
-							*:foldc* *:foldclose*
+                                                        *:foldc* *:foldclose*
 :{range}foldc[lose][!]
-		Close folds in {range}.  When [!] is added all folds are
-		closed.  Useful to hide all the text in {range}.  Without [!]
-		one level of folds is closed.
+                Close folds in {range}.  When [!] is added all folds are
+                closed.  Useful to hide all the text in {range}.  Without [!]
+                one level of folds is closed.
 
-							*zn*
-zn		Fold none: reset 'foldenable'.  All folds will be open.
+                                                        *zn*
+zn              Fold none: reset 'foldenable'.  All folds will be open.
 
-							*zN*
-zN		Fold normal: set 'foldenable'.  All folds will be as they
-		were before.
+                                                        *zN*
+zN              Fold normal: set 'foldenable'.  All folds will be as they
+                were before.
 
-							*zi*
-zi		Invert 'foldenable'.
+                                                        *zi*
+zi              Invert 'foldenable'.
 
 
 MOVING OVER FOLDS ~
-							*[z*
-[z		Move to the start of the current open fold.  If already at the
-		start, move to the start of the fold that contains it.  If
-		there is no containing fold, the command fails.
-		When a count is used, repeats the command [count] times.
+                                                        *[z*
+[z              Move to the start of the current open fold.  If already at the
+                start, move to the start of the fold that contains it.  If
+                there is no containing fold, the command fails.
+                When a count is used, repeats the command [count] times.
 
-							*]z*
-]z		Move to the end of the current open fold.  If already at the
-		end, move to the end of the fold that contains it.  If there
-		is no containing fold, the command fails.
-		When a count is used, repeats the command [count] times.
+                                                        *]z*
+]z              Move to the end of the current open fold.  If already at the
+                end, move to the end of the fold that contains it.  If there
+                is no containing fold, the command fails.
+                When a count is used, repeats the command [count] times.
 
-							*zj*
-zj		Move downwards to the start of the next fold.  A closed fold
-		is counted as one fold.
-		When a count is used, repeats the command [count] times.
-		This command can be used after an |operator|.
+                                                        *zj*
+zj              Move downwards to the start of the next fold.  A closed fold
+                is counted as one fold.
+                When a count is used, repeats the command [count] times.
+                This command can be used after an |operator|.
 
-							*zk*
-zk		Move upwards to the end of the previous fold.  A closed fold
-		is counted as one fold.
-		When a count is used, repeats the command [count] times.
-		This command can be used after an |operator|.
+                                                        *zk*
+zk              Move upwards to the end of the previous fold.  A closed fold
+                is counted as one fold.
+                When a count is used, repeats the command [count] times.
+                This command can be used after an |operator|.
 
 
 EXECUTING COMMANDS ON FOLDS ~
 
-:[range]foldd[oopen] {cmd}			*:foldd* *:folddo* *:folddoopen*
-		Execute {cmd} on all lines that are not in a closed fold.
-		When [range] is given, only these lines are used.
-		Each time {cmd} is executed the cursor is positioned on the
-		line it is executed for.
-		This works like the ":global" command: First all lines that
-		are not in a closed fold are marked.  Then the {cmd} is
-		executed for all marked lines.  Thus when {cmd} changes the
-		folds, this has no influence on where it is executed (except
-		when lines are deleted, of course).
-		Example: >
-			:folddoopen s/end/loop_end/ge
-<		Note the use of the "e" flag to avoid getting an error message
-		where "end" doesn't match.
+:[range]foldd[oopen] {cmd}                      *:foldd* *:folddo* *:folddoopen*
+                Execute {cmd} on all lines that are not in a closed fold.
+                When [range] is given, only these lines are used.
+                Each time {cmd} is executed the cursor is positioned on the
+                line it is executed for.
+                This works like the ":global" command: First all lines that
+                are not in a closed fold are marked.  Then the {cmd} is
+                executed for all marked lines.  Thus when {cmd} changes the
+                folds, this has no influence on where it is executed (except
+                when lines are deleted, of course).
+                Example: >
+                        :folddoopen s/end/loop_end/ge
+<               Note the use of the "e" flag to avoid getting an error message
+                where "end" doesn't match.
 
-:[range]folddoc[losed] {cmd}			*:folddoc* *:folddoclosed*
-		Execute {cmd} on all lines that are in a closed fold.
-		Otherwise like ":folddoopen".
+:[range]folddoc[losed] {cmd}                    *:folddoc* *:folddoclosed*
+                Execute {cmd} on all lines that are in a closed fold.
+                Otherwise like ":folddoopen".
 
 ==============================================================================
-3. Fold options					*fold-options*
+3. Fold options                                 *fold-options*
 
-COLORS							*fold-colors*
+COLORS                                                  *fold-colors*
 
 The colors of a closed fold are set with the Folded group |hl-Folded|.  The
 colors of the fold column are set with the FoldColumn group |hl-FoldColumn|.
 Example to set the colors: >
 
-	:highlight Folded guibg=grey guifg=blue
-	:highlight FoldColumn guibg=darkgrey guifg=white
+        :highlight Folded guibg=grey guifg=blue
+        :highlight FoldColumn guibg=darkgrey guifg=white
 
 
-FOLDLEVEL						*fold-foldlevel*
+FOLDLEVEL                                               *fold-foldlevel*
 
 'foldlevel' is a number option: The higher the more folded regions are open.
 When 'foldlevel' is 0, all folds are closed.
@@ -482,7 +490,7 @@ When decreased, folds above the new level are closed.  No manually closed
 folds will be opened.
 
 
-FOLDTEXT						*fold-foldtext*
+FOLDTEXT                                                *fold-foldtext*
 
 'foldtext' is a string option that specifies an expression.  This expression
 is evaluated to obtain the text displayed for a closed fold.  Example: >
@@ -506,11 +514,11 @@ the window that displays the line.  Errors are ignored.
 The default value is |foldtext()|.  This returns a reasonable text for most
 types of folding.  If you don't like it, you can specify your own 'foldtext'
 expression.  It can use these special Vim variables:
-	v:foldstart	line number of first line in the fold
-	v:foldend	line number of last line in the fold
-	v:folddashes	a string that contains dashes to represent the
-			foldlevel.
-	v:foldlevel	the foldlevel of the fold
+        v:foldstart     line number of first line in the fold
+        v:foldend       line number of last line in the fold
+        v:folddashes    a string that contains dashes to represent the
+                        foldlevel.
+        v:foldlevel     the foldlevel of the fold
 
 In the result a TAB is replaced with a space and unprintable characters are
 made into printable characters.
@@ -523,7 +531,7 @@ Note that backslashes need to be used for characters that the ":set" command
 handles differently: Space, backslash and double-quote. |option-backslash|
 
 
-FOLDCOLUMN						*fold-foldcolumn*
+FOLDCOLUMN                                              *fold-foldcolumn*
 
 'foldcolumn' is a number, which sets the width for a column on the side of the
 window to indicate folds.  When it is zero, there is no foldcolumn.  A normal
@@ -548,19 +556,19 @@ fold column:
 
 OTHER OPTIONS
 
-'foldenable'  'fen':	Open all folds while not set.
-'foldexpr'    'fde':	Expression used for "expr" folding.
-'foldignore'  'fdi':	Characters used for "indent" folding.
-'foldmarker'  'fmr':	Defined markers used for "marker" folding.
-'foldmethod'  'fdm':	Name of the current folding method.
-'foldminlines' 'fml':	Minimum number of screen lines for a fold to be
-			displayed closed.
-'foldnestmax' 'fdn':	Maximum nesting for "indent" and "syntax" folding.
-'foldopen'    'fdo':	Which kinds of commands open closed folds.
-'foldclose'   'fcl':	When the folds not under the cursor are closed.
+'foldenable'  'fen':    Open all folds while not set.
+'foldexpr'    'fde':    Expression used for "expr" folding.
+'foldignore'  'fdi':    Characters used for "indent" folding.
+'foldmarker'  'fmr':    Defined markers used for "marker" folding.
+'foldmethod'  'fdm':    Name of the current folding method.
+'foldminlines' 'fml':   Minimum number of screen lines for a fold to be
+                        displayed closed.
+'foldnestmax' 'fdn':    Maximum nesting for "indent" and "syntax" folding.
+'foldopen'    'fdo':    Which kinds of commands open closed folds.
+'foldclose'   'fcl':    When the folds not under the cursor are closed.
 
 ==============================================================================
-4. Behavior of folds					*fold-behavior*
+4. Behavior of folds                                    *fold-behavior*
 
 When moving the cursor upwards or downwards and when scrolling, the cursor
 will move to the first line of a sequence of folded lines.  When the cursor is
@@ -583,7 +591,7 @@ deletes the whole closed fold under the cursor.
 For Ex commands that work on buffer lines the range is adjusted to always
 start at the first line of a closed fold and end at the last line of a closed
 fold.  Thus this command: >
-	:s/foo/bar/g
+        :s/foo/bar/g
 when used with the cursor on a closed fold, will replace "foo" with "bar" in
 all lines of the fold.
 This does not happen for |:folddoopen| and |:folddoclosed|.

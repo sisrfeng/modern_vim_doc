@@ -80,14 +80,8 @@ centralized reference of the differences.
 
 Default Mappings ~
 							*default-mappings*
-Nvim creates the following default mappings at |startup|. You can disable any
-of these in your config by simply removing the mapping, e.g. ":unmap Y".
->
-	nnoremap Y y$
-	nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
-	inoremap <C-U> <C-G>u<C-U>
-	inoremap <C-W> <C-G>u<C-W>
-<
+我全盘吸收了
+
 Default Autocommands ~
 							*default-autocmds*
 Default autocommands exist in the following groups. Use ":autocmd! {group}" to

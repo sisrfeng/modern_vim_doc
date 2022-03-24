@@ -4,9 +4,11 @@
 		  VIM REFERENCE MANUAL    by Andy Kahn
 
 							*cscope* *Cscope*
-Cscope is a "code intelligence" tool that helps you navigate C programs. It
-can also perform some refactoring tasks, such as renaming a global variable in
-all source files.  Think of it as "ctags on steroids".
+
+Cscope is a "code intelligence" tool that helps you navigate C programs.
+It can also perform some refactoring tasks,
+such as renaming a global variable in all source files.
+Think of it as "ctags on steroids".
 
 See |cscope-usage| for a quickstart.
 

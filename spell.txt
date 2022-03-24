@@ -23,12 +23,14 @@ The words that are not recognized are highlighted with one of these:
 	SpellRare	rare word				|hl-SpellRare|
 	SpellLocal	wrong spelling for selected region	|hl-SpellLocal|
 
-Vim only checks words for spelling, there is no grammar check.
+🔑  Vim only checks words for spelling, there is no grammar check.  🔑
 
 If the 'mousemodel' option is set to "popup" and the cursor is on a badly
-spelled word or it is "popup_setpos" and the mouse pointer is on a badly
+spelled word or
+it is "popup_setpos" and the mouse pointer is on a badly
 spelled word, then the popup menu will contain a submenu to replace the bad
-word.  Note: this slows down the appearance of the popup menu.
+word.
+ Note: this slows down the appearance of the popup menu.
 
 To search for the next misspelled word:
 

@@ -23,14 +23,16 @@ Table of contents: |usr_toc.txt|
 ==============================================================================
 *29.1*	Using tags
 
-What is a tag?  It is a location where an identifier is defined.  An example
-is a function definition in a C or C++ program.  A list of tags is kept in a
-tags file.  This can be used by Vim to directly jump from any place to the
-tag, the place where an identifier is defined.
-   To generate the tags file for all C files in the current directory, use the
-following command: >
+		What is a tag?
+		It is a location where an identifier is defined.
+		An example is a function definition in a C or C++ program.
+		A list of tags is kept in a tags file.
+		This can be used by Vim to directly jump from any place to the tag,
+		the place where an identifier is defined.
+		To generate the tags file for all C files in the current directory,
+		use the following command:
 
-	ctags *.c
+			ctags *.c
 
 "ctags" is a separate program.  Most Unix systems already have it installed.
 If you do not have it yet, you can find Exuberant ctags here:
@@ -43,15 +45,14 @@ jump to it by using the following command: >
 	:tag startlist
 
 This command will find the function "startlist" even if it is in another file.
-   The CTRL-] command jumps to the tag of the word that is under the cursor.
-This makes it easy to explore a tangle of C code.  Suppose, for example, that
-you are in the function "write_block".  You can see that it calls
-"write_line".  But what does "write_line" do?  By placing the cursor on the
-call to "write_line" and pressing CTRL-], you jump to the definition of this
-function.
-   The "write_line" function calls "write_char".  You need to figure out what
-it does.  So you position the cursor over the call to "write_char" and press
-CTRL-].  Now you are at the definition of "write_char".
+The CTRL-] command jumps to the tag of the word that is under the cursor.
+This makes it easy to explore a tangle of C code.
+Suppose,
+for example,
+that you are in the function "write_block".  You can see that it calls "write_line".  But what does "write_line" do?
+By placing the cursor on the call to "write_line" and pressing CTRL-], you jump to the definition of this function.
+The "write_line" function calls "write_char".  You need to figure out what it does.
+So you position the cursor over the call to "write_char" and press CTRL-].  Now you are at the definition of "write_char".
 
 	+-------------------------------------+
 	|void write_block(char **s; int cnt)  |
@@ -85,14 +86,16 @@ The ":tags" command shows the list of tags that you traversed through:
 	  # TO tag	   FROM line  in file/text ~
 	  1  1 write_line	   8  write_block.c ~
 	  2  1 write_char	   7  write_line.c ~
-	> ~
->
-Now to go back.  The CTRL-T command goes to the preceding tag.  In the example
-above you get back to the "write_line" function, in the call to "write_char".
-   This command takes a count argument that indicates how many tags to jump
-back.  You have gone forward, and now back.  Let's go forward again.  The
-following command goes to the tag on top of the list: >
 
+Now to go back.
+The CTRL-T command goes to the preceding tag.
+In the example above you get back to the "write_line" function,
+in the call to "write_char". This command takes a count argument that indicates how many tags to jump back.
+You have gone forward,
+and now back.
+Let's go forward again.
+The following command goes to the tag on top of the list:
+>
 	:tag
 
 You can prefix it with a count and jump forward that many tags.  For example:
@@ -103,12 +106,12 @@ up again with CTRL-T.  Use ":tags" to find out where you are.
 
 SPLIT WINDOWS
 
-The ":tag" command replaces the file in the current window with the one
-containing the new function.  But suppose you want to see not only the old
-function but also the new one?  You can split the window using the ":split"
-command followed by the ":tag" command.  Vim has a shorthand command that does
-both: >
-	:stag tagname
+The ":tag" command replaces the file in the current window with the one containing the new function.
+But suppose you want to see not only the old function but also the new one?
+You can split the window using the ":split" command followed by the ":tag" command.
+Vim has a shorthand command that does both:
+>
+		:stag tagname
 
 To split the current window and jump to the tag under the cursor use this
 command: >
@@ -120,39 +123,48 @@ If a count is specified, the new window will be that many lines high.
 
 MORE TAGS FILES
 
-When you have files in many directories, you can create a tags file in each of
-them.  Vim will then only be able to jump to tags within that directory.
-   To find more tags files, set the 'tags' option to include all the relevant
-tags files.  Example: >
+When you have files in many directories,
+you can create a tags file in each of them.
+Vim will then only be able to jump to tags within that directory.
+To find more tags files,
+set the 'tags' option to include all the relevant tags files.
+Example:
+>
 
 	:set tags=./tags,./../tags,./*/tags
 
-This finds a tags file in the same directory as the current file, one
-directory level higher and in all subdirectories.
-   This is quite a number of tags files, but it may still not be enough.  For
-example, when editing a file in "~/proj/src", you will not find the tags file
-"~/proj/sub/tags".  For this situation Vim offers to search a whole directory
-tree for tags files.  Example: >
+This finds a tags file in the same directory as the current file,
+one directory level higher and in all subdirectories.
+This is quite a number of tags files,
+but it may still not be enough.
+For example,
+when editing a file in "~/proj/src",
+you will not find the tags file "~/proj/sub/tags".
+For this situation Vim offers to search a whole directory tree for tags files.
+Example:
+>
 
 	:set tags=~/proj/**/tags
 
 
 ONE TAGS FILE
 
-When Vim has to search many places for tags files, you can hear the disk
-rattling.  It may get a bit slow.  In that case it's better to spend this
-time while generating one big tags file.  You might do this overnight.
-   This requires the Exuberant ctags program, mentioned above.  It offers an
-argument to search a whole directory tree: >
+When Vim has to search many places for tags files,
+you can hear the disk rattling.
+It may get a bit slow.
+In that case it's better to spend this time while generating one big tags file.
+🔑You might do this overnight.🔑
+This requires the Exuberant ctags program,
+mentioned above.
+It offers an argument to search a whole directory tree:
+>
 
 	cd ~/proj
 	ctags -R .
 
-The nice thing about this is that Exuberant ctags recognizes various file
-types.  Thus this doesn't work just for C and C++ programs, also for Eiffel
-and even Vim scripts.  See the ctags documentation to tune this.
-   Now you only need to tell Vim where your big tags file is: >
 
+Now you only need to tell Vim where your big tags file is:
+>
 	:set tags=~/proj/tags
 
 

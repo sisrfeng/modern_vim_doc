@@ -1,38 +1,42 @@
 *pi_paren.txt*  Nvim
 
 
-		  VIM REFERENCE MANUAL    by Bram Moolenaar
+                  VIM REFERENCE MANUAL    by Bram Moolenaar
 
 
-Highlighting matching parens			*matchparen*
+Highlighting matching parens                    *matchparen*
 
 The functionality mentioned here is a |standard-plugin|.
 This plugin is only available if 'compatible' is not set.
 
 You can avoid loading this plugin by setting the "loaded_matchparen" variable: >
-	:let loaded_matchparen = 1
+        :let loaded_matchparen = 1
 
 The plugin installs CursorMoved, CursorMovedI and WinEnter autocommands to
 redefine the match highlighting.
 
-					*:NoMatchParen* *:DoMatchParen*
+                                        *:NoMatchParen* *:DoMatchParen*
 To disable the plugin after it was loaded use this command: >
 
-	:NoMatchParen
+        :NoMatchParen
 
 And to enable it again: >
 
-	:DoMatchParen
+        :DoMatchParen
 
 The highlighting used is MatchParen.  You can specify different colors with
 the ":highlight" command.  Example: >
 
-	:hi MatchParen ctermbg=blue guibg=lightblue
-
-The characters to be matched come from the 'matchpairs' option.  You can
-change the value to highlight different matches.  Note that not everything is
-possible.  For example, you can't highlight single or double quotes, because
-the start and end are equal.
+        :hi MatchParen ctermbg=blue guibg=lightblue
+<
+    The characters to be matched come from the 'matchpairs' option.
+    You can change the value to highlight different matches.
+    Note that not everything is  possible.
+    For example,
+    you can't highlight single or
+    double quotes,
+    because the start and
+    end are equal.
 
 The syntax highlighting attributes are used.  When the cursor currently is not
 in a string or comment syntax item, then matches inside string and comment
