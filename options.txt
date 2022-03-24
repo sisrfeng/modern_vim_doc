@@ -2230,11 +2230,14 @@ vim里的这些option, nvim扔了:
                                                 *'eventignore'* *'ei'*
 'eventignore' 'ei'      string  (default "")
                         global
-        A list of autocommand event names, which are to be ignored.
-        When set to "all" or when "all" is one of the items, all autocommand
-        events are ignored, autocommands will not be executed.
-        Otherwise this is a comma separated list of event names.  Example:  
-            :set ei=WinEnter,WinLeave
+    A list of autocommand event names,
+    which are to be ignored.
+    When set to "all" or when "all" is one of the items,
+    all autocommand events are ignored,
+    autocommands will not be executed.
+    Otherwise this is a comma separated list of event names.
+    Example:
+         :set ei=WinEnter,WinLeave
  
                                  *'expandtab'* *'et'* *'noexpandtab'* *'noet'*
 'expandtab' 'et'        boolean (default off)
@@ -2444,7 +2447,8 @@ vim里的这些option, nvim扔了:
                                                 *'fillchars'* *'fcs'*
 'fillchars' 'fcs'       string  (default "")
                         global or local to window |global-local|
-        Characters to fill the statuslines and vertical separators.
+        Characters to fill the statuslines and
+        vertical separators.
         It is a comma separated list of items:
 
           item          default         Used for  
@@ -2459,17 +2463,17 @@ vim里的这些option, nvim扔了:
           msgsep:c      ' '             message separator 'display'
           eob:c         '~'             empty lines at the end of a buffer
 
-        Any one that is omitted will fall back to the default.  For "stl" and
-        "stlnc" the space will be used when there is highlighting, '^' or '='
-        otherwise.
+        Any one that is omitted will fall back to the default.
+        For "stl" and "stlnc" the space will be used when there is highlighting,
+        '^' or '=' otherwise.
 
-        If 'ambiwidth' is "double" then "vert", "foldsep" and "fold" default to
-        single-byte alternatives.
+        If 'ambiwidth' is "double"
+        then "vert",  "foldsep" and "fold" default to single-byte alternatives.
 
         Example:  
             :set fillchars=stl:^,stlnc:=,vert:│,fold:·,diff:-
-        This is similar to the default, except that these characters will also
-        be used when there is highlighting.
+        This is similar to the default,
+        except that these characters will also be used when there is highlighting.
 
         for "stl" and "stlnc" only single-byte values are supported.
 
@@ -2502,7 +2506,8 @@ vim里的这些option, nvim扔了:
                                                 *'foldcolumn'* *'fdc'*
 'foldcolumn' 'fdc'      string (default "0")
                         local to window
-        When and how to draw the foldcolumn. Valid values are:
+        When and how to draw the foldcolumn. (window左侧的一列)
+        Valid values are:
             "auto":       resize to the minimum amount of folds to display.
             "auto:[1-9]": resize to accommodate multiple folds up to the
                           selected level
@@ -2555,17 +2560,19 @@ vim里的这些option, nvim扔了:
                                                 *'foldlevelstart'* *'fdls'*
 'foldlevelstart' 'fdls' number (default: -1)
                         global
-        Sets 'foldlevel' when starting to edit another buffer in a window.
-        Useful to always start editing with all folds closed (value zero),
-        some folds closed (one) or no folds closed (99).
-        This is done before reading any modeline, thus a setting in a modeline
-        overrules this option.  Starting to edit a file for |diff-mode| also
-        ignores this option and closes all folds.
-        It is also done before BufReadPre autocommands, to allow an autocmd to
-        overrule the 'foldlevel' value for specific files.
-        When the value is negative, it is not used.
+    Sets 'foldlevel' when starting to edit another buffer in a window.
+    Useful to always start editing with all folds closed (value zero),
+    some folds closed (one) or no folds closed (99).
+    This is done before reading any modeline,
+    thus a setting in a modeline overrules this option.
+    Starting to edit a file for |diff-mode| also ignores this option and
+    closes all folds.
+    It is also done before BufReadPre autocommands,
+    to allow an autocmd to overrule the 'foldlevel' value for specific files.
+    When the value is negative,
+    it is not used.
 
-                                                *'foldmarker'* *'fmr'* *E536*
+*'foldmarker'* *'fmr'* *E536*
 'foldmarker' 'fmr'      string (default: "{{{,}}}")
                         local to window
         The start and end marker used when 'foldmethod' is "marker".  There
@@ -2640,15 +2647,13 @@ vim里的这些option, nvim扔了:
                                                 *'foldtext'* *'fdt'*
 'foldtext' 'fdt'        string (default: "foldtext()")
                         local to window
-        An expression which is used to specify the text displayed for a closed
-        fold.  See |fold-foldtext|.
-
-        The expression will be evaluated in the |sandbox| if set from a
-        modeline, see |sandbox-option|.
-        This option cannot be set in a modeline when 'modelineexpr' is off.
-
-        It is not allowed to change text or jump to another window while
-        evaluating 'foldtext' |textlock|.
+    An expression which is used to specify the text displayed for a closed fold.
+    See |fold-foldtext|.
+    The expression will be evaluated in the |sandbox| if set from a modeline,
+    see |sandbox-option|.
+    This option cannot be set in a modeline when 'modelineexpr' is off.
+    It is not allowed to change text or
+    jump to another window while evaluating 'foldtext' |textlock|.
 
                                                 *'formatexpr'* *'fex'*
 'formatexpr' 'fex'      string (default "")
@@ -2701,16 +2706,17 @@ vim里的这些option, nvim扔了:
 'formatoptions' 'fo'    string default: "tcqj"
                         local to buffer
 
-This is a sequence of letters which
-describes how automatic formatting is to be done See |fo-table|.
+    This is a sequence of letters which
+    describes how automatic formatting is to be done 
+    |fo-table|.
 
-When the 'paste' option is  on,
-no formatting is done (like 'formatoptions' is empty).
+    When the 'paste' option is  on,
+    no formatting is done (like 'formatoptions' is empty).
 
-Commas can  be inserted for readability.
-To avoid problems with flags that are added in the future,
-use the "+=" and
-"-=" feature of ":set" |add-option-flags|.
+    Commas can  be inserted for readability.
+    To avoid problems with flags that are added in the future,
+    use the "+=" and
+    "-=" feature of ":set" |add-option-flags|.
 
                                                 *'formatprg'* *'fp'*
 'formatprg' 'fp'        string (default "")
