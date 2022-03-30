@@ -52,10 +52,10 @@ or change text.  The following operators are available:
         |<|     <       shift left
         |zf|    zf      define a fold
         |g@|    g@      call function set with the 'operatorfunc' option
-                                                *motion-count-multiplied*
+*motion-count-multiplied*
 If the motion includes a count and the operator also had a count before it,
 the two counts are multiplied.  For example: "2d3w" deletes six words.
-                                                *operator-doubled*
+*operator-doubled*
 When doubling the operator it operates on a line.  When using a count, before
 or after the first character, that many lines are operated upon.  Thus `3dd`
 deletes three lines. A count before and after the first character is
@@ -65,13 +65,13 @@ After applying the operator the cursor is mostly left at the start of the text
 that was operated upon.  For example, "yfe" doesn't move the cursor, but "yFe"
 moves the cursor leftwards to the "e" where the yank started.
 
-                                                *linewise* *charwise* *characterwise*
+*linewise* *charwise* *characterwise*
 The operator either affects whole lines, or the characters between the start
 and end position.  Generally, motions that move between lines affect lines
 (are linewise), and motions that move within a line affect characters (are
 charwise).  However, there are some exceptions.
 
-                                                *exclusive* *inclusive*
+*exclusive* *inclusive*
 Character motion is either inclusive or exclusive.  When inclusive, the
 start and end position of the motion are included in the operation.  When
 exclusive, the last character towards the end of the buffer is not included.
@@ -84,7 +84,7 @@ command.  There are however, two general exceptions:
    end of the motion is moved to the end of the previous line and the motion
    becomes inclusive.  Example: "}" moves to the first line after a paragraph,
    but "d}" will not include that line.
-                                                *exclusive-linewise*
+*exclusive-linewise*
 2. If the motion is exclusive, the end of the motion is in column 1 and the
    start of the motion was at or before the first non-blank in the line, the
    motion becomes linewise.  Example: If a paragraph begins with some blanks
@@ -113,7 +113,7 @@ This cannot be repeated: >
         endif<CR>
 Note that when using ":" any motion becomes charwise exclusive.
 
-                                                                *forced-motion*
+*forced-motion*
 FORCING A MOTION TO BE LINEWISE, CHARWISE OR BLOCKWISE
 
 When a motion is not of the type you would like to use, you can force another
@@ -129,7 +129,7 @@ deletes the character under the cursor and the character below the cursor. >
 Be careful with forcing a linewise movement to be used charwise or blockwise,
 the column may not always be defined.
 
-                                                        *o_v*
+*o_v*
 v               When used after an operator, before the motion command: Force
                 the operator to work charwise, also when the motion is
                 linewise.  If the motion was linewise, it will become
@@ -138,12 +138,12 @@ v               When used after an operator, before the motion command: Force
                 inclusive/exclusive.  This can be used to make an exclusive
                 motion inclusive and an inclusive motion exclusive.
 
-                                                        *o_V*
+*o_V*
 V               When used after an operator, before the motion command: Force
                 the operator to work linewise, also when the motion is
                 charwise.
 
-                                                        *o_CTRL-V*
+*o_CTRL-V*
 CTRL-V          When used after an operator, before the motion command: Force
                 the operator to work blockwise.  This works like Visual block
                 mode selection, with the corners defined by the cursor
@@ -173,11 +173,11 @@ l               or                                      *l*
                         See the 'whichwrap' option for adjusting the behavior
                         at end of line
 
-                                                        *0*
+*0*
 0                       To the first character of the line.  |exclusive|
                         motion.
 
-                                                        *<Home>* *<kHome>*
+*<Home>* *<kHome>*
 <Home>                  To the first character of the line.  |exclusive|
                         motion.  When moving up or down next, stay in same
                         TEXT column (if possible).  Most other commands stay
@@ -185,12 +185,12 @@ l               or                                      *l*
                         which differs from "0" when the line starts with a
                         <Tab>.
 
-                                                        *^*
+*^*
 ^                       To the first non-blank character of the line.
                         |exclusive| motion.  Any count is ignored.
 
-                                                        *$* *<End>* *<kEnd>*
-$  or <End>             
+*$* *<End>* *<kEnd>*
+$  or <End>
 
 To the end of the line.
 When a count is given also go [count - 1] lines downward,
@@ -204,13 +204,13 @@ In Visual mode the cursor goes to just after the last character in the line.
 When 'virtualedit' is active,
  "$" may move the cursor back from past the end of the line to the last character in the line.
 
-                                                        *g_*
+*g_*
 g_
 
 To the last non-blank character of the line (暂时用g$吧, 行末一般没有空格)and
 [count - 1] lines downward |inclusive|.
 
-                                                        *g0* *g<Home>*
+*g0* *g<Home>*
 g0 or g<Home>           When lines wrap ('wrap' on): To the first character of
                         the screen line.  |exclusive| motion.  Differs from
                         "0" when a line is wider than the screen.
@@ -219,7 +219,7 @@ g0 or g<Home>           When lines wrap ('wrap' on): To the first character of
                         Differs from "0" when the first character of the line
                         is not on the screen.
 
-                                                        *g^*
+*g^*
 g^                      When lines wrap ('wrap' on): To the first non-blank
                         character of the screen line.  |exclusive| motion.
                         Differs from "^" when a line is wider than the screen.
@@ -229,17 +229,17 @@ g^                      When lines wrap ('wrap' on): To the first non-blank
                         character of the line is not on the screen.
 
 很少用, 直接用easy motion更快:
-                                                                *gm*
+*gm*
         gm                      Like "g0", but half a screenwidth to the right (or as
                                 much as possible).
 
-                                                                *gM*
+*gM*
         gM                      Like "g0", but to 🔑halfway the text of the line🔑.
                                 With a count: to this percentage of text in the line.
                                 Thus "10gM" is near the start of the text and "90gM"
                                 is near the end of the text.
 
-                                                        *g$* *g<End>*
+*g$* *g<End>*
 g$ or g<End>
 
 When lines wrap ('wrap' on): To the last character of the screen line and
@@ -256,11 +256,11 @@ When 'virtualedit' is enabled:
                 To the rightmost character of the current line that is visible on the screen.
                  Differs from "$" when the last character of the line is not on the screen or when a count is used.
 
-                                                        *bar*
+*bar*
 |                       To screen column [count] in the current line.
                         |exclusive| motion.  Ceci n'est pas une pipe.
 
-                                                        *f*
+*f*
 f{char}                 To [count]'th occurrence of {char} to the right.  The
                         cursor is placed on {char} |inclusive|.
                         {char} can be entered as a digraph |digraph-arg|.
@@ -270,27 +270,27 @@ f{char}                 To [count]'th occurrence of {char} to the right.  The
                         in Insert mode can be used to switch this on/off
                         |i_CTRL-^|.
 
-                                                        *F*
+*F*
 F{char}                 To the [count]'th occurrence of {char} to the left.
                         The cursor is placed on {char} |exclusive|.
                         {char} can be entered like with the |f| command.
 
-                                                        *t*
+*t*
 t{char}                 Till before [count]'th occurrence of {char} to the
                         right.  The cursor is placed on the character left of
                         {char} |inclusive|.
                         {char} can be entered like with the |f| command.
 
-                                                        *T*
+*T*
 T{char}                 Till after [count]'th occurrence of {char} to the
                         left.  The cursor is placed on the character right of
                         {char} |exclusive|.
                         {char} can be entered like with the |f| command.
 
-                                                        *;*
+*;*
 ;                       Repeat latest f, t, F or T [count] times. See |cpo-;|
 
-                                                        *,*
+*,*
 ,                       Repeat latest f, t, F or T in opposite direction
                         [count] times. See also |cpo-;|
 
@@ -317,7 +317,7 @@ g<Down>                 [count] display lines downward.  |exclusive| motion.
                         Differs from 'j' when lines wrap, and when used with
                         an operator, because it's not linewise.
 
-                                                        *-*
+*-*
 -  <minus>              [count] lines upward, on the first non-blank
                         character |linewise|.
 
@@ -326,17 +326,17 @@ CTRL-M          or                                      *CTRL-M* *<CR>*
 <CR>                    [count] lines downward, on the first non-blank
                         character |linewise|.
 
-                                                        *_*
+*_*
 _  <underscore>         [count] - 1 lines downward, on the first non-blank
                         character |linewise|.
 
-                                                        *G*
+*G*
 G                       Goto line [count], default last line, on the first
                         non-blank character |linewise|.  If 'startofline' not
                         set, keep the same column.
                         G is one of the |jump-motions|.
 
-                                                        *<C-End>*
+*<C-End>*
 <C-End>                 Goto line [count], default last line, on the last
                         character |inclusive|.
 
@@ -348,13 +348,13 @@ G                       Goto line [count], default last line, on the first
         If 'startofline' not set,
         keep the same column.
 
-                                                        *:[range]*
+*:[range]*
 :[range]                Set the cursor on the last line number in [range].
                         [range] can also be just one line number, e.g., ":1"
                         or ":'m".
                         In contrast with |G| this command does not modify the
                         |jumplist|.
-                                                        *N%*
+*N%*
 {count}%                Go to {count} percentage in the file, on the first
                         non-blank in the line |linewise|.  To compute the new
                         line number this formula is used:
@@ -385,11 +385,11 @@ w                       [count] words forward.  |exclusive| motion.
 <C-Right>       or                                      *<C-Right>* *W*
 W                       [count] WORDS forward.  |exclusive| motion.
 
-                                                        *e*
+*e*
 e                       Forward to the end of word [count] |inclusive|.
                         Does not stop in an empty line.
 
-                                                        *E*
+*E*
 E                       Forward to the end of WORD [count] |inclusive|.
                         Does not stop in an empty line.
 
@@ -399,19 +399,19 @@ b                       [count] words backward.  |exclusive| motion.
 <C-Left>        or                                      *<C-Left>* *B*
 B                       [count] WORDS backward.  |exclusive| motion.
 
-                                                        *ge*
+*ge*
 ge                      Backward to the end of word [count] |inclusive|.
 
-                                                        *gE*
+*gE*
 gE                      Backward to the end of WORD [count] |inclusive|.
 
 These commands move over words or WORDS.
-                                                        *word*
+*word*
 A word consists of a sequence of letters, digits and underscores, or a
 sequence of other non-blank characters, separated with white space (spaces,
 tabs, <EOL>).  This can be changed with the 'iskeyword' option.  An empty line
 is also considered to be a word.
-                                                        *WORD*
+*WORD*
 A WORD consists of a sequence of non-blank characters, separated with white
 space.  An empty line is also considered to be a WORD.
 
@@ -437,142 +437,153 @@ between Vi and Vim.
 ==============================================================================
 5. Text object motions                                  *object-motions*
 
-                                                        *(*
-(                       [count] |sentence|s backward.  |exclusive| motion.
+|exclusive| motion.
 
-                                                        *)*
-)                       [count] |sentence|s forward.  |exclusive| motion.
+sentences
+	*(*
+	*)*
 
-                                                        *{*
-{                       [count] |paragraph|s backward.  |exclusive| motion.
+paragraphs
+	*{*
+	*}*
 
-                                                        *}*
-}                       [count] |paragraph|s forward.  |exclusive| motion.
+sections
+    Note that |exclusive-linewise| often applies.
+  	先看第一个中括号, 决定是往回走 还是往前走
 
-                                                        *]]*
-]]                      [count] |section|s forward or to the next '{' in the
-                        first column.  When used after an operator, then also
-                        stops below a '}' in the first column.  |exclusive|
-                        Note that |exclusive-linewise| often applies.
+	同向: 开括号{ (夫妻同心, 开店大吉)
+		*[[*
+		可以to the previous '{' in the first column.
 
-                                                        *][*
-][                      [count] |section|s forward or to the next '}' in the
-                        first column.  |exclusive|
-                        Note that |exclusive-linewise| often applies.
+		*]]*
+		可以to the next '{' in the first column.
 
-                                                        *[[*
-[[                      [count] |section|s backward or to the previous '{' in
-                        the first column.  |exclusive|
-                        Note that |exclusive-linewise| often applies.
 
-                                                        *[]*
-[]                      [count] |section|s backward or to the previous '}' in
-                        the first column.  |exclusive|
-                        Note that |exclusive-linewise| often applies.
+	反向: 闭括号} (夫妻反目, 闭门谢客)
+		*[]*
+		backward
 
-These commands move over three kinds of text objects.
+		*][*
+		forward
+		or TO (When used after an operator, then also stops BELOW )
+		the next '}' in the first column.
 
-                                                        *sentence*
-A sentence is defined as ending at a '.', '!' or '?' followed by either the
-end of a line, or by a space or tab.  Any number of closing ')', ']', '"'
-and ''' characters may appear after the '.', '!' or '?' before the spaces,
-tabs or end of line.  A paragraph and section boundary is also a sentence
-boundary.
-If the 'J' flag is present in 'cpoptions', at least two spaces have to
-follow the punctuation mark; <Tab>s are not recognized as white space.
-The definition of a sentence cannot be changed.
 
-                                                        *paragraph*
-A paragraph begins after each empty line, and also at each of a set of
-paragraph macros, specified by the pairs of characters in the 'paragraphs'
-option.  The default is "IPLPPPQPP TPHPLIPpLpItpplpipbp", which corresponds to
-the macros ".IP", ".LP", etc.  (These are nroff macros, so the dot must be in
-the first column).  A section boundary is also a paragraph boundary.
-Note that a blank line (only containing white space) is NOT a paragraph
-boundary.
-Note: this does not include a '{' or '}' in the first column.
+*sentence*
+    A sentence is defined as
+	ending at a '.',  '!' or '?'
+	followed by either the end of a line,
+					or by a space or tab.
+    Any number of closing characters
+	')',
+	']',
+	'"'
+	 '''
+     may appear after the '.',  '!' or '?'
+     before the spaces,  tabs or  end of line.
 
-                                                        *section*
-A section begins after a form-feed (<C-L>) in the first column and at each of
-a set of section macros, specified by the pairs of characters in the
-'sections' option.  The default is "SHNHH HUnhsh", which defines a section to
-start at the nroff macros ".SH", ".NH", ".H", ".HU", ".nh" and ".sh".
+    A paragraph and  section boundary
+    is also a sentence boundary.
+    If the 'J' flag is present in 'cpoptions',
+    at least two spaces have to follow the punctuation mark;
+    <Tab>s are not recognized as white space.
 
-The "]]" and "[[" commands stop at the '{' in the first column.  This is
-useful to find the start of a function in a C program.  To search for a '}' in
-the first column, the end of a C function, use "][" (forward) or "[]"
-(backward).  Note that the first character of the command determines the
-search direction.
+    The definition of a sentence cannot be changed.
 
-If your '{' or '}' are not in the first column, and you would like to use "[["
-and "]]" anyway, try these mappings: >
-   :map [[ ?{<CR>w99[{
-   :map ][ /}<CR>b99]}
-   :map ]] j0[[%/{<CR>
-   :map [] k$][%?}<CR>
+*paragraph*
+    A paragraph begins after each empty line,
+    and also at each of a set of paragraph macros,
+    specified by the pairs of characters in the 'paragraphs' option.
+    The default is "IPLPPPQPP TPHPLIPpLpItpplpipbp",
+    which corresponds to the macros ".IP",
+    ".LP", etc.
+    (These are nroff macros,
+    so the dot must be in the first column).
+    A section boundary is also a paragraph boundary.
+    Note that a blank line (only containing white space) is NOT a paragraph boundary.
+	但在vip vap等selection中, IS a boundary
+    Note:
+    this does not include a '{' or '}' in the first column.
+
+*section*
+    A section begins after a form-feed (<C-L>) in the first column and
+    at each of a set of section macros,
+    specified by the pairs of characters in the 'sections' option.
+    The default is "SHNHH HUnhsh",
+    which defines a section to start at the nroff macros ".SH",
+    ".NH", ".H",
+    ".HU",
+    ".nh" and ".sh".
+    The "]]" and "[[" commands stop at the '{' in the first column.
+
+    This is useful to find the start of a function in a C program.
+
+    To search for a '}' in the first column,
+    the end of a C function,
+    use "][" (forward) or "[]" (backward).
+    Note that the first character of the command determines the search direction.
+
+    If your '{' or '}' are not in the first column,
+    and you would like to use "[[" and "]]" anyway,
+    try these mappings:
+
+	   :map [[ ?{<CR>w99[{
+	   :map ][ /}<CR>b99]}
+	   :map ]] j0[[%/{<CR>
+	   :map [] k$][%?}<CR>
 [type these literally, see |<>|]
 
 ==============================================================================
 6. Text object selection                        *object-select* *text-objects*
-                                                *v_a* *v_i*
+*v_a* *v_i*
 
-This is a series of commands that can only be used while in Visual mode or
-after an operator.  The commands that start with "a" select "a"n object
-including white space, the commands starting with "i" select an "inner" object
-without white space, or just the white space.  Thus the "inner" commands
-always select less text than the "a" commands.
+	This is a series of commands that can only be used while in Visual mode or
+	after an operator.
+	The commands that start with "a" select "a"n object including white space,
+	the commands starting with "i" select an "inner" object without white space,
+	or just the white space.
+	Thus the "inner" commands always select less text than the "a" commands.
+	Also see `gn` and `gN`,
+	operating on the last search pattern.
 
-Also see `gn` and `gN`, operating on the last search pattern.
-
-                                                        *v_aw* *aw*
+*v_aw* *aw*
 aw                      "a word", select [count] words (see |word|).
                         Leading or trailing white space is included, but not
                         counted.
                         When used in Visual linewise mode "aw" switches to
                         Visual charwise mode.
 
-                                                        *v_iw* *iw*
+*v_iw* *iw*
 iw                      "inner word", select [count] words (see |word|).
                         White space between words is counted too.
                         When used in Visual linewise mode "iw" switches to
                         Visual charwise mode.
 
-                                                        *v_aW* *aW*
+*v_aW* *aW*
 aW                      "a WORD", select [count] WORDs (see |WORD|).
                         Leading or trailing white space is included, but not
                         counted.
                         When used in Visual linewise mode "aW" switches to
                         Visual charwise mode.
 
-                                                        *v_iW* *iW*
+*v_iW* *iW*
 iW                      "inner WORD", select [count] WORDs (see |WORD|).
                         White space between words is counted too.
                         When used in Visual linewise mode "iW" switches to
                         Visual charwise mode.
 
-                                                        *v_as* *as*
+*v_as* *as*
 as                      "a sentence", select [count] sentences (see
                         |sentence|).
-                        When used in Visual mode it is made charwise.
+                        When used in Visual mode it is made 💛charwise.💛
 
-                                                        *v_is* *is*
-is                      "inner sentence", select [count] sentences (see
-                        |sentence|).
-                        When used in Visual mode it is made charwise.
 
-                                                        *v_ap* *ap*
+*v_ap* *ap*
 ap                      "a paragraph", select [count] paragraphs (see
                         |paragraph|).
                         Exception: a blank line (only containing white space)
                         is also a paragraph boundary.
-                        When used in Visual mode it is made linewise.
-
-                                                        *v_ip* *ip*
-ip                      "inner paragraph", select [count] paragraphs (see
-                        |paragraph|).
-                        Exception: a blank line (only containing white space)
-                        is also a paragraph boundary.
-                        When used in Visual mode it is made linewise.
+                        When used in Visual mode it is made 💛linewise.💛
 
 a]                                              *v_a]* *v_a[* *a]* *a[*
 a[                      "a [] block", select [count] '[' ']' blocks.  This
@@ -615,14 +626,14 @@ i<                      "inner <> block", select [count] <> blocks, from
                         '>', excluding the '<' and '>'.
                         When used in Visual mode it is made charwise.
 
-                                                *v_at* *at*
+*v_at* *at*
 at                      "a tag block", select [count] tag blocks, from the
                         [count]'th unmatched "<aaa>" backwards to the matching
                         "</aaa>", including the "<aaa>" and "</aaa>".
                         See |tag-blocks| about the details.
                         When used in Visual mode it is made charwise.
 
-                                                *v_it* *it*
+*v_it* *it*
 it                      "inner tag block", select [count] tag blocks, from the
                         [count]'th unmatched "<aaa>" backwards to the matching
                         "</aaa>", excluding the "<aaa>" and "</aaa>".
@@ -748,44 +759,44 @@ Jumping to a mark can be done in two ways:
                           character in the line of the specified location and
                           the motion is linewise.
 
-                                                *m* *mark* *Mark*
+*m* *mark* *Mark*
 m{a-zA-Z}               Set mark {a-zA-Z} at cursor position (does not move
                         the cursor, this is not a motion command).
 
-                                                *m'* *m`*
+*m'* *m`*
 m'  or  m`              Set the previous context mark.  This can be jumped to
                         with the "''" or "``" command (does not move the
                         cursor, this is not a motion command).
 
-                                                *m[* *m]*
+*m[* *m]*
 m[  or  m]              Set the |'[| or |']| mark.  Useful when an operator is
                         to be simulated by multiple commands.  (does not move
                         the cursor, this is not a motion command).
 
-                                                *m<* *m>*
+*m<* *m>*
 m<  or  m>              Set the |'<| or |'>| mark.  Useful to change what the
                         `gv` command selects.  (does not move the cursor, this
                         is not a motion command).
                         Note that the Visual mode cannot be set, only the
                         start and end position.
 
-                                                *:ma* *:mark* *E191*
+*:ma* *:mark* *E191*
 :[range]ma[rk] {a-zA-Z'}
                         Set mark {a-zA-Z'} at last line number in [range],
                         column 0.  Default is cursor line.
 
-                                                *:k*
+*:k*
 :[range]k{a-zA-Z'}      Same as :mark, but the space before the mark name can
                         be omitted.
 
-                                                *'* *'a* *`* *`a*
+*'* *'a* *`* *`a*
 '{a-z}  `{a-z}          Jump to the mark {a-z} in the current buffer.
 
-                                                *'A* *'0* *`A* *`0*
+*'A* *'0* *`A* *`0*
 '{A-Z0-9}  `{A-Z0-9}    To the mark {A-Z0-9} in the file where it was set (not
                         a motion command when in another file).
 
-                                                *g'* *g'a* *g`* *g`a*
+*g'* *g'a* *g`* *g`a*
 g'{mark}  g`{mark}
                         Jump to the {mark}, but don't change the jumplist when
                         jumping within the current buffer.  Example: >
@@ -793,17 +804,17 @@ g'{mark}  g`{mark}
 <                       jumps to the last known position in a file.
                         See also |:keepjumps|.
 
-                                                *:marks*
+*:marks*
 :marks                  List all the current marks (not a motion command).
                         The |'(|, |')|, |'{| and |'}| marks are not listed.
                         The first column has number zero.
-                                                *E283*
+*E283*
 :marks {arg}            List the marks that are mentioned in {arg} (not a
                         motion command).  For example: >
                                 :marks aB
 <                       to list marks 'a' and 'B'.
 
-                                                        *:delm* *:delmarks*
+*:delm* *:delmarks*
 :delm[arks] {marks}     Delete the specified marks.  Marks that can be deleted
                         include A-Z and 0-9.  You cannot delete the ' mark.
                         They can be specified by giving the list of mark
@@ -851,11 +862,11 @@ time, etc.  Use the "r" flag in 'shada' to specify files for which no
 Numbered mark should be stored.  See |shada-file-marks|.
 
 
-                                                        *'[* *`[*
+*'[* *`[*
 '[  `[                  To the first character of the previously changed
                         or yanked text.
 
-                                                        *']* *`]*
+*']* *`]*
 ']  `]                  To the last character of the previously changed or
                         yanked text.
 
@@ -871,13 +882,13 @@ Note: After deleting text, the start and end positions are the same, except
 when using blockwise Visual mode.  These commands do not work when no change
 was made yet in the current file.
 
-                                                        *'<* *`<*
+*'<* *`<*
 '<  `<                  To the first line or character of the last selected
                         Visual area in the current buffer.  For block mode it
                         may also be the last character in the first line (to
                         be able to define the block).
 
-                                                        *'>* *`>*
+*'>* *`>*
 '>  `>                  To the last line or character of the last selected
                         Visual area in the current buffer.  For block mode it
                         may also be the first character of the last line (to
@@ -885,29 +896,29 @@ was made yet in the current file.
                         applies, the position may be just after the Visual
                         area.
 
-                                                        *''* *``*
+*''* *``*
 ''  ``                  To the position before the latest jump, or where the
                         last "m'" or "m`" command was given.  Not set when the
                         |:keepjumps| command modifier was used.
                         Also see |restore-position|.
 
-                                                        *'quote* *`quote*
+*'quote* *`quote*
 '"  `"                  To the cursor position when last exiting the current
                         buffer.  Defaults to the first character of the first
                         line.  See |last-position-jump| for how to use this
                         for each opened file.
                         Only one position is remembered per buffer, not one
                         for each window.  As long as the buffer is visible in
-                        a window the position won't be changed.  Mark is also 
+                        a window the position won't be changed.  Mark is also
                         reset when |:wshada| is run.
 
-                                                        *'^* *`^*
+*'^* *`^*
 '^  `^                  To the position where the cursor was the last time
                         when Insert mode was stopped.  This is used by the
                         |gi| command.  Not set when the |:keepjumps| command
                         modifier was used.
 
-                                                        *'.* *`.*
+*'.* *`.*
 '.  `.                  To the position where the last change was made.  The
                         position is at or near where the change started.
                         Sometimes a command is executed as several changes,
@@ -916,38 +927,38 @@ was made yet in the current file.
                         the position will be on the last character.
                         To jump to older changes use |g;|.
 
-                                                        *'(* *`(*
+*'(* *`(*
 '(  `(                  To the start of the current sentence, like the |(|
                         command.
 
-                                                        *')* *`)*
+*')* *`)*
 ')  `)                  To the end of the current sentence, like the |)|
                         command.
 
-                                                        *'{* *`{*
+*'{* *`{*
 '{  `{                  To the start of the current paragraph, like the |{|
                         command.
 
-                                                        *'}* *`}*
+*'}* *`}*
 '}  `}                  To the end of the current paragraph, like the |}|
                         command.
 
 These commands are not marks themselves, but jump to a mark:
 
-                                                        *]'*
+*]'*
 ]'                      [count] times to next line with a lowercase mark below
                         the cursor, on the first non-blank character in the
                         line.
 
-                                                        *]`*
+*]`*
 ]`                      [count] times to lowercase mark after the cursor.
 
-                                                        *['*
+*['*
 ['                      [count] times to previous line with a lowercase mark
                         before the cursor, on the first non-blank character in
                         the line.
 
-                                                        *[`*
+*[`*
 [`                      [count] times to lowercase mark before the cursor.
 
 
@@ -992,7 +1003,7 @@ These commands are not marks themselves, but jump to a mark:
                         When the 'R' flag is missing from 'cpoptions' this has
                         the same effect as using ":keepmarks".
 
-                                                        *:keepj* *:keepjumps*
+*:keepj* *:keepjumps*
 :keepj[umps] {command}
                         Moving around in {command} does not change the |''|,
                         |'.| and |'^| marks, the |jumplist| or the
@@ -1024,7 +1035,7 @@ following commands are "jump" commands: "'", "`", "G", "/", "?", "n", "N",
 "%", "(", ")", "[[", "]]", "{", "}", ":s", ":tag", "L", "M", "H" and the
 commands that start editing a new file.
 
-                                                        *CTRL-O*
+*CTRL-O*
 CTRL-O                  Go to [count] Older cursor position in jump list
                         (not a motion command).
 
@@ -1032,13 +1043,13 @@ CTRL-O                  Go to [count] Older cursor position in jump list
 CTRL-I                  Go to [count] newer cursor position in jump list
                         (not a motion command).
 
-                                                        *:ju* *:jumps*
+*:ju* *:jumps*
 :ju[mps]                Print the jump list (not a motion command).
 
-                                                        *:cle* *:clearjumps*
+*:cle* *:clearjumps*
 :cle[arjumps]           Clear the jump list of the current window.
 
-                                                        *jumplist*
+*jumplist*
 Jumps are remembered in a jump list.  With the CTRL-O and CTRL-I command you
 can go to cursor positions before older jumps, and back again.  Thus you can
 move up and down the list.  There is a separate jump list for each window.
@@ -1046,11 +1057,11 @@ The maximum number of entries is fixed at 100.
 
 For example, after three jump commands you have this jump list:
 
-    jump line  col file/text ~
-      3   1    0 some text ~
-      2  70    0 another line ~
-      1  1154   23 end. ~
-   > ~
+    jump line  col file/text
+      3   1    0 some text
+      2  70    0 another line
+      1  1154   23 end.
+   >
 
 The "file/text" column shows the file name, or the text at the jump if it is
 in the current file (an indent is removed and a long line is truncated to fit
@@ -1059,11 +1070,11 @@ in the window).
 You are currently in line 1167.  If you then use the CTRL-O command, the
 cursor is put in line 1154.  This results in:
 
-    jump line  col file/text ~
-      2   1    0 some text ~
-      1  70    0 another line ~
-   >  0  1154   23 end. ~
-      1  1167    0 foo bar ~
+    jump line  col file/text
+      2   1    0 some text
+      1  70    0 another line
+   >  0  1154   23 end.
+      1  1167    0 foo bar
 
 The pointer will be set at the last used jump position.  The next CTRL-O
 command will use the entry above it, the next CTRL-I command will use the
@@ -1090,12 +1101,12 @@ that calling setpos() does not do this.
 After the CTRL-O command that got you into line 1154 you could give another
 jump command (e.g., "G").  The jump list would then become:
 
-    jump line  col file/text ~
-      4   1    0 some text ~
-      3  70    0 another line ~
-      2  1167    0 foo bar ~
-      1  1154   23 end. ~
-   > ~
+    jump line  col file/text
+      4   1    0 some text
+      3  70    0 another line
+      2  1167    0 foo bar
+      1  1154   23 end.
+   >
 
 The line numbers will be adjusted for deleted and inserted lines.  This fails
 if you stop editing a file without writing, like with ":n!".
@@ -1105,7 +1116,7 @@ When you split a window, the jumplist will be copied to the new window.
 If you have included the ' item in the 'shada' option the jumplist will be
 stored in the ShaDa file and restored when starting Vim.
 
-                                                        *jumplist-stack*
+*jumplist-stack*
 When jumpoptions includes "stack", the jumplist behaves like the history in a
 web browser and like the tag stack.  When jumping to a new location from the
 middle of the jumplist, the locations after the current position will be
@@ -1146,7 +1157,7 @@ locations being removed:
    3  1260    8 src/nvim/mark.c
    2   685    0 src/nvim/option_defs.h
    1   462   36 src/nvim/option_defs.h  <-- location X
-> 
+>
 
 Then, when yet another location Z is jumped to, the new location Y appears
 directly after location X in the jumplist and location X remains in the same
@@ -1158,7 +1169,7 @@ prior to the original jump from X to Y:
    3   685    0 src/nvim/option_defs.h  <-- location X-1
    2   462   36 src/nvim/option_defs.h  <-- location X
    1   100    0 src/nvim/option_defs.h  <-- location Y
-> 
+>
 
 CHANGE LIST JUMPS                       *changelist* *change-list-jumps* *E664*
 
@@ -1167,14 +1178,14 @@ remembered for every change that can be undone, unless it is close to a
 previous change.  Two commands can be used to jump to positions of changes,
 also those that have been undone:
 
-                                                        *g;* *E662*
+*g;* *E662*
 g;                      Go to [count] older position in change list.
                         If [count] is larger than the number of older change
                         positions go to the oldest change.
                         If there is no older change an error message is given.
                         (not a motion command)
 
-                                                        *g,* *E663*
+*g,* *E663*
 g,                      Go to [count] newer cursor position in change list.
                         Just like |g;| but in the opposite direction.
                         (not a motion command)
@@ -1199,14 +1210,14 @@ been deleted.
 When the `:keepjumps` command modifier is used the position of a change is not
 remembered.
 
-                                                        *:changes*
+*:changes*
 :changes                Print the change list.  A ">" character indicates the
                         current position.  Just after a change it is below the
                         newest entry, indicating that `g;` takes you to the
                         newest entry position.  The first column indicates the
                         count needed to take you to this position.  Example:
 
-                                change line  col text ~
+                                change line  col text
                                     3     9    8 bla bla bla
                                     2    11   57 foo is a bar
                                     1    14   54 the latest changed line
@@ -1215,7 +1226,7 @@ remembered.
                         The `3g;` command takes you to line 9.  Then the
                         output of `:changes` is:
 
-                                change line  col text ~
+                                change line  col text
                                 >   0     9    8 bla bla bla
                                     1    11   57 foo is a bar
                                     2    14   54 the latest changed line
@@ -1226,7 +1237,7 @@ remembered.
 ==============================================================================
 9. Various motions                              *various-motions*
 
-                                                        *%*
+*%*
 %                       Find the next item in this line 💚after or under💚 the
                         cursor and jump to its match. |inclusive| motion.
                         Items can be:
@@ -1265,19 +1276,19 @@ remembered.
                         percentage down the file |N%|.  Using '%' on
                         #if/#else/#endif makes the movement linewise.
 
-                                                *[(*
+*[(*
 [(                      Go to [count] previous unmatched '('.
                         |exclusive| motion.
 
-                                                *[{*
+*[{*
 [{                      Go to [count] previous unmatched '{'.
                         |exclusive| motion.
 
-                                                *])*
+*])*
 ])                      Go to [count] next unmatched ')'.
                         |exclusive| motion.
 
-                                                *]}*
+*]}*
 ]}                      Go to [count] next unmatched '}'.
                         |exclusive| motion.
 
@@ -1287,25 +1298,25 @@ end of the code block, but you can do this from anywhere in the code block.
 Very useful for C programs.  Example: When standing on "case x:", "[{" will
 bring you back to the switch statement.
 
-                                                *]m*
+*]m*
 ]m                      Go to [count] next start of a method (for Java or
                         similar structured language).  When not before the
                         start of a method, jump to the start or end of the
                         class.  When no '{' is found after the cursor, this is
                         an error.  |exclusive| motion.
-                                                *]M*
+*]M*
 ]M                      Go to [count] next end of a method (for Java or
                         similar structured language).  When not before the end
                         of a method, jump to the start or end of the class.
                         When no '}' is found after the cursor, this is an
                         error. |exclusive| motion.
-                                                *[m*
+*[m*
 [m                      Go to [count] previous start of a method (for Java or
                         similar structured language).  When not after the
                         start of a method, jump to the start or end of the
                         class.  When no '{' is found before the cursor this is
                         an error. |exclusive| motion.
-                                                *[M*
+*[M*
 [M                      Go to [count] previous end of a method (for Java or
                         similar structured language).  When not after the
                         end of a method, jump to the start or end of the
@@ -1335,11 +1346,11 @@ the start of "method_two()" (obviously this is much more useful when the
 method is long!).  Using "2[m" will jump to the start of "method_one()".
 Using "3[m" will jump to the start of the class.
 
-                                                *[#*
+*[#*
 [#                      Go to [count] previous unmatched "#if" or "#else".
                         |exclusive| motion.
 
-                                                *]#*
+*]#*
 ]#                      Go to [count] next unmatched "#else" or "#endif".
                         |exclusive| motion.
 
@@ -1347,16 +1358,16 @@ These two commands work in C programs that contain #if/#else/#endif
 constructs.  It brings you to the start or end of the #if/#else/#endif where
 the current line is included.  You can then use "%" to go to the matching line.
 
-                                                *[star* *[/*
+*[star* *[/*
 [*  or  [/              Go to [count] previous start of a C comment "/*".
                         |exclusive| motion.
 
-                                                *]star* *]/*
+*]star* *]/*
 ]*  or  ]/              Go to [count] next end of a C comment "*/".
                         |exclusive| motion.
 
 
-                                                *H*
+*H*
 H                       To line [count] from top (Home) of window (default:
                         first line on the window) on the first non-blank
                         character |linewise|.  See also 'startofline' option.
@@ -1365,11 +1376,11 @@ H                       To line [count] from top (Home) of window (default:
                         scroll.  E.g. "yH" yanks from the first visible line
                         until the cursor line (inclusive).
 
-                                                *M*
+*M*
 M                       To Middle line of window, on the first non-blank
                         character |linewise|.  See also 'startofline' option.
 
-                                                *L*
+*L*
 L                       To line [count] from bottom of window (default: Last
                         line on the window) on the first non-blank character
                         |linewise|.  See also 'startofline' option.

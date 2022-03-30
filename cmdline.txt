@@ -857,6 +857,7 @@ Note: these are typed literally, they are not special keys!
                                 au BufEnter * echo  <afile>
         <afile>    When executing autocommands, is replaced with the file name
                    of the buffer being manipulated, or the file for a read or  write.  *E495*
+		   详见个event的解释
                                                         *:<abuf>* *<abuf>*
         <abuf>     When executing autocommands, is replaced with the currently
                    effective buffer number (for ":r file" and ":so file" it is

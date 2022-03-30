@@ -3,17 +3,20 @@
 
 		  VIM REFERENCE MANUAL    by Bram Moolenaar
 
-								*index*
-This file contains a list of all commands for each mode, with a tag and a
-short description.  The lists are sorted on ASCII value.
-
-Tip: When looking for certain functionality, use a search command.  E.g.,
-to look for deleting something, use: "/delete".
-
-For an overview of options see |option-list|.
-For an overview of built-in functions see |functions|.
-For a list of Vim variables see |vim-variable|.
-For a complete listing of all help items see |help-tags|.
+*index*
+    This file contains a list of all commands for each mode,
+    with a tag and
+    a short description.
+    The lists are sorted on ASCII value.
+    Tip:
+    When looking for certain functionality,
+    use a search command. E.g.,
+    to look for deleting something, use:
+    "/delete".
+    For an overview of options see |option-list|.
+    For an overview of built-in functions see |functions|.
+    For a list of Vim variables see |vim-variable|.
+    For a complete listing of all help items see |help-tags|.
 
                                       Type |gO| to see the table of contents.
 
@@ -1111,7 +1114,7 @@ This is a brief but complete listing of all the ":" commands, without
 mentioning any arguments.  The optional part of the command name is inside [].
 The commands are sorted on the non-optional part of their name.
 
-tag		command		action ~
+tag		command		action
 ------------------------------------------------------------------------------
 |:|		:		nothing
 |:range|	:{range}	go to last line in {range}
