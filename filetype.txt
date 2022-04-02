@@ -332,69 +332,76 @@ There you can see where Vim looks for your plugin scripts.
 ==============================================================================
 2. Filetype plugin                                      *filetype-plugins*
 
-When loading filetype plugins has been enabled |:filetype-plugin-on|, options
-will be set and mappings defined.  These are all local to the buffer, they
-will not be used for other files.
+    When loading filetype plugins has been enabled |:filetype-plugin-on|,
+    options will be set and
+    mappings defined.
+    These are all local to the buffer,
+    they will not be used for other files.
 
-Defining mappings for a filetype may get in the way of the mappings you
-define yourself.  There are a few ways to avoid this:
-1. Set the "maplocalleader" variable to the key sequence you want the mappings
-   to start with.  Example:
-
+    Defining mappings for a filetype may get in the way of the mappings you define yourself.
+    There are a few ways to avoid this:
+    1. Set the "maplocalleader" variable to the key sequence you want the mappings to start with.
+     Example:
         :let maplocalleader = ","
-  All mappings will then start with a comma instead of the default, which
-   is a backslash.  Also see |<LocalLeader>|.
+        All mappings will then start with a comma instead of the default, which  is a backslash.  Also see |<LocalLeader>|.
 
-2. Define your own mapping.  Example:
+    2. Define your own mapping.  Example:
 
-        :map ,p <Plug>MailQuote
-  You need to check the description of the plugin file below for the
-   functionality it offers and the string to map to.
-   You need to define your own mapping before the plugin is loaded (before
-   editing a file of that type).  The plugin will then skip installing the
-   default mapping.
-*no_mail_maps*
-3. Disable defining mappings for a specific filetype by setting a variable,
-   which contains the name of the filetype.  For the "mail" filetype this
-   would be:
+            :map ,p <Plug>MailQuote
 
-        :let no_mail_maps = 1
-*no_plugin_maps*
-4. Disable defining mappings for all filetypes by setting a variable:
+        You need to check the description of the plugin file below for the functionality it offers and
+        the string to map to.
+        You need to define your own mapping before the plugin is loaded (before editing a file of that type).
+        The plugin will then skip installing the default mapping.
 
-        :let no_plugin_maps = 1
+    3. Disable defining mappings for a specific filetype by setting a variable,
+        which contains the name of the filetype.
+        For the "mail" filetype this would be:
+
+            :let no_mail_maps = 1   *no_mail_maps*
+
+    4. Disable defining mappings for all filetypes by setting a variable:
+        :let no_plugin_maps = 1  *no_plugin_maps*
 
 
 *ftplugin-overrule*
-If a global filetype plugin does not do exactly what you want, there are three
-ways to change this:
+    If a global filetype plugin does not do exactly what you want,
+    there are three ways to change this:
 
-1. Add a few settings.
-   You must create a new filetype plugin in a directory early in
-   'runtimepath'.  For Unix, for example you could use this file:
+        1. Add a few settings.
+            You must create a new filetype plugin in a directory early in 'runtimepath'.
+            For Unix,
+            for example
+            you could use this file:
 
-        vim ~/.config/nvim/ftplugin/fortran.vim
-  You can set those settings and mappings that you would like to add.  Note
-   that the global plugin will be loaded after this, it may overrule the
-   settings that you do here.  If this is the case, you need to use one of the
-   following two methods.
+                vim ~/.config/nvim/ftplugin/fortran.vim
+            You can set those settings and
+            mappings that you would like to add.
+            Note that the global plugin will be loaded after this,
+            it may overrule the settings that you do here.
+            If this is the case,
+            you need to use one of the following two methods.
 
-2. Make a copy of the plugin and change it.
-   You must put the copy in a directory early in 'runtimepath'.  For Unix, for
-   example, you could do this:
+        2. Make a copy of the plugin and change it.
+            You must put the copy in a directory early in 'runtimepath'.
+            For Unix,
+            you could do this:
+                cp $VIMRUNTIME/ftplugin/fortran.vim ~/.config/nvim/ftplugin/fortran.vim
+            Then you can edit the copied file to your liking.
+            Since the b:did_ftplugin variable will be set,
+            the global plugin will not be loaded.
+            A disadvantage of this method is that when the distributed plugin gets improved,
+            you will have to copy and
+            modify it again.
 
-        cp $VIMRUNTIME/ftplugin/fortran.vim ~/.config/nvim/ftplugin/fortran.vim
-  Then you can edit the copied file to your liking.  Since the b:did_ftplugin
-   variable will be set, the global plugin will not be loaded.
-   A disadvantage of this method is that when the distributed plugin gets
-   improved, you will have to copy and modify it again.
+        3. Overrule the settings 💛after loading the global plugin.💛
+            You must create a new filetype plugin in a directory from the end of 'runtimepath'.
+            For Unix,
+            for example,
+            you could use this file:
+                vim ~/.config/nvim/after/ftplugin/fortran.vim
+            In this file you can change just those settings that you want to change.
 
-3. Overrule the settings after loading the global plugin.
-   You must create a new filetype plugin in a directory from the end of
-   'runtimepath'.  For Unix, for example, you could use this file:
-
-        vim ~/.config/nvim/after/ftplugin/fortran.vim
-  In this file you can change just those settings that you want to change.
 
 ==============================================================================
 3.  Docs for the default filetype plugins.              *ftplugin-docs*
@@ -575,67 +582,67 @@ Local mappings:
 
 MAN                                     *ft-man-plugin* *:Man* *man.vim*
 
-View manpages in Nvim. Supports highlighting, completion, locales, and
-navigation. Also see |find-manpage|.
+    View manpages in Nvim. Supports highlighting, completion, locales, and
+    navigation. Also see |find-manpage|.
 
-man.vim will always attempt to reuse the closest man window (above/left) but
-otherwise create a split.
+    man.vim will always attempt to reuse the closest man window (above/left) but
+    otherwise create a split.
 
-The case sensitivity of completion is controlled by 'fileignorecase'.
+    The case sensitivity of completion is controlled by 'fileignorecase'.
 
-Commands:
-Man {name}                Display the manpage for {name}.
-Man {sect} {name}         Display the manpage for {name} and section {sect}.
-Man {name}({sect})        Same as above.
-Man {sect} {name}({sect}) Used during completion to show the real section of
-                          when the provided section is a prefix, e.g. 1m vs 1.
-Man {path}                Open the manpage at {path}. Prepend "./" if {path}
-                          is relative to the current directory.
-Man                       Open the manpage for the <cWORD> (man buffers)
-                          or <cword> (non-man buffers) under the cursor.
-Man!                      Display the current buffer contents as a manpage.
+    Commands:
+    Man {name}                Display the manpage for {name}.
+    Man {sect} {name}         Display the manpage for {name} and section {sect}.
+    Man {name}({sect})        Same as above.
+    Man {sect} {name}({sect}) Used during completion to show the real section of
+                              when the provided section is a prefix, e.g. 1m vs 1.
+    Man {path}                Open the manpage at {path}. Prepend "./" if {path}
+                              is relative to the current directory.
+    Man                       Open the manpage for the <cWORD> (man buffers)
+                              or <cword> (non-man buffers) under the cursor.
+    Man!                      Display the current buffer contents as a manpage.
 
-|:Man| accepts command modifiers. For example, to use a vertical split:
+    |:Man| accepts command modifiers. For example, to use a vertical split:
 
-     :vertical Man printf
+         :vertical Man printf
 
-Local mappings:
-K or CTRL-]               Jump to the manpage for the <cWORD> under the
-                          cursor. Takes a count for the section.
-CTRL-T                    Jump back to the location that the manpage was
-                          opened from.
-gO                        Show the manpage outline. |gO|
-q                         :quit if invoked as $MANPAGER, otherwise :close.
+    Local mappings:
+    K or CTRL-]               Jump to the manpage for the <cWORD> under the
+                              cursor. Takes a count for the section.
+    CTRL-T                    Jump back to the location that the manpage was
+                              opened from.
+    gO                        Show the manpage outline. |gO|
+    q                         :quit if invoked as $MANPAGER, otherwise :close.
 
-Variables:
-*g:no_man_maps*             Do not create mappings in manpage buffers.
-*g:ft_man_folding_enable*   Fold manpages with foldmethod=indent foldnestmax=1.
-*b:man_default_sects*       Comma-separated, ordered list of preferred sections.
-                          For example in C one usually wants section 3 or 2:
+    Variables:
+    *g:no_man_maps*             Do not create mappings in manpage buffers.
+    *g:ft_man_folding_enable*   Fold manpages with foldmethod=indent foldnestmax=1.
+    *b:man_default_sects*       Comma-separated, ordered list of preferred sections.
+                              For example in C one usually wants section 3 or 2:
 
-                               :let b:man_default_sections = '3,2'
-*g:man_hardwrap*          Hard-wrap to $MANWIDTH or window width if $MANWIDTH is
-                          empty. Enabled by default. Set |FALSE| to enable soft
-                          wrapping.
+                                   :let b:man_default_sections = '3,2'
+    *g:man_hardwrap*          Hard-wrap to $MANWIDTH or window width if $MANWIDTH is
+                              empty. Enabled by default. Set |FALSE| to enable soft
+                              wrapping.
 
-To use Nvim as a manpager:
+    To use Nvim as a manpager:
 
-     export MANPAGER='nvim +Man!'
+         export MANPAGER='nvim +Man!'
 
-Note that when running `man` from the shell and
-with that `MANPAGER` in your environment,
-`man` will pre-format the manpage using `groff`.
-Thus,  Neovim will inevitably display the manual page 💚as it was passed to it from stdin💚.
-The width will _always_ be hard-wrapped  (not soft wrapped) 哪怕开了 `g:man_hardwrap=0`.
-You can set in your environment:
+    Note that when running `man` from the shell and
+    with that `MANPAGER` in your environment,
+    `man` will pre-format the manpage using `groff`.
+    Thus,  Neovim will inevitably display the manual page 💚as it was passed to it from stdin💚.
+    The width will _always_ be hard-wrapped  (not soft wrapped) 哪怕开了 `g:man_hardwrap=0`.
+    You can set in your environment:
 
-         export MANWIDTH=999
+             export MANWIDTH=999
 
-💚 So `groff`'s pre-formatting output will be the same as with `g:man_hardwrap=0` 💚
+    💚 So `groff`'s pre-formatting output will be the same as with `g:man_hardwrap=0` 💚
 
-To disable bold highlighting:
+    To disable bold highlighting:
 
-     :highlight link manBold Normal
+         :highlight link manBold Normal
 
 
 MARKDOWN                                                *ft-markdown-plugin*
@@ -899,11 +906,11 @@ Currently no other formats are recognized.
 
 VIM                                                     *ft-vim-plugin*
 
-The Vim filetype plugin defines mappings to move to the start and end of
-functions with [[ and ]].  Move around comments with ]" and [".
+    The Vim filetype plugin defines mappings to move to the start and
+    end of functions with [[ and ]].
+    Move around comments with ]" and [".
 
-The mappings can be disabled with:
-
+    The mappings can be disabled with:
         let g:no_vim_maps = 1
 
 

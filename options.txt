@@ -1104,18 +1104,27 @@ It can consist of the following optional  items and must be separated by a comma
         special kinds of buffers.   See |special-buffers|.
 
 *'buflisted'* *'bl'* *'nobuflisted'* *'nobl'* *E85*
-'buflisted' 'bl'        boolean (default: on)
-                        local to buffer
-When this option is set, the buffer shows up in the buffer list.
-If it is reset, it is not used for ":bnext", "ls", the Buffers menu, etc.
-This option is reset by Vim for buffers that are only used to 💛remember a file name or marks.💛
-Vim sets it when starting to edit a buffer.
-But not when moving to a buffer with ":buffer".
+
+    boolean (default: on)
+    local to buffer
+    'hidden'是global的
+
+    if 'buflisted':
+        the buffer shows up in the buffer list
+
+    If 'nobuflisted'
+        see |unlisted-buffer|
+
+        the buffer is not used for ":bnext", "ls",  the Buffers menu,  etc.
+        set by Vim for buffers that are only used to 💛remember a file name or  marks.💛
+
+    Vim sets 'buflisted' when starting to edit a buffer.
+    But not when moving to a buffer with "|:buffer|".
 
 *'buftype'* *'bt'* *E382*
 'buftype' 'bt'          string (default: "")
-                        local to buffer
-        The value of this option specifies the type of a buffer:
+    local to buffer
+    The value of this option specifies the type of a buffer:
           <empty>       normal buffer
           acwrite       buffer will always be written with |BufWriteCmd|s
           help          help buffer (do not set this manually)
@@ -1126,39 +1135,41 @@ But not when moving to a buffer with ":buffer".
           prompt        buffer where only the last line can be edited, meant
                         to be used by a plugin, see |prompt-buffer|
 
-        This option is used together with 'bufhidden' and 'swapfile' to
-        specify special kinds of buffers.   See |special-buffers|.
-        Also see |win_gettype()|, which returns the type of the window.
+        This option is used together with 'bufhidden' and 'swapfile' to specify special kinds of buffers.
+            See |special-buffers|.
+            Also see |win_gettype()|,
+            which returns the type of the window.
 
-        Be careful with changing this option, it can have many side effects!
-        One such effect is that Vim will not check the timestamp of the file,
-        if the file is changed by another program this will not be noticed.
+            Be careful with changing this option,
+            it can have many side effects!
 
-        A "quickfix" buffer is only used for the error list and the location
-        list.  This value is set by the |:cwindow| and |:lwindow| commands and
-        you are not supposed to change it.
+            One such effect is that Vim will not check the timestamp of the file,
+            if the file is changed by another program this will not be noticed.
 
-        "nofile" and "nowrite" buffers are similar:
-        both:           The buffer is not to be written to disk, ":w" doesn't
-                        work (":w filename" does work though).
-        both:           The buffer is never considered to be |'modified'|.
-                        There is no warning when the changes will be lost, for
-                        example when you quit Vim.
-        both:           A swap file is only created when using too much memory
-                        (when 'swapfile' has been reset there is never a swap
-                        file).
-        nofile only:    The buffer name is fixed, it is not handled like a
-                        file name.  It is not modified in response to a |:cd|
-                        command.
-        both:           When using ":e bufname" and already editing "bufname"
-                        the buffer is made empty and autocommands are
-                        triggered as usual for |:edit|.
-*E676*
-        "acwrite" implies that the buffer name is not related to a file, like
-        "nofile", but it will be written.  Thus, in contrast to "nofile" and
-        "nowrite", ":w" does work and a modified buffer can't be abandoned
-        without saving.  For writing there must be matching |BufWriteCmd|,
-        |FileWriteCmd| or |FileAppendCmd| autocommands.
+        1. A "quickfix" buffer is only used for the error list and
+            the location  list.
+
+            This value is set by the |:cwindow| and |:lwindow| commands and
+            you are not supposed to change it.
+
+        2. "nofile" and "nowrite" buffers are similar:
+            both:           The buffer is not to be written to disk, ":w" doesn't  work (":w filename" does work though).
+            both:           The buffer is never considered to be |'modified'|.
+                            There is no warning when the changes will be lost, for
+                            example when you quit Vim.
+            both:           A swap file is only created when using too much memory
+                            (when 'swapfile' has been reset there is never a swap
+                            file).
+            nofile only:    The buffer name is fixed, it is not handled like a  file name.
+                            It is not modified in response to a |:cd|  command.
+            both:           When using ":e bufname" and already editing "bufname"
+                            the buffer is made empty and autocommands are  triggered as usual for |:edit|.
+    *E676*
+         3. "acwrite" implies that the buffer name is not related to a file, like
+            "nofile", but it will be written.  Thus, in contrast to "nofile" and
+            "nowrite", ":w" does work and a modified buffer can't be abandoned
+            without saving.  For writing there must be matching |BufWriteCmd|,
+            |FileWriteCmd| or |FileAppendCmd| autocommands.
 
 *'casemap'* *'cmp'*
 'casemap' 'cmp'         string  (default: "internal,keepascii")
@@ -1374,6 +1385,10 @@ But not when moving to a buffer with ":buffer".
         A template for a comment.  The "%s" in the value is replaced with the
         comment text.  Currently only used to add markers for folding, see
         |fold-marker|.
+       其他用处:
+       (只见到这个例子)
+           https://github.com/tpope/vim-commentary里利用它了
+               autocmd FileType apache setlocal commentstring=#\ %s
 
 *'complete'* *'cpt'* *E535*
 'complete' 'cpt'        string  (default: ".,w,b,u,t")
@@ -3156,9 +3171,12 @@ vim里的这些option, nvim扔了:
         try to find the tag in the current language before using this option.
         See |help-translated|.
 
-*'hidden'* *'hid'* *'nohidden'* *'nohid'*
-'hidden' 'hid'          boolean (default on)
-                        global
+*'hidden'*  *'hid'*
+*'nohidden'* *'nohid'*
+        boolean (default on)
+        global
+       |'buflisted'| 是local的
+
         When off a buffer is unloaded (including loss of undo information)
         when it is |abandon|ed.  When on a buffer becomes hidden when it is
         |abandon|ed.  A buffer displayed in another window does not become
@@ -4636,8 +4654,9 @@ use:
 *'pvw'* *'nopvw'* *E590*
 'previewwindow' 'pvw'   boolean (default off)
                         local to window
-        Identifies the preview window.  Only one window can have this option
-        set.  It's normally not set directly, but by using one of the commands
+        Identifies the preview window.
+        Only one window per tabpage can have this option  set.
+        It's normally not set directly, but by using one of the commands
         |:ptag|, |:pedit|, etc.
 
 *'printdevice'* *'pdev'*
@@ -4772,14 +4791,17 @@ use:
 *'readonly'* *'ro'* *'noreadonly'* *'noro'*
 'readonly' 'ro'         boolean (default off)
                         local to buffer
-        If on, writes fail unless you use a '!'.  Protects you from
-        accidentally overwriting a file.  Default on when Vim is started
-        in read-only mode ("vim -R") or when the executable is called "view".
-        When using ":w!" the 'readonly' option is reset for the current
-        buffer, unless the 'Z' flag is in 'cpoptions'.
-        When using the ":view" command the 'readonly' option is
-        set for the newly edited buffer.
-        See 'modifiable' for disallowing changes to the buffer.
+
+    See 'modifiable' for disallowing changes to the buffer.
+
+    If on,
+        能改不能存
+        writes fail unless you use a '!'.
+        Protects you from accidentally overwriting a file.
+        Default on when Vim is started in read-only mode ("vim -R") or when the executable is called "view".
+    When using ":w!" the 'readonly' option is reset for the current buffer,
+    When using the ":view" command
+        the 'readonly' option is set for the newly edited buffer.
 
 *'redrawdebug'* *'rdb'*
 'redrawdebug' 'rdb'     string  (default '')
@@ -5041,90 +5063,91 @@ string
           spell/        spell checking files |spell|
           syntax/       syntax files |mysyntaxfile|
           tutor/        tutorial files |:Tutor|
-		  And any other file searched for with the |:runtime| command.
-												 |:runtime|命令其实是:
+                  And any other file searched for with the |:runtime| command.
+                                                                                                 |:runtime|命令其实是:
                                                   加了某些条件的:source
-												  或者          :lua require('文件名_不带lua后缀')
+                                                                                                  或者          :lua require('文件名_不带lua后缀')
 
 
 default:  "$XDG_CONFIG_HOME/nvim,
-		   $XDG_CONFIG_DIRS[1]/nvim,
-		   $XDG_CONFIG_DIRS[2]/nvim,
-		   …
+                   $XDG_CONFIG_DIRS[1]/nvim,
+                   $XDG_CONFIG_DIRS[2]/nvim,
+                   …
 
-		   $XDG_DATA_HOME/nvim[-data]/site,
-		   $XDG_DATA_DIRS[1]/nvim/site,
-		   $XDG_DATA_DIRS[2]/nvim/site,
-		   …
+                   $XDG_DATA_HOME/nvim[-data]/site,
+                   $XDG_DATA_DIRS[1]/nvim/site,
+                   $XDG_DATA_DIRS[2]/nvim/site,
+                   …
 
-		   $VIMRUNTIME,
-		   …
-		   $XDG_DATA_DIRS[2]/nvim/site/after,
-		   $XDG_DATA_DIRS[1]/nvim/site/after,
-		   $XDG_DATA_HOME/nvim[-data]/site/after,
-		   …
-		   $XDG_CONFIG_DIRS[2]/nvim/after,
-		   $XDG_CONFIG_DIRS[1]/nvim/after,
-		   $XDG_CONFIG_HOME/nvim/after")
+                   $VIMRUNTIME,
+                   …
+                   $XDG_DATA_DIRS[2]/nvim/site/after,
+                   $XDG_DATA_DIRS[1]/nvim/site/after,
+                   $XDG_DATA_HOME/nvim[-data]/site/after,
+                   …
+                   $XDG_CONFIG_DIRS[2]/nvim/after,
+                   $XDG_CONFIG_DIRS[1]/nvim/after,
+                   $XDG_CONFIG_HOME/nvim/after")
 
 
 
         Defaults are setup to search these locations:
                 1.  Given by `stdpath("config")`.
-					|$XDG_CONFIG_HOME|
-					又称Your home directory(不是$HOME), for personal preferences.
-                2. Directories which must contain configuration files according to |xdg| ($XDG_CONFIG_DIRS,
-                        defaults to /etc/xdg).
-                        This also contains preferences from system administrator.
+		    |$XDG_CONFIG_HOME|
+		    又称Your home directory(不是$HOME), for personal preferences.
+                2. Directories which must contain configuration files according to
+		    |xdg| ($XDG_CONFIG_DIRS,  defaults to /etc/xdg).
+		    This  contains preferences from system administrator.
                 3. Data home directory,
-					for plugins installed by user.
-					Given by `stdpath("data")/site`.
-					|$XDG_DATA_HOME|
+		    for plugins installed by user.
+		    Given by `stdpath("data")/site`.
+		    |$XDG_DATA_HOME|
 
                 4. 🔑nvim/site🔑 subdirectories for each directory in $XDG_DATA_DIRS (我的是空白
-					This is for 💛plugins💛 which were installed by system administrator ,
-					but are not part of the Nvim distribution.
-					XDG_DATA_DIRS defaults to /usr/local/share/:/usr/share/,
-					so system administrators are expected to install 🔑site plugins🔑 to /usr/share/nvim/site.
+		    This is for 💛plugins💛 which were installed by system administrator ,
+		    but are not part of the Nvim distribution.
+		    XDG_DATA_DIRS defaults to /usr/local/share/:/usr/share/,
+		    so system administrators are expected to install 🔑site plugins🔑 to /usr/share/nvim/site.
 
                 5. $VIMRUNTIME,  for files distributed with Neovim.
-			• *after-directory*
-				6, 7, 8, 9.
-					In 📁after/📁 subdirectories of 1, 2, 3 and 4, with reverse
-					   ordering.  This is for preferences to 💛overrule💛 or add to the
-					   distributed defaults or system-wide settings (rarely needed).
 
-			*rtp-packages*
-			rtp: runtimepath
+		6, 7, 8, 9:
+		官方目录下没有after/  *after-directory*
+		    In 📁after/📁 subdirectories of 1, 2, 3 and 4, with reverse  ordering.
+		    This is for preferences to 💛overrule💛 or add to the
+		    distributed defaults or system-wide settings (rarely needed).
 
-				"start" packages will additionally be used to
-					search for 🔑runtime files🔑 after these (上述'runtimepath'下的文件),
-					but package entries are not visible in 💦:set runtimepath💦
-					要进去搜, 但又不把人家视作'runtimepath'的一员 有名无分
-					See |runtime-search-path| for more information.
+*rtp-packages*
+                        rtp: runtimepath
 
-				"opt" packages will be explicitly added to &rtp when |:packadd| is used.(有名有份)
-					Note  unlike 'path',  no wildcards like "**" are allowed.
-					   	Normal wildcards are allowed,  but can significantly slow down searching for
-						runtime files.
-						For speed, use as few items as possible and avoid  wildcards.
+                                "start" packages will additionally be used to
+                                        search for 🔑runtime files🔑 after these (上述'runtimepath'下的文件),
+                                        but package entries are not visible in 💦:set runtimepath💦
+                                        要进去搜, 但又不把人家视作'runtimepath'的一员 有名无分
+                                        See |runtime-search-path| for more information.
 
-				Example:
-						:set runtimepath=~/vimruntime,/mygroup/vim,$VIMRUNTIME
+                                "opt" packages will be explicitly added to &rtp when |:packadd| is used.(有名有份)
+                                        Note  unlike 'path',  no wildcards like "**" are allowed.
+                                                Normal wildcards are allowed,  but can significantly slow down searching for
+                                                runtime files.
+                                                For speed, use as few items as possible and avoid  wildcards.
 
-					This will use the directory "~/vimruntime" first (containing your personal Vim runtime files),
-					then "/mygroup/vim" (shared between a group of people) and finally "$VIMRUNTIME" (the distributed runtime
-					files).
-					You probably should always include $VIMRUNTIME somewhere, to use the distributed runtime files.
-						💦:runtime💦 would source the first file only.
-						💦:runtime!💦 所有找到的files
-						这里对应💦:runtime💦, 所以
-							You can put a directory before $VIMRUNTIME to find files  replace a distributed runtime files.
-							You can put a directory after $VIMRUNTIME to find files which add to distributed  runtime files.
+                                Example:
+                                                :set runtimepath=~/vimruntime,/mygroup/vim,$VIMRUNTIME
 
-					When Vim is started with |--clean| the home directory entries are not included.
+                                        This will use the directory "~/vimruntime" first (containing your personal Vim runtime files),
+                                        then "/mygroup/vim" (shared between a group of people) and finally "$VIMRUNTIME" (the distributed runtime
+                                        files).
+                                        You probably should always include $VIMRUNTIME somewhere, to use the distributed runtime files.
+                                                💦:runtime💦 would source the first file only.
+                                                💦:runtime!💦 所有找到的files
+                                                这里对应💦:runtime💦, 所以
+                                                        You can put a directory before $VIMRUNTIME to find files  replace a distributed runtime files.
+                                                        You can put a directory after $VIMRUNTIME to find files which add to distributed  runtime files.
 
-					This option cannot be set from a |modeline| or in the |sandbox|,  for security reasons.
+                                        When Vim is started with |--clean| the home directory entries are not included.
+
+                                        This option cannot be set from a |modeline| or in the |sandbox|,  for security reasons.
 
 *'scroll'* *'scr'*
 'scroll' 'scr'          number  (default: half the window height)
@@ -7012,30 +7035,30 @@ There are four main ways to use tabs in Vim:
             block       Allow virtual editing in Visual block mode.
             insert      Allow virtual editing in Insert mode.
             all         Allow virtual editing in all modes.
+            onemore:    只影响normal mode
+                        it will only allow moving the cursor just after the last character of the line.
+                        This makes some commands more consistent.
+
+            It doesn't make sense to combine "all" with "onemore",  but you will not get a warning for it.
+
+    Virtual editing means that the cursor  can be positioned where there is no actual character.
+    This can be
+        halfway into a tab or
+        beyond the end of the line.
+
+    It may also break some plugins or  Vim scripts.
+        For example:
+        because |l| can move the cursor after the last character.
+    Use with care!
+
+    Using the `$` command
+    will move to the last character in the line,  not past it.
+    如果cursor is beyond the last character in the line: will move the cursor to the left
+
+    To the end of the screen line.
+        The `g$` command will move
 
 
-"onemore" :
-(只影响normal mode)
-        it will only allow moving the cursor just after the last character of the line.
-        This makes some commands more consistent.
-
-Virtual editing means that the cursor  can be positioned where there is no actual character.
-This can be halfway into a tab or beyond the end of the line.
-
-Useful for selecting a rectangle in Visual mode and editing a table.
-
-It may also break some plugins or Vim scripts.  For example:
-because |l| can move the cursor after the last character.
-Use with care!
-
-Using the `$` command
-will move to the last character in the line,  not past it.
- This may actually move the cursor to the left!
-
-The `g$` command will move to the end of the screen line.
-
-It doesn't make sense to combine "all" with "onemore",
-but you will not get a warning for it.
 
 
 *'visualbell'* *'vb'* *'novisualbell'* *'novb'* *beep*

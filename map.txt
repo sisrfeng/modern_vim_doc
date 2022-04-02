@@ -325,7 +325,8 @@ This works when:
         Note that using 0x80 as a single byte before other text does not work, it will
         be seen as a special key.
 
-*<Cmd>* *:map-cmd*
+*:map-cmd*
+*<Cmd>* 
         The <Cmd> pseudokey begins a "command mapping",
         which executes the command directly (without changing modes).
         Where you might use ":...<CR>" in the {rhs} of a mapping,
@@ -346,27 +347,25 @@ This works when:
         it is executed as if an (unrestricted) |autocommand| was invoked or
         an async event event was processed.
 
-Note:
-        - Because <Cmd> avoids mode-changes (unlike ":") it does not trigger |CmdlineEnter| and |CmdlineLeave| events.
-        This helps performance.
+    Note:
+	  <Cmd> does not trigger |CmdlineEnter| and |CmdlineLeave| events.
+        - It avoids mode-changes (unlike ":")
+	      This helps performance.
         - For the same reason,
-        |keycodes| like <C-R><C-W> are interpreted as plain,
-        unmapped keys.
+        |keycodes| like <C-R><C-W> are interpreted as plain,  unmapped keys.
         - The command is not echo'ed,
         no need for <silent>.
         The {rhs} is not subject to abbreviations nor to other mappings,
-        even if the mapping is recursive.
+	    even if the mapping is recursive.
+
         - In Visual mode  you can use `line('v')` and `col('v')` to get one end of the Visual area,
-        the cursor is at the other end.
+            the cursor is at the other end.
         - In select-mode,
-        |:map| and |:vmap| command mappings are executed in visual-mode.
-        Use |:smap| to handle select-mode.
+            Use |:smap| to handle select-mode.
+           ( |:map| and |:vmap| command mappings are executed in visual-mode.)
 
 *E5520*
-        Cmd> commands must terminate,
-        that is,
-        they must be followed by
-        CR> in the {rhs} of the mapping definition.
+        <Cmd> commands  must be followed by  <CR> in the {rhs} of the mapping definition.
         |Command-line| mode is never entered.
 
 1.3 MAPPING AND MODES                                   *:map-modes*
@@ -1161,55 +1160,69 @@ this, they can be made local to the script.
 
 *<SID>* *<SNR>* *E81*
 The string "<SID>" can be used in a mapping or menu.
-        When executing the map command,
-        Vim will replace "<SID>" with the special key code <SNR>,
-        followed by a number that's unique for the script,
-        and an underscore.
+    <SID>代替s:函数名  可以在script外map 某某 <Plug>Commentary , 进而call 函数
+    例子:
+          command! -range -bar -bang Commentary call s:go(<line1>,<line2>,<bang>0)
+
+          xnor  <expr>     <Plug>Commentary         <SID>go()
+          nnor  <expr>     <Plug>Commentary         <SID>go()
+          nnor  <expr>     <Plug>CommentaryLine     <SID>go() . '_'
+
+          onor  <silent>   <Plug>Commentary              :<C-U>call <SID>textobject(get(v:, 'operator', '') ==# 'c')<CR>
+
+    When executing the map command,
+    🔑Vim will replace "<SID>" with the special key code <SNR>🔑
+    followed by a number that's unique for the script,
+    and an underscore.
         Example:
             :map <SID>Add
 
         could define a mapping "<SNR>23_Add".
 
-When defining a function in a script,
-"s:" can be prepended to the name to make it local to the script.
-But when a mapping is executed from outside of the script,
-it doesn't know in which script the function was defined.
-To avoid this problem,
-🔑use "<SID>" instead of "s:".🔑
-The same translation is done as for mappings.
-This makes it possible to define a call to the function in a mapping.
+    When defining a function in a script,
+    "s:" can be prepended to the name to make it local to the script.
+    But when a mapping is executed from outside of the script,
+    it doesn't know in which script the function was defined.
 
-When a local function is executed,
-it runs in the context of the script it was defined in.
-This means that new functions and  mappings it defines
-can also use "s:" or  "<SID>" and
-it will use the same unique number as when the function itself was defined.
-Also,  the "s:var" local script variables can be used.
-When executing an autocommand  or
-a user command,
-it will run in the 💛context💛 of the script it was defined in.
-This makes it possible that the command  calls a 💛local💛 function or
-uses a local mapping.
+    To avoid this problem,
+    🔑use "<SID>" instead of "s:".🔑
+    The same translation is done as for mappings.
+    This makes it possible to define a call to the function in a mapping.
 
-In case the value is used in a context where <SID> cannot be correctly expanded,
-use the expand() function:
+    When a local function is executed,
+    it runs in the context of the script it was defined in.
+    This means that new functions and  mappings it defines
+    can also use "s:" or  "<SID>" and
+    it will use the same unique number as when the function itself was defined.
+    Also,  the "s:var" local script variables can be used.
+    When executing an autocommand  or
+    a user command,
+    it will run in the 💛context💛 of the script it was defined in.
+    This makes it possible that the command  calls a 💛local💛 function or
+    uses a local mapping.
 
-        let &includexpr = expand('<SID>') .. 'My_includeexpr()'
+    In case the value is used in a context where <SID> cannot be correctly expanded,
+    use the expand() function:
 
-using "<SID>" outside of a script context is an error.
+            let &includexpr = expand('<SID>') .. 'My_includeexpr()'
 
-If you need to get the script number to use in a complicated script, you can
-use this function:
-        func s:ScriptNumber()
-          return matchstr(expand('<SID>'), '<SNR>\zs\d\+\ze_')
-        endfunc
+    🔑using "<SID>" outside of a script context is an error🔑
+
+    If you need to get the script number to use in a complicated script, you can
+    use this function:
+            func s:ScriptNumber()
+              return matchstr(
+                  \ expand('<SID>'),
+                  \ '<SNR>\zs\d\+\ze_',
+                  )
+            endfunc
 
 
-The |:scriptnames| command can be used to see which scripts have been sourced
-and what their <SNR> number is.
+    The |:scriptnames| command can be used to see which scripts have been sourced
+    and what their <SNR> number is.
 
-The "<SNR>" will be shown when listing functions and mappings.  This is useful
-to find out what they are defined to.
+    The "<SNR>" will be shown when listing functions and mappings.  This is useful
+    to find out what they are defined to.
 
 ==============================================================================
 4. User-defined commands                                *user-commands*

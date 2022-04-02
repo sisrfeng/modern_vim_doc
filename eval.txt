@@ -2758,29 +2758,32 @@ byte2line({byte})                   *byte2line()*
             GetOffset()->byte2line()
 
 byteidx({expr}, {nr})                   *byteidx()*
-        Return byte index of the {nr}'th character in the String
-        {expr}.  Use zero for the first character, it then returns
-        zero.
-        If there are no multibyte characters the returned value is
-        equal to {nr}.
-        Composing characters are not counted separately, their byte
-        length is added to the preceding base character.  See
-        |byteidxcomp()| below for counting composing characters
-        separately.
-        Example :
+    Return byte index of the {nr}'th character in the String  {expr}.
+
+    if Use zero for the first character:
+         returns zero.
+    If there are no multibyte characters:
+        the returned value is equal to {nr}.
+    Composing characters are not counted separately,
+        their byte length is added to the preceding base character.
+        See  |byteidxcomp()| below for counting composing characters  separately.
+
+    Example :
             echo matchstr(str, ".", byteidx(str, 3))
-        will display the fourth character.  Another way to do the
-        same:
+        will display the fourth character.
+    Another way to do the same:
             let s = strpart(str, byteidx(str, 3))
             echo strpart(s, 0, byteidx(s, 1))
-        Also see |strgetchar()| and |strcharpart()|.
+    Also see |strgetchar()| and |strcharpart()|.
 
-        If there are less than {nr} characters -1 is returned.
-        If there are exactly {nr} characters the length of the string
-        in bytes is returned.
+    If there are less than {nr} characters:
+        -1 is returned.
+    If there are exactly {nr} characters:
+        the length of the string  in bytes is returned.
 
-        Can also be used as a |method|:
-            GetName()->byteidx(idx)
+    Can also be used as a |method|:
+        GetName()->byteidx(idx)
+
 
 byteidxcomp({expr}, {nr})                   *byteidxcomp()*
         Like byteidx(), except that a composing character is counted
@@ -2947,43 +2950,41 @@ clearmatches([{win}])                   *clearmatches()*
             GetWin()->clearmatches()
 
 *col()*
-col({expr}) The result is a Number, which is the byte index of the column
-        position given with {expr}.  The accepted positions are:
-            .       the cursor position
-            $       the end of the cursor line (the result is the
-                number of bytes in the cursor line plus one)
-            'x      position of mark x (if the mark is not set, 0 is
-                returned)
-            v       In Visual mode: the start of the Visual area (the
-                cursor is the end).  When not in Visual mode
-                returns the cursor position.  Differs from |'<| in
-                that it's updated right away.
-        Additionally {expr} can be [lnum, col]: a |List| with the line
-        and column number. Most useful when the column is "$", to get
-        the last column of a specific line.  When "lnum" or "col" is
-        out of range then col() returns zero.
-        To get the line number use |line()|.  To get both use
-        |getpos()|.
-        For the screen column position use |virtcol()|.
-        Note that only marks in the current file can be used.
-        Examples:
-            col(".")        column of cursor
-            col("$")        length of cursor line plus one
-            col("'t")       column of mark t
-            col("'" . markname) column of mark markname
-        The first column is 1.  0 is returned for an error.
-        For an uppercase mark the column may actually be in another
-        buffer.
-        For the cursor position, when 'virtualedit' is active, the
-        column is one higher if the cursor is after the end of the
-        line.  This can be used to obtain the column in Insert mode:
-            :imap <F2> <C-O>:let save_ve = &ve<CR>
-                \<C-O>:set ve=all<CR>
-                \<C-O>:echo col(".") . "\n" <Bar>
-                \let &ve = save_ve<CR>
+col({expr})
+    if error:
+        return 0
+    else
+        return a Number, which is the byte index of the column position given with {expr}.
 
-        Can also be used as a |method|:
-            GetPos()->col()
+    To get the line number use |line()|.  To get both use  |getpos()|.
+    For the screen column position use |virtcol()|.
+
+    {expr} can be:
+        1. string:
+            .               the cursor position
+            $               the end of the cursor line , 即 number of bytes in the cursor line + 1
+           'x               mark x  (Note that only marks in the current file can be used. )
+           其他同line()一样, (但没有w0, w$)
+        2. list
+           :echo col([131,$])
+                   [lnum, col]      Most useful when the column is "$": get last column of a specific line.
+                                    if "lnum" or "col" is out of range:
+                                        error
+
+    if 'virtualedit' is active:
+        if  the cursor is after the end of the line:
+            column is one higher
+
+    This can be used to obtain the column in Insert mode:
+        (我补充后)
+        imap <F2> <C-O>:let save_ve = &virtualedit<CR>
+                        \<C-O>:set virtualedit=all<CR>
+                        \<C-O>:echo col(".") . "\n" <Bar>
+                        \let &virtualedit = save_ve<CR>
+
+
+    Can also be used as a |method|:
+        GetPos()->col()
 
 
 complete({startcol}, {matches})         *complete()* *E785*
@@ -3274,37 +3275,55 @@ ctxset({context}[, {index}])                *ctxset()*
 ctxsize()                       *ctxsize()*
         Returns the size of the |context-stack|.
 
-cursor({lnum}, {col} [, {off}])             *cursor()*
-cursor({list})
-        Positions the cursor at the column (byte count) {col} in the
-        line {lnum}.  The first column is one.
+关于cursor的坐标: The first column is 1
 
-        When there is one argument {list} this is used as a |List|
-        with two, three or four item:
-            [{lnum}, {col}]
-            [{lnum}, {col}, {off}]
-            [{lnum}, {col}, {off}, {curswant}]
-        This is like the return value of |getpos()| or |getcurpos()|,
-        but without the first item.
+*cursor()*
+   Move the cursor to
+        the column (byte count) {col} in the  line {lnum}.
 
-        Does not change the jumplist.
-        If {lnum} is greater than the number of lines in the buffer,
-        the cursor will be positioned at the last line in the buffer.
-        If {lnum} is zero, the cursor will stay in the current line.
-        If {col} is greater than the number of bytes in the line,
-        the cursor will be positioned at the last character in the
-        line.
-        If {col} is zero, the cursor will stay in the current column.
-        If {curswant} is given it is used to set the preferred column
-        for vertical movement.  Otherwise {col} is used.
+        1. cursor({lnum}, {col} [, {off}])
 
-        When 'virtualedit' is used {off} specifies the offset in
-        screen columns from the start of the character.  E.g., a
-        position within a <Tab> or after the last character.
-        Returns 0 when the position could be set, -1 otherwise.
+        2. cursor({list})
+            list的形式:
+                [{lnum}, {col}]
+                [{lnum}, {col}, {off}]
+                [{lnum}, {col}, {off}, {curswant}]
 
-        Can also be used as a |method|:
-            GetCursorPos()->cursor()
+    This is like the return value of |getpos()| or |getcurpos()|,
+    but without the first item.
+
+    Does not change the jumplist.
+
+    If {lnum}  >  lines in the buffer:
+        to last line in the buffer.
+    elif {lnum} ==  zero
+        the cursor will stay in the current line.
+
+    If {col} > number of bytes in the line,
+        to  the last character in the  line.
+        if virtualedit:
+            会跳到下面几行
+    If {col} ==0:
+        stay in the current column.
+
+    If {curswant}:
+        it is used to set the preferred column  for vertical movement.
+    Else:
+        {col} is used.
+
+    if 'virtualedit'
+       {off} specifies the offset in
+        screen columns from the start of the 特殊字符或位置
+        E.g., a  position within a <Tab>
+                or after the last character.
+
+    if the position could be set:
+        return 0
+    else
+        return -1
+
+    Can also be used as a |method|:
+        GetCursorPos()->cursor()
 
 deepcopy({expr}[, {noref}])             *deepcopy()* *E698*
         Make a copy of {expr}.  For Numbers and Strings this isn't
@@ -4523,7 +4542,7 @@ getcmdline()                        *getcmdline()*
 
 getcmdpos()                     *getcmdpos()*
         Return the position of the cursor in the command line as a
-        byte count.  The first column is 1.
+        byte count.
         Only works when editing the command line, thus requires use of
         |c_CTRL-\_e| or |c_CTRL-R_=| or an expression mapping.
         Returns 0 otherwise.
@@ -4611,19 +4630,20 @@ getcompletion({pat}, {type} [, {filtered}])     *getcompletion()*
             GetPattern()->getcompletion('color')
 
 *getcurpos()*
-getcurpos() Get the position of the cursor.  This is like getpos('.'), but
-        includes an extra "curswant" in the list:
+    Get the position of the cursor.
+    This is like |getpos|('.'),  but:
+        1. includes an extra "curswant" in the list:
             [0, lnum, col, off, curswant]
-        The "curswant" number is the preferred column when moving the
-        cursor vertically.  Also see |getpos()|.
-        The first "bufnum" item is always zero.
+            The "curswant" number is the preferred column when moving the
+            cursor vertically.
+        2. The first "bufnum" item is always zero.
 
-        This can be used to save and restore the cursor position:
+    This can be used to save and restore the cursor position:
             let save_cursor = getcurpos()
             MoveTheCursorAround
             call setpos('.', save_cursor)
-        Note that this only works within the window.  See
-        |winrestview()| for restoring more state.
+    Note that this only works within the window.  See
+    |winrestview()| for restoring more state.
 
 getcwd([{winnr}[, {tabnr}]])                *getcwd()*
         With no arguments, returns the name of the effective
@@ -4884,31 +4904,45 @@ getpid()    Return a Number which is the process ID of the Vim process.
         This is a unique number, until Vim exits.
 
 *getpos()*
-getpos({expr})  Get the position for String {expr}.  For possible values of
-        {expr} see |line()|.  For getting the cursor position see
-        |getcurpos()|.
-        The result is a |List| with four numbers:
-            [bufnum, lnum, col, off]
-        "bufnum" is zero, unless a mark like '0 or 'A is used, then it
-        is the buffer number of the mark.
-        "lnum" and "col" are the position in the buffer.  The first
-        column is 1.
-        The "off" number is zero, unless 'virtualedit' is used.  Then
-        it is the offset in screen columns from the start of the
-        character.  E.g., a position within a <Tab> or after the last
-        character.
-        Note that for '< and '> Visual mode matters: when it is "V"
-        (visual line mode) the column of '< is zero and the column of
-        '> is a large number.
-        The column number in the returned List is the byte position
-        within the line.
-        The column number can be very large, e.g. 2147483647, in which
-        case it means "after the end of the line".
-        This can be used to save and restore the position of a mark:
-            let save_a_mark = getpos("'a")
-            ...
-            call setpos("'a", save_a_mark)
-        Also see |getcurpos()| and |setpos()|.
+getpos({expr})
+    For getting the cursor position see |getcurpos()|.
+    Get the position for String {expr}.
+    For possible values of {expr} see |line()|.
+
+    The result is a |List| with four numbers:
+    [bufnum, lnum, col, off]
+
+        "bufnum" is zero,
+        unless a mark like '0 or
+            'A is used,
+            then it is the buffer number of the mark.
+
+        "lnum" and "col" are the position in the buffer.
+            The first  column is 1.
+            The column number in the returned List is the 🔑byte position🔑  within the line.
+
+            The column number can be very large, e.g. 2147483647, in which
+                case it means "after the end of the line".
+                This can be used to save and restore the position of a mark:
+                    let save_a_mark = getpos("'a")
+                    ...
+                    call setpos("'a", save_a_mark)
+
+        "off":
+             if 'virtualedit' is used:
+                offset in screen columns from the start of the character.
+                 E.g.,
+                    a position within a <Tab>
+                    or after the last character.
+            else:
+                0
+
+        这啥?
+        Note that for '< and '>  ,  Visual mode matters:
+                when it is "V" (visual line mode) the column of '< is zero and
+                the column of  '> is a large number.
+
+        Also see |setpos()|.
 
         Can also be used as a |method|:
             GetMark()->getpos()
@@ -6144,32 +6178,36 @@ libcallnr({libname}, {funcname}, {argument})
             GetValue()->libcallnr("libc.so", "printf")
 
 line({expr} [, {winid}])                *line()*
-        The result is a Number, which is the line number of the file
-        position given with {expr}.  The {expr} argument is a string.
-        The accepted positions are:
-            .       the cursor position
-            $       the last line in the current buffer
-            'x      position of mark x (if the mark is not set, 0 is
-                returned)
-            w0      first line visible in current window (one if the
-                display isn't updated, e.g. in silent Ex mode)
-            w$      last line visible in current window (this is one
-                less than "w0" if no lines are visible)
-            v       In Visual mode: the start of the Visual area (the
-                cursor is the end).  When not in Visual mode
-                returns the cursor position.  Differs from |'<| in
-                that it's updated right away.
-        Note that a mark in another file can be used.  The line number
-        then applies to another buffer.
-        To get the column number use |col()|.  To get both use
-        |getpos()|.
-        With the optional {winid} argument the values are obtained for
-        that window instead of the current window.
+
         Examples:
             line(".")       line number of the cursor
             line(".", winid)    idem, in window "winid"
             line("'t")      line number of mark t
             line("'" . marker)  line number of mark marker
+
+        To get the column number use |col()|.
+        To get both use |getpos()|.
+
+        The result is a Number: line number of the file  position given with {expr}.
+        The {expr} argument is a string.
+        The accepted positions are:
+            .       the cursor position
+            $       the last line in the current buffer
+            'x      position of mark x (if the mark is not set, 0 is  returned)
+                    Note that a mark in another file (大写的mark) can be used.  The line number  then applies to another buffer.
+
+            w0      first line visible in current window (one if the display isn't updated, e.g. in silent Ex mode)
+            w$      last line visible in current window (this is one  less than "w0" if no lines are visible)
+
+            v       In Visual mode:
+                        the start of the Visual area (the  cursor is the end).
+                    When not in Visual mode
+                        returns the cursor position.
+                    Differs from |'<| :
+                        updated right away.
+
+        {winid} :
+            values are obtained for  that window instead of the current window.
 
         Can also be used as a |method|:
             GetValue()->line()
@@ -7987,21 +8025,21 @@ searchcount([{options}])                    *searchcount()*
 
 searchdecl({name} [, {global} [, {thisblock}]])         *searchdecl()*
         Search for the declaration of {name}.
-
-        With a non-zero {global} argument it works like |gD|, find
-        first match in the file.  Otherwise it works like |gd|, find
-        first match in the function.
-
-        With a non-zero {thisblock} argument matches in a {} block
-        that ends before the cursor position are ignored.  Avoids
-        finding variable declarations only valid in another scope.
-
         Moves the cursor to the found match.
         Returns zero for success, non-zero for failure.
         Example:
             if searchdecl('myvar') == 0
                echo getline('.')
             endif
+
+        With a non-zero {global} argument it works like |gD|, find
+        first match in the file.
+        Otherwise it works like |gd|, find  first match in the function.
+
+        With a non-zero {thisblock} argument matches in a {} block
+        that ends before the cursor position are ignored.
+        Avoids  finding variable declarations only valid in another scope.
+
 
 *searchpair()*
 searchpair({start}, {middle}, {end} [, {flags} [, {skip}
@@ -8328,52 +8366,68 @@ setmatches({list} [, {win}])                *setmatches()*
 
 *setpos()*
 setpos({expr}, {list})
-        Set the position for String {expr}.  Possible values:
-            .   the cursor
-            'x  mark x
+    如果只是处理光标, 而非mark, |cursor()|更简单
 
-        {list} must be a |List| with four or five numbers:
-            [bufnum, lnum, col, off]
-            [bufnum, lnum, col, off, curswant]
+    Set the position for String {expr}.
+    例子:
+        call setpos('.', [0,8369,4])
 
-        "bufnum" is the buffer number.  Zero can be used for the
-        current buffer.  When setting an uppercase mark "bufnum" is
-        used for the mark position.  For other marks it specifies the
-        buffer to set the mark in.  You can use the |bufnr()| function
-        to turn a file name into a buffer number.
-        For setting the cursor and the ' mark "bufnum" is ignored,
-        since these are associated with a window, not a buffer.
-        Does not change the jumplist.
+    {expr}可以是:
+        .   the cursor
+        'x  mark x
 
-        "lnum" and "col" are the position in the buffer.  The first
-        column is 1.  Use a zero "lnum" to delete a mark.  If "col" is
-        smaller than 1 then 1 is used.
+    Will not change the jumplist.
 
-        The "off" number is only used when 'virtualedit' is set. Then
-        it is the offset in screen columns from the start of the
-        character.  E.g., a position within a <Tab> or after the last
-        character.
+    Also see |getpos()| and |getcurpos()|.
 
-        The "curswant" number is only used when setting the cursor
-        position.  It sets the preferred column for when moving the
-        cursor vertically.  When the "curswant" number is missing the
-        preferred column is not set.  When it is present and setting a
-        mark position it is not used.
+    if the position could be set
+        return 0
+    else
+        return -1
 
-        Note that for '< and '> changing the line number may result in
-        the marks to be effectively be swapped, so that '< is always
-        before '>.
+    An error message is given if {expr} is invalid.
 
-        Returns 0 when the position could be set, -1 otherwise.
-        An error message is given if {expr} is invalid.
+    if you set the cursor position with setopts,  |j| and |k| motions will jump to previous columns!
+    Use |cursor()| to also set the preferred column.
+    Also see the "curswant" key in |winrestview()|.
 
-        Also see |getpos()| and |getcurpos()|.
+    {list} :
+        [bufnum, lnum, col, off]
+        [bufnum, lnum, col, off, curswant]
+             bufnum:
+                    if setting an uppercase mark:
+                        表示the mark position.
+                    elif other marks
+                        specifies the buffer to set the mark in.
+                         0表示current buffer
+                        You can use the |bufnr()| function to turn a file name into a buffer number.
+                    else  (setting the cursor and  the 💦'💦 mark)
+                        "bufnum" is ignored (但不能不写)
+                        since these are associated with a window,  not a buffer.
 
-        This does not restore the preferred column for moving
-        vertically; if you set the cursor position with this, |j| and
-        |k| motions will jump to previous columns!  Use |cursor()| to
-        also set the preferred column.  Also see the "curswant" key in
-        |winrestview()|.
+            "lnum" and "col":
+                the position in the buffer.
+
+                Use a zero "lnum" to delete a mark.
+                col取 min(col,1)
+
+            "off":
+                只用于virtualedit?
+
+
+            "curswant" :
+                number
+                if "curswant" is missing:
+                    the  preferred column is not set.
+                elif setting a mark position:
+                    传参时可以有curswant, 不不生效
+                Else:
+                    It sets the preferred column for when moving the cursor vertically.
+
+    Note that for '< and '>  :
+        changing the line number may result in:
+            the marks to be effectively be swapped,
+        以保证 '< is always  before '>.
 
 
 setqflist({list} [, {action}[, {what}]])        *setqflist()*
@@ -8929,13 +8983,12 @@ stdpath({what})                 *stdpath()* *E6100*
         directories.
 
         {what}       Type    Description
-        cache        String  Cache directory. Arbitrary temporary
-                             storage for plugins, etc.
-        config       String  User configuration directory. The
-                             |init.vim| is stored here.
+        cache        String  Cache directory. Arbitrary temporary  storage for plugins, etc.
+
+        config       String  User configuration directory. The  |init.vim| is stored here.
         config_dirs  List    Additional configuration directories.
-        data         String  User data directory. The |shada-file|
-                             is stored here.
+
+        data         String  The |shada-file|  is stored here.
         data_dirs    List    Additional data directories.
 
         Example:
@@ -9277,19 +9330,23 @@ substitute({string}, {pat}, {sub}, {flags})     *substitute()*
     When {sub} starts with "\=",
         the remainder is interpreted as an expression.
         See |sub-replace-expression|.
-    Example: >
+    Example:
+
                 :echo substitute(s, '%\(\x\x\)',
                    \ '\=nr2char("0x" . submatch(1))', 'g')
 
     When {sub} is a Funcref that function is called,  with one optional argument.
-    Example: >
+    Example:
+
                :echo substitute(s, '%\(\x\x\)', SubNr, 'g')
             The optional argument is a list which contains the whole
             matched string and up to nine submatches, like what
-            |submatch()| returns.  Example: >
+            |submatch()| returns.  Example:
+
                :echo substitute(s, '%\(\x\x\)', {m -> '0x' . m[1]}, 'g')
 
-            Can also be used as a |method|: >
+            Can also be used as a |method|:
+
                 GetString()->substitute(pat, sub, flags)
 
 swapinfo({fname})                   *swapinfo()*
@@ -9900,7 +9957,7 @@ virtcol({expr})                     *virtcol()*
   virtcol(".")     with text "foo^Lbar", with cursor on the "^L", returns 5
   virtcol("$")     with text "foo^Lbar", returns 9
   virtcol("'t")    with text "    there", with 't at 'h', returns 6
-        The first column is 1.  0 is returned for an error.
+        0 is returned for an error.
         A more advanced example that echoes the maximum length of
         all lines:
             echo max(map(range(1, line('$')), "virtcol([v:val, '$'])"))
@@ -11405,7 +11462,8 @@ The |fnameescape()| function can be used  for Vim commands, |shellescape()| for 
 Note: The executed string may be any command-line, but starting or ending "if", "while" and "for" does not always work,
 because when commands are skipped the ":execute" is not evaluated and Vim loses track of where blocks start and end.
  Also "break" and "continue" should not be inside ":execute".
-This example does not work, because the ":execute" is not evaluated and Vim does not see the "while", and  gives an error for finding an ":endwhile": > :if 0
+This example does not work, because the ":execute" is not evaluated and Vim does not see the "while", and  gives an error for finding an ":endwhile":
+ :if 0
         : execute 'while i > 5'
         :  echo "test"
         : endwhile

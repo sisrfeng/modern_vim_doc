@@ -368,52 +368,55 @@ all your Perl plugins.
 
 FILETYPE PLUGINS            *add-filetype-plugin* *ftplugins*
 
-	The Vim distribution comes with a set of plugins for different filetypes that you can start using with this command:
+    The Vim distribution comes with a set of plugins for different filetypes that
+    you can start using with this command:
         :filetype plugin on
 
 That's all!  See |vimrc-filetype|.
 
     If you are missing a plugin for a filetype you are using,
-        or you found a better one,
-you can add it.
- There are two steps for adding a filetype plugin:
-1. Get a copy of the plugin.
-2. Drop it in the right directory.
-
+    or you found a better one,
+    you can add it.
+    There are two steps for adding a filetype plugin:
+    1. Get a copy of the plugin.
+    2. Drop it in the right directory.
 
 GETTING A FILETYPE PLUGIN
 
-You can find them in the same places as the global plugins.  Watch out if the
-type of file is mentioned, then you know if the plugin is a global or a
-filetype one.  The scripts in $VIMRUNTIME/macros are global ones, the filetype
-plugins are in $VIMRUNTIME/ftplugin.
+    You can find them in the same places as the global plugins.
+    Watch out if the type of file is mentioned,
+    then you know if the plugin is a global or
+    a filetype one.
+    The scripts in $VIMRUNTIME/macros are global ones,
+    the filetype plugins are in $VIMRUNTIME/ftplugin.
 
 
 USING A FILETYPE PLUGIN                 *ftplugin-name*
 
-You can add a filetype plugin by dropping it in the right directory.  The
-name of this directory is in the same directory mentioned above for global
-plugins, but the last part is "ftplugin".  Suppose you have found a plugin for
-the "stuff" filetype, and you are on Unix.  Then you can move this file to the
-ftplugin directory:
+    You can add a filetype plugin by dropping it in the right directory.
+    The name of this directory is in the same directory mentioned above for global plugins,
+    but the last part is "ftplugin".
+    Suppose you have found a plugin for the "stuff" filetype,
+    and you are on Unix.
+    Then you can move this file to the ftplugin directory:
 
 
     mkdir -p ~/.local/share/nvim/site/ftplugin
     mv thefile ~/.local/share/nvim/site/ftplugin/stuff.vim
 
-If that file already exists you already have a plugin for "stuff".  You might
-want to check if the existing plugin doesn't conflict with the one you are
-adding.  If it's OK, you can give the new one another name:
+    If that file already exists,  you already have a plugin for "stuff".
+    You might want to check if the existing plugin doesn't conflict with the one you are adding.
+    If it's OK,
+    you can give the new one another name:
 
+        mv thefile ~/.local/share/nvim/site/ftplugin/stuff_too.vim
 
-    mv thefile ~/.local/share/nvim/site/ftplugin/stuff_too.vim
+    The underscore is used to separate the name of the filetype from the rest,
+    which can be anything.
+    If you use "otherstuff.vim" it wouldn't work,
+    it would be loaded for the "otherstuff" filetype.
 
-The underscore is used to separate the name of the filetype from the rest,
-which can be anything.  If you use "otherstuff.vim" it wouldn't work, it would
-be loaded for the "otherstuff" filetype.
-
-The generic names for the filetype plugins are:
-
+    The generic names for the filetype plugins are:
 
     ftplugin/<filetype>.vim
     ftplugin/<filetype>_<name>.vim
@@ -427,21 +430,20 @@ Examples for the "stuff" filetype on Unix:
     ~/.local/share/nvim/site/ftplugin/stuff_def.vim
     ~/.local/share/nvim/site/ftplugin/stuff/header.vim
 
-The <filetype> part is the name of the filetype the plugin is to be used for.
-Only files of this filetype will use the settings from the plugin.  The <name>
-part of the plugin file doesn't matter, you can use it to have several plugins
-for the same filetype.  Note that it must end in ".vim" or ".lua".
-
+    The <filetype> part is the name of the filetype 
+    the plugin is to be used for.
+    Only files of this filetype will use the settings from the plugin.
+    The <name> part of the plugin file doesn't matter,
+    you can use it to have several plugins for the same filetype.
+    Note that it must end in ".vim" or ".lua".
 
 Further reading:
-|filetype-plugins|  Documentation for the filetype plugins and information
-            about how to avoid that mappings cause problems.
-|load-plugins|      When the global plugins are loaded during startup.
-|ftplugin-overrule| Overruling the settings from a global plugin.
-|write-plugin|      How to write a plugin script.
-|plugin-details|    For more information about using plugins or when your
-            plugin doesn't work.
-|new-filetype|      How to detect a new file type.
+    |filetype-plugins|  Documentation for the filetype plugins and information  about how to avoid that mappings cause problems.
+    |load-plugins|      When the global plugins are loaded during startup.
+    |ftplugin-overrule| Overruling the settings from a global plugin.
+    |write-plugin|      How to write a plugin script.
+    |plugin-details|    For more information about using plugins or when your  plugin doesn't work.
+    |new-filetype|      How to detect a new file type.
 
 ==============================================================================
 *05.7*  Adding a help file                         *add-local-help*
