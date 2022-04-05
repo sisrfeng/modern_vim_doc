@@ -1358,9 +1358,9 @@ scratch         Contains text that can be discarded at any time.  It is kept
 
     It is not used for normal editing,
     but to
-	show a help file,
-	remember a file name or  marks.
-	The ":bdelete" command will also set this option,  thus it doesn't completely delete the buffer.
+        show a help file,
+        remember a file name or  marks.
+        The ":bdelete" command will also set this option,  thus it doesn't completely delete the buffer.
 
     Settings:
 
@@ -1368,12 +1368,13 @@ scratch         Contains text that can be discarded at any time.  It is kept
         :setlocal buflisted
 
     网友:
-	the only reason for using :bdelete is to make buffer-navigation (with :bnext,  :bprevious, :ls,  etc.) easier by skipping unwanted buffers.
-	That said,  I—and others—often end up with 100, 200,
-	or more buffers,
-	unlisted or not,
-	without any impact on usability.
-	It doesn't make it harder to switch buffers and
-	it doesn't cause any slow down so… you don't really have to worry about that.
+        the only reason for using :bdelete is to make buffer-navigation (with :bnext,  :bprevious, :ls,  etc.) easier by skipping unwanted buffers.
+        That said,  I—and others—often end up with 100, 200,
+        or more buffers,
+        unlisted or not,
+        without any impact on usability.
+        It doesn't make it harder to switch buffers and
+        it doesn't cause any slow down so… you don't really have to worry about that.
 
  vim:tw=78:ts=8:noet:ft=help:norl:
+leo_DIY

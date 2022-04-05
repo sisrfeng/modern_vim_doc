@@ -172,39 +172,43 @@ to add the same syntax file, you can use another directory from 'runtimepath'.
 
 ADDING TO AN EXISTING SYNTAX FILE               *mysyntaxfile-add*
 
-If you are mostly satisfied with an existing syntax file, but would like to
-add a few items or change the highlighting, follow these steps:
+If you are mostly satisfied with an existing syntax file,
+but would like to  add a few items or change the highlighting:
 
-1. Create your user directory from 'runtimepath', see above.
+    1. Create your user directory from 'runtimepath', see above.
 
-2. Create a directory in there called "after/syntax".  For Unix:
-        mkdir ~/.config/nvim/after
-        mkdir ~/.config/nvim/after/syntax
+    2. Create a directory in there called "after/syntax".  For Unix:
+            mkdir ~/.config/nvim/after
+            mkdir ~/.config/nvim/after/syntax
 
-3. Write a Vim script that contains the commands you want to use.  For
-   example, to change the colors for the C syntax:
-        highlight cComment ctermfg=Green guifg=Green
+    3. Write a Vim script that contains the commands you want to use.  For
+       example, to change the colors for the C syntax:
+            highlight cComment ctermfg=Green guifg=Green
 
-4. Write that file in the "after/syntax" directory.  Use the name of the
-   syntax, with ".vim" added.  For our C syntax:
-        :w ~/.config/nvim/after/syntax/c.vim
+    4. Write that file in the "after/syntax" directory.  Use the name of the
+       syntax, with ".vim" added.  For our C syntax:
+            :w ~/.config/nvim/after/syntax/c.vim
 
 That's it.  The next time you edit a C file the Comment color will be
-different.  You don't even have to restart Vim.
+different.
+You don't even have to restart Vim.
 
-If you have multiple files, you can use the filetype as the directory name.
-All the "*.vim" files in this directory will be used, for example:
+If you have multiple files,
+you can use the filetype as the directory name.
+All the "*.vim" files in this directory will be used,
+for example:
         ~/.config/nvim/after/syntax/c/one.vim
         ~/.config/nvim/after/syntax/c/two.vim
 
 
 REPLACING AN EXISTING SYNTAX FILE                       *mysyntaxfile-replace*
 
-If you don't like a distributed syntax file, or you have downloaded a new
-version, follow the same steps as for |mysyntaxfile| above.  Just make sure
-that you write the syntax file in a directory that is early in 'runtimepath'.
-Vim will only load the first syntax file found, assuming that it sets
-b:current_syntax.
+If you don't like a distributed syntax file,
+or you have downloaded a new  version,
+follow the same steps as for |mysyntaxfile| above.
+Just make sure  that you write the syntax file in a directory that is early in 'runtimepath'.
+Vim will only load the first syntax file found,
+assuming that it sets  b:current_syntax.
 
 
 NAMING CONVENTIONS                  *group-name* *{group-name}* *E669* *W18*
@@ -288,79 +292,81 @@ mechanism.  See |conceal|.
 ==============================================================================
 3. Syntax loading procedure                             *syntax-loading*
 
-This explains the details that happen when the command ":syntax enable" is
-issued.  When Vim initializes itself, it finds out where the runtime files are
-located.  This is used here as the variable |$VIMRUNTIME|.
+This explains the details that happen when the command ":syntax enable" is  issued.
+When Vim initializes itself,
+it finds out where the runtime files are  located.
+This is used here as the variable |$VIMRUNTIME|.
 
 ":syntax enable" and ":syntax on" do the following:
 
     Source $VIMRUNTIME/syntax/syntax.vim
-    |
-    +-  Clear out any old syntax by sourcing $VIMRUNTIME/syntax/nosyntax.vim
-    |
-    +-  Source first syntax/synload.vim in 'runtimepath'
-    |   |
-    |   +-  Set up syntax autocmds to load the appropriate syntax file when
-    |   |   the 'syntax' option is set. *synload-1*
-    |   |
-    |   +-  Source the user's optional file, from the |mysyntaxfile| variable.
-    |       This is for backwards compatibility with Vim 5.x only. *synload-2*
-    |
-    +-  Do ":filetype on", which does ":runtime! filetype.vim".  It loads any
-    |   filetype.vim files found.  It should always Source
-    |   $VIMRUNTIME/filetype.vim, which does the following.
-    |   |
-    |   +-  Install autocmds based on suffix to set the 'filetype' option
-    |   |   This is where the connection between file name and file type is
-    |   |   made for known file types. *synload-3*
-    |   |
-    |   +-  Source the user's optional file, from the *myfiletypefile*
-    |   |   variable.  This is for backwards compatibility with Vim 5.x only.
-    |   |   *synload-4*
-    |   |
-    |   +-  Install one autocommand which sources scripts.vim when no file
-    |   |   type was detected yet. *synload-5*
-    |   |
-    |   +-  Source $VIMRUNTIME/menu.vim, to setup the Syntax menu. |menu.vim|
-    |
-    +-  Install a FileType autocommand to set the 'syntax' option when a file
-    |   type has been detected. *synload-6*
-    |
-    +-  Execute syntax autocommands to start syntax highlighting for each
-        already loaded buffer.
+
+     |-  Clear out any old syntax
+     |   by sourcing $VIMRUNTIME/syntax/nosyntax.vim
+     |
+     |-  Source first syntax/synload.vim in 'runtimepath'
+     |
+     |    -  Set up syntax autocmds to load the appropriate syntax file when
+     |       the 'syntax' option is set. *synload-1*
+     |
+     |    -   For backwards compatibility with Vim 5.x only. *synload-2* :
+     |           Source the user's optional file, from the |mysyntaxfile| variable.
+     |
+     |-  Do ":filetype on",
+     |   which does ":runtime! filetype.vim".
+     |   It loads any  filetype.vim files found.
+     |   It should always Source  $VIMRUNTIME/filetype.vim, which does the following:
+     |
+     |    -  Install autocmds based on suffix to set the 'filetype' option
+     |       This is where the connection between file name and file type is  made for known file types. *synload-3*
+     |
+     |    -  For backwards compatibility with Vim 5.x only:
+     |       Source the user's optional file, from the *myfiletypefile*  variable.
+     |       *synload-4*
+     |
+     |    -  when no file  type was detected yet. *synload-5* :
+     |           Install one autocommand which sources scripts.vim
+     |
+     |    -  Source $VIMRUNTIME/menu.vim, to setup the Syntax menu. |menu.vim|
+     |
+     |-   When a file  type has been detected. *synload-6* :
+     |       Install a 🔑FileType autocommand to set the 'syntax' option🔑
+     |
+     |-  Execute syntax autocommands to
+     |   start syntax highlighting for each already loaded buffer.
 
 
 Upon loading a file, Vim finds the relevant syntax file as follows:
 
-    Loading the file triggers the BufReadPost autocommands.
+    🔑Loading the file triggers the BufReadPost autocommands🔑.
+
+    | -  If there is a match with one of the autocommands from |synload-3|   (known file types) or |synload-4| (user's file types),
+    |        the 'filetype'  option is set to the file type.
     |
-    +-  If there is a match with one of the autocommands from |synload-3|
-    |   (known file types) or |synload-4| (user's file types), the 'filetype'
-    |   option is set to the file type.
+    | -  The autocommand at |synload-5| is triggered.
+    |    If the file type was not  found yet:
+    |         scripts.vim is searched for in 'runtimepath'.
+    |         This  should always load $VIMRUNTIME/scripts.vim, which does the following.
     |
-    +-  The autocommand at |synload-5| is triggered.  If the file type was not
-    |   found yet, then scripts.vim is searched for in 'runtimepath'.  This
-    |   should always load $VIMRUNTIME/scripts.vim, which does the following.
-    |   |
-    |   +-  Source the user's optional file, from the *myscriptsfile*
-    |   |   variable.  This is for backwards compatibility with Vim 5.x only.
-    |   |
-    |   +-  If the file type is still unknown, check the contents of the file,
-    |       again with checks like "getline(1) =~ pattern" as to whether the
-    |       file type can be recognized, and set 'filetype'.
+    |            |-  For backwards compatibility with Vim 5.x only:
+    |            |       Source the user's optional file,  from the *myscriptsfile*  variable.
+    |            |
+    |            |-  If the file type is still unknown:
+    |                    check the contents of the file,
+    |                    again with checks like "getline(1) =~ pattern" as to
+    |                    whether the  file type can be recognized, and set 'filetype'.
     |
-    +-  When the file type was determined and 'filetype' was set, this
-    |   triggers the FileType autocommand |synload-6| above.  It sets
-    |   'syntax' to the determined file type.
+    | -  When the file type was determined and 'filetype' was set:
+    |        this  triggers the FileType autocommand |synload-6| above.
+    |        It sets  'syntax' to the determined file type.
     |
-    +-  When the 'syntax' option was set above, this triggers an autocommand
-    |   from |synload-1| (and |synload-2|).  This find the main syntax file in
-    |   'runtimepath', with this command:
-    |           runtime! syntax/<name>.vim
+    | -  When the 'syntax' option was set above,
+    |        this triggers an autocommand  from |synload-1| (and |synload-2|).
+    |        This find the main syntax file in  'runtimepath', with this command:
+    |            runtime! syntax/<name>.vim
     |
-    +-  Any other user installed FileType or Syntax autocommands are
-        triggered.  This can be used to change the highlighting for a specific
-        syntax.
+    | -  Any other user installed FileType or Syntax autocommands are triggered.
+    |    This can be used to change the highlighting for a specific  syntax.
 
 ==============================================================================
 4. Conversion to HTML                           *2html.vim* *convert-to-HTML*
@@ -788,9 +794,9 @@ When 1, generate XHTML 1.0 instead (XML compliant HTML).
 5. Syntax file remarks                                  *:syn-file-remarks*
 
 *b:current_syntax-variable*
-Vim stores the name of the syntax that has been loaded in the
-"b:current_syntax" variable.  You can use this if you want to load other
-settings, depending on which syntax is active.  Example:
+Vim stores the name of the syntax that has been loaded in the  "b:current_syntax" variable.
+You can use this if you want to load other  settings,
+depending on which syntax is active.  Example:
    :au BufReadPost * if b:current_syntax == "csh"
    :au BufReadPost *   do-some-things
    :au BufReadPost * endif
@@ -3482,25 +3488,24 @@ set "tf_minlines" to the value you desire.  Example:
 
 VIM                     *vim.vim*               *ft-vim-syntax*
 *g:vimsyn_minlines*     *g:vimsyn_maxlines*
-There is a trade-off between more accurate syntax highlighting versus screen
-updating speed.  To improve accuracy, you may wish to increase the
-g:vimsyn_minlines variable.  The g:vimsyn_maxlines variable may be used to
-improve screen updating rates (see |:syn-sync| for more on this).
+There is a trade-off between more accurate syntax highlighting versus screen  updating speed. 
+To improve accuracy,
+you may wish to increase the  g:vimsyn_minlines variable.
+The g:vimsyn_maxlines variable may be used to  improve screen updating rates (see |:syn-sync| for more on this).
 
         g:vimsyn_minlines : used to set synchronization minlines
         g:vimsyn_maxlines : used to set synchronization maxlines
 
-        (g:vim_minlines and g:vim_maxlines are deprecated variants of
-        these two options)
+        (g:vim_minlines and g:vim_maxlines are deprecated variants of  these two options)
 
 *g:vimsyn_embed*
-The g:vimsyn_embed option allows users to select what, if any, types of
-embedded script highlighting they wish to have.
+The g:vimsyn_embed option allows users to select what, if any, types of  embedded script highlighting they wish to have.
 
    g:vimsyn_embed == 0      : disable (don't embed any scripts)
    g:vimsyn_embed == 'lPr'  : support embedded lua, python and ruby
 
 This option is disabled by default.
+
 *g:vimsyn_folding*
 
 Some folding is now supported with syntax/vim.vim:
@@ -3511,9 +3516,9 @@ Some folding is now supported with syntax/vim.vim:
    g:vimsyn_folding =~ 'P' : fold python   script
 
 *g:vimsyn_noerror*
-Not all error highlighting that syntax/vim.vim does may be correct; Vim script
-is a difficult language to highlight correctly.  A way to suppress error
-highlighting is to put the following line in your |vimrc|:
+Not all error highlighting that syntax/vim.vim does may be correct;
+Vim script  is a difficult language to highlight correctly.
+A way to suppress error  highlighting is to put the following line in your |vimrc|:
 
         let g:vimsyn_noerror = 1
 
@@ -3613,62 +3618,65 @@ The syntax script for zsh allows for syntax-based folding:
 ==============================================================================
 6. Defining a syntax                                    *:syn-define* *E410*
 
-Vim understands three types of syntax items:
+    Vim understands three types of syntax items:
 
-1. Keyword
-   It can only contain keyword characters, according to the 'iskeyword'
-   option.  It cannot contain other syntax items.  It will only match with a
-   complete word (there are no keyword characters before or after the match).
-   The keyword "if" would match in "if(a=b)", but not in "ifdef x", because
-   "(" is not a keyword character and "d" is.
+        1. Keyword
+           It can only contain keyword characters, according to the 'iskeyword'
+           option.  It cannot contain other syntax items.  It will only match with a
+           complete word (there are no keyword characters before or after the match).
+           The keyword "if" would match in "if(a=b)", but not in "ifdef x", because
+           "(" is not a keyword character and "d" is.
 
-2. Match
-   This is a match with a single regexp pattern.
+        2. Match
+           This is a match with a single regexp pattern.
 
-3. Region
-   This starts at a match of the "start" regexp pattern and ends with a match
-   with the "end" regexp pattern.  Any other text can appear in between.  A
-   "skip" regexp pattern can be used to avoid matching the "end" pattern.
+        3. Region
+           This starts at a match of the "start" regexp pattern and
+           ends with a match  with the "end" regexp pattern.
+           Any other text can appear in between.
+           A  "skip" regexp pattern can be used to avoid matching the "end" pattern.
 
-Several syntax ITEMs can be put into one syntax GROUP.  For a syntax group
-you can give highlighting attributes.  For example, you could have an item
-to define a "/* .. */" comment and another one that defines a "// .." comment,
-and put them both in the "Comment" group.  You can then specify that a
-"Comment" will be in bold font and have a blue color.  You are free to make
-one highlight group for one syntax item, or put all items into one group.
-This depends on how you want to specify your highlighting attributes.  Putting
-each item in its own group results in having to specify the highlighting
-for a lot of groups.
+    Several syntax ITEMs can be put into one syntax GROUP.
+        For a syntax group
+        you can give highlighting attributes.
+        For example, you could have an item  to define a "/* .. */" comment and
+        another one that defines a "// .." comment,
+        and put them both in the "Comment" group.
+        You can then specify that a  "Comment" will be in bold font and  have a blue color.
+        You are free to make  one highlight group for one syntax item,
+        or put all items into one group.
+        This depends on how you want to specify your highlighting attributes.
+        Putting  each item in its own group results in having to specify the highlighting
+        for a lot of groups.
 
-Note that a syntax group and a highlight group are similar.  For a highlight
-group you will have given highlight attributes.  These attributes will be used
-for the syntax group with the same name.
+    A syntax group and  a highlight group are similar.
+    For a highlight 
+        group you will have given highlight attributes.
+        These attributes will be used for the syntax group with the same name.
 
-In case more than one item matches at the same position, the one that was
-defined LAST wins.  Thus you can override previously defined syntax items by
-using an item that matches the same text.  But a keyword always goes before a
-match or region.  And a keyword with matching case always goes before a
-keyword with ignoring case.
 
 
 PRIORITY                                                *:syn-priority*
 
-When several syntax items may match, these rules are used:
 
-1. When multiple Match or Region items start in the same position, the item
-   defined last has priority.
-2. A Keyword has priority over Match and Region items.
-3. An item that starts in an earlier position has priority over items that
-   start in later positions.
+In case more than one item matches at the same position,
+    the one that was defined LAST wins.
+        Thus you can override previously defined syntax items by
+        using an item that matches the same text.
+    a keyword always goes before a  match or region.
+    a keyword with matching case always goes before a  keyword with ignoring case.
+    An item that starts in an earlier position has priority over items that
+       start in later positions.
+
 
 
 DEFINING CASE                                           *:syn-case* *E390*
 
 :sy[ntax] case [match | ignore]
-        This defines if the following ":syntax" commands will work with
-        matching case, when using "match", or with ignoring case, when using
-        "ignore".  Note that any items before this are not affected, and all
-        items until the next ":syntax case" command are affected.
+        This defines if the following ":syntax" commands will work with  matching case,
+        or with ignoring case,  when using  "ignore".
+        Any items before this are not affected, 
+        all  items until the next ":syntax case" command are affected.
 
 :sy[ntax] case
         Show either "syntax case match" or "syntax case ignore" (translated).
@@ -3715,8 +3723,9 @@ SPELL CHECKING                                          *:syn-spell*
 SYNTAX ISKEYWORD SETTING                                *:syn-iskeyword*
 
 :sy[ntax] iskeyword [clear | {option}]
-        This defines the keyword characters.  It's like the 'iskeyword' option
-        for but only applies to syntax highlighting.
+        This defines the keyword characters.
+        It's like the 'iskeyword' option  for
+        but only applies to syntax highlighting.
 
         clear:          Syntax specific iskeyword setting is disabled and the
                         buffer-local 'iskeyword' setting is used.
@@ -3812,13 +3821,12 @@ DEFINING MATCHES                                        *:syn-match*
                                 |:syn-keepend|.
         {pattern}               The search pattern that defines the match.
                                 See |:syn-pattern| below.
-                                Note that the pattern may match more than one
-                                line, which makes the match depend on where
-                                Vim starts searching for the pattern.  You
-                                need to make sure syncing takes care of this.
+                                the pattern may match more than one  line,
+                                which makes the match depend on where  Vim starts searching for the pattern.
+                                You  need to make sure 💛syncing💛 takes care of this.
 
         Example (match a character constant):
-  :syntax match Character /'.'/hs=s+1,he=e-1
+              :syntax match Character /'.'/hs=s+1,he=e-1
 
 
 DEFINING REGIONS        *:syn-region* *:syn-start* *:syn-skip* *:syn-end*
@@ -3990,384 +3998,393 @@ The maximum number of syntax groups is 19999.
 ==============================================================================
 7. :syntax arguments                                    *:syn-arguments*
 
-	The :syntax commands that define syntax items take a number of arguments.
-	The common ones are explained here.
-	The arguments may be given in any order  and  may be mixed with patterns.
-	Not all commands accept all arguments.
-	This table shows which arguments can not be used for  all commands:
-
-	*E395*
-						contains  oneline   fold  display  extend concealends
-	:syntax keyword          -       -       -       -       -      -
-	:syntax match           yes      -      yes     yes     yes     -
-	:syntax region          yes     yes     yes     yes     yes    yes
-
-	These arguments can be used for all three commands:
-			conceal
-			cchar
-			contained
-			containedin
-			nextgroup
-			transparent
-			skipwhite
-			skipnl
-			skipempty
-
-
-	*conceal* *:syn-conceal*
-	conceal
-
-			When the "conceal" argument is given,
-			the item is marked as concealable.
-			Whether or not it is actually concealed depends on the value of the 'conceallevel' option.
-			The 'concealcursor' option is used to decide whether concealable items in the current line are displayed unconcealed to be able to edit the line.
-			Another way to conceal text is with |matchadd()|.
-
-	*:syn-concealends*
-	concealends
-
-			When the "concealends" argument is given,
-			the start and end matches of the region,
-			but not the contents of the region,
-			are marked as concealable.
-			Whether or not they are actually concealed depends on the setting on the 'conceallevel' option.
-			The ends of a region can only be concealed separately  in this way when they have their own highlighting via "matchgroup"
-
-	*E844*  *:syn-cchar*
-	cchar
-
-	The "cchar" argument defines the character shown in place of the item when it is concealed (setting "cchar" only makes sense when the conceal argument is given.) If "cchar" is not set then the default conceal character defined in the 'listchars' option is used.
-	The character cannot be  a control character such as Tab.
-			Example:
-					   :syntax match Entity "&amp;" conceal cchar=&
-					See |hl-Conceal| for highlighting.
-
-	contained                                               *:syn-contained*
-
-	When the "contained" argument is given, this item will not be recognized at
-	the top level, but only when it is mentioned in the "contains" field of
-	another match.  Example:
-	   :syntax keyword Todo    TODO    contained
-	   :syntax match   Comment "//.*"  contains=Todo
-
-
-	display                                                 *:syn-display*
-
-	If the "display" argument is given, this item will be skipped when the
-	detected highlighting will not be displayed.  This will speed up highlighting,
-	by skipping this item when only finding the syntax state for the text that is
-	to be displayed.
-
-	Generally, you can use "display" for match and region items that meet these
-	conditions:
-	- The item does not continue past the end of a line.  Example for C: A region
-	  for a "/*" comment can't contain "display", because it continues on the next
-	  line.
-	- The item does not contain items that continue past the end of the line or
-	  make it continue on the next line.
-	- The item does not change the size of any item it is contained in.  Example
-	  for C: A match with "\\$" in a preprocessor match can't have "display",
-	  because it may make that preprocessor match shorter.
-	- The item does not allow other items to match that didn't match otherwise,
-	  and that item may extend the match too far.  Example for C: A match for a
-	  "//" comment can't use "display", because a "/*" inside that comment would
-	  match then and start a comment which extends past the end of the line.
-
-	Examples, for the C language, where "display" can be used:
-	- match with a number
-	- match with a label
-
-
-	transparent                                             *:syn-transparent*
-
-	If the "transparent" argument is given, this item will not be highlighted
-	itself, but will take the highlighting of the item it is contained in.  This
-	is useful for syntax items that don't need any highlighting but are used
-	only to skip over a part of the text.
-
-	The "contains=" argument is also inherited from the item it is contained in,
-	unless a "contains" argument is given for the transparent item itself.  To
-	avoid that unwanted items are contained, use "contains=NONE".  Example, which
-	highlights words in strings, but makes an exception for "vim":
-			:syn match myString /'[^']*'/ contains=myWord,myVim
-			:syn match myWord   /\<[a-z]*\>/ contained
-			:syn match myVim    /\<vim\>/ transparent contained contains=NONE
-			:hi link myString String
-			:hi link myWord   Comment
-	Since the "myVim" match comes after "myWord" it is the preferred match (last
-	match in the same position overrules an earlier one).  The "transparent"
-	argument makes the "myVim" match use the same highlighting as "myString".  But
-	it does not contain anything.  If the "contains=NONE" argument would be left
-	out, then "myVim" would use the contains argument from myString and allow
-	"myWord" to be contained, which will be highlighted as a Comment.  This
-	happens because a contained match doesn't match inside itself in the same
-	position, thus the "myVim" match doesn't overrule the "myWord" match here.
-
-	When you look at the colored text, it is like looking at layers of contained
-	items.  The contained item is on top of the item it is contained in, thus you
-	see the contained item.  When a contained item is transparent, you can look
-	through, thus you see the item it is contained in.  In a picture:
-
-					look from here
-
-				|   |   |   |   |   |
-				V   V   V   V   V   V
-
-				   xxxx       yyy           more contained items
-				....................        contained item (transparent)
-			=============================   first item
-
-	The 'x', 'y' and '=' represent a highlighted syntax item.  The '.' represent a
-	transparent group.
-
-	What you see is:
-
-			=======xxxx=======yyy========
-
-	Thus you look through the transparent "....".
-
-
-	oneline                                                 *:syn-oneline*
-
-	The "oneline" argument indicates that the region does not cross a line
-	boundary.  It must match completely in the current line.  However, when the
-	region has a contained item that does cross a line boundary, it continues on
-	the next line anyway.  A contained item can be used to recognize a line
-	continuation pattern.  But the "end" pattern must still match in the first
-	line, otherwise the region doesn't even start.
-
-	When the start pattern includes a "\n" to match an end-of-line, the end
-	pattern must be found in the same line as where the start pattern ends.  The
-	end pattern may also include an end-of-line.  Thus the "oneline" argument
-	means that the end of the start pattern and the start of the end pattern must
-	be within one line.  This can't be changed by a skip pattern that matches a
-	line break.
-
-
-	fold                                                    *:syn-fold*
-
-	The "fold" argument makes the fold level increase by one for this item.
-	Example:
-	   :syn region myFold start="{" end="}" transparent fold
-	   :syn sync fromstart
-	   :set foldmethod=syntax
-	This will make each {} block form one fold.
-
-	The fold will start on the line where the item starts, and end where the item
-	ends.  If the start and end are within the same line, there is no fold.
-	The 'foldnestmax' option limits the nesting of syntax folds.
-	See |:syn-foldlevel| to control how the foldlevel of a line is computed
-	from its syntax items.
-
-
-	*:syn-contains* *E405* *E406* *E407* *E408* *E409*
-	contains={group-name},..
-
-	The "contains" argument is followed by a list of syntax group names.  These
-	groups will be allowed to begin inside the item (they may extend past the
-	containing group's end).  This allows for recursive nesting of matches and
-	regions.  If there is no "contains" argument, no groups will be contained in
-	this item.  The group names do not need to be defined before they can be used
-	here.
-
-	contains=ALL
-					If the only item in the contains list is "ALL", then all
-					groups will be accepted inside the item.
-
-	contains=ALLBUT,{group-name},..
-					If the first item in the contains list is "ALLBUT", then all
-					groups will be accepted inside the item, except the ones that
-					are listed.  Example:
-	  :syntax region Block start="{" end="}" ... contains=ALLBUT,Function
-
-	contains=TOP
-					If the first item in the contains list is "TOP", then all
-					groups will be accepted that don't have the "contained"
-					argument.
-	contains=TOP,{group-name},..
-					Like "TOP", but excluding the groups that are listed.
-
-	contains=CONTAINED
-					If the first item in the contains list is "CONTAINED", then
-					all groups will be accepted that have the "contained"
-					argument.
-	contains=CONTAINED,{group-name},..
-					Like "CONTAINED", but excluding the groups that are
-					listed.
-
-
-	The {group-name} in the "contains" list can be a pattern.  All group names
-	that match the pattern will be included (or excluded, if "ALLBUT" is used).
-	The pattern cannot contain white space or a ','.  Example:
-	   ... contains=Comment.*,Keyw[0-3]
-	The matching will be done at moment the syntax command is executed.  Groups
-	that are defined later will not be matched.  Also, if the current syntax
-	command defines a new group, it is not matched.  Be careful: When putting
-	syntax commands in a file you can't rely on groups NOT being defined, because
-	the file may have been sourced before, and ":syn clear" doesn't remove the
-	group names.
-
-	The contained groups will also match in the start and end patterns of a
-	region.  If this is not wanted, the "matchgroup" argument can be used
-	|:syn-matchgroup|.  The "ms=" and "me=" offsets can be used to change the
-	region where contained items do match.  Note that this may also limit the
-	area that is highlighted
-
-
-	containedin={group-name}...                             *:syn-containedin*
-
-	The "containedin" argument is followed by a list of syntax group names.  The
-	item will be allowed to begin inside these groups.  This works as if the
-	containing item has a "contains=" argument that includes this item.
-
-	The {group-name}... can be used just like for "contains", as explained above.
-
-	This is useful when adding a syntax item afterwards.  An item can be told to
-	be included inside an already existing item, without changing the definition
-	of that item.  For example, to highlight a word in a C comment after loading
-	the C syntax:
-			:syn keyword myword HELP containedin=cComment contained
-	Note that "contained" is also used, to avoid that the item matches at the top
-	level.
-
-	Matches for "containedin" are added to the other places where the item can
-	appear.  A "contains" argument may also be added as usual.  Don't forget that
-	keywords never contain another item, thus adding them to "containedin" won't
-	work.
-
-
-	nextgroup={group-name},..                               *:syn-nextgroup*
-
-	The "nextgroup" argument is followed by a list of syntax group names,
-	separated by commas (just like with "contains", so you can also use patterns).
-
-	If the "nextgroup" argument is given, the mentioned syntax groups will be
-	tried for a match, after the match or region ends.  If none of the groups have
-	a match, highlighting continues normally.  If there is a match, this group
-	will be used, even when it is not mentioned in the "contains" field of the
-	current group.  This is like giving the mentioned group priority over all
-	other groups.  Example:
-	   :syntax match  ccFoobar  "Foo.\{-}Bar"  contains=ccFoo
-	   :syntax match  ccFoo     "Foo"           contained nextgroup=ccFiller
-	   :syntax region ccFiller  start="."  matchgroup=ccBar  end="Bar"  contained
-
-	This will highlight "Foo" and "Bar" differently, and only when there is a
-	"Bar" after "Foo".  In the text line below, "f" shows where ccFoo is used for
-	highlighting, and "bbb" where ccBar is used.
-
-	   Foo asdfasd Bar asdf Foo asdf Bar asdf
-	   fff         bbb      fff      bbb
-
-	Note the use of ".\{-}" to skip as little as possible until the next Bar.
-	when ".*" would be used, the "asdf" in between "Bar" and "Foo" would be
-	highlighted according to the "ccFoobar" group, because the ccFooBar match
-	would include the first "Foo" and the last "Bar" in the line (see |pattern|).
-
-
-	skipwhite                                               *:syn-skipwhite*
-	skipnl                                                  *:syn-skipnl*
-	skipempty                                               *:syn-skipempty*
-
-	These arguments are only used in combination with "nextgroup".  They can be
-	used to allow the next group to match after skipping some text:
-			skipwhite       skip over space and tab characters
-			skipnl          skip over the end of a line
-			skipempty       skip over empty lines (implies a "skipnl")
-
-	When "skipwhite" is present, the white space is only skipped if there is no
-	next group that matches the white space.
-
-	When "skipnl" is present, the match with nextgroup may be found in the next
-	line.  This only happens when the current item ends at the end of the current
-	line!  When "skipnl" is not present, the nextgroup will only be found after
-	the current item in the same line.
-
-	When skipping text while looking for a next group, the matches for other
-	groups are ignored.  Only when no next group matches, other items are tried
-	for a match again.  This means that matching a next group and skipping white
-	space and <EOL>s has a higher priority than other items.
-
-	Example:
-	  :syn match ifstart "\<if.*"     nextgroup=ifline skipwhite skipempty
-	  :syn match ifline  "[^ \t].*" nextgroup=ifline skipwhite skipempty contained
-	  :syn match ifline  "endif"    contained
-	Note that the "[^ \t].*" match matches all non-white text.  Thus it would also
-	match "endif".  Therefore the "endif" match is put last, so that it takes
-	precedence.
-	Note that this example doesn't work for nested "if"s.  You need to add
-	"contains" arguments to make that work (omitted for simplicity of the
-	example).
-
-	IMPLICIT CONCEAL                                        *:syn-conceal-implicit*
-
-	:sy[ntax] conceal [on|off]
-			This defines if the following ":syntax" commands will define keywords,
-			matches or regions with the "conceal" flag set. After ":syn conceal
-			on", all subsequent ":syn keyword", ":syn match" or ":syn region"
-			defined will have the "conceal" flag set implicitly. ":syn conceal
-			off" returns to the normal state where the "conceal" flag must be
-			given explicitly.
-
-	:sy[ntax] conceal
-			Show either "syntax conceal on" or "syntax conceal off" (translated).
+        The :syntax commands that define syntax items take a number of arguments.
+        The common ones are explained here.
+        The arguments may be given in any order  and  may be mixed with patterns.
+        Not all commands accept all arguments.
+        This table shows which arguments can not be used for  all commands:
+
+*E395*
+                                                contains  oneline   fold  display  extend concealends
+        :syntax keyword          -       -       -       -       -      -
+        :syntax match           yes      -      yes     yes     yes     -
+        :syntax region          yes     yes     yes     yes     yes    yes
+
+        These arguments can be used for all three commands:
+                        conceal
+                        cchar
+                        contained
+                        containedin
+                        nextgroup
+                        transparent
+                        skipwhite
+                        skipnl
+                        skipempty
+
+
+*conceal* *:syn-conceal*
+        conceal
+
+                        When the "conceal" argument is given,
+                        the item is marked as concealable.
+                        Whether or not it is actually concealed depends on the value of the 'conceallevel' option.
+                        The 'concealcursor' option is used to decide whether concealable items in the current line are displayed unconcealed to be able to edit the line.
+                        Another way to conceal text is with |matchadd()|.
+
+*:syn-concealends*
+        concealends
+
+                        When the "concealends" argument is given,
+                        the start and end matches of the region,
+                        but not the contents of the region,
+                        are marked as concealable.
+                        Whether or not they are actually concealed depends on the setting on the 'conceallevel' option.
+                        The ends of a region can only be concealed separately  in this way when they have their own highlighting via "matchgroup"
+
+*E844*  *:syn-cchar*
+        cchar
+
+        The "cchar" argument defines the character shown in place of the item when it is concealed (setting "cchar" only makes sense when the conceal argument is given.) If "cchar" is not set then the default conceal character defined in the 'listchars' option is used.
+        The character cannot be  a control character such as Tab.
+                        Example:
+                                           :syntax match Entity "&amp;" conceal cchar=&
+                                        See |hl-Conceal| for highlighting.
+
+        contained                                               *:syn-contained*
+
+        When the "contained" argument is given, this item will not be recognized at
+        the top level, but only when it is mentioned in the "contains" field of
+        another match.  Example:
+           :syntax keyword Todo    TODO    contained
+           :syntax match   Comment "//.*"  contains=Todo
+
+
+        display                                                 *:syn-display*
+
+        If the "display" argument is given, this item will be skipped when the
+        detected highlighting will not be displayed.  This will speed up highlighting,
+        by skipping this item when only finding the syntax state for the text that is
+        to be displayed.
+
+        Generally, you can use "display" for match and region items that meet these
+        conditions:
+        - The item does not continue past the end of a line.  Example for C: A region
+          for a "/*" comment can't contain "display", because it continues on the next
+          line.
+        - The item does not contain items that continue past the end of the line or
+          make it continue on the next line.
+        - The item does not change the size of any item it is contained in.  Example
+          for C: A match with "\\$" in a preprocessor match can't have "display",
+          because it may make that preprocessor match shorter.
+        - The item does not allow other items to match that didn't match otherwise,
+          and that item may extend the match too far.  Example for C: A match for a
+          "//" comment can't use "display", because a "/*" inside that comment would
+          match then and start a comment which extends past the end of the line.
+
+        Examples, for the C language, where "display" can be used:
+        - match with a number
+        - match with a label
+
+
+        transparent                                             *:syn-transparent*
+
+        If the "transparent" argument is given, this item will not be highlighted
+        itself, but will take the highlighting of the item it is contained in.  This
+        is useful for syntax items that don't need any highlighting but are used
+        only to skip over a part of the text.
+
+        The "contains=" argument is also inherited from the item it is contained in,
+        unless a "contains" argument is given for the transparent item itself.  To
+        avoid that unwanted items are contained, use "contains=NONE".  Example, which
+        highlights words in strings, but makes an exception for "vim":
+                        :syn match myString /'[^']*'/ contains=myWord,myVim
+                        :syn match myWord   /\<[a-z]*\>/ contained
+                        :syn match myVim    /\<vim\>/ transparent contained contains=NONE
+                        :hi link myString String
+                        :hi link myWord   Comment
+        Since the "myVim" match comes after "myWord" it is the preferred match (last
+        match in the same position overrules an earlier one).  The "transparent"
+        argument makes the "myVim" match use the same highlighting as "myString".  But
+        it does not contain anything.  If the "contains=NONE" argument would be left
+        out, then "myVim" would use the contains argument from myString and allow
+        "myWord" to be contained, which will be highlighted as a Comment.  This
+        happens because a contained match doesn't match inside itself in the same
+        position, thus the "myVim" match doesn't overrule the "myWord" match here.
+
+        When you look at the colored text, it is like looking at layers of contained
+        items.  The contained item is on top of the item it is contained in, thus you
+        see the contained item.  When a contained item is transparent, you can look
+        through, thus you see the item it is contained in.  In a picture:
+
+                                        look from here
+
+                                |   |   |   |   |   |
+                                V   V   V   V   V   V
+
+                                   xxxx       yyy           more contained items
+                                ....................        contained item (transparent)
+                        =============================   first item
+
+        The 'x', 'y' and '=' represent a highlighted syntax item.  The '.' represent a
+        transparent group.
+
+        What you see is:
+
+                        =======xxxx=======yyy========
+
+        Thus you look through the transparent "....".
+
+
+        oneline                                                 *:syn-oneline*
+
+        The "oneline" argument indicates that the region does not cross a line
+        boundary.  It must match completely in the current line.  However, when the
+        region has a contained item that does cross a line boundary, it continues on
+        the next line anyway.  A contained item can be used to recognize a line
+        continuation pattern.  But the "end" pattern must still match in the first
+        line, otherwise the region doesn't even start.
+
+        When the start pattern includes a "\n" to match an end-of-line, the end
+        pattern must be found in the same line as where the start pattern ends.  The
+        end pattern may also include an end-of-line.  Thus the "oneline" argument
+        means that the end of the start pattern and the start of the end pattern must
+        be within one line.  This can't be changed by a skip pattern that matches a
+        line break.
+
+
+        fold                                                    *:syn-fold*
+
+        The "fold" argument makes the fold level increase by one for this item.
+        Example:
+           :syn region myFold start="{" end="}" transparent fold
+           :syn sync fromstart
+           :set foldmethod=syntax
+        This will make each {} block form one fold.
+
+        The fold will start on the line where the item starts, and end where the item
+        ends.  If the start and end are within the same line, there is no fold.
+        The 'foldnestmax' option limits the nesting of syntax folds.
+        See |:syn-foldlevel| to control how the foldlevel of a line is computed
+        from its syntax items.
+
+
+*:syn-contains* *E405* *E406* *E407* *E408* *E409*
+        contains={group-name},..
+
+        The "contains" argument is followed by a list of syntax group names.  These
+        groups will be allowed to begin inside the item (they may extend past the
+        containing group's end).  This allows for recursive nesting of matches and
+        regions.  If there is no "contains" argument, no groups will be contained in
+        this item.  The group names do not need to be defined before they can be used
+        here.
+
+        contains=ALL
+                                        If the only item in the contains list is "ALL", then all
+                                        groups will be accepted inside the item.
+
+        contains=ALLBUT,{group-name},..
+                                        If the first item in the contains list is "ALLBUT", then all
+                                        groups will be accepted inside the item, except the ones that
+                                        are listed.  Example:
+          :syntax region Block start="{" end="}" ... contains=ALLBUT,Function
+
+        contains=TOP
+                                        If the first item in the contains list is "TOP", then all
+                                        groups will be accepted that don't have the "contained"
+                                        argument.
+        contains=TOP,{group-name},..
+                                        Like "TOP", but excluding the groups that are listed.
+
+        contains=CONTAINED
+                                        If the first item in the contains list is "CONTAINED", then
+                                        all groups will be accepted that have the "contained"
+                                        argument.
+        contains=CONTAINED,{group-name},..
+                                        Like "CONTAINED", but excluding the groups that are
+                                        listed.
+
+
+        The {group-name} in the "contains" list can be a pattern.  All group names
+        that match the pattern will be included (or excluded, if "ALLBUT" is used).
+        The pattern cannot contain white space or a ','.  Example:
+           ... contains=Comment.*,Keyw[0-3]
+        The matching will be done at moment the syntax command is executed.  Groups
+        that are defined later will not be matched.  Also, if the current syntax
+        command defines a new group, it is not matched.  Be careful: When putting
+        syntax commands in a file you can't rely on groups NOT being defined, because
+        the file may have been sourced before, and ":syn clear" doesn't remove the
+        group names.
+
+        The contained groups will also match in the start and end patterns of a
+        region.  If this is not wanted, the "matchgroup" argument can be used
+        |:syn-matchgroup|.  The "ms=" and "me=" offsets can be used to change the
+        region where contained items do match.  Note that this may also limit the
+        area that is highlighted
+
+
+        containedin={group-name}...                             *:syn-containedin*
+
+        The "containedin" argument is followed by a list of syntax group names.  The
+        item will be allowed to begin inside these groups.  This works as if the
+        containing item has a "contains=" argument that includes this item.
+
+        The {group-name}... can be used just like for "contains", as explained above.
+
+        This is useful when adding a syntax item afterwards.  An item can be told to
+        be included inside an already existing item, without changing the definition
+        of that item.  For example, to highlight a word in a C comment after loading
+        the C syntax:
+                        :syn keyword myword HELP containedin=cComment contained
+        Note that "contained" is also used, to avoid that the item matches at the top
+        level.
+
+        Matches for "containedin" are added to the other places where the item can
+        appear.  A "contains" argument may also be added as usual.  Don't forget that
+        keywords never contain another item, thus adding them to "containedin" won't
+        work.
+
+
+        nextgroup={group-name},..                               *:syn-nextgroup*
+
+        The "nextgroup" argument is followed by a list of syntax group names,
+        separated by commas (just like with "contains", so you can also use patterns).
+
+        If the "nextgroup" argument is given, the mentioned syntax groups will be
+        tried for a match, after the match or region ends.  If none of the groups have
+        a match, highlighting continues normally.  If there is a match, this group
+        will be used, even when it is not mentioned in the "contains" field of the
+        current group.  This is like giving the mentioned group priority over all
+        other groups.  Example:
+           :syntax match  ccFoobar  "Foo.\{-}Bar"  contains=ccFoo
+           :syntax match  ccFoo     "Foo"           contained nextgroup=ccFiller
+           :syntax region ccFiller  start="."  matchgroup=ccBar  end="Bar"  contained
+
+        This will highlight "Foo" and "Bar" differently, and only when there is a
+        "Bar" after "Foo".  In the text line below, "f" shows where ccFoo is used for
+        highlighting, and "bbb" where ccBar is used.
+
+           Foo asdfasd Bar asdf Foo asdf Bar asdf
+           fff         bbb      fff      bbb
+
+        Note the use of ".\{-}" to skip as little as possible until the next Bar.
+        when ".*" would be used, the "asdf" in between "Bar" and "Foo" would be
+        highlighted according to the "ccFoobar" group, because the ccFooBar match
+        would include the first "Foo" and the last "Bar" in the line (see |pattern|).
+
+
+        skipwhite                                               *:syn-skipwhite*
+        skipnl                                                  *:syn-skipnl*
+        skipempty                                               *:syn-skipempty*
+
+        These arguments are only used in combination with "nextgroup".  They can be
+        used to allow the next group to match after skipping some text:
+                        skipwhite       skip over space and tab characters
+                        skipnl          skip over the end of a line
+                        skipempty       skip over empty lines (implies a "skipnl")
+
+        When "skipwhite" is present, the white space is only skipped if there is no
+        next group that matches the white space.
+
+        When "skipnl" is present, the match with nextgroup may be found in the next
+        line.  This only happens when the current item ends at the end of the current
+        line!  When "skipnl" is not present, the nextgroup will only be found after
+        the current item in the same line.
+
+        When skipping text while looking for a next group, the matches for other
+        groups are ignored.  Only when no next group matches, other items are tried
+        for a match again.  This means that matching a next group and skipping white
+        space and <EOL>s has a higher priority than other items.
+
+        Example:
+          :syn match ifstart "\<if.*"     nextgroup=ifline skipwhite skipempty
+          :syn match ifline  "[^ \t].*" nextgroup=ifline skipwhite skipempty contained
+          :syn match ifline  "endif"    contained
+        Note that the "[^ \t].*" match matches all non-white text.  Thus it would also
+        match "endif".  Therefore the "endif" match is put last, so that it takes
+        precedence.
+        Note that this example doesn't work for nested "if"s.  You need to add
+        "contains" arguments to make that work (omitted for simplicity of the
+        example).
+
+        IMPLICIT CONCEAL                                        *:syn-conceal-implicit*
+
+        :sy[ntax] conceal [on|off]
+                        This defines if the following ":syntax" commands will define keywords,
+                        matches or regions with the "conceal" flag set. After ":syn conceal
+                        on", all subsequent ":syn keyword", ":syn match" or ":syn region"
+                        defined will have the "conceal" flag set implicitly. ":syn conceal
+                        off" returns to the normal state where the "conceal" flag must be
+                        given explicitly.
+
+        :sy[ntax] conceal
+                        Show either "syntax conceal on" or "syntax conceal off" (translated).
 
 ==============================================================================
 8. Syntax patterns                              *:syn-pattern* *E401* *E402*
 
-In the syntax commands, a pattern must be surrounded by two identical
-characters.  This is like it works for the ":s" command.  The most common to
-use is the double quote.  But if the pattern contains a double quote, you can
-use another character that is not used in the pattern.  Examples:
-  :syntax region Comment  start="/\*"  end="\*/"
-  :syntax region String   start=+"+    end=+"+   skip=+\\"+
+In the syntax commands,
+a pattern must be surrounded by two identical  characters.
+This is like it works for the ":s" command.
+The most common to  use is the double quote.
+But if the pattern contains a double quote:
+    you can  use another character that is not used in the pattern.
+    Examples:
+          :syntax region Comment  start="/\*"  end="\*/"
+          :syntax region String   start=+"+    end=+"+   skip=+\\"+
 
-See |pattern| for the explanation of what a pattern is.  Syntax patterns are
-always interpreted like the 'magic' option is set, no matter what the actual
-value of 'magic' is.  And the patterns are interpreted like the 'l' flag is
-not included in 'cpoptions'.  This was done to make syntax files portable and
-independent of the 'magic' setting.
+See |pattern| for the explanation of what a pattern is.
+To make syntax files portable and  independent of the 'magic' setting:
+    Syntax patterns are  always interpreted like the 'magic' option is set,
+    no matter what the actual  value of 'magic' is.
+
+    You can still using "very maigc" by like this: "\v(hi|hello)"
+
+    And the patterns are interpreted like the 'l' flag is  not included in 'cpoptions'.
+
 
 Try to avoid patterns that can match an empty string, such as "[a-z]*".
 This slows down the highlighting a lot, because it matches everywhere.
 
 *:syn-pattern-offset*
-The pattern can be followed by a character offset.  This can be used to
-change the highlighted part, and to change the text area included in the
-match or region (which only matters when trying to match other items).  Both
-are relative to the matched pattern.  The character offset for a skip
-pattern can be used to tell where to continue looking for an end pattern.
+The pattern can be followed by a character offset.
+    This can be used to  change the highlighted part,
+    and to change the text area included in
+        the  match or  region (which only matters when trying to match other items).
+    Both  are relative to the matched pattern.
+    The character offset for a skip  pattern can be used to
+    tell where to continue looking for an end pattern.
 
 The offset takes the form of "{what}={offset}"
-The {what} can be one of seven strings:
+    The {what} can be one of seven strings:
 
-ms      Match Start     offset for the start of the matched text
-me      Match End       offset for the end of the matched text
-hs      Highlight Start offset for where the highlighting starts
-he      Highlight End   offset for where the highlighting ends
-rs      Region Start    offset for where the body of a region starts
-re      Region End      offset for where the body of a region ends
-lc      Leading Context offset past "leading context" of pattern
+        ms      Match Start     offset for the start of the matched text
+        me      Match End       offset for the end of the matched text
+        hs      Highlight Start offset for where the highlighting starts
+        he      Highlight End   offset for where the highlighting ends
+        rs      Region Start    offset for where the body of a region starts
+        re      Region End      offset for where the body of a region ends
+        lc      Leading Context offset past "leading context" of pattern
 
-The {offset} can be:
+    The {offset} can be:
 
-s       start of the matched pattern
-s+{nr}  start of the matched pattern plus {nr} chars to the right
-s-{nr}  start of the matched pattern plus {nr} chars to the left
-e       end of the matched pattern
-e+{nr}  end of the matched pattern plus {nr} chars to the right
-e-{nr}  end of the matched pattern plus {nr} chars to the left
-{nr}    (for "lc" only): start matching {nr} chars right of the start
+        s       start of the matched pattern
+        s+{nr}  start of the matched pattern plus {nr} chars to the right
+        s-{nr}  start of the matched pattern plus {nr} chars to the left
+        e       end of the matched pattern
+        e+{nr}  end of the matched pattern plus {nr} chars to the right
+        e-{nr}  end of the matched pattern plus {nr} chars to the left
+        {nr}    (for "lc" only): start matching {nr} chars right of the start
 
 Examples: "ms=s+1", "hs=e-2", "lc=3".
 
-Although all offsets are accepted after any pattern, they are not always
-meaningful.  This table shows which offsets are actually used:
+    All offsets are accepted after any pattern,
+    This table shows which offsets are actually used:
 
-                    ms   me   hs   he   rs   re   lc
-match item          yes  yes  yes  yes  -    -    yes
-region item start   yes  -    yes  -    yes  -    yes
-region item skip    -    yes  -    -    -    -    yes
-region item end     -    yes  -    yes  -    yes  yes
+                        ms   me   hs   he   rs   re   lc
+    match item          yes  yes  yes  yes  -    -    yes
+    region item start   yes  -    yes  -    yes  -    yes
+    region item skip    -    yes  -    -    -    -    yes
+    region item end     -    yes  -    yes  -    yes  yes
 
 Offsets can be concatenated, with a ',' in between.  Example:
   :syn match String  /"[^"]*"/hs=s+1,he=e-1
@@ -4492,6 +4509,7 @@ cannot be referred to.
 ==============================================================================
 9. Syntax clusters                                      *:syn-cluster* *E400*
 
+类似hi link?
 :sy[ntax] cluster {cluster-name} [contains={group-name}..]
                                  [add={group-name}..]
                                  [remove={group-name}..]
@@ -4785,8 +4803,6 @@ To list the syntax groups in one cluster:                       *E392*
 
 See above for other arguments for the ":syntax" command.
 
-Note that the ":syntax" command can be abbreviated to ":sy", although ":syn"
-is mostly used, because it looks better.
 
 ==============================================================================
 12. Highlight command                   *:highlight* *:hi* *E28* *E411* *E415*
@@ -5483,3 +5499,4 @@ literal text specify the size of that text (in bytes):
 
 
  vim:tw=78:sw=4:ts=8:noet:ft=help:norl:
+leo_DIY

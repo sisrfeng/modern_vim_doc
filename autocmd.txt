@@ -657,16 +657,15 @@ Names are case-insensitive.
                                     used to operate on the lines just read.
 *FileReadPre*
     FileReadPre                     Before reading a file with a ":read" command.
-*FileType*
-    FileType
 
-            When the 'filetype' option has been set.
-            The pattern is matched against the filetype.
+    *FileType*
+        When the 'filetype' option has been set.
+        The pattern is matched against the filetype.
 
-            <afile> is the name of the file where this option was set.
-            <amatch> is the new value of 'filetype'.
-            Cannot switch windows or  buffers.
-            See |filetypes|.
+        <afile> is the name of the file where this option was set.
+        <amatch> is the new value of 'filetype'.
+        Cannot switch windows or  buffers.
+        See |filetypes|.
 
 *FileWriteCmd*
     FileWriteCmd                    Before writing to a file, when not writing the
@@ -1345,32 +1344,34 @@ Example:
 :do[autocmd] [<nomodeline>] [group] {event} [fname]
 *:do* *:doau* *:doaut* *:doautocmd* *E217*
 
-        Apply the autocommands matching [fname] (default:
-        current file name) for {event} to the current buffer.
-        You can use this when the current file name does not match the right pattern,
+    手动触发autocmd
+    Apply the autocommands matching [fname] (default:  current file name)
+    for {event} to the current buffer.
+
+    You can use this when
+        the current file name does not match the right pattern,
         after changing settings,
         or to execute autocommands for a certain event.
-        It's possible to use this inside an autocommand too,
+    It's possible to use this inside an autocommand too,
         so you can base the autocommands for one extension on another extension.
         Example:
-
-                        :au BufEnter *.cpp so ~/.config/nvim/init_cpp.vim
-                        :au BufEnter *.cpp doau BufEnter x.c
+            :au BufEnter *.cpp so ~/.config/nvim/init_cpp.vim
+            :au BufEnter *.cpp doau BufEnter x.c
          Be careful to avoid endless loops.  |autocmd-nested|
 
-        When the [group] argument is not given,
-        Vim executes the autocommands for 🔑all groups🔑. 这里不再是current group
+    When the [group] argument is not given,
+        Vim executes the autocommands for 🔑all groups🔑.
+        这里不再是current group
         Undefined group is an error.
 
 *<nomodeline>*
-        After applying the autocommands the modelines are processed,
-        so that their settings overrule the settings from autocommands when editing a file.
-
-        This is skipped if <nomodeline> is specified.
+        Skipp modeline, preventing them from overrule
+        the settings from autocommands when editing a file.
 
         You probably want to use <nomodeline> for events not used when loading a buffer,
         such as |User| event.
-        Modelines are also skipped when no matching autocommands were executed.
+
+        (Modelines are also skipped when no matching autocommands were executed.)
 
 *:doautoa* *:doautoall*
 :doautoa[ll] [<nomodeline>] [group] {event} [fname]
@@ -1378,8 +1379,14 @@ Example:
         but apply the autocommands to each loaded buffer.
         The current buffer is done last.
 
-        Note that [fname] is used to select the autocommands,
-        not the buffers to which they are applied.
+        例子
+        /home/linuxbrew/.linuxbrew/Cellar/neovim/0.6.1/share/nvim/runtime/syntax/syntax.vim:
+                doautoall syntaxset FileType
+                一旦FileType被触发, syntaxset这个group也随之触发
+
+        Note that [fname] is used to
+                select the autocommands,
+                not the buffers to which they are applied.
         Example:
 
                 augroup mine
@@ -1399,6 +1406,7 @@ Example:
         This command is intended for autocommands that set options,
         change highlighting,
         and things like that.
+
 
 ==============================================================================
 10. Using autocommands                                  *autocmd-use*

@@ -39,77 +39,96 @@ Single repeats                                          *single-repeat*
 
 
 ==============================================================================
-Multiple repeats                                        *multi-repeat*
+Multiple repeats `:g`                                       *multi-repeat*
 
 *:g* *:global* *E148*
 :[range]g[lobal]/{pattern}/[cmd]
-                        Execute the Ex command [cmd] (default ":p") on the
-                        lines within [range] where {pattern} matches.
+    Execute the Ex command [cmd] (default ":p")
+    on the lines within [range] where {pattern} matches.
 
 :[range]g[lobal]!/{pattern}/[cmd]
-                        Execute the Ex command [cmd] (default ":p") on the
-                        lines within [range] where {pattern} does NOT match.
-
 *:v* *:vglobal*
 :[range]v[global]/{pattern}/[cmd]
-                        Same as :g!.
 
-Example: >
+        where {pattern} does NOT match.
+
+Example:
+
+        :g/^Obsolete/d
+优化:
         :g/^Obsolete/d _
-Using the underscore after `:d` avoids clobbering registers or the clipboard.
-This also makes it faster.
 
-Instead of the '/' which surrounds the {pattern}, you can use any other
-single byte character, but not an alphabetic character, '\', '"' or '|'.
-This is useful if you want to include a '/' in the search pattern or
-replacement string.
+    Using the underscore after `:d`
+    avoids clobbering registers or the clipboard.
+    This also makes it faster.
 
-For the definition of a pattern, see |pattern|.
+    Instead of the '/' which surrounds the {pattern},
+        you can use any other  single byte character,
+        but not an alphabetic character, '\', '"' or '|'.
+        This is useful if you want to include a '/' in the search pattern or  replacement string.
 
-NOTE [cmd] may contain a range; see |collapse| and |edit-paragraph-join| for
-examples.
+    For the definition of a pattern, see |pattern|.
 
-The global commands work by first scanning through the [range] lines and
-marking each line where a match occurs (for a multi-line pattern, only the
-start of the match matters).
-In a second scan the [cmd] is executed for each marked line, as if the cursor
-was in that line.  For ":v" and ":g!" the command is executed for each not
-marked line.  If a line is deleted its mark disappears.
-The default for [range] is the whole buffer (1,$).  Use "CTRL-C" to interrupt
-the command.  If an error message is given for a line, the command for that
-line is aborted and the global command continues with the next marked or
-unmarked line.
+    NOTE [cmd] may contain a range; see |collapse| and |edit-paragraph-join| for  examples.
+
+    The global commands work by
+        first scanning through the [range] lines and
+        marking each line where a match occurs (for a multi-line pattern, only the  start of the match matters).
+        In a second scan
+            the [cmd] is executed for each marked line,
+            as if the cursor  was in that line.
+    For ":v" and ":g!" the command is executed for each not  marked line.
+
+    If a line is deleted its mark disappears.
+
+    The default for [range] is the whole buffer (1,$).
+
+    Use "CTRL-C" to interrupt  the command.
+        If an error message is given for a line,
+        the command for that  line is aborted and
+        the global command continues with the next matched line.
+
 *E147*
-When the command is used recursively, it only works on one line.  Giving a
-range is then not allowed. This is useful to find all lines that match a
-pattern and do not match another pattern: >
+    When the command is used recursively, it only works on one line.
+    Giving a  range is then not allowed.
+    This is useful to find all lines that match a  pattern and
+    do not match another pattern:
         :g/found/v/notfound/{cmd}
-This first finds all lines containing "found", but only executes {cmd} when
-there is no match for "notfound".
 
-To execute a non-Ex command, you can use the `:normal` command: >
+    This first finds all lines containing "found",
+    but only executes {cmd} when there is no match for "notfound".
+
+To execute a non-Ex command, you can use the `:normal` command:
         :g/pat/normal {commands}
-Make sure that {commands} ends with a whole command, otherwise Vim will wait
-for you to type the rest of the command for each match.  The screen will not
-have been updated, so you don't know what you are doing.  See |:normal|.
+
+Make sure that {commands} ends with a whole command,
+otherwise
+    Vim will wait  for you to type the rest of the command for each match.
+    The screen will not  have been updated,
+    so you don't know what you are doing.  See |:normal|.
 
 The undo/redo command will undo/redo the whole global command at once.
-The previous context mark will only be set once (with "''" you go back to
-where the cursor was before the global command).
+    The previous context mark will only be set once (with "''" you go back to
+    where the cursor was before the global command).
 
-The global command sets both the last used search pattern and the last used
-substitute pattern (this is vi compatible).  This makes it easy to globally
-replace a string:
+The global command sets both
+    the last used search pattern and
+    the last used  substitute pattern
+
+    This makes it easy to globally  replace a string:
         :g/pat/s//PAT/g
-This replaces all occurrences of "pat" with "PAT".  The same can be done with:
+    不过没这个好敲:
         :%s/pat/PAT/g
-Which is two characters shorter!
 
-When using "global" in Ex mode, a special case is using ":visual" as a
-command.  This will move to a matching line, go to Normal mode to let you
-execute commands there until you use |Q| to return to Ex mode.  This will be
-repeated for each matching line.  While doing this you cannot use ":global".
-To abort this type CTRL-C twice.
+When using "global" in Ex mode (很少用吧):
+    a special case is using ":visual" as a  command.
+    This will move to a matching line,
+    go to Normal mode to let you
+    execute commands there
+    until you use |Q| to return to Ex mode.
+    This will be  repeated for each matching line.
+    While doing this you cannot use ":global".
+    To abort this type CTRL-C twice.
 
 ==============================================================================
 Complex repeats                                         *complex-repeat*
@@ -177,324 +196,368 @@ Using Vim scripts                                       *using-scripts*
         see chapter 41 of the user manual |usr_41.txt|.
 
 *:so* *:source* *load-vim-script*
-:[range]so[urce] [file]
-    Runs |Ex| commands or
-    Lua code (".lua" files) from [file],
-    or from the current buffer if no [file] is given.
-    Triggers the |SourcePre| autocommand.
+        :[range]so[urce] [file]
+                Runs |Ex| commands or
+                Lua code (".lua" files) from [file],
+                or from the current buffer if no [file] is given.
+                Triggers the |SourcePre| autocommand.
+
+        if you have a  "other.vimrc" file in the same directory as your |init.vim| file,
+        you can  source it from your |init.vim| file with this command:
+
+                :source <sfile>:h/other.vimrc
+
+        <sfile>  will be  replaced by the file name of the sourced file.
 
 *:source!*
-:[range]so[urce]! {file}
-    Runs |Normal-mode| commands from {file}.
-    When used after |:global|,
-                    |:argdo|,
-                    |:windo|,
-                    |:bufdo|,
-               in a loop or
-               when another command follows,
-    the display won't be updated while executing the commands.
+        :[range]so[urce]! {file}
+                Runs |Normal-mode| commands from {file}.
+                When used after |:global|,
+                                                |:argdo|,
+                                                |:windo|,
+                                                |:bufdo|,
+                                   in a loop or
+                                   when another command follows,
+                the display won't be updated while executing the commands.
 
 *:ru* *:runtime*
-:ru[ntime][!] [where] {file} ..
-    Sources |Ex| commands or
-    Lua code (".lua" files) read from {file} (a relative path) in each directory given by
-    'runtimepath' and/or 'packpath'.
+        :ru[ntime][!] [where] {file} ..
+                Sources |Ex| commands or
+                Lua code (".lua" files) read from {file} (a relative path) in each directory given by
+                'runtimepath' and/or 'packpath'.
 
-    Ignores non-existing files.
+                Ignores non-existing files.
 
-    Example:
-                :runtime syntax/c.vim
-                :runtime syntax/c.lua
-    There can be multiple space-separated {file} arguments.
-        Each {file} is searched for in the first directory from 'runtimepath',
-        then in the second directory,
-        etc.
-        When [!] is included,
-                all found files are sourced.
-        Else only the first found file is sourced.
-
-        关于[where] :
-                不写    first 'runtimepath'
-                        then   'packpath' 下的"start"的目录
-
-                START   search only under "start" in 'packpath'
-                OPT     search only under "opt" in 'packpath'
-
-                PACK    search under "start" and "opt" in  'packpath'
-
-                ALL     first use 'runtimepath', then search  under "start" and "opt" in 'packpath'
-
-        {file}
-                if  contains wildcards it is expanded to all matching files.
                 Example:
-                                        :runtime! plugin/**/*.vim
-                This is what Vim uses to load the plugin files when starting up.
-                This similar command:
-                                        :runtime plugin/**/*.vim
-                would source the first file only.
+                                        :runtime syntax/c.vim
+                                        :runtime syntax/c.lua
+                There can be multiple space-separated {file} arguments.
+                        Each {file} is searched for in the first directory from 'runtimepath',
+                        then in the second directory,
+                        etc.
+                        When [!] is included,
+                                        all found files are sourced.
+                        Else only the first found file is sourced.
 
-        When 'verbose' is one or  higher,
-                there is a message when no file could be found.
-        When 'verbose' is two or higher,
-                there is a message about each searched file.
+                        关于[where] :
+                                        不写    first 'runtimepath'
+                                                        then   'packpath' 下的"start"的目录
+
+                                        START   search only under "start" in 'packpath'
+                                        OPT     search only under "opt" in 'packpath'
+
+                                        PACK    search under "start" and "opt" in  'packpath'
+
+                                        ALL     first use 'runtimepath', then search  under "start" and "opt" in 'packpath'
+
+                        {file}
+                                        if  contains wildcards it is expanded to all matching files.
+                                        Example:
+                                                                                        :runtime! plugin/**/*.vim
+                                        This is what Vim uses to load the plugin files when starting up.
+                                        This similar command:
+                                                                                        :runtime plugin/**/*.vim
+                                        would source the first file only.
+
+                        When 'verbose' is one or  higher,
+                                        there is a message when no file could be found.
+                        When 'verbose' is two or higher,
+                                        there is a message about each searched file.
 
 *:pa* *:packadd* *E919*
-:pa[ckadd][!] {name}
-        Search for an optional plugin directory in 'packpath' and source any plugin files found.
-        The directory must match:
-                                        pack/*/opt/{name}
-        🔑The directory is added to 'runtimepath' if it wasn't there yet.🔑
-        If the directory pack/*/opt/{name}/after exists it is added at the end of 'runtimepath'.
+        :pa[ckadd][!] {name}
+                        Search for an optional plugin directory in 'packpath' and source any plugin files found.
+                        The directory must match:
+                                                                                        pack/*/opt/{name}
+                        🔑The directory is added to 'runtimepath' if it wasn't there yet.🔑
+                        If the directory pack/*/opt/{name}/after exists it is added at the end of 'runtimepath'.
 
-        If loading packages from "pack/*/start" was skipped,
-        then this directory is searched first:
-                pack/*/start/{name}
+                        If loading packages from "pack/*/start" was skipped,
+                        then this directory is searched first:
+                                        pack/*/start/{name}
 
-        Note that {name} is the directory name,
-        not the name of the .vim file.
-        All the files matching the pattern
-                        pack/*/opt/{name}/plugin/**/*.vim
-        and
-                        pack/*/opt/{name}/plugin/**/*.lua
-        will be sourced.
-        This allows for using subdirectories below "plugin",
-        just like with plugins in
-                        'runtimepath'.
+                        Note that {name} is the directory name,
+                        not the name of the .vim file.
+                        All the files matching the pattern
+                                                        pack/*/opt/{name}/plugin/**/*.vim
+                        and
+                                                        pack/*/opt/{name}/plugin/**/*.lua
+                        will be sourced.
+                        This allows for using subdirectories below "plugin",
+                        just like with plugins in
+                                                        'runtimepath'.
 
-        If the filetype detection was not enabled yet (this is usually done with a "syntax enable" or "filetype
-        on" command in your .vimrc file),
-                this will also look for "{name}/ftdetect/*.vim" files.
+                        If the filetype detection was not enabled yet (this is usually done with a "syntax enable" or "filetype
+                        on" command in your .vimrc file),
+                                        this will also look for "{name}/ftdetect/*.vim" files.
 
-        When the 💦!💦  is added
-                no plugin files or
-                ftdetect scripts are loaded,
-        only the matching directories are added to 'runtimepath'.
-        This is useful in your .vimrc.
-        The plugins will then be loaded during initialization,
-        see |load-plugins| (note that the loading order will be reversed,
-        because each directory is inserted before others).
-        Note that for ftdetect scripts to be loaded
-                you will need to write `filetype plugin indent on` AFTER all `packadd!` commands.
-        Also see |pack-add|.
+                        When the 💦!💦  is added
+                                        no plugin files or
+                                        ftdetect scripts are loaded,
+                        only the matching directories are added to 'runtimepath'.
+                        This is useful in your .vimrc.
+                        The plugins will then be loaded during initialization,
+                        see |load-plugins| (note that the loading order will be reversed,
+                        because each directory is inserted before others).
+                        Note that for ftdetect scripts to be loaded
+                                        you will need to write `filetype plugin indent on` AFTER all `packadd!` commands.
+                        Also see |pack-add|.
 
 *:packl* *:packloadall*
-:packl[oadall][!]       Load all packages in the "start" directory under each
-                        entry in 'packpath'.
+        :packl[oadall][!]       Load all packages in the "start" directory under each
+                                                        entry in 'packpath'.
 
-                        First all the directories found are added to
-                        'runtimepath', then the plugins found in the
-                        directories are sourced.  This allows for a plugin to
-                        depend on something of another plugin, e.g. an
-                        "autoload" directory.  See |packload-two-steps| for
-                        how this can be useful.
+                                                        First all the directories found are added to
+                                                        'runtimepath', then the plugins found in the
+                                                        directories are sourced.  This allows for a plugin to
+                                                        depend on something of another plugin, e.g. an
+                                                        "autoload" directory.  See |packload-two-steps| for
+                                                        how this can be useful.
 
-                        This is normally done automatically during startup,
-                        after loading your .vimrc file.  With this command it
-                        can be done earlier.
+                                                        This is normally done automatically during startup,
+                                                        after loading your .vimrc file.  With this command it
+                                                        can be done earlier.
 
-                        Packages will be loaded only once.  Using
-                        `:packloadall` a second time will have no effect.
-                        When the optional ! is added this command will load
-                        packages even when done before.
+                                                        Packages will be loaded only once.  Using
+                                                        `:packloadall` a second time will have no effect.
+                                                        When the optional ! is added this command will load
+                                                        packages even when done before.
 
-                        Note that when using `:packloadall` in the |vimrc|
-                        file, the 'runtimepath' option is updated, and later
-                        all plugins in 'runtimepath' will be loaded, which
-                        means they are loaded again.  Plugins are expected to
-                        handle that.
+                                                        Note that when using `:packloadall` in the |vimrc|
+                                                        file, the 'runtimepath' option is updated, and later
+                                                        all plugins in 'runtimepath' will be loaded, which
+                                                        means they are loaded again.  Plugins are expected to
+                                                        handle that.
 
-                        An error only causes sourcing the script where it
-                        happens to be aborted, further plugins will be loaded.
-                        See |packages|.
+                                                        An error only causes sourcing the script where it
+                                                        happens to be aborted, further plugins will be loaded.
+                                                        See |packages|.
 
-:scripte[ncoding] [encoding]            *:scripte* *:scriptencoding* *E167*
-                        Specify the character encoding used in the script.
-                        The following lines will be converted from [encoding]
-                        to the value of the 'encoding' option, if they are
-                        different.  Examples: >
-                                scriptencoding iso-8859-5
-                                scriptencoding cp932
-<
-                        When [encoding] is empty, no conversion is done.  This
-                        can be used to restrict conversion to a sequence of
-                        lines: >
-                                scriptencoding euc-jp
-                                ... lines to be converted ...
-                                scriptencoding
-                                ... not converted ...
+        :scripte[ncoding] [encoding]            *:scripte* *:scriptencoding* *E167*
+                                                        Specify the character encoding used in the script.
+                                                        The following lines will be converted from [encoding]
+                                                        to the value of the 'encoding' option, if they are
+                                                        different.  Examples:
 
-<                       When conversion isn't supported by the system, there
-                        is no error message and no conversion is done.  When a
-                        line can't be converted there is no error and the
-                        original line is kept.
+                                                                        scriptencoding iso-8859-5
+                                                                        scriptencoding cp932
 
-                        Don't use "ucs-2" or "ucs-4", scripts cannot be in
-                        these encodings (they would contain NUL bytes).
-                        When a sourced script starts with a BOM (Byte Order
-                        Mark) in utf-8 format Vim will recognize it, no need
-                        to use ":scriptencoding utf-8" then.
+                                                        When [encoding] is empty, no conversion is done.  This
+                                                        can be used to restrict conversion to a sequence of
+                                                        lines:
+
+                                                                        scriptencoding euc-jp
+                                                                        ... lines to be converted ...
+                                                                        scriptencoding
+                                                                        ... not converted ...
+
+                                                   When conversion isn't supported by the system, there
+                                                        is no error message and no conversion is done.  When a
+                                                        line can't be converted there is no error and the
+                                                        original line is kept.
+
+                                                        Don't use "ucs-2" or "ucs-4", scripts cannot be in
+                                                        these encodings (they would contain NUL bytes).
+                                                        When a sourced script starts with a BOM (Byte Order
+                                                        Mark) in utf-8 format Vim will recognize it, no need
+                                                        to use ":scriptencoding utf-8" then.
 
 *:scr* *:scriptnames*
-:scr[iptnames]          List all sourced script names, in the order they were
-                        first sourced.  The number is used for the script ID
-                        |<SID>|.
+        :scr[iptnames]          List all sourced script names, in the order they were
+                                                        first sourced.  The number is used for the script ID
+                                                        |<SID>|.
 
-:scr[iptnames][!] {scriptId}                    *:script*
-                        Edit script {scriptId}.  Although ":scriptnames name"
-                        works, using ":script name" is recommended.
-                        When the current buffer can't be |abandon|ed and the !
-                        is not present, the command fails.
+        :scr[iptnames][!] {scriptId}                    *:script*
+                                                        Edit script {scriptId}.  Although ":scriptnames name"
+                                                        works, using ":script name" is recommended.
+                                                        When the current buffer can't be |abandon|ed and the !
+                                                        is not present, the command fails.
 
 *:fini* *:finish* *E168*
-:fini[sh]               Stop sourcing a script.  Can only be used in a Vim
-                        script file.  This is a quick way to skip the rest of
-                        the file.  If it is used after a |:try| but before the
-                        matching |:finally| (if present), the commands
-                        following the ":finally" up to the matching |:endtry|
-                        are executed first.  This process applies to all
-                        nested ":try"s in the script.  The outermost ":endtry"
-                        then stops sourcing the script.
+                Stop sourcing a script.
+                Can only be used in a Vim script file.
+                This is a quick way to skip the rest of  the file.
 
-All commands and command sequences can be repeated by putting them in a named
-register and then executing it.  There are two ways to get the commands in the
-register:
-- Use the record command "q".  You type the commands once, and while they are
-  being executed they are stored in a register.  Easy, because you can see
-  what you are doing.  If you make a mistake, "p"ut the register into the
-  file, edit the command sequence, and then delete it into the register
-  again.  You can continue recording by appending to the register (use an
-  uppercase letter).
-- Delete or yank the command sequence into the register.
+                If it is used after a |:try|
+                        If before the matching |:finally| (if present),
+                                the commands  following the ":finally" up to the matching |:endtry| are executed first.
+                                This process applies to all  nested ":try"s in the script.
+                                The outermost ":endtry" then stops sourcing the script.
 
-Often used command sequences can be put under a function key with the ':map'
-command.
+    下面不再是逐个help tag解释, 而是综合解释
+        Uwe Named Register
+            All commands and  command sequences can be repeated by
+            putting them in a named  register and then executing it.
+            There are two ways to get the commands in the  register:
+                - Use the record command "q".
+                      You type the commands once,
+                      and while they are
+                      being executed they are stored in a register.
+                      Easy, because you can see
+                      what you are doing.
+                      If you make a mistake,
+                      "p"ut the register into the  file,
+                      edit the command sequence,
+                      and then delete it into the register  again.
+                      You can continue recording by appending to the register (use an uppercase letter).
+                - Delete or yank the command sequence into the register.
 
-An alternative is to put the commands in a file, and execute them with the
-':source!' command.  Useful for long command sequences.  Can be combined with
-the ':map' command to put complicated commands under a function key.
+        Often used command sequences   can be put under a function key with the ':map'  command.
 
-The ':source' command reads Ex commands from a file line by line.  You will
-have to type any needed keyboard input.  The ':source!' command reads from a
-script file character by character, interpreting each character as if you
-typed it.
+        Use ':source!' command.  (Runs |Normal-mode| commands from {file}.)
+            Useful for long command sequences.
+            Can be combined with  the ':map' command to put complicated commands under a function key.
 
-Example: When you give the ":!ls" command you get the |hit-enter| prompt.  If
-you ':source' a file with the line "!ls" in it, you will have to type the
-<Enter> yourself.  But if you ':source!' a file with the line ":!ls" in it,
-the next characters from that file are read until a <CR> is found.  You will
-not have to type <CR> yourself, unless ":!ls" was the last line in the file.
+        有无叹号的区别:
+            The ':source' command reads Ex commands from a file 🔑line by line🔑.
+                You will  have to type any needed keyboard input.
+            The ':source!' command reads from a  script file 🔑character by character🔑,
+                interpreting each character as if you  typed it.
 
-It is possible to put ':source[!]' commands in the script file, so you can
-make a top-down hierarchy of script files.  The ':source' command can be
-nested as deep as the number of files that can be opened at one time (about
-15).  The ':source!' command can be nested up to 15 levels deep.
+        Example:
+            When you give the ":!ls" command you get the |hit-enter| prompt.
+            If  you ':source' a file with the line "!ls" in it,
+                you will have to type the  <Enter> yourself.
 
-You can use the "<sfile>" string (literally, this is not a special key) inside
-of the sourced file, in places where a file name is expected.  It will be
-replaced by the file name of the sourced file.  For example, if you have a
-"other.vimrc" file in the same directory as your |init.vim| file, you can
-source it from your |init.vim| file with this command: >
-        :source <sfile>:h/other.vimrc
+            But if you ':source!' a file with the line ":!ls" in it,
+                the next characters from that file are read until a <CR> is found.
+                You will  not have to type <CR> yourself,
+                unless ":!ls" was the last line in the file.
 
-In script files terminal-dependent key codes are represented by
-terminal-independent two character codes.  This means that they can be used
-in the same way on different kinds of terminals.  The first character of a
-key code is 0x80 or 128, shown on the screen as "~@".  The second one can be
-found in the list |key-notation|.  Any of these codes can also be entered
-with CTRL-V followed by the three digit decimal code.
+        It is possible to put ':source[!]' commands in the script file,
+            so you can  make a top-down hierarchy of script files.
+            The ':source' command can be  nested as deep as
+            the 🔑number of files that can be opened at one time (about  15)🔑.
+            The ':source!' command can be nested up to 15 levels deep.
+
+        In script files
+        terminal-dependent key codes are represented by
+        terminal-independent two character codes.
+        This means that they can be used  in the same way on different kinds of terminals.
+        The first character of a  key code is 0x80 or 128,
+        shown on the screen as "~@".
+        The second one can be  found in the list |key-notation|.
+        Any of these codes can also be entered  with CTRL-V followed by the three digit decimal code.
 
 *:source_crnl* *W15*
-Windows: Files that are read with ":source" normally have <CR><NL> <EOL>s.
-These always work.  If you are using a file with <NL> <EOL>s (for example, a
-file made on Unix), this will be recognized if 'fileformats' is not empty and
-the first line does not end in a <CR>.  This fails if the first line has
-something like ":map <F1> :help^M", where "^M" is a <CR>.  If the first line
-ends in a <CR>, but following ones don't, you will get an error message,
-because the <CR> from the first lines will be lost.
+        <EOL> :  end-of-line (can be <CR>, <NL> or <CR><NL>)
 
-On other systems, Vim expects ":source"ed files to end in a <NL>.  These
-always work.  If you are using a file with <CR><NL> <EOL>s (for example, a
-file made on MS-Windows), all lines will have a trailing <CR>.  This may cause
-problems for some commands (e.g., mappings).  There is no automatic <EOL>
-detection, because it's common to start with a line that defines a mapping
-that ends in a <CR>, which will confuse the automaton.
+                Windows:
+                        Files that are read with ":source" normally have <CR><NL> <EOL>s.
+                        These always work.
+                        If you are using a file with <NL> <EOL>s (for example, a  file made on Unix),
+                                This will be recognized if 'fileformats' is not empty and
+                                        the first line does not end in a <CR>.
+
+                        If the first line  ends in a <CR>,
+                        E.g. :map <F1> :help^M     where "^M" is a <CR>.
+                                but following ones don't,
+                                        because the <CR> from the first lines will be lost,
+                                                you will get an error message
+
+                On other systems,
+                        Vim expects ":source"ed files to end in a <NL>.
+                        These  always work.
+                        If you are using a file with <CR><NL> <EOL>s (for example, a  file made on MS-Windows):
+                                all lines will have a trailing <CR>.
+                                This may cause  problems for some commands (e.g., mappings).
+
+                There is no automatic <EOL>  detection,
+                        because it's common to start with a line that defines a mapping  that ends in a <CR>,  which will confuse the automaton.
 
 *line-continuation*
 
-Long lines in a ":source"d Ex command script file can be split by
-inserting a line continuation symbol "\" (backslash) at the start of the next line. There can be white space before the backslash, which
-is ignored.
+                Long lines in a ":source"d Ex command script file can be split by
+                inserting a line continuation symbol "\" (backslash) at the start of the next line.
 
-Example: the lines >
-        :set comments=sr:/*,mb:*,el:*/,
-                     \://,
-                     \b:#,
-                     \:%,
-                     \n:>,
-                     \fb:-
-are interpreted as if they were given in one line:
-        :set comments=sr:/*,mb:*,el:*/,://,b:#,:%,n:>,fb:-
+                Example: the lines
+                                :set comments=sr:/*,mb:*,el:*/,
+                                                         \://,
+                                                         \b:#,
+                                                         \:%,
+                                                         \n:>,
+                                                         \fb:-
+                are interpreted as if they were given in one line:
+                                :set comments=sr:/*,mb:*,el:*/,://,b:#,:%,n:>,fb:-
 
-All leading whitespace characters in the line before a backslash are ignored.
-Note however that trailing whitespace in the line before it cannot be
-inserted freely; it depends on the position where a command is split up
-whether additional whitespace is allowed or not.
+                All leading whitespace characters in the line before a backslash are ignored.
+                Note however that trailing whitespace in the line before it cannot be
+                inserted freely;
+                it depends on the position where a command is split up
+                whether additional whitespace is allowed or not.
 
-When a space is required it's best to put it right after the backslash.  A
-space at the end of a line is hard to see and may be accidentally deleted. >
-        :syn match Comment
-                \ "very long regexp"
-                \ keepend
+                When a space is required it's best to put it right after the backslash.  A
+                space at the end of a line is hard to see and
+                may be accidentally deleted.
+                                :syn match Comment
+                                                \ "very long regexp"
+                                                \ keepend
 
-There is a problem with the ":append" and ":insert" commands: >
-   :1append
-   \asdf
-   .
-The backslash is seen as a line-continuation symbol, thus this results in the
-command: >
-   :1appendasdf
-   .
-To avoid this, add the 'C' flag to the 'cpoptions' option: >
-   :set cpo+=C
-   :1append
-   \asdf
-   .
-   :set cpo-=C
+                There is a problem with the ":append" and ":insert" commands:
 
-Note that when the commands are inside a function, you need to add the 'C'
-flag when defining the function, it is not relevant when executing it. >
-   :set cpo+=C
-   :function Foo()
-   :1append
-   \asdf
-   .
-   :endfunction
-   :set cpo-=C
-<
+                   :1append
+                   \asdf
+                   .
+                The backslash is seen as a line-continuation symbol,
+                thus this results in the
+                command:
+
+                   :1appendasdf
+                   .
+                To avoid this,
+                add the 'C' flag to the 'cpoptions' option:
+
+                   :set cpo+=C
+                   :1append
+                   \asdf
+                   .
+                   :set cpo-=C
+
+                Note that when the commands are inside a function,
+                you need to add the 'C'
+                flag when defining the function,
+                it is not relevant when executing it.
+                   :set cpo+=C
+                   :function Foo()
+                   :1append
+                   \asdf
+                   .
+                   :endfunction
+                   :set cpo-=C
+
+                Rationale:
+                        Most programs work with a trailing backslash to indicate line
+                        continuation.
+                        Using this in Vim would cause incompatibility with Vi.
+                        For example for this Vi mapping:
+
+                                        :map xx  asdf\
+                        Therefore the unusual leading backslash is used.
+
+
+
 *line-continuation-comment*
-To add a comment in between the lines start with '\" '.  Notice the space
-after the double quote.  Example: >
-        let array = [
-                "\ first entry comment
-                \ 'first',
-                "\ second entry comment
-                \ 'second',
-                \ ]
+                To add a comment in between the lines start with '\" '.  Notice the space
+                after the double quote.  Example:
 
-Rationale:
-        Most programs work with a trailing backslash to indicate line
-        continuation.  Using this in Vim would cause incompatibility with Vi.
-        For example for this Vi mapping: >
-                :map xx  asdf\
-<       Therefore the unusual leading backslash is used.
+                        let array = [
+                                        "\ first entry comment
+                                        \ 'first',
+                                        "\ second entry comment
+                                        \ 'second',
+                                        \ ]
 
-        Starting a comment in a continuation line results in all following
-        continuation lines to be part of the comment.  Since it was like this
-        for a long time, when making it possible to add a comment halfway a
-        sequence of continuation lines, it was not possible to use \", since
-        that was a valid continuation line.  Using '"\ ' comes closest, even
-        though it may look a bit weird.  Requiring the space after the
-        backslash is to make it very unlikely this is a normal comment line.
+                理由:
+                        Starting a comment (with only ") in a continuation line results in
+                        all following  continuation lines to be part of the comment.
+
+                        when making it possible to add a comment halfway a  sequence of continuation lines,
+                                it was not possible to use \",
+                                since  that was a valid continuation line.
+                        Using '"\ ' comes closest,
+                        even  though it may look a bit weird.
+                        Requiring the space after the  backslash is to
+                                make it very unlikely this  is a 🔑normal comment line🔑.
 
 ==============================================================================
 
@@ -686,7 +749,8 @@ Creating Vim packages                                   *package-create*
            opt/fooextra/doc/extra.txt           " help for extra.vim
            opt/fooextra/doc/tags                " help tags
 
-        This allows for the user to do: >
+        This allows for the user to do:
+
                         mkdir ~/.local/share/nvim/site/pack
                         cd ~/.local/share/nvim/site/pack
                         git clone https://github.com/you/foobar.git myfoobar
@@ -719,9 +783,9 @@ Dependencies between plugins
 
        pack/foo/start/one/plugin/one.vim  >
                 call foolib#getit()
-<       pack/foo/start/two/plugin/two.vim >
+       pack/foo/start/two/plugin/two.vim >
                 call foolib#getit()
-<       pack/foo/start/lib/autoload/foolib.vim >
+       pack/foo/start/lib/autoload/foolib.vim >
                 func foolib#getit()
 
 This works, because start packages will be used to look for autoload files,
@@ -745,9 +809,10 @@ number it will give more verbose messages about what Vim is doing.
 STARTING DEBUG MODE                                             *debug-mode*
 
 To enter debugging mode use one of these methods:
-1. Start Vim with the |-D| argument: >
+1. Start Vim with the |-D| argument:
+
         vim -D file.txt
-<  Debugging will start as soon as the first vimrc file is sourced.  This is
+  Debugging will start as soon as the first vimrc file is sourced.  This is
    useful to find out what is happening when Vim is starting up.  A side
    effect is that Vim will switch the terminal mode before initialisations
    have finished, with unpredictable results.
@@ -757,13 +822,15 @@ To enter debugging mode use one of these methods:
 *:debug*
 2. Run a command with ":debug" prepended.  Debugging will only be done while
    this command executes.  Useful for debugging a specific script or user
-   function.  And for scripts and functions used by autocommands.  Example: >
+   function.  And for scripts and functions used by autocommands.  Example:
+
         :debug edit test.txt.gz
 
 3. Set a breakpoint in a sourced file or user function.  You could do this in
-   the command line: >
+   the command line:
+
         vim -c "breakadd file */explorer.vim" .
-<  This will run Vim and stop in the first line of the "explorer.vim" script.
+  This will run Vim and stop in the first line of the "explorer.vim" script.
    Breakpoints can also be set while in debugging mode.
 
 In debugging mode every executed command is displayed before it is executed.
@@ -775,19 +842,23 @@ separately.
 DEBUG MODE
 
 Once in debugging mode, the usual Ex commands can be used.  For example, to
-inspect the value of a variable: >
+inspect the value of a variable:
+
         echo idx
 When inside a user function, this will print the value of the local variable
-"idx".  Prepend "g:" to get the value of a global variable: >
+"idx".  Prepend "g:" to get the value of a global variable:
+
         echo g:idx
 All commands are executed in the context of the current function or script.
 You can also set options, for example setting or resetting 'verbose' will show
 what happens, but you might want to set it just before executing the lines you
-are interested in: >
+are interested in:
+
         :set verbose=20
 
 Commands that require updating the screen should be avoided, because their
-effect won't be noticed until after leaving debug mode.  For example: >
+effect won't be noticed until after leaving debug mode.  For example:
+
         :help
 won't be very helpful.
 
@@ -864,27 +935,31 @@ no way to see the command at the current line yet.
 DEFINING BREAKPOINTS
 *:breaka* *:breakadd*
 :breaka[dd] func [lnum] {name}
-                Set a breakpoint in a function.  Example: >
+                Set a breakpoint in a function.  Example:
+
                         :breakadd func Explore
-<               Doesn't check for a valid function name, thus the breakpoint
+               Doesn't check for a valid function name, thus the breakpoint
                 can be set before the function is defined.
 
 :breaka[dd] file [lnum] {name}
-                Set a breakpoint in a sourced file.  Example: >
+                Set a breakpoint in a sourced file.  Example:
+
                         :breakadd file 43 init.vim
 
 :breaka[dd] here
                 Set a breakpoint in the current line of the current file.
-                Like doing: >
+                Like doing:
+
                         :breakadd file <cursor-line> <current-file>
-<               Note that this only works for commands that are executed when
+               Note that this only works for commands that are executed when
                 sourcing the file, not for a function defined in that file.
 
 :breaka[dd] expr {expression}
                 Sets a breakpoint, that will break whenever the {expression}
-                evaluates to a different value. Example: >
+                evaluates to a different value. Example:
+
                         :breakadd expr g:lnum
-<               Will break, whenever the global variable lnum changes.
+               Will break, whenever the global variable lnum changes.
 
                 Errors in evaluation are suppressed, you can use the name of a
                 variable that does not exist yet.  This also means you will
@@ -908,7 +983,8 @@ of characters.  'ignorecase' is not used, but "\c" can be used in the pattern
 to ignore case |/\c|.  Don't include the () for the function name!
 
 The match for sourced scripts is done against the full file name.  If no path
-is specified the current directory is used.  Examples: >
+is specified the current directory is used.  Examples:
+
         breakadd file explorer.vim
 matches "explorer.vim" in the current directory. >
         breakadd file *explorer.vim
@@ -980,7 +1056,8 @@ You can also use the |reltime()| function to measure time.
 
 For profiling syntax highlighting see |:syntime|.
 
-For example, to profile the one_script.vim script file: >
+For example, to profile the one_script.vim script file:
+
         :profile start /tmp/one_script_profile
         :profile file one_script.vim
         :source one_script.vim
@@ -1076,11 +1153,12 @@ mind there are various things that may clobber the results:
   function.  There is some overhead in between.
 
 - Functions that are deleted before Vim exits will not produce profiling
-  information.  You can check the |v:profiling| variable if needed: >
+  information.  You can check the |v:profiling| variable if needed:
+
         :if !v:profiling
         :   delfunc MyFunc
         :endif
-<
+
 - Profiling may give weird results on multi-processor systems, when sleep
   mode kicks in or the processor frequency is reduced to save power.
 
@@ -1118,3 +1196,4 @@ Context                                                 *Context* *context*
 
 
  vim:tw=78:ts=8:noet:ft=help:norl:
+leo_DIY

@@ -315,11 +315,11 @@ k               or                                      *k*
 <Up>            or                                      *<Up>* *CTRL-P*
 CTRL-P                  [count] lines upward |linewise|.
 
-j               or                                      *j*
-<Down>          or                                      *<Down>*
-CTRL-J          or                                      *CTRL-J*
-<NL>            or                                      *<NL>* *CTRL-N*
-CTRL-N                  [count] lines downward |linewise|.
+ *j*              or                                     
+ *<Down>*         or                                     
+ *CTRL-J*         or                                     
+ *<NL>*           or                                     
+ *CTRL-N*                [count] lines downward |linewise|.
 
 gk              or                                      *gk* *g<Up>*
 g<Up>                   [count] display lines upward.  |exclusive| motion.
@@ -1413,3 +1413,4 @@ L                       To line [count] from bottom of window (default: Last
                         active window and the cursor is not moved.
 
  vim:tw=78:ts=8:noet:ft=help:norl:
+leo_DIY

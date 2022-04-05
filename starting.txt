@@ -167,15 +167,15 @@ argument.
 
 *-S*
 -S {file}
+    -c "source {file}" 的简便写法
+    It can be mixed with "-c" arguments and repeated like "-c".
+    The limit of 10 "-c" arguments applies here as well.
+    {file} cannot start with a "-".
 
-                -c "source {file}" 的简便写法
-                It can be mixed with "-c" arguments and repeated like "-c".
-                The limit of 10 "-c" arguments applies here as well.
-                {file} cannot start with a "-".
-
--S              Works like "-S Session.vim".
-                Only when used as the last
-                argument or when another "-" option follows.
+-S
+    Works like "-S Session.vim".
+    Only when used as the last
+    argument or when another "-" option follows.
 
 -L                                                      *-L* *-r*
 -r              Recovery mode.  Without a file name argument, a list of
@@ -425,7 +425,7 @@ At startup, Nvim checks environment variables and files and sets values
 accordingly, proceeding as follows:
 
     1. Set the 'shell' option
-        *SHELL* *COMSPEC*
+*SHELL* *COMSPEC*
             The environment variable SHELL, if it exists, is used to set the
             'shell' option.  On Win32, the COMSPEC variable is used
             if SHELL is not set.
@@ -449,8 +449,7 @@ accordingly, proceeding as follows:
               -     *init.lua*
               -     *vimrc*
               -     *exrc*
-                A file containing initialization commands is generically called
-                a "vimrc" or config file.
+                A file containing initialization commands is generically called  a "vimrc" or config file.
                 It can be either Vimscript ("init.vim") or
                 Lua ("init.lua"), but not both. *E5422*
                 See also |vimrc-intro| and |base-directories|.
@@ -1426,3 +1425,4 @@ LOG FILE                                        *$NVIM_LOG_FILE*
     if $NVIM_LOG_FILE was set before |startup|.
 
  vim:noet:tw=78:ts=8:ft=help:norl:
+leo_DIY

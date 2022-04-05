@@ -1745,150 +1745,125 @@ They are also mentioned elsewhere,
 but form a nice checklist.
 
 The end-of-line character depends on the system.
- For  Unix a single <NL> character is used.
- For  Windows <CR><NL> is used.
- This is important when using mappings that end in a <CR>.
- See |:source_crnl|.
+    For  Unix a single <NL> character is used.
+    For  Windows <CR><NL> is used.
+    This is important when using mappings that end in a <CR>.
+    See |:source_crnl|.
 
 
 WHITE SPACE
 
-Blank lines are allowed and ignored.
+    • Blank lines are allowed and ignored.
+    • Leading whitespace characters (blanks and  TABs) are always ignored.
+    • The whitespaces between parameters (e.g.  between the "set" and  the "cpoptions" in 💦:set  cpoptions某某某💦)
+            are reduced to one blank character and
+            plays the role of a separator,
+        
+    • the whitespace immediately before the "=" sign is ignored:
+            💦:set cpoptions    =aABceFst💦
+    • No whitespace after the "=" sign! (仅适用于set 某某的情况, 反例:let g:my_var = 'hi')
+    • To include a whitespace character in the value of an option,
+      it must be escaped by a "\" (backslash)  as in the following example:
+            💦:set tags=my\ nice\ file💦
+        The same example written as:
+                :set tags=my nice file
 
-Leading whitespace characters (blanks and
-TABs) are always ignored.
- The whitespaces between parameters (e.g.
-between the "set" and  the "cpoptions" in the example  below) are reduced to one blank character and
-plays the role of a separator,
-the whitespaces after the last (visible) character may or
-may not be ignored depending on the situation,
-see below.
+        will issue an error, because it is interpreted as:
+                :set tags=my
+                :set nice
+                :set file
 
-For a ":set" command involving the "=" (equal) sign, such as in:
-
-
-        :set cpoptions    =aABceFst
-
-the whitespace immediately before the "=" sign is ignored.
- But there can be no whitespace after the "=" sign!
-
-To include a whitespace character in the value of an option,
-it must be escaped by a "\" (backslash)  as in the following example:
->
-
-        :set tags=my\ nice\ file
-
-The same example written as:
-
-
-        :set tags=my nice file
-
-will issue an error, because it is interpreted as:
-
-
-        :set tags=my
-        :set nice
-        :set file
-
+    • the whitespaces after the last (visible) character may or
+      may not be ignored depending on the situation,
+      map等命令, trailing white space是有实际意义的
 
 COMMENTS
 
 The character " (the double quote mark) starts a comment.
- Everything after and
-including this character until the end-of-line is considered a comment and
-is ignored,
-except for  commands that don't consider comments,
-as shown in examples below.
- A comment can start on any character position on the line.
+    Everything after and  including this character until the end-of-line
+    is considered a comment and
+    is ignored,
+    except for  commands that don't consider comments,
+    as shown in examples below.
+    A comment can start on any character position on the line.
 
-There is a little "catch" with comments for some commands.  Examples:
-
+    There is a little "catch" with comments for some commands.  Examples:
 
         :abbrev dev development         " shorthand
+            The abbreviation 'dev' will be expanded to 'development     " shorthand'.
+
         :map <F3> o#include             " insert include
+             The mapping of <F3> will actually be the whole line after the 'o# ....' including the '" insert include'.
+
         :execute cmd                    " do it
+             The "execute" command  will give an error.
+
         :!ls *.c                        " list C files
+             The "!" command  will send everything after it to the shell,
+              causing an error  for  an unmatched '"' character.
 
-The abbreviation 'dev' will be expanded to 'development     " shorthand'.
-
- The mapping of <F3> will actually be the whole line after the 'o# ....' including the '" insert include'.
-
- The "execute" command  will give an error.
- The "!" command  will send everything after it to the shell,
-causing an error  for  an unmatched '"' character.
-
-":execute" commands there is a trick:
->
+    ":execute" commands there is a trick:
 
         :abbrev dev development|" shorthand
         :map <F3> o#include|" insert include
         :execute cmd                    |" do it
 
-With the '|' character the command  is separated from the next one.
- And that next command  is only a comment.
- For  the last command  you need to do two things:
-|:execute| and  use '|':
+    With the '|' character
+    the command  is separated from the next one.  And that next command  is only a comment.
+     For  the last command  you need to do two things:
+    |:execute| and  use '|':
 
          :exe '!ls *.c'   |" list C files
 
+    Notice that there is no white space before the '|' in the abbreviation and  mapping.
+     For  these commands,
+         any character until the end-of-line or  '|' is included.
 
-Notice that there is no white space before the '|' in the abbreviation and
-mapping.
- For  these commands,
-any character until the end-of-line or  '|' is included.
- As a consequence of this behavior,
-you don't always see that trailing whitespace is included:
->
+    As a consequence of this behavior,
+    you don't always see that trailing whitespace is included:
 
         :map <F4> o#include
 
-To spot these problems, you can set the 'list' option when editing vimrc
-files.
+    To spot these problems, you can set the 'list' option when editing vimrc  files.
 
-For Unix there is one special way to comment a line, that allows making a Vim
-script executable:
+    For Unix there is one special way to comment a line, that allows making a Vim  script executable:
 
         #!/usr/bin/env vim -S
         echo "this is a Vim script"
         quit
 
-The "#" command by itself lists a line with the line number.  Adding an
-exclamation mark changes it into doing nothing, so that you can add the shell
-command to execute the rest of the file. |:#!| |-S|
+    The "#" command by itself lists a line with the line number.
+    Adding an  exclamation mark changes it into doing nothing,
+    so that you can add the shell  command to execute the rest of the file. |:#!| |-S|
 
 
-PITFALLS
+PITFALLS BY SPACE AND COMMENTS
 
 Even bigger problem arises in the following example:
 
-
         :map ,ab o#include
-        :unmap ,ab
+        💦:unmap ,ab 💦
 
-Here the unmap command will not work, because it tries to unmap ",ab ".  This
-does not exist as a mapped sequence.  An error will be issued, which is very
-hard to identify, because the ending whitespace character in ":unmap ,ab " is
-not visible.
+    Here the unmap command will not work,
+    because it tries to unmap 💦,ab 💦
+    Error!
 
-And this is the same as what happens when one uses a comment after an 'unmap'
-command:
-
+    And this is the same as what happens when one uses a comment after an 'unmap'  command:
 
         :unmap ,ab     " comment
 
-Here the comment part will be ignored.  However, Vim will try to unmap
-',ab     ', which does not exist.  Rewrite it as:
+    Vim will try to unmap
+        💦,ab     💦
+    Rewrite it as:
 
-
-        :unmap ,ab|    " comment
+            :unmap ,ab|    " comment
 
 
 RESTORING THE VIEW
 
 Sometimes you want to make a change and go back to where the cursor was.
-Restoring the relative position would also be nice, so that the same line
-appears at the top of the window.
-   This example yanks the current line, puts it above the first line in the
+Restoring the relative position would also be nice, so that the same line  appears at the top of the window.
+This example yanks the current line, puts it above the first line in the
 file and then restores the view:
 
 
@@ -1897,7 +1872,7 @@ file and then restores the view:
 What this does:
 
         ma"aYHmbgg"aP`bzt`a
-       ma                      set mark a at cursor position
+        ma                      set mark a at cursor position
           "aY                   yank current line into register a
              Hmb                go to top line in window and set mark b there
                 gg              go to first line in file
@@ -1909,32 +1884,10 @@ What this does:
 
 PACKAGING
 
-To avoid your function names to interfere with functions that you get from
-others, use this scheme:
-- Prepend a unique string before each function name.  I often use an
-  abbreviation.  For example, "OW_" is used for the option window functions.
-- Put the definition of your functions together in a file.  Set a global
-  variable to indicate that the functions have been loaded.  When sourcing the
-  file again, first unload the functions.
-Example:
-
-
-        " This is the XXX package
-
-        if exists("XXX_loaded")
-          delfun XXX_one
-          delfun XXX_two
-        endif
-
-        function XXX_one(a)
-                ... body of function ...
-        endfun
-
-        function XXX_two(b)
-                ... body of function ...
-        endfun
-
-        let XXX_loaded = 1
+To avoid your function names to interfere with functions that you get from  others,
+use this scheme:
+- Prepend a unique string before each function name. 
+        For example, "OW_" is used for the option window functions.
 
 ==============================================================================
 *41.11* Writing a plugin                                *write-plugin*
@@ -2395,38 +2348,40 @@ exists(":Cmd")          Check if a user command already exists.
 
 DISABLING
 
-If you are writing a filetype plugin to be used by many people, they need a
-chance to disable loading it.  Put this at the top of the plugin:
+    If you are writing a filetype plugin to be used by many people,
+    they need a  chance to disable loading it.
+    Put this at the top of the plugin:
 
+            " Only do this when not done yet for this buffer
+            if exists("b:did_ftplugin")
+              finish
+            endif
+            let b:did_ftplugin = 1
 
-        " Only do this when not done yet for this buffer
-        if exists("b:did_ftplugin")
-          finish
-        endif
-        let b:did_ftplugin = 1
+    This also needs to be used to avoid that the same plugin is executed twice for
+    the same buffer (happens when using an ":edit" command without arguments).
 
-This also needs to be used to avoid that the same plugin is executed twice for
-the same buffer (happens when using an ":edit" command without arguments).
+    Now users can disable loading the default plugin completely by making a
+    filetype plugin with only this line:
 
-Now users can disable loading the default plugin completely by making a
-filetype plugin with only this line:
+            let b:did_ftplugin = 1
 
+    This does require that the filetype plugin directory comes before $VIMRUNTIME  in 'runtimepath'!
 
-        let b:did_ftplugin = 1
+    If you do want to use the default plugin,
+    but overrule one of the settings,
+    you can write the different setting in a script:
 
-This does require that the filetype plugin directory comes before $VIMRUNTIME
-in 'runtimepath'!
+            setlocal textwidth=70
 
-If you do want to use the default plugin, but overrule one of the settings,
-you can write the different setting in a script:
-
-
-        setlocal textwidth=70
-
-Now write this in the "after" directory, so that it gets sourced after the
-distributed "vim.vim" ftplugin |after-directory|.  For Unix this would be
-"~/.config/nvim/after/ftplugin/vim.vim".  Note that the default plugin will
-have set "b:did_ftplugin", but it is ignored here.
+    Now write this in the "after" directory,
+    so that it gets sourced after the
+    distributed "vim.vim" ftplugin |after-directory|.
+    For Unix this would be
+    "~/.config/nvim/after/ftplugin/vim.vim".
+    Note that the default plugin will
+    have set "b:did_ftplugin",
+    不会抑制after目录下的内容
 
 
 OPTIONS
@@ -2528,74 +2483,76 @@ This construct makes sure the function is only defined once:
 
 UNDO                                            *undo_indent* *undo_ftplugin*
 
-When the user does ":setfiletype xyz" the effect of the previous filetype
-should be undone.  Set the b:undo_ftplugin variable to the commands that will
-undo the settings in your filetype plugin.  Example:
+    When the user does ":setfiletype xyz" the effect of the previous filetype
+    should be undone.
+    Set the b:undo_ftplugin variable to the commands that will
+    undo the settings in your filetype plugin.
+    Example:
 
+            let b:undo_ftplugin = "setlocal fo< com< tw< commentstring<"
+                    \ .. "| unlet b:match_ignorecase b:match_words b:match_skip"
 
-        let b:undo_ftplugin = "setlocal fo< com< tw< commentstring<"
-                \ .. "| unlet b:match_ignorecase b:match_words b:match_skip"
+    Using ":setlocal" with "<" after the option name resets the option to its  global value.
+    That is mostly the best way to reset the option value.
 
-Using ":setlocal" with "<" after the option name resets the option to its
-global value.  That is mostly the best way to reset the option value.
+    This does require removing the "C" flag from 'cpoptions' to allow line
+    continuation,
+    as mentioned above |use-cpo-save|.
 
-This does require removing the "C" flag from 'cpoptions' to allow line
-continuation, as mentioned above |use-cpo-save|.
-
-For undoing the effect of an indent script, the b:undo_indent variable should
-be set accordingly.
+    For undoing the effect of an indent script,
+    the b:undo_indent variable should  be set accordingly.
 
 
 FILE NAME
 
-The filetype must be included in the file name |ftplugin-name|.  Use one of
-these three forms:
+    The filetype must be included in the file name |ftplugin-name|.  Use one of
+    these three forms:
 
-        .../ftplugin/stuff.vim
-        .../ftplugin/stuff_foo.vim
-        .../ftplugin/stuff/bar.vim
+            .../ftplugin/stuff.vim
+            .../ftplugin/stuff_foo.vim
+            .../ftplugin/stuff/bar.vim
 
-"stuff" is the filetype, "foo" and "bar" are arbitrary names.
+    "stuff" is the filetype,
+    "foo" and "bar" are arbitrary names.
 
 
 SUMMARY                                                 *ftplugin-special*
 
-Summary of special things to use in a filetype plugin:
+    Summary of special things to use in a filetype plugin:
 
-<LocalLeader>           Value of "maplocalleader", which the user defines as
-                        the keys that filetype plugin mappings start with.
+    <LocalLeader>           Value of "maplocalleader",
+                            which the user defines as  the keys that filetype plugin mappings start with.
+    :map <buffer>           Define a mapping local to the buffer.
 
-:map <buffer>           Define a mapping local to the buffer.
+    :noremap <script>       Only remap mappings defined in this script that start
+                            with <SID>.
 
-:noremap <script>       Only remap mappings defined in this script that start
-                        with <SID>.
+    :setlocal               Set an option for the current buffer only.
 
-:setlocal               Set an option for the current buffer only.
+    :command -buffer        Define a user command local to the buffer.
 
-:command -buffer        Define a user command local to the buffer.
+    exists("*s:Func")       Check if a function was already defined.
 
-exists("*s:Func")       Check if a function was already defined.
-
-Also see |plugin-special|, the special things used for all plugins.
+    Also see |plugin-special|, the special things used for all plugins.
 
 ==============================================================================
 *41.13* Writing a compiler plugin               *write-compiler-plugin*
 
-A compiler plugin sets options for use with a specific compiler.  The user can
-load it with the |:compiler| command.  The main use is to set the
-'errorformat' and 'makeprg' options.
+A compiler plugin sets options for use with a specific compiler.
+The user can  load it with the |:compiler| command.
+The main use is to set the  'errorformat' and 'makeprg' options.
 
-Easiest is to have a look at examples.  This command will edit all the default
-compiler plugins:
-
+Easiest is to have a look at examples.
+This command will edit all the default  compiler plugins:
 
         :next $VIMRUNTIME/compiler/*.vim
 
 Use |:next| to go to the next plugin file.
 
-There are two special items about these files.  First is a mechanism to allow
-a user to overrule or add to the default file.  The default files start with:
-
+There are two special items about these files.
+First is a mechanism to allow  a user to overrule or
+add to the default file.
+The default files start with:
 
         :if exists("current_compiler")
         :  finish
@@ -2789,3 +2746,4 @@ utility is recommended.
 Next chapter: |usr_42.txt|  Add new menus
 
 Copyright: see |manual-copyright|  vim:tw=78:ts=8:noet:ft=help:norl:
+leo_DIY

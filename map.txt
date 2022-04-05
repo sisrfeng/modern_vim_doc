@@ -326,13 +326,13 @@ This works when:
         be seen as a special key.
 
 *:map-cmd*
-*<Cmd>* 
+*<Cmd>*
         The <Cmd> pseudokey begins a "command mapping",
         which executes the command directly (without changing modes).
         Where you might use ":...<CR>" in the {rhs} of a mapping,
         you can instead use "<Cmd>...<CR>".
         Example:
-        noremap x <Cmd>echo mode(1)<cr>
+	    noremap x <Cmd>echo mode(1)<cr>
 
         This is more flexible than `:<C-U>` in visual and
         operator-pending mode,
@@ -342,27 +342,23 @@ This works when:
         so tricks with |gv| are not needed.
         Commands can be invoked directly in cmdline-mode (which would otherwise require timer hacks).
 
-        Unlike <expr> mappings,
-        there are no special restrictions on the <Cmd> command:
-        it is executed as if an (unrestricted) |autocommand| was invoked or
-        an async event event was processed.
+        there are no special restrictions on the <Cmd> command:  (Unlike <expr> mappings,)
+	    it is executed as if an (unrestricted) |autocommand| was invoked or
+	    an async event event was processed.
 
     Note:
-	  <Cmd> does not trigger |CmdlineEnter| and |CmdlineLeave| events.
-        - It avoids mode-changes (unlike ":")
-	      This helps performance.
-        - For the same reason,
-        |keycodes| like <C-R><C-W> are interpreted as plain,  unmapped keys.
-        - The command is not echo'ed,
-        no need for <silent>.
-        The {rhs} is not subject to abbreviations nor to other mappings,
-	    even if the mapping is recursive.
+        <Cmd> does not trigger |CmdlineEnter| and |CmdlineLeave| events.
+        - It avoids mode-changes (unlike ":").  This helps performance.
+        - |keycodes| like <C-R><C-W> are interpreted as plain,  unmapped keys.
+        - The command is not echo'ed,  no need for <silent>.
+	- The {rhs} is not subject to abbreviations nor to other mappings,  even if the mapping is recursive.
 
-        - In Visual mode  you can use `line('v')` and `col('v')` to get one end of the Visual area,
-            the cursor is at the other end.
+        - In Visual mode
+	      you can use `line('v')` and `col('v')` to get one end of the Visual area,
+             the cursor is at the other end.
         - In select-mode,
-            Use |:smap| to handle select-mode.
-           ( |:map| and |:vmap| command mappings are executed in visual-mode.)
+		Use |:smap| to handle select-mode.
+	       ( |:map| and |:vmap| command mappings are executed in visual-mode.)
 
 *E5520*
         <Cmd> commands  must be followed by  <CR> in the {rhs} of the mapping definition.

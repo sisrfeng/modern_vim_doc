@@ -111,7 +111,8 @@ between options set to $HOME with 'backupext' set to "~").
 When writing the buffer, the default is to use the current file name.  Thus
 when you give the "ZZ" or ":wq" command, the original file will be
 overwritten.  If you do not want this, the buffer can be written into another
-file by giving a file name argument to the ":write" command.  For example: >
+file by giving a file name argument to the ":write" command.  For example:
+
 
         vim testfile
         [change the buffer with editor commands]
@@ -286,36 +287,36 @@ CTRL-^                  Edit the alternate file.  Mostly the alternate file is
     :e <cfile>
     To make gf always work like that:
     :map gf :e <cfile><CR>
-	If the name is a hypertext link,
-	that looks like "type://machine/path",
-	you need the |netrw| plugin.
-	For Unix the '~' character is expanded, like in
-	"~user/file".
-	Environment variables are expanded too |expand-env|.
+        If the name is a hypertext link,
+        that looks like "type://machine/path",
+        you need the |netrw| plugin.
+        For Unix the '~' character is expanded, like in
+        "~user/file".
+        Environment variables are expanded too |expand-env|.
 
 *v_gf*
 {Visual}[count]gf
-	Same as "gf",
-	but the highlighted text is used as the name of the file to edit.
-	'isfname' is ignored.
-	Leading blanks are skipped,
-	otherwise all blanks and
-	special characters are included in the file name.
-	(For {Visual} see |Visual-mode|.)
+        Same as "gf",
+        but the highlighted text is used as the name of the file to edit.
+        'isfname' is ignored.
+        Leading blanks are skipped,
+        otherwise all blanks and
+        special characters are included in the file name.
+        (For {Visual} see |Visual-mode|.)
 
 *gF*
 [count]gF
-	Same as "gf",
-	except if a number follows the file name,
-	then the cursor is positioned on that line in the file.
-	The file name and
-	the number must be separated by a non-filename (see 'isfname') and non-numeric character.
-	" line " is also recognized,
-	like it is used in the output of `:verbose command UserCmd`
-	White space between the filename,
-	the separator and
-	the number are ignored.
-		Examples:
+        Same as "gf",
+        except if a number follows the file name,
+        then the cursor is positioned on that line in the file.
+        The file name and
+        the number must be separated by a non-filename (see 'isfname') and non-numeric character.
+        " line " is also recognized,
+        like it is used in the output of `:verbose command UserCmd`
+        White space between the filename,
+        the separator and
+        the number are ignored.
+                Examples:
                                 eval.c:10
                                 eval.c @ 20
                                 eval.c (30)
@@ -366,7 +367,8 @@ Expanding "**" is possible on Unix, Win32, Mac OS/X and a few other systems.
 This allows searching a directory tree.  This goes up to 100 directories deep.
 Note there are some commands where this works slightly differently, see
 |file-searching|.
-Example: >
+Example:
+
         :n **/*.txt
 Finds files:
         aaa.txt
@@ -374,7 +376,8 @@ Finds files:
         a/b/c/d/ccc.txt
 When non-wildcard characters are used right before or after "**" these are
 only matched in the top directory.  They are not used for directories further
-down in the tree. For example: >
+down in the tree. For example:
+
         :n /usr/inc**/types.h
 Finds files:
         /usr/include/types.h
@@ -385,54 +388,71 @@ Note that the path with "/sys" is included because it does not need to match
 "/usr/inc*/inc*/inc*".
 
 *backtick-expansion* *`-expansion*
-On Unix and a few other systems you can also use backticks for the file name
-argument, for example: >
-        :next `find . -name ver\\*.c -print`
-        :view `ls -t *.patch  \| head -n1`
-Vim will run the command in backticks using the 'shell' and use the standard
-output as argument for the given Vim command (error messages from the shell
-command will be discarded).
-To see what shell command Vim is running, set the 'verbose' option to 4. When
-the shell command returns a non-zero exit code, an error message will be
-displayed and the Vim command will be aborted. To avoid this make the shell
-always return zero like so: >
-       :next `find . -name ver\\*.c -print \|\| true`
+    On Unix and  a few other systems you can also use backticks for the file name  argument,
+    for example:
 
-The backslashes before the star are required to prevent the shell from
-expanding "ver*.c" prior to execution of the find program.  The backslash
-before the shell pipe symbol "|" prevents Vim from parsing it as command
-termination.
-This also works for most other systems, with the restriction that the
-backticks must be around the whole item.  It is not possible to have text
-directly before the first or just after the last backtick.
+            :next `find . -name ver\\*.c -print`
+            :view `ls -t *.patch  \| head -n1`
+    Vim will run the command in backticks using the 'shell' and use the standard
+    output as argument for the given Vim command (error messages from the shell
+    command will be discarded).
+    To see what shell command Vim is running, set the 'verbose' option to 4. When
+    the shell command returns a non-zero exit code, an error message will be
+    displayed and the Vim command will be aborted. To avoid this make the shell
+    always return zero like so:
+
+           :next `find . -name ver\\*.c -print \|\| true`
+
+    The backslashes before the star are required to prevent the shell from
+    expanding "ver*.c" prior to execution of the find program.  The backslash
+    before the shell pipe symbol "|" prevents Vim from parsing it as command
+    termination.
+    This also works for most other systems, with the restriction that the
+    backticks must be around the whole item.  It is not possible to have text
+    directly before the first or just after the last backtick.
 
 *`=*
-You can have the backticks expanded as a Vim expression, instead of as an
-external command, by putting an equal sign right after the first backtick,
-e.g.: >
-        :e `=tempname()`
-The expression can contain just about anything, thus this can also be used to
-avoid the special meaning of '"', '|', '%' and '#'.  However, 'wildignore'
-does apply like to other wildcards.
+    You can have the backticks expanded as a Vim expression,
+    instead of as an  external command,
+    by putting an equal sign right after the first backtick,
+    e.g.:
 
-Environment variables in the expression are expanded when evaluating the
-expression, thus this works: >
-        :e `=$HOME . '/.vimrc'`
-This does not work, $HOME is inside a string and used literally: >
-        :e `='$HOME' . '/.vimrc'`
+            :e `=tempname()`
 
-If the expression returns a string then names are to be separated with line
-breaks.  When the result is a |List| then each item is used as a name.  Line
-breaks also separate names.
-Note that such expressions are only supported in places where a filename is
-expected as an argument to an Ex-command.
+    The expression can contain just about anything,
+    thus this can also be used to
+    avoid the special meaning of '"',
+                                '|',
+                                '%'
+                                '#'.
+    However, 'wildignore'  does apply,  like to other wildcards.
+
+    Environment variables in the expression are expanded when evaluating the  expression,
+    thus this works:
+
+
+            :e `=$HOME . '/.vimrc'`
+
+    This does not work, $HOME is inside a string and used literally:
+
+
+            :e `='$HOME' . '/.vimrc'`
+
+    If the expression returns a string
+        then names are to be separated with line  breaks.
+    When the result is a |List| then each item is used as a name.  Line
+    breaks also separate names.
+    Note that such expressions are only supported in places where a filename is
+    expected as an argument to an Ex-command.
 
 *++opt* *[++opt]*
 The [++opt] argument can be used to force the value of 'fileformat',
 'fileencoding' or 'binary' to a value for one command, and to specify the
-behavior for bad characters.  The form is: >
+behavior for bad characters.  The form is:
+
         ++{optname}
-Or: >
+Or:
+
         ++{optname}={value}
 
 Where {optname} is one of:          *++ff* *++enc* *++bin* *++nobin* *++edit*
@@ -445,7 +465,8 @@ Where {optname} is one of:          *++ff* *++enc* *++bin* *++nobin* *++edit*
                             a file
 
 {value} cannot contain white space.  It can be any valid value for these
-options.  Examples: >
+options.  Examples:
+
         :e ++ff=unix
 This edits the same file again with 'fileformat' set to "unix". >
 
@@ -494,61 +515,77 @@ Note that in the last example the number of backslashes is halved twice: Once
 for the "+cmd" argument and once for the ":set" command.
 
 *file-formats*
-The 'fileformat' option sets the <EOL> style for a file:
-'fileformat'    characters         name
-  "dos"         <CR><NL> or <NL>   DOS format           *DOS-format*
-  "unix"        <NL>               Unix format          *Unix-format*
-  "mac"         <CR>               Mac format           *Mac-format*
+    The 'fileformat' option sets the <EOL> style for a file:
+    'fileformat'    characters           name
+      "dos"         <CR><NL> or <NL>     *DOS-format*
+      "unix"        <NL>                 *Unix-format*
+      "mac"         <CR>                 *Mac-format*
 
-When reading a file, the mentioned characters are interpreted as the <EOL>.
-In DOS format (default for Windows), <CR><NL> and <NL> are both interpreted as
-the <EOL>. Note that when writing the file in DOS format, <CR> characters will
-be added for each single <NL>.  Also see |file-read|.
+    When reading a file,
+        the mentioned characters are interpreted as the <EOL>.
 
-When writing a file, the mentioned characters are used for <EOL>.  For DOS
-format <CR><NL> is used.  Also see |DOS-format-write|.
+        Also see |file-read|.
 
-You can read a file in DOS format and write it in Unix format.  This will
-replace all <CR><NL> pairs by <NL> (assuming 'fileformats' includes "dos"): >
-        :e file
-        :set fileformat=unix
-        :w
-If you read a file in Unix format and write with DOS format, all <NL>
-characters will be replaced with <CR><NL> (assuming 'fileformats' includes
-"unix"): >
-        :e file
-        :set fileformat=dos
-        :w
+    When writing a file,
+        the mentioned characters are used for <EOL>.
+        For DOS  format
+            <CR><NL> is used.
+            (<CR> characters will  be added for each single <NL>.)
+            Also see |DOS-format-write|.
 
-If you start editing a new file and the 'fileformats' option is not empty
-(which is the default), Vim will try to detect whether the lines in the file
-are separated by the specified formats.  When set to "unix,dos", Vim will
-check for lines with a single <NL> (as used on Unix) or by a <CR><NL> pair
-(MS-Windows).  Only when ALL lines end in <CR><NL>, 'fileformat' is
-set to "dos", otherwise it is set to "unix".  When 'fileformats' includes
-"mac", and no <NL> characters are found in the file, 'fileformat' is set to
-"mac".
+    You can read a file in DOS format and  write it in Unix format.
+        This will  replace all <CR><NL> pairs by <NL> (assuming 'fileformats' includes "dos"):
 
-If the 'fileformat' option is set to "dos" on non-MS-Windows systems the
-message "[dos format]" is shown to remind you that something unusual is
-happening.  On MS-Windows systems you get the message "[unix format]" if
-'fileformat' is set to "unix".  On all systems but the Macintosh you get the
-message "[mac format]" if 'fileformat' is set to "mac".
+            :e file
+            :set fileformat=unix
+            :w
 
-If the 'fileformats' option is empty and DOS format is used, but while reading
-a file some lines did not end in <CR><NL>, "[CR missing]" will be included in
-the file message.
-If the 'fileformats' option is empty and Mac format is used, but while reading
-a file a <NL> was found, "[NL missing]" will be included in the file message.
+    If you read a file in Unix format and  write with DOS format,
+        all <NL>  characters will be replaced with <CR><NL> (assuming 'fileformats' includes  "unix"):
 
-If the new file does not exist, the 'fileformat' of the current buffer is used
-when 'fileformats' is empty.  Otherwise the first format from 'fileformats' is
-used for the new file.
+            :e file
+            :set fileformat=dos
+            :w
 
-Before editing binary, executable or Vim script files you should set the
-'binary' option.  A simple way to do this is by starting Vim with the "-b"
-option.  This will avoid the use of 'fileformat'.  Without this you risk that
-single <NL> characters are unexpectedly replaced with <CR><NL>.
+    If you start editing a new file (new是说没在buffer, 不代表是empty file)
+       'fileformats'的几种情况:
+            |-not empty  (which is the default),
+            |    Vim will try to detect whether the lines in the file  are separated by the specified formats.
+            |
+            |       "unix,dos":
+            |            Vim will  check for lines with a single <NL> (as used on Unix) or by a <CR><NL> pair  (MS-Windows).
+            |            Only when ALL lines end in <CR><NL>:
+            |               'fileformat' is  set to "dos",
+            |            otherwise
+            |               'fileformat' is  set to "unix"
+            |        'fileformats' includes  "mac":
+            |            and no <NL> characters are found in the file:
+            |                'fileformat' is set to  "mac".
+            |        不匹配的情况:
+            |            If the 'fileformat' option is set to "dos" on non-MS-Windows systems
+            |                the  message "[dos format]" is shown to remind you that something unusual is  happening.
+            |            If  'fileformat' is set to "unix"   n MS-Windows systems
+            |                you get the message "[unix format]"
+            |            On all systems but the Macintosh you get the
+            |                message "[mac format]" if 'fileformat' is set to "mac".
+            |
+            |- empty
+                 DOS format is used, but while reading a file where some lines did not end in <CR><NL>,
+                     "[CR missing]" will be included in  the file message.
+                 Mac format is used, but while reading a file where a <NL> was found,
+                     "[NL missing]" will be included in the file message.
+
+    If the new file does not exist,
+        If 'fileformats' is empty.
+            the 'fileformat' of the current buffer is used
+        Otherwise
+            the first format from 'fileformats' is  used for the new file.
+
+    Before editing binary,  executable or Vim script files
+        you should set the  'binary' option.
+        A simple way to do this is by starting Vim with the "-b"  option.
+        This will avoid the use of 'fileformat'.
+        Without this you risk that  single <NL> characters are unexpectedly replaced with <CR><NL>.
 
 ==============================================================================
 3. The argument list                            *argument-list* *arglist*
@@ -623,9 +660,10 @@ single <NL> characters are unexpectedly replaced with <CR><NL>.
                         There is no check for duplicates, it is possible to
                         add a file to the argument list twice.
                         The currently edited file is not changed.
-                        Note: you can also use this method: >
+                        Note: you can also use this method:
+
                                 :args ## x
-<                       This will add the "x" item and sort the new list.
+                       This will add the "x" item and sort the new list.
 
 :argd[elete] {pattern} ..               *:argd* *:argdelete* *E480* *E610*
                         Delete files from the argument list that match the
@@ -634,20 +672,22 @@ single <NL> characters are unexpectedly replaced with <CR><NL>.
                         current entry.
                         This command keeps the currently edited file, also
                         when it's deleted from the argument list.
-                        Example: >
+                        Example:
+
                                 :argdel *.obj
 
 :[range]argd[elete]     Delete the [range] files from the argument list.
-                        Example: >
+                        Example:
+
                                 :10,$argdel
-<                       Deletes arguments 10 and further, keeping 1-9. >
+                       Deletes arguments 10 and further, keeping 1-9. >
                                 :$argd
-<                       Deletes just the last one. >
+                       Deletes just the last one. >
                                 :argd
                                 :.argd
-<                       Deletes the current argument. >
+                       Deletes the current argument. >
                                 :%argd
-<                       Removes all the files from the arglist.
+                       Removes all the files from the arglist.
                         When the last number in the range is too high, up to
                         the last argument is deleted.
 
@@ -666,9 +706,12 @@ single <NL> characters are unexpectedly replaced with <CR><NL>.
                         Also see |++opt| and |+cmd|.
 
 :[count]n[ext] [++opt] [+cmd]                   *:n* *:ne* *:next* *E165* *E163*
-                        Edit [count] next file.  This fails when changes have
-                        been made and Vim does not want to |abandon| the
-                        current buffer.  Also see |++opt| and |+cmd|.
+                        Edit [count] next file.
+                        This fails when changes have
+                        been made and
+                        Vim does not want to |abandon| the
+                        current buffer.
+                        Also see |++opt| and |+cmd|.
 
 :[count]n[ext]! [++opt] [+cmd]
                         Edit [count] next file, discard any changes to the
@@ -757,10 +800,12 @@ Thus you can use the command "vim *.c" to edit all the C files.  From within
 Vim the command ":n *.c" does the same.
 
 White space is used to separate file names.  Put a backslash before a space or
-tab to include it in a file name.  E.g., to edit the single file "foo bar": >
+tab to include it in a file name.  E.g., to edit the single file "foo bar":
+
         :next foo\ bar
 
-On Unix and a few other systems you can also use backticks, for example: >
+On Unix and a few other systems you can also use backticks, for example:
+
         :next `find . -name \\*.c -print`
 The backslashes before the star are required to prevent "*.c" to be expanded
 by the shell before executing the find program.
@@ -813,13 +858,14 @@ USING THE ARGUMENT LIST
 *:argdo*
 :[range]argdo[!] {cmd}  Execute {cmd} for each file in the argument list or,
                         if [range] is specified, only for arguments in that
-                        range.  It works like doing this: >
+                        range.  It works like doing this:
+
                                 :rewind
                                 :{cmd}
                                 :next
                                 :{cmd}
                                 etc.
-<                       When the current file can't be |abandon|ed and the [!]
+                       When the current file can't be |abandon|ed and the [!]
                         is not present, the command fails.
                         When an error is detected on one file, further files
                         in the argument list will not be visited.
@@ -834,13 +880,15 @@ USING THE ARGUMENT LIST
                         Also see |:windo|, |:tabdo|, |:bufdo|, |:cdo|, |:ldo|,
                         |:cfdo| and |:lfdo|.
 
-Example: >
+Example:
+
         :args *.c
         :argdo set ff=unix | update
 This sets the 'fileformat' option to "unix" and writes the file if it is now
 changed.  This is done for all *.c files.
 
-Example: >
+Example:
+
         :args *.[ch]
         :argdo %s/\<my_foo\>/My_Foo/ge | update
 This changes the word "my_foo" to "My_Foo" in all *.c and *.h files.  The "e"
@@ -1036,9 +1084,11 @@ it with |:write|.
 *write-device*
 When the file name is actually a device name, Vim will not make a backup (that
 would be impossible).  You need to use "!", since the device already exists.
-Example for Unix: >
+Example for Unix:
+
         :w! /dev/lpt0
-and MS-Windows: >
+and MS-Windows:
+
         :w! lpt0
 For Unix a device is detected when the name doesn't refer to a normal file or
 a directory.  A fifo or named pipe also looks like a device to Vim.
@@ -1169,13 +1219,14 @@ MULTIPLE WINDOWS AND BUFFERS                            *window-exit*
                         fail in such a way, such as |:only|, |:buffer|,
                         |:bdelete|, etc.
 
-Examples: >
+Examples:
+
   :confirm w foo
-<       Will ask for confirmation when "foo" already exists. >
+       Will ask for confirmation when "foo" already exists. >
   :confirm q
-<       Will ask for confirmation when there are changes. >
+       Will ask for confirmation when there are changes. >
   :confirm qa
-<       If any modified, unsaved buffers exist, you will be prompted to save
+       If any modified, unsaved buffers exist, you will be prompted to save
         or abandon each one.  There are also choices to "save all" or "abandon
         all".
 
@@ -1200,19 +1251,20 @@ If you want to always use ":confirm", set the 'confirm' option.
                         ":browse set" works like |:options|.
                         See also |:oldfiles| for ":browse oldfiles".
 
-The syntax is best shown via some examples: >
+The syntax is best shown via some examples:
+
         :browse e $vim/foo
-<               Open the browser in the $vim/foo directory, and edit the
+               Open the browser in the $vim/foo directory, and edit the
                 file chosen. >
         :browse e
-<               Open the browser in the directory specified with 'browsedir',
+               Open the browser in the directory specified with 'browsedir',
                 and edit the file chosen. >
         :browse w
-<               Open the browser in the directory of the current buffer,
+               Open the browser in the directory of the current buffer,
                 with the current buffer filename as default, and save the
                 buffer under the filename chosen. >
         :browse w C:/bar
-<               Open the browser in the C:/bar directory, with the current
+               Open the browser in the C:/bar directory, with the current
                 buffer filename as default, and save the buffer under the
                 filename chosen.
 Also see the 'browsedir' option.
@@ -1229,7 +1281,8 @@ is the pattern which filters the filenames.  Several patterns can be given,
 separated by ';'.
 
 For example, to have only Vim files in the dialog, you could use the following
-command: >
+command:
+
 
      let g:browsefilter = "Vim Scripts\t*.vim\nVim Startup Files\t*vimrc\n"
 
@@ -1242,7 +1295,8 @@ may want to add "All Files\t*.*\n" as the final filter, so that the user can
 still access any desired file.
 
 To avoid setting browsefilter when Vim does not actually support it, you can
-use has("browsefilter"): >
+use has("browsefilter"):
+
 
         if has("browsefilter")
            let g:browsefilter = "whatever"
@@ -1274,9 +1328,10 @@ exist, the next-higher scope in the hierarchy applies.
                         because its full path name is remembered.  Files from
                         the |arglist| may change though!
                         On MS-Windows this also changes the active drive.
-                        To change to the directory of the current file: >
+                        To change to the directory of the current file:
+
                                 :cd %:h
-<
+
 *:cd-* *E186*
 :cd[!] -                Change to the previous current directory (before the
                         previous ":cd {path}" command).
@@ -1315,7 +1370,8 @@ exist, the next-higher scope in the hierarchy applies.
                         Also see |getcwd()|.
 *:pwd-verbose*
                         When 'verbose' is non-zero, |:pwd| will also display
-                        what scope the current directory was set. Example: >
+                        what scope the current directory was set. Example:
+
 
                                 " Set by :cd
                                 :verbose pwd
@@ -1417,10 +1473,12 @@ Vim, set the 'autoread' option.  This doesn't work at the moment you write the
 file though, only when the file wasn't changed inside of Vim.
 *ignore-timestamp*
 If you do not want to be asked or automatically reload the file, you can use
-this: >
+this:
+
         set buftype=nofile
 
-Or, when starting gvim from a shell: >
+Or, when starting gvim from a shell:
+
         gvim file.log -c "set buftype=nofile"
 
 Note that if a FileChangedShell autocommand is defined you will not get a
@@ -1529,7 +1587,8 @@ There are three different types of searching:
         search an entire directory tree
       - The maximum number of levels matched can be given by appending a number
         to '**'.
-        Thus '/usr/**2' can match: >
+        Thus '/usr/**2' can match:
+
                 /usr
                 /usr/include
                 /usr/include/sys
@@ -1537,7 +1596,7 @@ There are three different types of searching:
                 /usr/lib
                 /usr/lib/X11
                 ....
-<       It does NOT match '/usr/include/g++/std' as this would be three
+       It does NOT match '/usr/include/g++/std' as this would be three
         levels.
         The allowed number range is 0 ('**0' is removed) to 100
         If the given number is smaller than 0 it defaults to 30, if it's
@@ -1546,7 +1605,8 @@ There are three different types of searching:
       - '**' can only be at the end of the path or be followed by a path
         separator or by a number and a path separator.
 
-   You can combine '*' and '**' in any order: >
+   You can combine '*' and '**' in any order:
+
         /usr/**/sys/*
         /usr/*tory/sys/**
         /usr/**2/sys/*
@@ -1559,18 +1619,20 @@ There are three different types of searching:
    stop-directories separate them with ';'.  If you want no stop-directory
    ("search upward till the root directory) just use ';'. >
         /usr/include/sys;/usr
-<   will search in: >
+   will search in:
+
            /usr/include/sys
            /usr/include
            /usr
-<
+
    If you use a relative path the upward search is started in Vim's current
    directory or in the directory of the current file (if the relative path
    starts with './' and 'd' is not included in 'cpoptions').
 
    If Vim's current path is /u/user_x/work/release and you do >
         :set path=include;/u/user_x
-<  and then search for a file with |gf| the file is searched in: >
+  and then search for a file with |gf| the file is searched in:
+
         /u/user_x/work/release/include
         /u/user_x/work/include
         /u/user_x/include
@@ -1578,19 +1640,21 @@ There are three different types of searching:
 3) Combined up/downward search:
    If Vim's current path is /u/user_x/work/release and you do >
         set path=**;/u/user_x
-<  and then search for a file with |gf| the file is searched in: >
+  and then search for a file with |gf| the file is searched in:
+
         /u/user_x/work/release/**
         /u/user_x/work/**
         /u/user_x/**
-<
+
    BE CAREFUL!  This might consume a lot of time, as the search of
    '/u/user_x/**' includes '/u/user_x/work/**' and
    '/u/user_x/work/release/**'.  So '/u/user_x/work/release/**' is searched
    three times and '/u/user_x/work/**' is searched twice.
 
-   In the above example you might want to set path to: >
+   In the above example you might want to set path to:
+
         :set path=**,/u/user_x/**
-<  This searches:
+  This searches:
         /u/user_x/work/release/**
         /u/user_x/**
    This searches the same directories, but in a different order.
@@ -1600,3 +1664,4 @@ There are three different types of searching:
    with depth limiter (/usr/**2) or upward search (;) notations.
 
  vim:tw=78:ts=8:noet:ft=help:norl:
+leo_DIY

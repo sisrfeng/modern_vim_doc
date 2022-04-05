@@ -16,15 +16,18 @@ Help on help files                                      *helphelp*
 :h[elp]
         Open a window and
         display the help file in read-only mode.
+
         If there is a help window open already,
-        use that one.
+            use that one.
         Otherwise,
-        if the current window uses the full width of the screen or
-        is at least 80 characters wide,
-        the help window will appear just above the current window.
-        Otherwise the new window is put at the very top.
-        The 'helplang' option is used to select a language,
-        if the main help file is available in several languages.
+            if the current window uses the full width of the screen or
+            is at least 80 characters wide,
+                the help window will appear just above the current window.
+            Otherwise the new window is put at the very top.
+
+        if the main help file is available in several languages
+            The 'helplang' option is used to select a language,
+
         Type |gO| to see the table of contents.
 
 *{subject}* *E149* *E661*
@@ -113,6 +116,7 @@ Help on help files                                      *helphelp*
 :helpc[lose]
         Close one help window,
         if there is one.
+
         Vim will try to restore the window layout (including cursor position) to the same layout it was before
         opening the help window initially.
         This might cause triggering several autocommands.
@@ -164,47 +168,49 @@ Help on help files                                      *helphelp*
 :exu[sage]
         Show help on Ex commands.
         Added to simulate the Nvi command.
-                        navigate vi?
+                        Navigate vi?
 
 *:viu* *:viusage*
 :viu[sage]
         Show help on Normal mode commands.
         Added to simulate the Nvi command.
 
-        When no argument is given to |:help| the file given with the 'helpfile' option will be opened.
-        Otherwise the specified tag is searched for in all "doc/tags" files in the directories specified in the 'runtimepath' option.
+When no argument is given to |:help|
+    the file given with the 'helpfile' option will be opened.
+Otherwise the specified tag is searched for   in all "doc/tags" files in the directories specified in the 'runtimepath' option.
 
-        If you would like to open the help in the current window,
-        see this tip:
-        |help-curwin|.
-        The initial height of the help window can be set with the 'helpheight' option (default 20).
+If you would like to open the help in the current window,
+    see this tip:  |help-curwin|.
 
-        help buffer的特殊性:
-        When the help buffer is created,
-        several local options are set to make sure the help text is displayed as it was intended:
-                'iskeyword'         nearly all ASCII chars except ' ', '*', '"' and '|'
-                'foldmethod'        "manual"
-                'tabstop'           8
-                'arabic'            off
-                'binary'            off
-                'buflisted'         off
-                'cursorbind'        off
-                'diff'              off
-                'foldenable'        off
-                'list'              off
-                'modifiable'        off
-                'number'            off
-                'relativenumber'    off
-                'rightleft'         off   文本从右到左显示
-                'scrollbind'        off
-                'spell'             off
+The initial height of the help window can be set with the 'helpheight' option (default 20).
 
-Jump to specific subjects by using tags.  This can be done in two ways:
-- Use the "CTRL-]" command while standing on the name of a command or option.
-  This only works when the tag is a keyword.  "<C-Leftmouse>" and
-  "g<LeftMouse>" work just like "CTRL-]".
-- use the ":ta {subject}" command.  This also works with non-keyword
-  characters.
+help buffer的特殊性:
+    When the help buffer is created,
+    several local options are set to make sure the help text is displayed as it was intended:
+        'iskeyword'         nearly all ASCII chars except ' ', '*', '"' and '|'
+        'foldmethod'        "manual"
+        'tabstop'           8
+        'arabic'            off
+        'binary'            off
+        'buflisted'         off
+        'cursorbind'        off
+        'diff'              off
+        'foldenable'        off
+        'list'              off
+        'modifiable'        off
+        'number'            off
+        'relativenumber'    off
+        'rightleft'         off   文本从右到左显示
+        'scrollbind'        off
+        'spell'             off
+
+Jump to specific subjects by using tags.
+    This can be done in two ways:
+    - Use the "CTRL-]" command while standing on the name of a command or option.
+      This only works when the tag is a keyword.  "<C-Leftmouse>" and
+      "g<LeftMouse>" work just like "CTRL-]".
+    - use the ":ta {subject}" command.  This also works with non-keyword
+      characters.
 
 Use CTRL-T or CTRL-O to jump back.
 Use ":q" to close the help window.
@@ -217,19 +223,19 @@ can jump to each one of them:
         :tag /min
 3. Use ":tnext" to jump to the next matching tag.
 
-It is possible to add help files for plugins and
-other items.
+It is possible to add help files for plugins and  other items.
 You don't need to change the distributed help files for that.
 See |add-local-help|.
 
 To write a local help file, see |write-local-help|.
 
-Note that the title lines from the local help files are automagically added to the "LOCAL ADDITIONS" section in the "help.txt" help file |local-additions|.
-This is done when viewing the file in Vim,
-the file itself is not changed.
-It is done by going through all help files and
-obtaining the first line of each file.
-The files in $VIMRUNTIME/doc are skipped.
+Note that the title lines from the local help files
+    are automagically added to the "LOCAL ADDITIONS" section in the "help.txt" help file |local-additions|.
+    This is done when viewing the file in Vim,
+    the file itself is not changed.
+    It is done by going through all help files and
+    obtaining the first line of each file.
+    The files in $VIMRUNTIME/doc are skipped.
 
 *help-xterm-window*
 If you want to have the help in another xterm window, you could use this

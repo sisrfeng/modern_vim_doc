@@ -319,21 +319,21 @@ Note: In the future more global options can be made global-local.  Using
 Setting the filetype
 
 :setf[iletype] [FALLBACK] {filetype}                    *:setf* *:setfiletype*
-                        Set the 'filetype' option to {filetype}, but only if
-                        not done yet in a sequence of (nested) autocommands.
-                        This is short for:
-                                :if !did_filetype()
-                                :  setlocal filetype={filetype}
-                                :endif
-                        This command is used in a filetype.vim file to avoid
-                        setting the 'filetype' option twice, causing different
-                        settings and syntax files to be loaded.
+        Set the 'filetype' option to {filetype}, but only if
+        not done yet in a sequence of (nested) autocommands.
+        This is short for:
+                :if !did_filetype()
+                :  setlocal filetype={filetype}
+                :endif
+        This command is used in a filetype.vim file to avoid
+        setting the 'filetype' option twice, causing different
+        settings and syntax files to be loaded.
 
-                        When the optional FALLBACK argument is present, a
-                        later :setfiletype command will override the
-                        'filetype'.  This is to be used for filetype
-                        detections that are just a guess.  |did_filetype()|
-                        will return false after this command.
+        When the optional FALLBACK argument is present, a
+        later :setfiletype command will override the
+        'filetype'.  This is to be used for filetype
+        detections that are just a guess.  |did_filetype()|
+        will return false after this command.
 
 *option-window* *optwin*
 :bro[wse] se[t]                 *:set-browse* *:browse-set* *:opt* *:options*
@@ -386,135 +386,149 @@ the system, mostly it is something like 256 or 1024 characters.
 ==============================================================================
 2. Automatically setting options                        *auto-setting*
 
-Besides changing options with the ":set" command, there are three alternatives
+Besides changing options with the ":set" command,
+there are three alternatives
 to set options automatically for one or more files:
 
-1. When starting Vim initializations are read from various places.  See
-   |initialization|.  Most of them are performed for all editing sessions,
+1. When starting Vim initializations are read from various places.
+        See  |initialization|.
+        Most of them are performed for all editing sessions,
    and some of them depend on the directory where Vim is started.
-   You can create an initialization file with |:mkvimrc|, |:mkview| and
-   |:mksession|.
-2. If you start editing a new file, the automatic commands are executed.
-   This can be used to set options for files matching a particular pattern and
-   many other things.  See |autocommand|.
-3. If you start editing a new file, and the 'modeline' option is on, a
-   number of lines at the beginning and end of the file are checked for
-   modelines.  This is explained here.
+   You can create an initialization file with |:mkvimrc|, |:mkview| and  |:mksession|.
+
+3. If you start editing a new file,
+        and the 'modeline' option is on,
+        a  number of lines at the beginning and  end of the file
+        are checked for  modelines.
 
 *modeline* *vim:* *vi:* *ex:* *E520*
-There are two forms of modelines.  The first form:
-        [text{white}]{vi:|vim:|ex:}[white]{options}
+There are two forms of modelines.
+        The first form:
+                        [text{white}]{vi:|vim:|ex:}[white]{options}
 
-[text{white}]           empty or any text followed by at least one blank
-                        character (<Space> or <Tab>); "ex:" always requires at
-                        least one blank character
-{vi:|vim:|ex:}          the string "vi:", "vim:" or "ex:"
-[white]                 optional white space
-{options}               a list of option settings, separated with white space
-                        or ':', where each part between ':' is the argument
-                        for a ":set" command (can be empty)
+                [text{white}]           empty or any text followed by at least one blank
+                                                                character (<Space> or <Tab>); "ex:" always requires at
+                                                                least one blank character
+                {vi:|vim:|ex:}          the string "vi:", "vim:" or "ex:"
+                [white]                 optional white space
+                {options}               a list of option settings, separated with white space
+                                                                or ':', where each part between ':' is the argument
+                                                                for a ":set" command (can be empty)
 
-Examples:
-   vi:noai:sw=3 ts=6
-   vim: tw=77
+                Examples:
+                   vi:noai:sw=3 ts=6
+                   vim: tw=77
 
-The second form (this is compatible with some versions of Vi):
+        The second form (this is compatible with some versions of Vi):
 
-        [text{white}]{vi:|vim:|Vim:|ex:}[white]se[t] {options}:[text]
+                                [text{white}]{vi:|vim:|Vim:|ex:}[white]se[t] {options}:[text]
 
-[text{white}]           empty or any text followed by at least one blank
-                        character (<Space> or <Tab>); "ex:" always requires at
-                        least one blank character
-{vi:|vim:|Vim:|ex:}     the string "vi:", "vim:", "Vim:" or "ex:"
-[white]                 optional white space
-se[t]                   the string "set " or "se " (note the space); When
-                        "Vim" is used it must be "set".
-{options}               a list of options, separated with white space, which
-                        is the argument for a ":set" command
-:                       a colon
-[text]                  any text or empty
+                [text{white}]           empty or any text followed by at least one blank
+                                                                character (<Space> or <Tab>); "ex:" always requires at
+                                                                least one blank character
+                {vi:|vim:|Vim:|ex:}     the string "vi:", "vim:", "Vim:" or "ex:"
+                [white]                 optional white space
+                se[t]                   the string "set " or "se " (note the space); When
+                                                                "Vim" is used it must be "set".
+                {options}               a list of options, separated with white space, which
+                                                                is the argument for a ":set" command
+                :                       a colon
+                [text]                  any text or empty
 
-Examples:
-   /* vim: set ai tw=75: */
-   /* Vim: set ai tw=75: */
+                Examples:
+                   /* vim: set ai tw=75: */
+                   /* Vim: set ai tw=75: */
 
-The white space before {vi:|vim:|Vim:|ex:} is required.  This minimizes the
-chance that a normal word like "lex:" is caught.  There is one exception:
-"vi:" and "vim:" can also be at the start of the line (for compatibility with
-version 3.0).  Using "ex:" at the start of the line will be ignored (this
-could be short for "example:").
+                        The white space before {vi:|vim:|Vim:|ex:} is required.
+                        This minimizes the  chance that a normal word like "lex:" is caught.
+                        There is one exception:
+                        "vi:" and "vim:" can also be at the start of the line (for compatibility with
+                                version 3.0).
+                                Using "ex:" at the start of the line will be ignored (this  could be short for "example:").
 
-If the modeline is disabled within a modeline, subsequent modelines will be
-ignored.  This is to allow turning off modeline on a per-file basis.  This is
-useful when a line looks like a modeline but isn't.  For example, it would be
-good to start a YAML file containing strings like "vim:" with
-    # vim: nomodeline
-so as to avoid modeline misdetection.  Following options on the same line
-after modeline deactivation, if any, are still evaluated (but you would
-normally not have any).
+        If the modeline is disabled within a modeline,
+                subsequent modelines will be  ignored.
+                This is to allow turning off modeline on a per-file basis.
+                This is  useful when a line looks like a modeline but isn't.
+
+                it would be  good to start a YAML file containing strings like "vim:" with
+                                # vim: nomodeline
+                so as to avoid modeline misdetection.
+                        Following options on the same line  after 🔑modeline deactivation🔑,
+                                 are still evaluated (but you would  normally not have any).
 
 *modeline-local*
-The options are set like with ":setlocal": The new value only applies to the
-buffer and window that contain the file.  Although it's possible to set global
-options from a modeline, this is unusual.  If you have two windows open and
-the files in it set the same global option to a different value, the result
-depends on which one was opened last.
+        The options are set like with ":setlocal":
+        The new value only applies to the  buffer and  window that contain the file.
+        Although it's possible to set global  options from a modeline,
+        this is unusual.
+        If you have two windows open and  the files in it set the same global option to a different value,
+        the result  depends on which one was opened last.
 
-When editing a file that was already loaded, only the window-local options
-from the modeline are used.  Thus if you manually changed a buffer-local
-option after opening the file, it won't be changed if you edit the same buffer
-in another window.  But window-local options will be set.
+        When editing a file that was already loaded,
+                only the window-local options  from the modeline are used.
+                Thus if you manually changed a buffer-local  option after opening the file,
+                   it won't be changed if you edit the same buffer  in another window.
+                        But window-local options will be set.
 
 *modeline-version*
-If the modeline is only to be used for some versions of Vim, the version
-number can be specified where "vim:" or "Vim:" is used:
-        vim{vers}:      version {vers} or later
-        vim<{vers}:     version before {vers}
-        vim={vers}:     version {vers}
-        vim>{vers}:     version after {vers}
-{vers} is 700 for Vim 7.0 (hundred times the major version plus minor).
-For example, to use a modeline only for Vim 7.0:
-        /* vim700: set foldmethod=marker */
-To use a modeline for Vim after version 7.2:
-        /* vim>702: set cole=2: */
-There can be no blanks between "vim" and the ":".
-The modeline is ignored if {vers} does not fit in an integer.
+        If the modeline is only to be used for some versions of Vim,
+        the version  number can be specified where "vim:" or "Vim:" is used:
+                        vim{vers}:      version {vers} or later
+                        vim<{vers}:     version before {vers}
+                        vim={vers}:     version {vers}
+                        vim>{vers}:     version after {vers}
+        {vers} is 700 for Vim 7.0 (hundred times the major version plus minor).
+        For example, to use a modeline only for Vim 7.0:
+                        /* vim700: set foldmethod=marker */
+        To use a modeline for Vim after version 7.2:
+                        /* vim>702: set cole=2: */
+        There can be no blanks between "vim" and the ":".
+        The modeline is ignored if {vers} does not fit in an integer.
 
 
 The number of lines that are checked can be set with the 'modelines' option.
-If 'modeline' is off or 'modelines' is 0 no lines are checked.
+        If 'modeline' is off or
+        'modelines' is 0 no lines are checked.
 
-Note that for the first form all of the rest of the line is used, thus a line
-like:
+Note that for the first form all of the rest of the line is used,
+thus a line  like:
    /* vi:ts=4: */
 will give an error message for the trailing "*/".  This line is OK:
    /* vi:set ts=4: */
 
 If an error is detected the rest of the line is skipped.
 
-If you want to include a ':' in a set command precede it with a '\'.  The
-backslash in front of the ':' will be removed.  Example:
+If you want to include a ':' in a set command precede it with a '\'.
+The  backslash in front of the ':' will be removed.
+Example:
    /* vi:set fillchars=stl\:^,vert\:\|: */
-This sets the 'fillchars' option to "stl:^,vert:\|".  Only a single backslash
-before the ':' is removed.  Thus to include "\:" you have to specify "\\:".
+This sets the 'fillchars' option to "stl:^,vert:\|".
+Only a single backslash  before the ':' is removed.
+Thus to include "\:" you have to specify "\\:".
+
 *E992*
-No other commands than "set" are supported, for security reasons (somebody
-might create a Trojan horse text file with modelines).  And not all options
-can be set.  For some options a flag is set, so that when the value is used
-the |sandbox| is effective.  Some options can only be set from the modeline
-when 'modelineexpr' is set (the default is off).
+        No other commands than "set" are supported,
+        for security reasons (somebody  might create a Trojan horse text file with modelines).
+        And not all options  can be set.
+        For some options a flag is set,
+        so that when the value is used
+                the |sandbox| is effective.
+        Some options can only be set from the modeline
+                when 'modelineexpr' is set (the default is off).
 
-Still, there is always a small risk that a modeline causes trouble.  E.g.,
-when some joker sets 'textwidth' to 5 all your lines are wrapped unexpectedly.
-So disable modelines before editing untrusted text.  The mail ftplugin does
-this, for example.
+Still, there is always a small risk that a modeline causes trouble.
+        E.g.,
+        when some joker sets 'textwidth' to 5 all your lines are wrapped unexpectedly.
+        So disable modelines before editing untrusted text.
+        The mail ftplugin does  this
 
-Hint: If you would like to do something else than setting an option, you could
-define an autocommand that checks the file for a specific string.  For
-example:
+Hint:
+        If you would like to do something else than setting an option,
+        you could  define an autocommand that checks the file for a specific string.
+        For  example:
         au BufReadPost * if getline(1) =~ "VAR" | call SetVar() | endif
-And define a function SetVar() that does something with the line containing
-"VAR".
+        And define a function SetVar() that does something with the line containing  "VAR".
 
 ==============================================================================
 3. Options summary                                      *option-summary*
@@ -675,7 +689,6 @@ When autoindent is on,
 formatting (with the "gq" command or when you reach 'textwidth' in Insert mode) uses the 💛indentation of the first line💛
 
 When 'smartindent' or 'cindent' is on the indent is changed in a different way.
-The 'autoindent' option is reset when the 'paste' option is set and restored when 'paste' is reset.
 
 *'autoread'* *'ar'* *'noautoread'* *'noar'*
 'autoread' 'ar'         boolean (default on)
@@ -929,14 +942,14 @@ The 'autoindent' option is reset when the 'paste' option is set and restored whe
         backup would be made by renaming the original file crontab won't see
         the newly created file).  Also see 'backupcopy' and |crontab|.
 
-*'balloondelay'* *'bdlay'*
-'balloondelay' 'bdlay'  Removed.
+原本用于debug, 涉及GUI, 现在被popup window代替了?:
+都是 Removed了的
+    *'balloondelay'* *'bdlay'*
 
-*'ballooneval'* *'beval'* *'noballooneval'* *'nobeval'*
-'ballooneval' 'beval'   Removed.
+    *'ballooneval'* *'beval'* *'noballooneval'* *'nobeval'*
 
-*'balloonexpr'* *'bexpr'*
-'balloonexpr' 'bexpr'   Removed.
+    *'balloonexpr'* *'bexpr'*
+    'balloonexpr' 'bexpr'   Removed.
 
 *'belloff'* *'bo'*
 'belloff' 'bo'          string  (default "all")
@@ -981,32 +994,40 @@ The 'autoindent' option is reset when the 'paste' option is set and restored whe
 *'binary'* *'bin'* *'nobinary'* *'nobin'*
 'binary' 'bin'          boolean (default off)
                         local to buffer
-        This option should be set before editing a binary file.  You can also
-        use the |-b| Vim argument.  When this option is switched on a few
-        options will be changed (also when it already was on):
-                'textwidth'  will be set to 0
-                'wrapmargin' will be set to 0
-                'modeline'   will be off
-                'expandtab'  will be off
-        Also, 'fileformat' and 'fileformats' options will not be used, the
-        file is read and written like 'fileformat' was "unix" (a single <NL>
-        separates lines).
-        The 'fileencoding' and 'fileencodings' options will not be used, the
-        file is read without conversion.
-        NOTE: When you start editing a(nother) file while the 'bin' option is
-        on, settings from autocommands may change the settings again (e.g.,
-        'textwidth'), causing trouble when editing.  You might want to set
-        'bin' again when the file has been loaded.
-        The previous values of these options are remembered and restored when
-        'bin' is switched from on to off.  Each buffer has its own set of
-        saved option values.
-        To edit a file with 'binary' set you can use the |++bin| argument.
-        This avoids you have to do ":set bin", which would have effect for all
-        files you edit.
-        When writing a file the <EOL> for the last line is only written if
-        there was one in the original file (normally Vim appends an <EOL> to
-        the last line if there is none; this would make the file longer).  See
-        the 'endofline' option.
+        This option should be set before editing a binary file.
+        You can also  use the |-b| Vim argument.
+        When this option is switched on
+        a few options will be changed (also when it already was on):
+            'textwidth'  will be set to 0
+            'wrapmargin' will be set to 0
+            'modeline'   will be off
+            'expandtab'  will be off
+            'fileformat' and 'fileformats' options will not be used,
+                   the  file is read and  written like 'fileformat' was "unix" (a single <NL> separates lines).
+            'fileencoding' and 'fileencodings' options will not be used,
+                   the  file is read without conversion.
+
+        When you start editing a(nother) file while the 'bin' option is  on,
+            settings from autocommands may change the settings again (e.g.,  'textwidth'),
+            causing trouble when editing.
+
+        You might want to set  'bin' again when the file has been loaded.
+        The previous values of these options are remembered and
+        restored when  'bin' is switched from on to off.
+        Each buffer has its own set of  saved option values.
+
+        To edit a file with 'binary' on
+            you can use the |++bin| argument.
+            This avoids you have to do ":set bin", which would have effect for all  files you edit.
+
+        When writing a file, 关于<EOL>
+            if there is none <EOL> in last line
+                if not 'binary':
+                     Vim will appends an <EOL>
+                if  'binary':
+                     if  there was one <EOL> in the original file
+                         Vim will appends an <EOL>
+        'endofline'
 
 *'bomb'* *'nobomb'*
 'bomb'                  boolean (default off)
@@ -1271,7 +1292,6 @@ It can consist of the following optional  items and must be separated by a comma
         See |C-indenting|.
         When you don't like the way 'cindent' works, try the 'smartindent'
         option or 'indentexpr'.
-        This option is not used when 'paste' is set.
 
 *'cinkeys'* *'cink'*
 'cinkeys' 'cink'        string  (default "0{,0},0),0],:,0#,!^F,o,O,e")
@@ -1485,7 +1505,7 @@ CTRL-N are used.
                     "menu" or "menuone".
 
 
-*'concealcursor'* *'cocu'*
+*'concealcursor'*
 'concealcursor' 'cocu'  string (default: "")
                         local to window
         Sets the modes in which text in the cursor line can also be concealed.
@@ -1497,12 +1517,16 @@ CTRL-N are used.
           c             Command line editing, for 'incsearch'
 
         'v' applies to all lines in the Visual area, not only the cursor.
-        A useful value is "nc".  This is used in help files.  So long as you
-        are moving around text is concealed, but when starting to insert text
-        or selecting a Visual area the concealed text is displayed, so that
-        you can see what you are doing.
+            A useful value is "nc".
+            This is used in help files.
+            So long as you  are moving around text is concealed,
+            but when starting to insert text
+            or selecting a Visual area the concealed text is displayed,
+            so that  you can see what you are doing.
         Keep in mind that the cursor position is not always where it's
-        displayed.  E.g., when moving vertically it may change column.
+        displayed.
+        E.g.,
+        when moving vertically it may change column.
 
 
 *'conceallevel'* *'cole'*
@@ -1558,13 +1582,13 @@ vim里的这些option, nvim扔了:
 
 *'cpoptions'* *'cpo'* *cpo*
 'cpoptions' 'cpo'       string  (Vim default: "aABceFs_",
-                                                         Vi default: all flags)
                         global
 
         A sequence of single character flags.
-        When a character is present this indicates 🔑Vi-compatible behavior🔑.
+        A character is present:
+            indicates 🔑Vi-compatible behavior🔑.
 
-        'cpoptions' stands for "compatible-options".
+        'cpoptions' stands for cp_options,  "compatible-options".
         Commas can be added for readability.
 
         To avoid problems with flags that are added in the future,
@@ -1590,10 +1614,10 @@ vim里的这些option, nvim扔了:
                         See also |map_bar|.
 *cpo-B*
                 B       A backslash has no special meaning in
-                        mappings,
-                        abbreviations,
-                        user commands an
-                        the "to" part of the  menu commands.
+                            mappings,
+                            abbreviations,
+                            user commands and
+                            the "to" part of the  menu commands.
                         Remove this flag to be able to use a  backslash like a CTRL-V.  For example, the command
                         ":map X \<Esc>" results in X being mapped to:
                                 'B' included:   "\^["    (^[ is a real <Esc>)
@@ -2182,17 +2206,27 @@ vim里的这些option, nvim扔了:
 *'endofline'* *'eol'* *'noendofline'* *'noeol'*
 'endofline' 'eol'       boolean (default on)
                         local to buffer
-        When writing a file and this option is off and the 'binary' option
-        is on, or 'fixeol' option is off, no <EOL> will be written for the
-        last line in the file.  This option is automatically set or reset when
-        starting to edit a new file, depending on whether file has an <EOL>
-        for the last line in the file.  Normally you don't have to set or
-        reset this option.
-        When 'binary' is off and 'fixeol' is on the value is not used when
-        writing the file.  When 'binary' is on or 'fixeol' is off it is used
-        to remember the presence of a <EOL> for the last line in the file, so
-        that when you write the file the situation from the original file can
-        be kept.  But you can change it if you want to.
+        控制是否在文件末尾加<EOL>
+
+        This option is automatically set or reset when  starting to edit a new file,
+        depending on whether file has an <EOL>  for the last line in the file.
+        Normally you don't have to set or  reset this option.
+
+        When 'binary' is off
+            'fixeol' is on
+                the value is not used when  writing the file.
+        When 'binary' is on or  'fixeol' is off
+            it is used  to
+            remember 是否存在  <EOL> for the last line in the file,
+            so that when you write the file
+                the situation from the original file can  be kept.
+            But you can change it if you want to.
+
+        When writing a file
+            this option is off
+                the 'binary' option  is on, or 'fixeol' option is off,
+                    no <EOL> will be written for the  last line in the file.
+
 
 *'equalalways'* *'ea'* *'noequalalways'* *'noea'*
 'equalalways' 'ea'      boolean (default on)
@@ -2265,12 +2299,15 @@ vim里的这些option, nvim扔了:
 *'expandtab'* *'et'* *'noexpandtab'* *'noet'*
 'expandtab' 'et'        boolean (default off)
                         local to buffer
-        In Insert mode: Use the appropriate number of spaces to insert a
-        <Tab>.  Spaces are used in indents with the '>' and '<' commands and
-        when 'autoindent' is on.  To insert a real tab when 'expandtab' is
-        on, use CTRL-V<Tab>.  See also |:retab| and |ins-expandtab|.
-        This option is reset when the 'paste' option is set and restored when
-        the 'paste' option is reset.
+        In Insert mode: Use the appropriate number of spaces to insert a  <Tab>.
+        with the '>' and '<' commands and  when 'autoindent' is on:
+            Spaces are used in indents
+        To insert a real tab when 'expandtab' is  on,
+            use CTRL-V<Tab>.
+        See also |:retab| and |ins-expandtab|.
+
+        This option is reset when the 'paste' option is set and
+        restored when  the 'paste' option is reset.
 
 *'fileencoding'* *'fenc'* *E213*
 'fileencoding' 'fenc'   string (default: "")
@@ -2367,72 +2404,103 @@ vim里的这些option, nvim扔了:
 'fileformat' 'ff'       string (Windows default: "dos",
                                 Unix default: "unix")
                         local to buffer
-        This gives the <EOL> of the current buffer, which is used for
-        reading/writing the buffer from/to a file:
+        This gives the <EOL> of the current buffer,
+        which is used for  reading/writing the buffer from/to a file:
             dos     <CR><NL>
             unix    <NL>
             mac     <CR>
-        When "dos" is used, CTRL-Z at the end of a file is ignored.
-        See |file-formats| and |file-read|.
+        When "dos" is used
+            CTRL-Z at the end of a file is ignored.
+            See |file-formats| and |file-read|.
+
         For the character encoding of the file see 'fileencoding'.
-        When 'binary' is set, the value of 'fileformat' is ignored, file I/O
-        works like it was set to "unix".
-        This option is set automatically when starting to edit a file and
+
+        When 'binary' is set,
+            file I/O  works like it was set to "unix".
+            the value of 'fileformat' is ignored,
+
         'fileformats' is not empty and 'binary' is off.
-        When this option is set, after starting to edit a file, the 'modified'
-        option is set, because the file would be different when written.
+            This option is set automatically when starting to edit a file and
+
+        When this option is set,
+            after starting to edit a file, the 'modified'  option is set,
+            because the file would be different when written.
+
         This option cannot be changed when 'modifiable' is off.
 
 *'fileformats'* *'ffs'*
 'fileformats' 'ffs'     string (default:
                                 Vim+Vi  Win32: "dos,unix",
                                 Vim     Unix: "unix,dos",
-                                Vi      others: "")
                         global
-        This gives the end-of-line (<EOL>) formats that will be tried when
-        starting to edit a new buffer and when reading a file into an existing
-        buffer:
-        - When empty, the format defined with 'fileformat' will be used
-          always.  It is not set automatically.
-        - When set to one name, that format will be used whenever a new buffer
-          is opened.  'fileformat' is set accordingly for that buffer.  The
-          'fileformats' name will be used when a file is read into an existing
-          buffer, no matter what 'fileformat' for that buffer is set to.
-        - When more than one name is present, separated by commas, automatic
-          <EOL> detection will be done when reading a file.  When starting to
-          edit a file, a check is done for the <EOL>:
-          1. If all lines end in <CR><NL>, and 'fileformats' includes "dos",
-             'fileformat' is set to "dos".
-          2. If a <NL> is found and 'fileformats' includes "unix", 'fileformat'
-             is set to "unix".  Note that when a <NL> is found without a
-             preceding <CR>, "unix" is preferred over "dos".
-          3. If 'fileformat' has not yet been set, and if a <CR> is found, and
-             if 'fileformats' includes "mac", 'fileformat' is set to "mac".
-             This means that "mac" is only chosen when:
-              "unix" is not present or no <NL> is found in the file, and
-              "dos" is not present or no <CR><NL> is found in the file.
-             Except: if "unix" was chosen, but there is a <CR> before
-             the first <NL>, and there appear to be more <CR>s than <NL>s in
-             the first few lines, "mac" is used.
-          4. If 'fileformat' is still not set, the first name from
-             'fileformats' is used.
-          When reading a file into an existing buffer, the same is done, but
-          this happens like 'fileformat' has been set appropriately for that
-          file only, the option is not changed.
+
         When 'binary' is set, the value of 'fileformats' is not used.
 
-        When Vim starts up with an empty buffer the first item is used.  You
-        can overrule this by setting 'fileformat' in your .vimrc.
+        This gives the end-of-line (<EOL>) formats that will be tried when
+        starting to edit a new buffer and
+        when reading a file into an existing  buffer:
+        - When empty, the format defined with 'fileformat' will be used  always.
+          It is not set automatically.
+        - When set to one name,
+               whenever a new buffer  is 🔑opened🔑.
+                   that format will be used
+                  'fileformat' is set accordingly for that buffer.
+              when a file is 💛read💛 into an existing  buffer,
+                  The  'fileformats' name will be used
+                  no matter what 'fileformat' for that buffer is set to.
+        - When more than one name is present,  separated by commas,
+             when reading a file:
+                  automatic  <EOL> detection will be done
+             When starting to  edit a file
+                  a check is done for the <EOL>:
+                      1. If all lines end in <CR><NL>,
+                              and 'fileformats' includes "dos",
+                                 'fileformat' is set to "dos".
+                      2. If a <NL> is found:
+                              if 'fileformats' includes "unix",
+                                  'fileformat'  is set to "unix".
+                                   When a <NL> is found without a  preceding <CR>,
+                                  "unix" is preferred over "dos".
+                      3. If 'fileformat'  not  set,
+                               if a <CR> is found,
+                                    if 'fileformats' includes "mac",
+                                        'fileformat' is set to "mac".
+                     This means that "mac" is only chosen when:
+                          "unix" is not present or
+                          no <NL> is found in the file,
 
-        For systems with a Dos-like <EOL> (<CR><NL>), when reading files that
-        are ":source"ed and for vimrc files, automatic <EOL> detection may be
-        done:
-        - When 'fileformats' is empty, there is no automatic detection.  Dos
-          format will be used.
-        - When 'fileformats' is set to one or more names, automatic detection
-          is done.  This is based on the first <NL> in the file: If there is a
-          <CR> in front of it, Dos format is used, otherwise Unix format is
-          used.
+                          and
+
+                          "dos" is not present
+                          or no <CR><NL> is found in the file.
+
+                     Except:
+                         if "unix" was chosen, but there is a <CR> before  the first <NL>,
+                         and there appear to be more <CR>s than <NL>s in  the first few lines, "mac" is used.
+
+                      4. If 'fileformat' is still not set,
+                              the first name from  'fileformats' is used.
+
+        When reading a file into an existing buffer,
+              the same is done, but
+                  this happens like 'fileformat' has been set appropriately for that  file only,
+                  the option is not changed.
+
+
+        When Vim starts up with an empty buffer
+            the first item is used.
+            You  can overrule this by setting 'fileformat' in your .vimrc.
+
+        For systems with a Dos-like <EOL> (<CR><NL>),
+            when reading files that  are ":source"ed and  for vimrc files,
+                automatic <EOL> detection may be  done:
+                    - When 'fileformats' is empty, there is no automatic detection.  Dos
+                      format will be used.
+                    - When 'fileformats' is set to one or more names, automatic detection
+                      is done.  This is based on the first <NL> in the file: If there is a
+                      <CR> in front of it, Dos format is used, otherwise Unix format is
+                      used.
+
         Also see |file-formats|.
 
 *'fileignorecase'* *'fic'* *'nofileignorecase'* *'nofic'*
@@ -2445,27 +2513,38 @@ vim里的这些option, nvim扔了:
 *'filetype'* *'ft'*
 'filetype' 'ft'         string (default: "")
                         local to buffer
-        When this option is set, the FileType autocommand event is triggered.
-        All autocommands that match with the value of this option will be
-        executed.  Thus the value of 'filetype' is used in place of the file
-        name.
-        Otherwise this option does not always reflect the current file type.
-        This option is normally set when the file type is detected.  To enable
-        this use the ":filetype on" command. |:filetype|
+
+                    |:filetype|
+        if with ":filetype on" :
+            if the file type is detected:
+                        this option will be modified,
+                        then the FileType autocommand event is triggered.
+                                All autocommands that match with the value of this option will be  executed.
+
+                        'filetype'  比 file name (*.py等)更灵活?
+
+        else:
+                        this option does not always reflect the current file type.
+
         Setting this option to a different value is most useful in a modeline,
         for a file for which the file type is not automatically recognized.
         Example, for in an IDL file:
                 /* vim: set filetype=idl : */
-        |FileType| |filetypes|
-        When a dot appears in the value then this separates two filetype
-        names.  Example:
+
+        When a dot appears in the value,
+            then this separates two filetype  names.
+            Example:
                 /* vim: set filetype=c.doxygen : */
-        This will use the "c" filetype first, then the "doxygen" filetype.
-        This works both for filetype plugins and for syntax files.  More than
-        one dot may appear.
-        This option is not copied to another buffer, independent of the 's' or
-        'S' flag in 'cpoptions'.
-        Only normal file name characters can be used, "/\*?[|<>" are illegal.
+            This will use the "c" filetype first, then the "doxygen" filetype.
+
+            This works both for filetype plugins and for syntax files.
+            More than  one dot may appear.
+
+        This option is not copied to another buffer, independent of the 's' or  'S' flag in 'cpoptions'.
+        Only normal file name characters can be used,
+            "/\*?[|<>" are illegal.
+
+        see |FileType| |filetypes|
 
 *'fillchars'* *'fcs'*
 'fillchars' 'fcs'       string  (default "")
@@ -3402,7 +3481,6 @@ vim里的这些option, nvim扔了:
         When this option is not empty, it overrules the 'cindent' and
         'smartindent' indenting.  When 'lisp' is set, this option is
         overridden by the Lisp indentation algorithm.
-        When 'paste' is set this option is not used for indenting.
         The expression is evaluated with |v:lnum| set to the line number for
         which the indent is to be computed.  The cursor is also in this line
         when the expression is evaluated (but it may be moved around).
@@ -3794,7 +3872,6 @@ Note that <Tab> characters after an <EOL> are mostly not displayed  with the rig
         The '-' character is included in keyword characters.  Redefines the
         "=" operator to use this same indentation algorithm rather than
         calling an external program if 'equalprg' is empty.
-        This option is not used when 'paste' is set.
 
 *'lispwords'* *'lw'*
 'lispwords' 'lw'        string  (default is very long)
@@ -4095,13 +4172,7 @@ use:
 
         This option cannot be set from a |modeline| or in the |sandbox|.
 
-*'modeline'* *'ml'* *'nomodeline'* *'noml'*
-'modeline' 'ml'         boolean (Vim default: on (off for root),
-                                 Vi default: off)
-                        local to buffer
-        If 'modeline' is on 'modelines' gives the number of lines that is
-        checked for set commands.  If 'modeline' is off or 'modelines' is zero
-        no lines are checked.  See |modeline|.
+
 
 *'modelineexpr'* *'mle'* *'nomodelineexpr'* *'nomle'*
 'modelineexpr' 'mle'    boolean (default: off)
@@ -4112,18 +4183,28 @@ use:
         This option cannot be set from a |modeline| or in the |sandbox|, for
         security reasons.
 
-*'modelines'* *'mls'*
-'modelines' 'mls'       number  (default 5)
-                        global
-        If 'modeline' is on 'modelines' gives the number of lines that is
-        checked for set commands.  If 'modeline' is off or 'modelines' is zero
-        no lines are checked.  See |modeline|.
+*'modeline'* *'ml'* *'nomodeline'* *'noml'*
+    See |modeline|.
+
+    boolean (Vim default: on (off for root),
+                             Vi default: off)
+    local to buffer
+
+    *'modelines'* *'mls'*
+    number  (default 5)
+    global
+        If 'modeline' is on
+            'modelines' gives the number of lines that is
+            checked for set commands.
+        If 'modeline' is off or
+            'modelines' is zero
+            no lines are checked.
 
 *'modifiable'* *'ma'* *'nomodifiable'* *'noma'* *E21*
 'modifiable' 'ma'       boolean (default on)
                         local to buffer
-        When off the buffer contents cannot be changed.  The 'fileformat' and
-        'fileencoding' options also can't be changed.
+        When off the buffer contents cannot be changed.
+            The 'fileformat' and  'fileencoding' options also can't be changed.
         Can be reset on startup with the |-M| command line argument.
 
 *'modified'* *'mod'* *'nomodified'* *'nomod'*
@@ -4467,11 +4548,15 @@ use:
 *'paste'* *'nopaste'*
 'paste'                 boolean (default off)
                         global
-        This option is obsolete; |bracketed-paste-mode| is built-in.
+        This option is obsolete废弃
+        |bracketed-paste-mode| is built-in.
+        好像现在不完全是?
+        多个选项提到'paste'
 
-        Put Vim in Paste mode.  This is useful if you want to cut or copy
-        some text from one window and paste it in Vim.  This will avoid
-        unexpected effects.
+        Put Vim in Paste mode.
+        This is useful if you want to cut or copy
+        some text from one window and paste it in Vim.
+        This will avoid  unexpected effects.
         Setting this option is useful when using Vim in a terminal, where Vim
         cannot distinguish between typed text and pasted text.  In the GUI, Vim
         knows about pasting and will mostly do the right thing without 'paste'
@@ -4481,6 +4566,7 @@ use:
         your vimrc it will work in a terminal, but not in the GUI.  Setting
         'paste' in the GUI has side effects: e.g., the Paste toolbar button
         will no longer work in Insert mode, because it uses a mapping.
+
         When the 'paste' option is switched on (also when it was already on):
                 - mapping in Insert mode and Command-line mode is disabled
                 - abbreviations are disabled
@@ -4495,46 +4581,50 @@ use:
                 - 'textwidth' is set to 0
                 - 'wrapmargin' is set to 0
                 - 'varsofttabstop' is made empty
+
         These options keep their value, but their effect is disabled:
                 - 'cindent'
                 - 'formatoptions' is used like it is empty
                 - 'indentexpr'
                 - 'lisp'
                 - 'smartindent'
-        NOTE: When you start editing another file while the 'paste' option is
-        on, settings from the modelines or autocommands may change the
-        settings again, causing trouble when pasting text.  You might want to
-        set the 'paste' option again.
-        When the 'paste' option is reset the mentioned options are restored to
-        the value before the moment 'paste' was switched from off to on.
-        Resetting 'paste' before ever setting it does not have any effect.
-        Since mapping doesn't work while 'paste' is active, you need to use
+
+        NOTE: When you start editing another file while the 'paste' option is  on,
+        settings from the modelines or autocommands may change the  settings again,
+        causing trouble when pasting text.
+        You might want to  set the 'paste' option again.
+        When the 'paste' option is reset
+            the mentioned options are restored to
+            the value before the moment 'paste' was switched from off to on.
+        Resetting 'paste' before ever setting it
+            does not have any effect.
+        Since mapping(in insert mode吧) doesn't work while 'paste' is active, you need to use
         the 'pastetoggle' option to toggle the 'paste' option with some key.
 
 *'pastetoggle'* *'pt'*
 'pastetoggle' 'pt'      string  (default "")
                         global
-        When non-empty, specifies the key sequence that toggles the 'paste'
-        option.  This is like specifying a mapping:
+        When non-empty, specifies the key sequence that toggles the 'paste'  option.
+        This is like specifying a mapping:
             :map {keys} :set invpaste<CR>
-        Where {keys} is the value of 'pastetoggle'.
+            Where {keys} is the value of 'pastetoggle'.
         The difference is that it will work even when 'paste' is set.
-        'pastetoggle' works in Insert mode and Normal mode, but not in
-        Command-line mode.
-        Mappings are checked first, thus overrule 'pastetoggle'.  However,
-        when 'paste' is on mappings are ignored in Insert mode, thus you can do
-        this:
+        'pastetoggle' works in Insert mode and  Normal mode,
+        but not in  Command-line mode.
+        Mappings are checked first,  thus overrule 'pastetoggle'.
+        However,
+        when 'paste' is on
+            mappings are ignored in Insert mode, thus you can do  this:
             :map <F10> :set paste<CR>
             :map <F11> :set nopaste<CR>
             :imap <F10> <C-O>:set paste<CR>
             :imap <F11> <nop>
             :set pastetoggle=<F11>
         This will make <F10> start paste mode and <F11> stop paste mode.
-        Note that typing <F10> in paste mode inserts "<F10>", since in paste
-        mode everything is inserted literally, except the 'pastetoggle' key
-        sequence.
-        No timeout is used, this means that a multi-key 'pastetoggle' can not
-        be triggered manually.
+        Note that typing <F10> in paste mode inserts "<F10>",
+        since in paste  mode everything is inserted literally,
+        except the 'pastetoggle' key  sequence.
+        No timeout is used, this means that a multi-key 'pastetoggle' can not  be triggered manually.
 
 *'pex'* *'patchexpr'*
 'patchexpr' 'pex'       string  (default "")
@@ -4906,8 +4996,6 @@ use:
         Inserting characters in Insert mode will work backwards.  See "typing
         backwards" |ins-reverse|.  This option can be toggled with the CTRL-_
         command in Insert mode, when 'allowrevins' is set.
-        This option is reset when 'paste' is set and restored when 'paste' is
-        reset.
 
 *'rightleft'* *'rl'* *'norightleft'* *'norl'*
 'rightleft' 'rl'        boolean (default off)
@@ -4954,8 +5042,6 @@ use:
         separated with a dash.
         For an empty line "0-1" is shown.
         For an empty buffer the line number will also be zero: "0,0-1".
-        This option is reset when 'paste' is set and restored when 'paste' is
-        reset.
         If you don't want to see the ruler all the time but want to know where
         you are, use "g CTRL-G" |g_CTRL-G|.
 
@@ -5093,29 +5179,29 @@ default:  "$XDG_CONFIG_HOME/nvim,
 
         Defaults are setup to search these locations:
                 1.  Given by `stdpath("config")`.
-		    |$XDG_CONFIG_HOME|
-		    又称Your home directory(不是$HOME), for personal preferences.
+                    |$XDG_CONFIG_HOME|
+                    又称Your home directory(不是$HOME), for personal preferences.
                 2. Directories which must contain configuration files according to
-		    |xdg| ($XDG_CONFIG_DIRS,  defaults to /etc/xdg).
-		    This  contains preferences from system administrator.
+                    |xdg| ($XDG_CONFIG_DIRS,  defaults to /etc/xdg).
+                    This  contains preferences from system administrator.
                 3. Data home directory,
-		    for plugins installed by user.
-		    Given by `stdpath("data")/site`.
-		    |$XDG_DATA_HOME|
+                    for plugins installed by user.
+                    Given by `stdpath("data")/site`.
+                    |$XDG_DATA_HOME|
 
                 4. 🔑nvim/site🔑 subdirectories for each directory in $XDG_DATA_DIRS (我的是空白
-		    This is for 💛plugins💛 which were installed by system administrator ,
-		    but are not part of the Nvim distribution.
-		    XDG_DATA_DIRS defaults to /usr/local/share/:/usr/share/,
-		    so system administrators are expected to install 🔑site plugins🔑 to /usr/share/nvim/site.
+                    This is for 💛plugins💛 which were installed by system administrator ,
+                    but are not part of the Nvim distribution.
+                    XDG_DATA_DIRS defaults to /usr/local/share/:/usr/share/,
+                    so system administrators are expected to install 🔑site plugins🔑 to /usr/share/nvim/site.
 
                 5. $VIMRUNTIME,  for files distributed with Neovim.
 
-		6, 7, 8, 9:
-		官方目录下没有after/  *after-directory*
-		    In 📁after/📁 subdirectories of 1, 2, 3 and 4, with reverse  ordering.
-		    This is for preferences to 💛overrule💛 or add to the
-		    distributed defaults or system-wide settings (rarely needed).
+                6, 7, 8, 9:
+                官方目录下没有after/  *after-directory*
+                    In 📁after/📁 subdirectories of 1, 2, 3 and 4, with reverse  ordering.
+                    This is for preferences to 💛overrule💛 or add to the
+                    distributed defaults or system-wide settings (rarely needed).
 
 *rtp-packages*
                         rtp: runtimepath
@@ -5775,8 +5861,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         show the match can be set with 'matchtime'.
         A Beep is given if there is no match (no matter if the match can be
         seen or not).
-        This option is reset when 'paste' is set and restored when 'paste' is
-        reset.
+
         When the 'm' flag is not included in 'cpoptions', typing a character
         will immediately move the cursor back to where it belongs.
         See the "sm" field in 'guicursor' for setting the cursor shape and
@@ -5895,8 +5980,6 @@ This is done in order for the signcolumn appearence not appear weird during line
         mapping: ":inoremap # X^H#", where ^H is entered with CTRL-V CTRL-H.
         When using the ">>" command, lines starting with '#' are not shifted
         right.
-        This option is reset when 'paste' is set and restored when 'paste' is
-        reset.
 
 *'smarttab'* *'sta'* *'nosmarttab'* *'nosta'*
 'smarttab' 'sta'        boolean (default on)
@@ -5911,23 +5994,21 @@ This is done in order for the signcolumn appearence not appear weird during line
         What gets inserted (a <Tab> or spaces) depends on the 'expandtab'
         option.  Also see |ins-expandtab|.  When 'expandtab' is not set, the
         number of spaces is minimized by using <Tab>s.
-        This option is reset when 'paste' is set and restored when 'paste' is
-        reset.
 
 *'softtabstop'* *'sts'*
 'softtabstop' 'sts'     number  (default 0)
                         local to buffer
+    if |'varsofttabstop'| is set  to anything other than an empty string.
+        The value of 'softtabstop' will be ignored
 
-    The value of 'softtabstop' will be ignored if |'varsofttabstop'| is set
-    to anything other than an empty string.
+    Number of spaces that a <Tab> counts for  while performing editing operations,
+        like inserting a <Tab> or using <BS>.
 
-    Number of spaces that a <Tab> counts for
-    while performing editing operations,
-    like inserting a <Tab> or using <BS>.
     It "feels" like <Tab>s are being inserted,
-    while in fact a mix of spaces and <Tab>s is used.
+        while in fact a mix of spaces and <Tab>s is used.
+
     This is useful to keep the 'ts' setting at its standard value of 8,
-    while being able to edit like it is set to 'sts'.
+        while being able to edit like it is set to 'sts'.
 
     However,  commands like "x" still work on the actual characters.
 
@@ -5937,8 +6018,6 @@ This is done in order for the signcolumn appearence not appear weird during line
     if 'sts' < 0
             the value of 'shiftwidth' is used.
 
-    'softtabstop' is set to 0 when the 'paste' option is set and
-    restored when 'paste' is reset.
 
     See also |ins-expandtab|.
 
@@ -6686,17 +6765,13 @@ There are four main ways to use tabs in Vim:
 'textwidth' 'tw'        number  (default 0)
                         local to buffer
 
-        When 'formatexpr' is set,  it will be used to break the line. (会覆盖textwidth?)
-        See also  |ins-textwidth|.
+        When 'formatexpr' is set:
+            A longer line will be broken after white space to get this width.
+            See also  |ins-textwidth|.
 
-         A longer line will be broken after white space to get this width.
-
-         A zero value disables this.
-
-        'textwidth' is set to 0 when the 'paste' option is set and
-        restored when 'paste' is reset.
-
-        When 'textwidth' is zero, 'wrapmargin' may be used.
+            When 'textwidth' is zero,
+                A zero value disables this.
+                'wrapmargin' may be used.
 
 
 *'thesaurus'* *'tsr'*
@@ -7471,3 +7546,4 @@ spelling mistakes.
         See 'redrawdebug' for more options.  For debugging purposes.
 
  vim:tw=78:ts=8:noet:ft=help:norl:
+leo_DIY

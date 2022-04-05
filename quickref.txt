@@ -5,7 +5,7 @@
 
 			    Quick reference guide
 
-							 *quickref* *Contents*
+*quickref* *Contents*
  tag	  subject			 tag	  subject	~
 |Q_ct|	list of help files		|Q_re|	Repeating commands
 |Q_lr|	motion: Left-right		|Q_km|	Key mapping
@@ -1087,8 +1087,7 @@ Context-sensitive completion on the command-line:
 			   file name is expected)
 |:<amatch>| <amatch>	what matched with the pattern, for use in an
 			   autocommand (only where a file name is expected)
-|:<cword>|  <cword>	word under the cursor (only where a file name is
-			   expected)
+|:<cword>|  <cword>	word under the cursor (only where a file name is  expected)
 |:<cWORD>|  <cWORD>	WORD under the cursor (only where a file name is
 			   expected) (see |WORD|)
 |:<cfile>|  <cfile>	file name under the cursor (only where a file name is
@@ -1304,7 +1303,7 @@ Context-sensitive completion on the command-line:
 |:bdelete|	:bdelete[!] [N]		unload buffer [N] and delete it from
 					   the buffer list
 
-		in current window  in new window       ~
+		in current window  in new window          
 |:buffer|	:[N]buffer [N]     :[N]sbuffer [N]     to arg/buf N
 |:bnext|	:[N]bnext [N]      :[N]sbnext [N]      to Nth next arg/buf
 |:bNext|	:[N]bNext [N]      :[N]sbNext [N]      to Nth previous arg/buf

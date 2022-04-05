@@ -59,29 +59,33 @@ N                       Repeat the latest "/" or "?" [count] times in
                         opposite direction. |last-pattern|
 
 *star* *E348* *E349*
-    *         Search forward for the [count]'th occurrence of the word nearest to the cursor.
+*
+    Search forward for the [count]'th occurrence of the word nearest to the cursor.
     The word used for the search is the first of:
-        1. the keyword under the cursor |'iskeyword'| 2. the first keyword after the cursor, in the current line
-        3. the non-blank word under the cursor 4. the first non-blank word after the cursor, in the current line Only whole keywords are searched for,
-    like with the command "/\<keyword\>".
-    |exclusive| 'ignorecase' is used, 'smartcase' is not.
+        1. the keyword under the cursor.  see |'iskeyword'|
+        2. the first keyword after the cursor, in the current line
+        3. the non-blank word under the cursor
+        4. the first non-blank word after the cursor, in the current line Only whole keywords are searched for,
+            like with the command "/\<keyword\>".
+    |exclusive|
+    'ignorecase' is used,
+    'smartcase' is not.
 
 
 *#*
-#                       Same as "*", but search backward.  The pound sign
-                        (character 163) also works.  If the "#" key works as
-                        backspace, try using "stty erase <BS>" before starting
-                        Vim (<BS> is CTRL-H or a real backspace).
+#
+   Same as "*", but search backward.
+   The pound sign  (character 163) also works.
+   If the "#" key works as  backspace, try using "stty erase <BS>" before starting
+   Vim (<BS> is CTRL-H or a real backspace).
 
 *gstar*
-g*                      Like "*", but don't put "\<" and "\>" around the word.
-                        This makes the search also find matches that are not a
-                        whole word.
+g*
+    Like "*", but don't put "\<" and "\>" around the word.
+    This makes the search also find matches that are not a  whole word.
 
 *g#*
-g#                      Like "#", but don't put "\<" and "\>" around the word.
-                        This makes the search also find matches that are not a
-                        whole word.
+g#
 
 *gd*
 gd                      Goto local Declaration.  When the cursor is on a local
@@ -263,30 +267,35 @@ switched off by setting the 's' flag in the 'shortmess' option.  The highlight
 method 'w' is used for this message (default: standout).
 
 *search-range*
-You can limit the search command "/" to a certain range of lines by including
-\%>l items.  For example, to match the word "limit" below line 199 and above
-line 300:
-        /\%>199l\%<300llimit
-Also see |/\%>l|.
+    You can limit the search command "/" to a certain range of lines by including  \%>l items.
+    For example,
+    to match the word "limit" below line 199 and
+    above  line 300:
+            /\%>199l\%<300llimit
+    Also see |/\%>l|.
 
-Another way is to use the ":substitute" command with the 'c' flag.      Example:
-   :.,300s/Pattern//gc
-This command will search from the cursor position until line 300 for
-"Pattern".      At the match, you will be asked to type a character.  Type 'q' to
-stop at this match, type 'n' to find the next match.
+    Another way is to use the ":substitute" command with the 'c' flag.
+    Example:
+       :.,300s/Pattern//gc
+    This command will search from the cursor position until line 300 for  "Pattern".
+    At the match,
+    you will be asked to type a character.
+    Type 'q' to  stop at this match,
+    type 'n' to find the next match.
 
-The "*", "#", "g*" and "g#" commands look for a word near the cursor in this
-order, the first one that is found is used:
-- The keyword currently under the cursor.
-- The first keyword to the right of the cursor, in the same line.
-- The WORD currently under the cursor.
-- The first WORD to the right of the cursor, in the same line.
-The keyword may only contain letters and characters in 'iskeyword'.
-The WORD may contain any non-blanks (<Tab>s and/or <Space>s).
-Note that if you type with ten fingers, the characters are easy to remember:
-the "#" is under your left hand middle finger (search to the left and up) and
-the "*" is under your right hand middle finger (search to the right and down).
-(this depends on your keyboard layout though).
+"*",  "#",  "g*"  "g#" commands:
+    look for a word near the cursor in this  order,
+    the first one that is found is used:
+        - The keyword currently under the cursor.
+        - The first keyword to the right of the cursor, in the same line.
+                The keyword may only contain letters and characters in 'iskeyword'.
+        - The WORD currently under the cursor.
+                The WORD may contain any non-blanks (<Tab>s and/or <Space>s).
+        - The first WORD to the right of the cursor, in the same line.
+
+    Note that if you type with ten fingers, the characters are easy to remember:
+        the "#" is under your left hand middle finger
+        the "*" is under your right hand middle finger
 
 *E956*
 In very rare cases a regular expression is used recursively.  This can happen
@@ -315,13 +324,16 @@ For starters, read chapter 27 of the user manual |usr_27.txt|.
                 etc.
 
 */branch* */\&*
-                                                                           \& 由逻辑AND 发展过来吧
+\& 由逻辑AND 发展过来吧
                                            少见, 可由\ze代替
 2. A branch is one or more concats, separated by "\&".
-It matches the last  concat, but only if all the preceding concats also match at the same  position.  Examples:
+    It matches the last  concat,
+    but only if all the preceding concats also match at the same  position.
+    Examples:
         "foobeep\&foo" matches "foo" in "foobeep" ,  but not in foo
-        A\&B B必须是A的substring?
-        💦foo\zebeep💦 也行
+        A\&B  中的B必须是A的substring?
+        不, 它也可以:
+        💦foo\zebeep💦
 
         ".*Peter\&.*Bob" matches in a line containing both "Peter" and "Bob"
 
@@ -441,9 +453,6 @@ but we recommend against using that.
 
               $        $                  $              \$             end-of-line
 
-    {only Vim supports \m, \M, \v and \V}
-    only强调vi不行 (nvim可以)
-
 
 ==============================================================================
 4. Overview of pattern items                            *pattern-overview*
@@ -453,53 +462,62 @@ but we recommend against using that.
 *E64* *E871*
 Overview of multi items.
 
-                 'magic' 'nomagic' matches of the preceding atom
-        |/star| *       \*      0 or more       as many as possible
-        |/\+|   \+      \+      1 or more       as many as possible
-        |/\=|   \=      \=      0 or 1          as many as possible
-        |/\?|   \?      \?      0 or 1          as many as possible
+             'magic' 'nomagic'       matches of the preceding atom
+        |/star| *       \*            0 or more       as many as possible
+        |/\+|   \+      \+            1 or more       as many as possible
+        |/\=|   \=      \=            0 or 1          as many as possible
+        |/\?|   \?      \?            0 or 1          as many as possible
 
-        |/\{|   \{n,m}  \{n,m}  n to m          as many as possible
-                        \{n}    \{n}    n               exactly
-                        \{n,}   \{n,}   at least n      as many as possible
-                        \{,m}   \{,m}   0 to m          as many as possible
-                        \{}     \{}     0 or more       as many as possible (same as *)
+        |/\{|   \{n,m}  \{n,m}        n to m          as many as possible
+                        \{n}          \{n}    n               exactly
+                        \{n,}         \{n,}   at least n      as many as possible
+                        \{,m}         \{,m}   0 to m          as many as possible
+                        \{}           \{}     0 or more       as many as possible (same as *)
 
-        |/\{-|  \{-n,m} \{-n,m} n to m          as few as possible
-                        \{-n}   \{-n}   n               exactly
-                        \{-n,}  \{-n,}  at least n      as few as possible
-                        \{-,m}  \{-,m}  0 to m          as few as possible
-                        \{-}    \{-}    0 or more       as few as possible
+        |/\{-|  \{-n,m} \{-n,m}       n to m          as few as possible
+                        \{-n}         \{-n}   n               exactly
+                        \{-n,}        \{-n,}  at least n      as few as possible
+                        \{-,m}        \{-,m}  0 to m          as few as possible
+                        \{-}          \{-}    0 or more       as few as possible
 
 *E59*
-
-        |/\@>|  \@>     \@>     1, like matching a whole pattern
-        |/\@=|  \@=     \@=     nothing, requires a match |/zero-width|
-        |/\@!|  \@!     \@!     nothing, requires NO match |/zero-width|
-        |/\@<=| \@<=    \@<=    nothing, requires a match behind |/zero-width|
-        |/\@<!| \@<!    \@<!    nothing, requires NO match behind |/zero-width|
+        |/\@>|                        1, like matching a whole pattern
+        |/\@=|                        nothing, requires a match
+        |/\@!|                        nothing, requires NO match
+        |/\@<=|                       nothing, requires a match behind
+        |/\@<!|                       nothing, requires NO match behind
 
 
 Overview of ordinary atoms.                             */ordinary-atom*
 
+用very magic, 比这里的magic 好看很多:
           magic   nomagic               matches
-    |/^|    ^       ^                  start-of-line (at start of pattern) |/zero-width|
-    |/\^|   \^      \^                 literal '^'
-    |/\_^|  \_^     \_^                start-of-line (used anywhere) |/zero-width|
-    |/$|    $       $                  end-of-line (at end of pattern) |/zero-width|
-    |/\$|   \$      \$                 literal '$'
-    |/\_$|  \_$     \_$                end-of-line (used anywhere) |/zero-width|
-    |/.|    .       \.                 any single character (not an end-of-line)
-    |/\_.|  \_.     \_.                any single character or end-of-line
-    |/\<|   \<      \<                 beginning of a word |/zero-width|
-    |/\>|   \>      \>                 end of a word |/zero-width|
-    |/\zs|  \zs     \zs                anything, sets start of match
-    |/\ze|  \ze     \ze                anything, sets end of match
-    |/\%^|  \%^     \%^                beginning of file |/zero-width|         *E71*
-    |/\%$|  \%$     \%$                end of file |/zero-width|
-    |/\%V|  \%V     \%V                inside Visual area |/zero-width|
-    |/\%#|  \%#     \%#                cursor position |/zero-width|
-    |/\%'m| \%'m    \%'m               mark m position |/zero-width|
+    |/\^|           \^                 literal '^'
+    |/^|            ^                  start-of-line (at start of pattern) |/zero-width|
+    |/\_^|          \_^                start-of-line (used anywhere) |/zero-width|
+
+    |/\$|           \$                 literal '$'
+    |/$|            $                  end-of-line (at end of pattern) |/zero-width|
+    |/\_$|          \_$                end-of-line (used anywhere) |/zero-width|
+
+    |/\%^|          \%^                beginning of file |/zero-width|         *E71*
+    |/\%$|          \%$                end of file |/zero-width|
+
+    |/.|            \.                 any single character (not an end-of-line)
+    |/\_.|          \_.                any single character or end-of-line
+
+    |/\<|           \<                 beginning of a word |/zero-width|
+    |/\>|           \>                 end of a word |/zero-width|
+
+    |/\zs|          \zs                anything, sets start of match
+    |/\ze|          \ze                anything, sets end of match
+
+
+    |/\%V|          \%V                inside Visual area |/zero-width|
+
+    |/\%#|          \%#                cursor position |/zero-width|
+    |/\%'m|         \%'m               mark m position |/zero-width|
+
     |/\%l|  \%23l   \%23l              in line 23 |/zero-width|
     |/\%c|  \%23c   \%23c              in column 23 |/zero-width|
     |/\%v|  \%23v   \%23v              in virtual column 23 |/zero-width|
@@ -644,9 +662,10 @@ An ordinary atom can be:
             Example         matches
             foo\_$\_s*      "foo" at end-of-line and following white space and
                             blank lines
-
-    .       (with 'nomagic': \.)                            */.* */\.*
-            Matches any single character, but not an end-of-line.
+     */.*
+     */\.*
+            (with 'nomagic': \.)
+            Matches any single character, but 🔑not an end-of-line🔑
 
     */\_.*
     \_.     Matches any single character or end-of-line.
@@ -729,23 +748,25 @@ An ordinary atom can be:
 
     */\%#* *cursor-position*
     注意: 和*/%#=* 不同
-    \%#     Matches with the cursor position.  Only works when matching in a
-            buffer displayed in a window.
+    \%#
+        Matches with the cursor position.
 
-            WARNING:
-            When the cursor is moved after the pattern was used,
-            the result becomes invalid.
-            Vim doesn't automatically update the matches.
-            This is especially relevant for syntax highlighting and
-            'hlsearch'.
+        When the cursor is moved after the pattern was used,
+        the result becomes invalid.
+        Vim doesn't automatically update the matches.
+        This is especially relevant for syntax highlighting and
+        'hlsearch'.
 
-            In other words:
-            When the cursor moves the display isn't updated for this change.
-            An update is done for lines which
-            are changed (the whole  line is updated) or when using the |CTRL-L| command (the whole screen
-            is updated).  Example, to highlight the word under the cursor:
-                    /\k*\%#\k*
-            When 'hlsearch' is set and you move the cursor around and make changes
+        In other words:
+        When the cursor moves the display isn't updated for this change.
+        An update is done for lines which
+        are changed (the whole  line is updated) or
+        when using the |CTRL-L| command (the whole screen  is updated).
+        Example, to highlight the word under the cursor:
+                /\k*\%#\k*
+        When 'hlsearch' is set and
+            you move the cursor around and  make changes:
+
             this will clearly show when the match is updated or not.
 
     */\%'m* */\%<'m* */\%>'m*
@@ -758,11 +779,12 @@ An ordinary atom can be:
             That is because "\%<'e" matches at the character before the 'e mark,
             and
             since it's a |/zero-width| match it doesn't include that character.
+
             WARNING:
             When the mark is moved after the pattern was used,
             the result becomes invalid.
             Vim doesn't automatically update the matches.
-            Similar to moving the cursor for "\%#" |/\%#|.
+            Similar to moving the cursor for  |/\%#|.
 
     */\%l* */\%>l* */\%<l* *E951*
     \%23l   Matches in a specific line.
@@ -834,87 +856,143 @@ An ordinary atom can be:
 
             1.  work for ascii and multibyte characters:
 
-                \i      identifier character (see 'isident' option)     */\i*
-                \I      like "\i", but excluding digits                 */\I*
-                \k      keyword character (see 'iskeyword' option)      */\k*
-                \K      like "\k", but excluding digits                 */\K*
-                \f      file name character (see 'isfname' option)      */\f*
-                \F      like "\f", but excluding digits                 */\F*
-                \p      printable character (see 'isprint' option)      */\p*
-                \P      like "\p", but excluding digits                 */\P*
+                */\i*    identifier character (see 'isident' option)
+                */\I*    like "\i", but excluding digits
+                */\k*    keyword character (see 'iskeyword' option)
+                */\K*    like "\k", but excluding digits
+                */\f*    file name character (see 'isfname' option)
+                */\F*    like "\f", but excluding digits
+                */\p*    printable character (see 'isprint' option)
+                */\P*    like "\p", but excluding digits
 
             2. only match ASCII characters
 
-                            • *whitespace* *white-space*
-                \s      whitespace character: <Space> and <Tab>         */\s*
-                \S      non-whitespace character; opposite of \s        */\S*
+             •   *whitespace* *white-space*
+                • */\s*      whitespace character: <Space> and <Tab>
+                • */\S*      non-whitespace character; opposite of \s
 
-                    对比:
-                    [:space:]这个character class, 匹配 whitespace characters
-                    whitespace characters包括:
-                            space, tab, CR,  NL, vertical tab, form feed
+                           使用此定义的其他例子: Leading whitespace characters (blanks and  TABs) are always ignored.
+                         /home/linuxbrew/.linuxbrew/Cellar/neovim/0.6.1/share/nvim/runtime/doc/usr_41.txt
+
+               whitespace characters 的另一处定义:
+                        [:space:]这个character class, 匹配 whitespace characters
+                        whitespace characters包括:
+                                space, tab, CR,  NL, vertical tab, form feed
+
+                        [a-b\s]不匹配 <space> <Tab>, 而匹配 todo .. ..
 
 
-                \d      digit:                          [0-9]           */\d*
-                \D      non-digit:                      [^0-9]          */\D*
-                \x      hex digit:                      [0-9A-Fa-f]     */\x*
-                \X      non-hex digit:                  [^0-9A-Fa-f]    */\X*
-                \o      octal digit:                    [0-7]           */\o*
-                \O      non-octal digit:                [^0-7]          */\O*
-                \w      word character:                 [0-9A-Za-z_]    */\w*
-                \W      non-word character:             [^0-9A-Za-z_]   */\W*
-                \h      head of word character:         [A-Za-z_]       */\h*
-                \H      non-head of word character:     [^A-Za-z_]      */\H*
-                \a      alphabetic character:           [A-Za-z]        */\a*
-                \A      non-alphabetic character:       [^A-Za-z]       */\A*
-                \l      lowercase character:            [a-z]           */\l*
-                \L      non-lowercase character:        [^a-z]          */\L*
-                \u      uppercase character:            [A-Z]           */\u*
-                \U      non-uppercase character:        [^A-Z]          */\U*
+                                                             对应的collection
+                • */\d*        digit:                          [0-9]
+                • */\D*        non-digit:                      [^0-9]
+                • */\x*        hex digit:                      [0-9A-Fa-f]
+                • */\X*        non-hex digit:                  [^0-9A-Fa-f]
+                • */\o*        octal digit:                    [0-7]
+                • */\O*        non-octal digit:                [^0-7]
+                • */\w*        word character:                 [0-9A-Za-z_]
+                • */\W*        non-word character:             [^0-9A-Za-z_]
+                • */\h*        head of word character:         [A-Za-z_]
+                • */\H*        non-head of word character:     [^A-Za-z_]
+                • */\a*        alphabetic character:           [A-Za-z]
+                • */\A*        non-alphabetic character:       [^A-Za-z]
+                • */\l*        lowercase character:            [a-z]
+                • */\L*        non-lowercase character:        [^a-z]
+                • */\u*        uppercase character:            [A-Z]
+                • */\U*        non-uppercase character:        [^A-Z]
 
                     NOTE: Using the atom is faster than the [] form.
 
                     NOTE: 'ignorecase', "\c" and "\C" are not used by character classes.
 
-                \_x     Where "x" is any of the characters below:
-                        The character class with  end-of-line added
+                \_x   The character class with  end-of-line added,
+                      Where "x" is any of the characters below:
                            • */\_* *E63* */\_i* */\_I* */\_k* */\_K* */\_f* */\_F*
                            • */\_p* */\_P* */\_s* */\_S* */\_d* */\_D* */\_x* */\_X*
                            • */\_o* */\_O* */\_w* */\_W* */\_h* */\_H* */\_a* */\_A*
                            • */\_l* */\_L* */\_u* */\_U*
-    (end of character classes)
 
-    下面这些不是 character classes吧
 
-    匹配单个特殊字符(控制字符?):
+    下面这些不是 character classes吧, 虽然都是\某字母的形式
+    匹配单个控制字符([:cntrl:]在collection里也有讲):
+        ps: HT(horizotal tab) 是控制字符, 但SPACE不是
+        (其他控制字符, 比如form feed, \f 和下面的用法不同:)
 
-            \e      matches <Esc>                                   */\e*
-            \t      matches <Tab>                                   */\t*
-            \b      matches <BS>                                    */\b*
-            \r      matches <CR>                                    */\r*
-            \n      matches an end-of-line                          */\n*
-                            When matching in a string instead of buffer text, a literal newline  character is matched.
 
-    匹配某坨东西:
-            ~       matches the last given substitute string        */~* */\~*
-            \(\)    A pattern enclosed by escaped parentheses.      */\(* */\(\)* */\)*
-                            E.g., "\(^a\)" matches 'a' at the start of a line.
+        */\e*    matches <Esc>                        | 这几个在💦[]💦内与外的作用相同?       |  man ascii的说法
+        */\t*    matches <Tab>                        |
+        */\b*    matches <BS>                         |                                       |  \b (backspace)     ^H
+        */\r*    matches <CR>                         |  vim里记作<CR> (NOT end-of-line!)   |  \r (carriage ret)  ^M  (或者enter)
+        */\n*    matches an end-of-line               | (即line break)  |/[\n]||                 |  LF  '\n' (new line)
+              When matching in a string                                                        caret notation是^J, 但ctrl c 后ctrl j插入的是  .
+                 instead of buffer text,                                                      (貌似是plugged/vim-terminal-help/plugin/terminal_help.vim在干扰?)
+                 a literal newline  character is matched.                                      不, 裸vim里也是这样
+                                                                                              复制后,在insert mode下敲<C-R>" 没东西输入
 
+        <NL> vs <CR>:
+        在zsh里敲ls, 然后ctrl+M和ctrl+J, 都和enter一样
+        cat然后ctrl+s, 显示后面的字符literally: ctrl+j   ^J
+                                                ctrl+m   ^M
+                                                enter    ^M
+
+        echom strtrans('\t') '是' strtrans("\t")
+        echom strtrans('\e') '是' strtrans("\e")
+        echom strtrans('\r') '是' strtrans("\r")
+        echom strtrans('\n') '是' strtrans("\n")
+        echom strtrans('\b') '是' strtrans("\b")
+
+        得到
+
+        \t 是 ^I
+        \e 是 ^[
+        \r 是 ^M
+        \n 是 ^@
+        \b 是 ^H
+
+
+       另外,  一些caret notation:
+         
+         
+         
+           ctrl+enter
+         <C-Right>
+         <C-Left>
+         <C-Up>
+         <M-a>
+         <M-b>
+         敲不出来:
+             ^Q
+             ^V
+
+
+
+   匹配某坨东西:
+    ~       matches the last given substitute string    */~* */\~*
+
+   ()         */\(*   */\(\)*    */\)*
+               E.g., "\(^a\)" matches 'a' at the start of a line.
+
+
+
+
+    %()        */\%(\)* */\%(* *E53*
+          Just like (), but without counting it as a sub-expression.
+            This allows using more groups
+            it's a little  bit faster.
+
+    sub-expression
     *E51* *E54* *E55* *E872* *E873*
-
-    \1              Matches the same string that was matched by     */\1* *E65*
-            the first sub-expression in \( and \).
-            Example: "\([a-z]\).\1" matches "ata", "ehe", "tot", etc.
+    */\1* *E65*
+    \1
+        Matches the same string that was matched by
+        the first sub-expression in \( and \).
+        Example: "\([a-z]\).\1" matches "ata", "ehe", "tot", etc.
     \2              Like "\1", but uses second sub-expression,      */\2*
-       ...                                                  */\3*
+   ...
     \9              Like "\1", but uses ninth sub-expression.       */\9*
-            Note: The numbering of groups is done based on which "\(" comes first
-            in the pattern (going left to right), NOT based on what is matched
-            first.
 
-    \%(\)   A pattern enclosed by escaped parentheses.      */\%(\)* */\%(* *E53*
-            Just like \(\), but without counting it as a sub-expression.  This allows using more groups and it's a little
-            bit faster.
+        Note: The numbering of groups is done based on which "\(" comes first
+        in the pattern (going left to right), NOT based on what is matched
+        first.
 
     x       A single character, with no special meaning, matches itself
 
@@ -927,7 +1005,16 @@ An ordinary atom can be:
     (with 'nomagic': \[])
         A collection.
 
-        This is a sequence of characters enclosed in square  brackets.
+        Matching with a collection can be slow,
+        because each character in the text has to be compared with each character in the collection.
+        Use other atoms  when possible.
+            Example:
+                "\d" is  much faster than "[0-9]" and
+                matches the same characters.
+
+               (the new |NFA| regexp engine deals with this better than the old one.)
+
+        Collection is a sequence of characters enclosed in square  brackets.
         It matches any single character in the collection.
 
                 Example         matches
@@ -952,9 +1039,9 @@ An ordinary atom can be:
         - To make the collection also includes the end-of-line:
             1. With "\_" prepended,  */\_[]*
             2. by including "\n" in the collection. */[\n]*
+                                      /\n和/[\n]一样
             3.  the collection starts with "^"
                     Thus "\_[^ab]" matches the end-of-line and any character but "a" and "b".
-                    This makes it Vi compatible
 
         - When the ']' is not there Vim will not give an error message but assume no collection is used.
                 Useful to search for '['.
@@ -978,37 +1065,62 @@ An ordinary atom can be:
         - A *character_class_expression* is evaluated to
             the set of characters belonging to that character class. (有的地方叫character sets)
 
-            The following 🔑character classes🔑  are supported:
+           supported 🔑character classes🔑:
 
-                                          Name      Func(敲man 某函数来查)  Contents
-                    *[:alnum:]*          [:alnum:]     isalnum                ASCII letters and digits
-                    *[:alpha:]*          [:alpha:]     isalpha                ASCII letters
-                    *[:cntrl:]*          [:cntrl:]     iscntrl                ASCII control characters
-                    *[:graph:]*          [:graph:]     isgraph                ASCII printable characters,  excluding  space
-                    *[:punct:]*          [:punct:]     ispunct                ASCII punctuation characters
-                                                                                printable character 刨掉 space 再刨掉 alphanumeric
-                    *[:digit:]*          [:digit:]                            decimal digits '0' to '9'
-                    *[:xdigit:]*         [:xdigit:]                             hexadecimal digits: 0-9, a-f, A-F
+                      Name      Func(敲man 某函数来查)      Contents
+                    *[:alnum:]*        isalnum                ASCII letters and digits
+                    *[:alpha:]*        isalpha                ASCII letters
+                    *[:cntrl:]*        iscntrl                ASCII control characters
+                    control character 即 non-printing character (NPC)
+                    [但control charater里的white space (注意,<space>不是control character)是printable的]
+                            is a code point (a number) in a character set,
+                            that does not represent a written symbol.
 
-                    *[:lower:]*          [:lower:]     (1)                    lowercase letters (all letters when  'ignorecase' is used)
-                    *[:print:]*          [:print:]     (2)                    printable characters 💛including💛 space
-                    *[:upper:]*          [:upper:]     (3)                    uppercase letters (all letters when  'ignorecase' is used)
+                    All other characters are mainly printing,  printable, or graphic characters,
+                    except perhaps for the "space" character
 
-                    *[:tab:]*            [:tab:]                                        the <Tab> character
-                    *[:blank:]*          [:blank:]                            space and tab
-                    *[:space:]*          [:space:]                            whitespace characters:
-                                                                                                  space, tab, CR,  NL, vertical tab, form feed
-                    *[:return:]*         [:return:]                             the <CR> character
-                    *[:escape:]*         [:escape:]                             the <Esc> character
-                    *[:backspace:]*      [:backspace:]                          the <BS> character
+                    character 10 represents the "line feed" function (which causes a printer to advance its paper), and character 8 represents "backspace".
+                    RFC 2822
+                    refers to control characters that do not include carriage return, line feed or white space
+                    as non-whitespace control characters.
 
-                    *[:ident:]*          [:ident:]                              identifier character (same as "\i")
-                    *[:keyword:]*        [:keyword:]                            keyword character (same as "\k")
-                    *[:fname:]*          [:fname:]                              file name character (same as "\f")
+                    Except for the control characters that prescribe 简陋的 line-oriented formatting,
+                    ASCII does not define any mechanism for describing the structure or  appearance of text within a document.
+
+                    Other schemes,  such as markup languages,  address
+                        page and document layout and formatting.
+
+
+                    *[:graph:]*        isgraph                ASCII printable characters,  excluding  space
+                    *[:punct:]*        ispunct                ASCII punctuation characters
+                                                                printable character 刨掉 space 再刨掉 alphanumeric
+
+                    *[:digit:]*                               decimal digits '0' to '9'
+                    *[:xdigit:]*                              hexadecimal digits: 0-9, a-f, A-F
+
+                    *[:lower:]*        (1)                    lowercase letters (all letters when  'ignorecase' is used)
+                    *[:print:]*        (2)                    printable characters 💛including💛 space
+                    *[:upper:]*        (3)                    uppercase letters (all letters when  'ignorecase' is used)
+
+                    *[:tab:]*                                 the <Tab> character
+                    *[:blank:]*                               space and tab
+                    *[:space:]*                               这名字容易让人误以为只匹配<space>, 其实匹配这些whitespace characters:
+                                                                    space, tab,
+                                                                    CR,  NL,
+                                                                    vertical tab,
+                                                                    form feed (由^L表示)
+
+                    *[:return:]*                               <CR> character
+                    *[:escape:]*                               <Esc> character
+                    *[:backspace:]*                            <BS> character
+
+                    *[:ident:]*                               identifier character (same as "\i")
+                    *[:keyword:]*                             keyword character (same as "\k")
+                    *[:fname:]*                               file name character (same as "\f")
 
                     The square brackets in character class expressions are additional to
-                    the square brackets delimiting  a collection.
-                    For example,
+                        the square brackets delimiting  a collection.
+                    example:
                     the following is a plausible pattern for a UNIX filename:
                             "[-./[:alnum:]_~]\+".
                     That is, a list of at least one character,      each of which is either
@@ -1034,117 +1146,125 @@ An ordinary atom can be:
                           (2) Uses Vim builtin rules
                           (3) As with (1) but using isupper()
 
-    */[[=*
-    *[==]*
-    应该用不到
-            - An equivalence class.  This means that characters are matched that
-              have almost the same meaning, e.g., when ignoring accents.  This
-              only works for Unicode, latin1 and latin9.  The form is:
-                    [=a=]
-    */[[.* *[..]*
-            - A collation element.  This currently simply accepts a single  character in the form:
-                    [.a.]
 
-    */\]*
-        - To include a literal
-        ']',
-        '^',
-        '-'
-        '\' in the collection,
+        */\]*
+            - To include a literal of them in the collection:
+                ]
+                ^
+                -
+                \
 
-        put a backslash before it:
-        "[xyz\]]",
-        "[\^xyz]",
-        "[xy\-z]" and
-        "[xyz\\]".
+                put a backslash before it:
+                    [xyz\]]
+                    [\^xyz]
+                    [xy\-z]
+                    [xyz\\]
 
-        (Note:
-        POSIX does not support the use of a backslash this way).
-        For ']' you can also make it the first character (following a possible "^"):
-        "[]xyz]" or
-        "[^]xyz]".
+                (Note:  POSIX does not support the use of a backslash this way).
+                其他迫不得已的方法
+                            For ']'
+                                make it the first character (following a possible "^"):
+                                    "[]xyz]" or
+                                    "[^]xyz]".
 
-        For '-' you can also make it the first or
-        last character:
-        "[-xyz]",
-        "[^-xyz]" or
-        "[xyz-]".
+                            For '-'
+                                make it the first or  last character:
+                                    [-xyz]
+                                    [^-xyz]
+                                    [xyz-]
 
-        For '\' you can also let it be followed by
-        any character that's not in "^]-\bdertnoUux".
-        "[\xyz]" matches '\',
-        'x',
-        'y' and
-        'z'.
-        It's better to use "\\" though,
+                            For '\'
+                                let it be followed by  any character that's not in "^]-\bdertnoUux".
+                                    "[\xyz]"
+                                        matches '\',
+                                                'x',
+                                                'y' and
+                                                'z'.
 
-        future expansions may use other characters after '\'.
-        - Omitting the trailing ] is not considered an error.
-            "[]" works like "[]]",
-            it matches the ']' character.
-            - The following translations are accepted when the 'l' flag is not  included in 'cpoptions':
-                    \e      <Esc>
-                    \t      <Tab>
-                    \r      <CR>    (NOT end-of-line!)
-                    \b      <BS>
-                    \n      line break, see above |/[\n]|
 
-                    \d123   decimal number of character
-                    \o40    octal number of character up to 0o377
-                    \x20    hexadecimal number of character up to 0xff
 
-                    \u20AC  hex. number of multibyte character up to 0xffff
-                    \U1234  hex. number of multibyte character up to 0xffffffff
+            - "[]" works like "[]]",    it matches the ']' character.
 
-              🔑NOTE: The other backslash codes mentioned above do not work inside  []🔑!!!!!!!
+            -  Escape in collection ?
+                        \e      <Esc>
+                        \t      <Tab>
+                        \r      <CR>    (NOT end-of-line!)
+                        \b      <BS>
+                        \n      line break, see above |/[\n]|
 
-            - Matching with a collection can be slow,
-            because each character in the text has to be compared with each character in the collection.
-            Use one of the other atoms above when possible.
-            Example:
-            "\d" is  much faster than "[0-9]" and
-            matches the same characters.
+                        \d123   decimal number of character
+                        \o40    octal number of character up to 0o377
+                        \x20    hexadecimal number of character up to 0xff
 
-             However,  the new |NFA| regexp engine deals with this better than the old one.
+                        \u20AC  hex. number of multibyte character up to 0xffff
+                        \U1234  hex. number of multibyte character up to 0xffffffff
+
+                  🔑NOTE: The other backslash codes mentioned above do not work inside  []🔑
+                  🔑future expansions may use other characters after '\'.🔑
+
 
     */\%[]* *E69* *E70* *E369*
 
-            To match the Ex command "function", where "fu" is required and
-            "nction" is optional, this would work:
+    %[]
+    先上例子:
+    Do find function definition ,
+    where "fu" is required and  "nction" is optional, this would work:
                     /\<fu\%[nction]\>
+
             The end-of-word atom "\>" is used to avoid matching "fu" in "full".
 
-    \%[]    A sequence of optionally matched atoms.  This always matches.
-            It matches as much of the list of atoms it contains as possible.  Thus
-            it stops at the first atom that doesn't match.  For example:
+            A sequence of optionally matched atoms.
+             This always matches.
+             It matches as much of the list of atoms it contains as possible.
+             Thus  it stops at the first atom that doesn't match.  For example:
                     /r\%[ead]
-            matches "r", "re", "rea" or "read".  The longest that matches is used.
-            It gets more complicated when the atoms are not 🔑ordinary characters🔑.
-            You don't often have to use it, but it is possible.  Example:
-                    /\<r\%[[eo]ad]\>
-            Matches the words "r", "re", "ro", "rea", "roa", "read" and "road".
-            There can be no \(\), \%(\) or \z(\) items inside the [] and \%[] does
-            not nest.
-            To include a "[" use "[[]" and for "]" use []]", e.g.,:
-                    /index\%[[[]0[]]]
-            matches "index" "index[", "index[0" and "index[0]".
 
-    *E678* character code?
-*/\%d*
-            \%d123  Matches the character specified with a decimal number.  Must be
-                    followed by a non-digit.
-*/\%o*
-            \%o40   Matches the character specified with an octal number up to 0o377.
-                    Numbers below 0o40 must be followed by a non-octal digit or a
-                    non-digit.
-*/\%x*
-            \%x2a   Matches the character specified with up to two hexadecimal characters.
+            matches "r",  "re", "rea" or "read".
+            The longest that matches is used.
+            高难度:
+                It gets more complicated when the atoms are not 🔑ordinary characters🔑.
+                You don't often have to use it, but it is possible.  Example:
+                        /\<r\%[[eo]ad]\>
 
-*/\%u*
-            \%u20AC Matches the character specified with up to four hexadecimal  characters.
+                Matches the words "r", "re", "ro", "rea", "roa", "read" and "road".
+                There can be no \(\), \%(\) or \z(\) items inside the [] and \%[] does
+                not nest.
+                To include a "[" use "[[]" and for "]" use []]", e.g.,:
+                        /index\%[[[]0[]]]
+                matches "index" "index[", "index[0" and "index[0]".
 
-*/\%U*
-            \%U1234abcd    Matches the character specified with up to eight hexadecimal  characters, up to 0x7fffffff
+
+    应该用不到
+        |  */[[=*
+        |  *[==]*
+        |          - An equivalence class.
+        |            This means that characters are matched that  have almost the same meaning,
+        |            e.g.,
+        |            when ignoring accents.
+        |            This  only works for Unicode, latin1 and latin9.
+        |            The form is:
+        |                  [=a=]
+        |  */[[.* *[..]*
+        |          - A collation element.
+        |            This currently simply accepts a single  character in the form:
+                        [.a.]
+
+    *E678*
+    character code?
+        | */\%d*       \%d123  Matches the character specified with a decimal number.  Must be
+        |                      followed by a non-digit.
+        |
+        | */\%o*       \%o40   Matches the character specified with an octal number up to 0o377.
+        |                      Numbers below 0o40 must be followed by a non-octal digit or a
+        |                      non-digit.
+        |
+        | */\%x*       \%x2a   Matches the character specified with up to two hexadecimal characters.
+        |
+        |
+        | */\%u*       \%u20AC Matches the character specified with up to four hexadecimal  characters.
+        |
+        |
+        | */\%U*       \%U1234abcd    Matches the character specified with up to eight hexadecimal  characters, up to 0x7fffffff
 
 ==============================================================================
 6. Multi items                                          *pattern-multi-items*
@@ -1207,7 +1327,7 @@ An ordinary atom can be:
     If a "-" appears immediately after the "{", then a shortest match  first algorithm is used
     (see example below).
     In particular, "\{-}" is  the same as "*"
-    but uses the shortest match first algorithm. 
+    but uses the shortest match first algorithm.
     BUT: A  match that starts earlier is preferred over a shorter match:
     "a\{-}b"  matches "aaab" in "xaaab".
 
@@ -1223,36 +1343,49 @@ An ordinary atom can be:
 
         The } may optionally be preceded with a backslash: \{n,m\}.
 
-*/\@=*
-\@=     Matches the preceding atom with zero width.
+
+*/zero-width*
+    These items are only used to check if a match can be  made.
+    No characters are included  in the match.
+    包括:
+
+    "^"
+    "$"
+    "<"
+    ">"
+    等等
+
+    用very magic来解释 看着更清晰
+    */\@=*
+        same as "\&"
+
+        一样:
+            \(foo\)\@=..
+            foo\&..
+
         Example                 matches
         1. foo\(bar\)\@=                "foo" in "foobar"
 
-        2. foo\(bar\)\@=foo     will not match  "foobarfoo"  ,  because it tries match "foo" in the same position where  "bar" matched.
-*/zero-width*
-        When using "\@=" (or "^", "$", "\<", "\>") no characters are included  in the match.
-        These items are only used to check if a match can be  made.
-        This can be tricky, because a match with following items will be done in the same position.  (比如例子2)
+        2. foo\(bar\)\@=foo     will not match  "foobarfoo"  ,
+                            because it tries match "foo" in the same position where  "bar" matched.
+                            (a match with following items will be done in the same position)
 
+    */\@!*
+        if the preceding atom does NOT match at the  current position.
 
-        Note that using "\&" works the same as using "\@=":
-        "foo\&.." is the  same as "\(foo\)\@=..".
-        But using "\&" is easier, you don't need the  parentheses.
-
-
-*/\@!*
-\@!     Matches with zero width if the preceding atom does NOT match at the
-        current position. |/zero-width|
         Like "(?!pattern)" in Perl.
+
         Example                 matches
-        foo\(bar\)\@!           any "foo" not followed by "bar"
-        a.\{-}p\@!              "a", "ap", "app", "appp", etc. not immediately
-                                followed by a "p"
+
+        /\vfoo(bar)@!           any "foo" not followed by "bar"
+        a.\{-}p\@!              "a", "ap", "app", "appp", etc. not immediately  followed by a "p"
         if \(\(then\)\@!.\)*$   "if " not followed by "then"
 
-        Using "\@!" is tricky, because there are many places where a pattern
-        does not match.  "a.*p\@!" will match from an "a" to the end of the
-        line, because ".*" can match all characters in the line and the "p"
+        Using "\@!" is tricky,
+            because there are many places where a pattern  does not match.
+            "a.*p\@!" will match from an "a" to the end of the
+        line, because ".*" can match all characters in the line and
+        the "p"
         doesn't match at the end of the line.  "a.\{-}p\@!" will match any
         "a", "ap", "app", etc. that isn't followed by a "p", because the "."
         can match a "p" and "p\@!" doesn't match after that.
@@ -1263,87 +1396,93 @@ An ordinary atom can be:
         "foobar" you could use "\(foo\)\@!...bar", but that doesn't match a
         bar at the start of a line.  Use "\(foo\)\@<!bar".
 
-        Useful example: to find "foo" in a line that does not contain "bar":
+        Useful example:
+        to find "foo" in a line that does not contain "bar":
                 /^\%(.*bar\)\@!.*\zsfoo
-        This pattern first checks that there is not a single position in the
-        line where "bar" matches.  If ".*bar" matches somewhere the \@! will
-        reject the pattern.  When there is no match any "foo" will be found.
-        The "\zs" is to have the match start just before "foo".
 
-*/\@<=*
-\@<=    Matches with zero width if the preceding atom matches just before what
-        follows. |/zero-width|
-        Like "(?<=pattern)" in Perl, but Vim allows non-fixed-width patterns.
-        Example                 matches
-        \(an\_s\+\)\@<=file     "file" after "an" and white space or an
-                                end-of-line
-        For speed it's often much better to avoid this multi.  Try using "\zs"
-        instead |/\zs|.  To match the same as the above example:
-                an\_s\+\zsfile
-        At least set a limit for the look-behind, see below.
+            This pattern first checks that there is not a single position in the
+            line where "bar" matches.
+            If ".*bar" matches somewhere the \@! will
+            reject the pattern.  When there is no match any "foo" will be found.
+            The "\zs" is to have the match start just before "foo".
 
-        "\@<=" and "\@<!" check for matches just before what follows.
-        Theoretically these matches could start anywhere before this position.
-        But to limit the time needed, only the line where what follows matches
-        is searched, and one line before that (if there is one).  This should
-        be sufficient to match most things and not be too slow.
 
-        In the old regexp engine the part of the pattern after "\@<=" and
-        "\@<!" are checked for a match first, thus things like "\1" don't work
-        to reference \(\) inside the preceding atom.  It does work the other
-        way around:
-        Bad example                     matches
-        \%#=1\1\@<=,\([a-z]\+\)         ",abc" in "abc,abc"
 
-        However, the new regexp engine works differently, it is better to not
-        rely on this behavior, do not use \@<= if it can be avoided:
-        Example                         matches
-        \([a-z]\+\)\zs,\1               ",abc" in "abc,abc"
+    */\@<=*
+            Matches with zero width if the 🔑preceding atom🔑 matches just before what  follows.
+            Like "(?<=pattern)" in Perl, but Vim allows non-fixed-width patterns.
+            Example                 matches
+            \(an\_s\+\)\@<=file     "file" after "an" and white space or an
+                                    end-of-line
+            For speed it's often much better to avoid this multi.  Try using "\zs"
+            instead |/\zs|.  To match the same as the above example:
+                    an\_s\+\zsfile
+            At least set a limit for the look-behind, see below.
 
-\@123<=
-        Like "\@<=" but only look back 123 bytes. This avoids trying lots
-        of matches that are known to fail and make executing the pattern very
-        slow.  Example, check if there is a "<" just before "span":
-                /<\@1<=span
-        This will try matching "<" only one byte before "span", which is the
-        only place that works anyway.
-        After crossing a line boundary, the limit is relative to the end of
-        the line.  Thus the characters at the start of the line with the match
-        are not counted (this is just to keep it simple).
-        The number zero is the same as no limit.
+            "\@<=" and "\@<!" check for matches just before what follows.
+            Theoretically these matches could start anywhere before this position.
+            But to limit the time needed, only the line where what follows matches
+            is searched, and one line before that (if there is one).  This should
+            be sufficient to match most things and not be too slow.
 
-*/\@<!*
-\@<!    Matches with zero width if the preceding atom does NOT match just
-        before what follows.  Thus this matches if there is no position in the
-        current or previous line where the atom matches such that it ends just
-        before what follows.  |/zero-width|
-        Like "(?<!pattern)" in Perl, but Vim allows non-fixed-width patterns.
-        The match with the preceding atom is made to end just before the match
-        with what follows, thus an atom that ends in ".*" will work.
-        Warning: This can be slow (because many positions need to be checked
-        for a match).  Use a limit if you can, see below.
-        Example                 matches
-        \(foo\)\@<!bar          any "bar" that's not in "foobar"
-        \(\/\/.*\)\@<!in        "in" which is not after "//"
+            In the old regexp engine the part of the pattern after "\@<=" and
+            "\@<!" are checked for a match first, thus things like "\1" don't work
+            to reference \(\) inside the preceding atom.  It does work the other
+            way around:
+            Bad example                     matches
+            \%#=1\1\@<=,\([a-z]\+\)         ",abc" in "abc,abc"
 
-\@123<!
-        Like "\@<!" but only look back 123 bytes. This avoids trying lots of
-        matches that are known to fail and make executing the pattern very
-        slow.
+            However, the new regexp engine works differently, it is better to not
+            rely on this behavior, do not use \@<= if it can be avoided:
+            Example                         matches
+            \([a-z]\+\)\zs,\1               ",abc" in "abc,abc"
 
-*/\@>*
-\@>     Matches the preceding atom like matching a whole pattern.
-        Like "(?>pattern)" in Perl.
-        Example         matches
-        \(a*\)\@>a      nothing (the "a*" takes all the "a"'s, there can't be
-                        another one following)
+        \@123<=
+                Like "\@<=" but only look back 123 bytes. This avoids trying lots
+                of matches that are known to fail and make executing the pattern very
+                slow.  Example, check if there is a "<" just before "span":
+                        /<\@1<=span
+                This will try matching "<" only one byte before "span", which is the
+                only place that works anyway.
+                After crossing a line boundary, the limit is relative to the end of
+                the line.  Thus the characters at the start of the line with the match
+                are not counted (this is just to keep it simple).
+                The number zero is the same as no limit.
 
-        This matches the preceding atom as if it was a pattern by itself.  If
-        it doesn't match, there is no retry with shorter sub-matches or
-        anything.  Observe this difference: "a*b" and "a*ab" both match
-        "aaab", but in the second case the "a*" matches only the first two
-        "a"s.  "\(a*\)\@>ab" will not match "aaab", because the "a*" matches
-        the "aaa" (as many "a"s as possible), thus the "ab" can't match.
+    */\@<!*
+    @<!
+        Matches with zero width if the 🔑preceding atom does NOT match🔑 just  before what follows.  Thus this matches if there is no position in the
+            current or previous line where the atom matches such that it ends just
+            before what follows.  |/zero-width|
+            Like "(?<!pattern)" in Perl, but Vim allows non-fixed-width patterns.
+            The match with the preceding atom is made to end just before the match
+            with what follows, thus an atom that ends in ".*" will work.
+            Warning: This can be slow (because many positions need to be checked
+            for a match).  Use a limit if you can, see below.
+
+            Example                 matches
+            \(foo\)\@<!bar          any "bar" that's not in "foobar"
+            \(\/\/.*\)\@<!in        "in" which is not after "//"
+
+        \@123<!
+                Like "\@<!" but only look back 123 bytes.
+                This avoids
+                    trying lots of  matches that are known to fail and make executing the pattern very  slow.
+
+
+    */\@>*
+            Matches the preceding atom like matching 🔑a whole pattern🔑.
+            Like "(?>pattern)" in Perl.
+            Example         matches
+            \(a*\)\@>a      nothing (the "a*" takes all the "a"'s, there can't be
+                            another one following)
+
+            This matches the preceding atom as if it was a pattern by itself.  If
+            it doesn't match, there is no retry with shorter sub-matches or
+            anything.  Observe this difference: "a*b" and "a*ab" both match
+            "aaab", but in the second case the "a*" matches only the first two
+            "a"s.  "\(a*\)\@>ab" will not match "aaab", because the "a*" matches
+            the "aaa" (as many "a"s as possible), thus the "ab" can't match.
 
 ==============================================================================
 7. Ignoring case in a pattern                                   */ignorecase*
@@ -1379,14 +1518,17 @@ Technical detail:                               *NL-used-for-Nul*
         thus also searches for a <Nul> in the file.
 
 *CR-used-for-NL*
-When 'fileformat' is "mac", <NL> characters in the file are stored as <CR>
-characters internally.
-        In the text they are shown as "^J".
-        Otherwise this works similar to the usage of <NL> for a <Nul>.
+When 'fileformat' is "mac",
+    <NL> characters in the file are stored as <CR>  characters internally.
+    In the text they are shown as "^J".
+Otherwise
+    this works similar to the usage of <NL> for a <Nul>.
 
-When working with expression evaluation, a <NL> character in the pattern
-matches a <NL> in the string.  The use of "\n" (backslash n) to match a <NL>
-doesn't work there, it only works to match text in the buffer.
+When working with expression evaluation,
+    a <NL> character in the pattern  matches a <NL> in the string.
+
+    The use of "\n" (backslash n) to match a <NL>  doesn't work there,
+    it only works to match text in the buffer.
 
 *pattern-multi-byte* *pattern-multibyte*
 Patterns will also work with multibyte characters, mostly as you would
@@ -1455,10 +1597,13 @@ force case insensitivity        \c              (?i)
 force case sensitivity          \C              (?-i)
 backref-less grouping           \%(atom\)       (?:atom)
 conservative quantifiers        \{-n,m}         *?, +?, ??, {}?
+
 0-width match                   atom\@=         (?=atom)
 0-width non-match               atom\@!         (?!atom)
+
 0-width preceding match         atom\@<=        (?<=atom)
 0-width preceding non-match     atom\@<!        (?<!atom)
+
 match without retry             atom\@>         (?>atom)
 
 Vim and Perl handle newline characters inside a string a bit differently:
@@ -1567,3 +1712,4 @@ Finally, these constructs are unique to Perl:
 
 
  vim:tw=78:ts=8:noet:ft=help:norl:
+leo_DIY

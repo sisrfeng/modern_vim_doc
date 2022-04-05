@@ -4,7 +4,7 @@
                   VIM REFERENCE MANUAL    by Bram Moolenaar
 
 
-                                                *Insert* *Insert-mode*
+*Insert* *Insert-mode*
 Inserting and replacing text                            *mode-ins-repl*
 
 Most of this file is about Insert and Replace mode.  At the end are a few
@@ -35,62 +35,62 @@ all the time.
 If you have 'insertmode' set, <Esc> and a few other keys get another meaning.
 See |'insertmode'|.
 
-char            action  ~
+char            action
 -----------------------------------------------------------------------
-                                                *i_CTRL-[* *i_<Esc>*
+*i_CTRL-[* *i_<Esc>*
 <Esc> or CTRL-[ End insert or Replace mode, go back to Normal mode.  Finish
                 abbreviation.
                 Note: If your <Esc> key is hard to hit, try CTRL-[ instead.
-                                                *i_META* *i_ALT*
+*i_META* *i_ALT*
                 ALT (|META|) acts like <Esc> if the chord is not mapped.
                 For example <A-x> acts like <Esc>x if <A-x> does not have an
                 insert-mode mapping.
-                                                *i_CTRL-C*
+*i_CTRL-C*
 CTRL-C          Quit insert mode, go back to Normal mode.  Do not check for
                 abbreviations.  Does not trigger the |InsertLeave| autocommand
                 event.
 
-                                                *i_CTRL-@*
+*i_CTRL-@*
 CTRL-@          Insert previously inserted text and stop insert.
 
-                                                *i_CTRL-A*
+*i_CTRL-A*
 CTRL-A          Insert previously inserted text.
 
-                                                *i_CTRL-H* *i_<BS>* *i_BS*
+*i_CTRL-H* *i_<BS>* *i_BS*
 <BS> or CTRL-H  Delete the character before the cursor (see |i_backspacing|
                 about joining lines).
-                                                *i_<Del>* *i_DEL*
+*i_<Del>* *i_DEL*
 <Del>           Delete the character under the cursor.  If the cursor is at
                 the end of the line, and the 'backspace' option includes
                 "eol" (the default), delete the <EOL>; the next line is
                 appended after the current one.
-                                                *i_CTRL-W*
+*i_CTRL-W*
 CTRL-W          Delete the word before the cursor (see |i_backspacing| about
                 joining lines).  See the section "word motions",
                 |word-motions|, for the definition of a word.
-                                                *i_CTRL-W-default*
+*i_CTRL-W-default*
                 By default, sets a new undo point before deleting.
                 |default-mappings|
-                                                *i_CTRL-U*
+*i_CTRL-U*
 CTRL-U          Delete all entered characters before the cursor in the current
                 line.  If there are no newly entered characters and
                 'backspace' is not empty, delete all characters before the
                 cursor in the current line.
                 See |i_backspacing| about joining lines.
-                                                *i_CTRL-U-default*
+*i_CTRL-U-default*
                 By default, sets a new undo point before deleting.
                 |default-mappings|
-                                                *i_CTRL-I* *i_<Tab>* *i_Tab*
+*i_CTRL-I* *i_<Tab>* *i_Tab*
 <Tab> or CTRL-I Insert a tab.  If the 'expandtab' option is on, the
                 equivalent number of spaces is inserted (use CTRL-V <Tab> to
                 avoid the expansion; use CTRL-Q <Tab> if CTRL-V is mapped
                 |i_CTRL-Q|).  See also the 'smarttab' option and
                 |ins-expandtab|.
-                                                *i_CTRL-J* *i_<NL>*
+*i_CTRL-J* *i_<NL>*
 <NL> or CTRL-J  Begin new line.
-                                                *i_CTRL-M* *i_<CR>*
+*i_CTRL-M* *i_<CR>*
 <CR> or CTRL-M  Begin new line.
-                                                *i_CTRL-K*
+*i_CTRL-K*
 CTRL-K {char1} [char2]
                 Enter digraph (see |digraphs|).  When {char1} is a special
                 key, the code for that key is inserted in <> form.  For
@@ -121,7 +121,7 @@ CTRL-R {register}                               *i_CTRL-R*
                         ':'     the last command-line
                         '.'     the last inserted text
                         '-'     the last small (less than a line) delete
-                                                        *i_CTRL-R_=*
+*i_CTRL-R_=*
                         '='     the expression register: you are prompted to
                                 enter an expression (see |expression|)
                                 Note that 0x80 (128 decimal) is used for
@@ -142,10 +142,11 @@ CTRL-R CTRL-R {register}                        *i_CTRL-R_CTRL-R*
                 Insert the contents of a register.  Works like using a single
                 CTRL-R, but the text is inserted literally, not as if typed.
                 This differs when the register contains characters like <BS>.
-                Example, where register a contains "ab^Hc": >
+                Example, where register a contains "ab^Hc":
+
         CTRL-R a                results in "ac".
         CTRL-R CTRL-R a         results in "ab^Hc".
-<               Options 'textwidth', 'formatoptions', etc. still apply.  If
+               Options 'textwidth', 'formatoptions', etc. still apply.  If
                 you also want to avoid these, use CTRL-R CTRL-O, see below.
                 The '.' register (last inserted text) is still inserted as
                 typed.
@@ -174,32 +175,32 @@ CTRL-R CTRL-P {register}                        *i_CTRL-R_CTRL-P*
                 typed and not the text. I.e., the literals "^R^P" and not the
                 text from the register.
 
-                                                *i_CTRL-T*
+*i_CTRL-T*
 CTRL-T          Insert one shiftwidth of indent at the start of the current
                 line.  The indent is always rounded to a 'shiftwidth'.
-                                                *i_CTRL-D*
+*i_CTRL-D*
 CTRL-D          Delete one shiftwidth of indent at the start of the current
                 line.  The indent is always rounded to a 'shiftwidth'.
 
-                                                *i_0_CTRL-D*
+*i_0_CTRL-D*
 0 CTRL-D        Delete all indent in the current line.
 
-                                                *i_^_CTRL-D*
+*i_^_CTRL-D*
 ^ CTRL-D        Delete all indent in the current line.  The indent is
                 restored in the next line.  This is useful when inserting a
                 label.
 
-                                                *i_CTRL-V*
-CTRL-V          Insert next non-digit literally.  For special keys, the
-                terminal code is inserted.  It's also possible to enter the
-                decimal, octal or hexadecimal value of a character
+*i_CTRL-V*      
+CTRL-V          Insert next non-digit literally.
+                For special keys,
+                    the  terminal code is inserted.
+                It's also possible to enter the  decimal, octal or hexadecimal value of a character
                 |i_CTRL-V_digit|.
-                The characters typed right after CTRL-V are not considered for
-                mapping.
-                Note: When CTRL-V is mapped (e.g., to paste text) you can
-                often use CTRL-Q instead |i_CTRL-Q|.
 
-                                                *i_CTRL-Q*
+                The characters typed right after CTRL-V are not considered for  mapping.
+                Note: When CTRL-V is mapped (e.g., to paste text) you can  often use |i_CTRL-Q|.
+
+*i_CTRL-Q*
 CTRL-Q          Same as CTRL-V.
                 Note: Some terminal connections may eat CTRL-Q, it doesn't
                 work then.  It does work in the GUI.
@@ -208,14 +209,14 @@ CTRL-X          Enter CTRL-X mode.  This is a sub-mode where commands can
                 be given to complete words or scroll the window.  See
                 |i_CTRL-X| and |ins-completion|.
 
-                                                *i_CTRL-E*
+*i_CTRL-E*
 CTRL-E          Insert the character which is below the cursor.
-                                                *i_CTRL-Y*
+*i_CTRL-Y*
 CTRL-Y          Insert the character which is above the cursor.
                 Note that for CTRL-E and CTRL-Y 'textwidth' is not used, to be
                 able to copy characters from a long line.
 
-                                                *i_CTRL-_*
+*i_CTRL-_*
 CTRL-_          Switch between languages, as follows:
                 -  When in a rightleft window, revins and nohkmap are toggled,
                    since English will likely be inserted in this case.
@@ -229,7 +230,7 @@ CTRL-_          Switch between languages, as follows:
                 Please refer to |rileft.txt| for more information about
                 right-to-left mode.
 
-                                                *i_CTRL-^*
+*i_CTRL-^*
 CTRL-^          Toggle the use of typing language characters.
                 When language |:lmap| mappings are defined:
                 - If 'iminsert' is 1 (langmap mappings used) it becomes 0 (no
@@ -247,18 +248,18 @@ CTRL-^          Toggle the use of typing language characters.
                 that are different from what the keyboard produces.  The
                 'keymap' option can be used to install a whole number of them.
 
-                                                *i_CTRL-]*
+*i_CTRL-]*
 CTRL-]          Trigger abbreviation, without inserting a character.
 
-                                                *i_<Insert>*
+*i_<Insert>*
 <Insert>        Toggle between Insert and Replace mode.
 -----------------------------------------------------------------------
 
-                                                *i_backspacing*
+*i_backspacing*
 The effect of the <BS>, CTRL-W, and CTRL-U depend on the 'backspace' option
 (unless 'revins' is set).  This is a comma separated list of items:
 
-item        action ~
+item        action
 indent      allow backspacing over autoindent
 eol         allow backspacing over end-of-line (join lines)
 start       allow backspacing over the start position of insert; CTRL-W and
@@ -274,44 +275,55 @@ If the 'backspace' option does contain "eol" and the cursor is in column 1
 when one of the three keys is used, the current line is joined with the
 previous line.  This effectively deletes the <EOL> in front of the cursor.
 
-                                                *i_CTRL-V_digit*
-With CTRL-V the decimal, octal or hexadecimal value of a character can be
-entered directly.  This way you can enter any character, except a line break
-(<NL>, value 10).  There are five ways to enter the character value:
+*i_CTRL-V_digit*
+With CTRL-V
+the decimal, octal or hexadecimal value of a character can be  entered directly.
+This way you can enter any character,
+except a line break  (<NL>, value 10).
+There are five ways to enter the character value:
 
-first char      mode         max nr of chars   max value ~
-(none)          decimal            3            255
+first char      mode         max nr of chars   max value
+(none)          decimal            3            255   
+不足3位时,敲0
 o or O          octal              3            377      (255)
 x or X          hexadecimal        2            ff       (255)
+
 u               hexadecimal        4            ffff     (65535)
 U               hexadecimal        8            7fffffff (2147483647)
 
-Normally you would type the maximum number of characters.  Thus to enter a
-space (value 32) you would type <C-V>032.  You can omit the leading zero, in
-which case the character typed after the number must be a non-digit.  This
-happens for the other modes as well: As soon as you type a character that is
-invalid for the mode, the value before it will be used and the "invalid"
-character is dealt with in the normal way.
+Normally you would type the maximum number of characters.
+Thus to enter a  space (value 32) you would type <C-V>032.
 
-If you enter a value of 10, it will end up in the file as a 0.  The 10 is a
-<NL>, which is used internally to represent the <Nul> character.  When writing
-the buffer to a file, the <NL> character is translated into <Nul>.  The <NL>
-character is written at the end of each line.  Thus if you want to insert a
-<NL> character in a file you will have to make a line break.
+You can omit the leading zero,
+    in  which case the character typed after the number must be a non-digit.
+This  happens for the other modes as well:
+    As soon as you type a character that is  invalid for the mode,
+        the value before it will be used and
+        the "invalid"  character is dealt with in the usual way.
+
+关于<NL> (第10个ascii character)
+    when i_ctrl_v后敲10<esc键>,
+               或0<esc键>
+                      buffer上都显示  .  (10 end up in the file as a 0 / the <NL> character is translated into <Nul>  )
+                      <NL> is used internally to represent the <Nul> character.             
+
+    when  make a line break.
+        The actual <NL>  character, instead of   <Nul> is written at the end of each line.
+
 Also see 'fileformat'.
 
-                                                *i_CTRL-X* *insert_expand*
+*i_CTRL-X* *insert_expand*
 CTRL-X enters a sub-mode where several commands can be used.  Most of these
 commands do keyword completion; see |ins-completion|.
 
 Two commands can be used to scroll the window up or down, without exiting
 insert mode:
 
-                                                *i_CTRL-X_CTRL-E*
+*i_CTRL-X_CTRL-E*
 CTRL-X CTRL-E           scroll window one line up.
                         When doing completion look here: |complete_CTRL-E|
 
-                                                *i_CTRL-X_CTRL-Y*
+*i_CTRL-X_CTRL-Y*
 CTRL-X CTRL-Y           scroll window one line down.
                         When doing completion look here: |complete_CTRL-Y|
 
@@ -335,7 +347,7 @@ The changes (inserted or deleted characters) before and after these keys can
 be undone separately.  Only the last change can be redone and always behaves
 like an "i" command.
 
-char            action  ~
+char            action
 -----------------------------------------------------------------------
 <Up>            cursor one line up                           *i_<Up>*
 <Down>          cursor one line down                         *i_<Down>*
@@ -398,20 +410,23 @@ Another side effect is that a count specified before the "i" or "a" command is
 ignored.  That is because repeating the effect of the command after CTRL-O is
 too complicated.
 
-An example for using CTRL-G u: >
+An example for using CTRL-G u:
+
 
         :inoremap <C-H> <C-G>u<C-H>
 
 This redefines the backspace key to start a new undo sequence.  You can now
 undo the effect of the backspace key, without changing what you typed before
-that, with CTRL-O u.  Another example: >
+that, with CTRL-O u.  Another example:
+
 
         :inoremap <CR> <C-]><C-G>u<CR>
 
 This breaks undo at each line break.  It also expands abbreviations before
 this.
 
-An example for using CTRL-G U: >
+An example for using CTRL-G U:
+
 
         inoremap <Left>  <C-G>U<Left>
         inoremap <Right> <C-G>U<Right>
@@ -436,7 +451,8 @@ will be repeatable by using |.| to the expected
 
 Using CTRL-O splits undo: the text typed before and after it is undone
 separately.  If you want to avoid this (e.g., in a mapping) you might be able
-to use CTRL-R = |i_CTRL-R|.  E.g., to call a function: >
+to use CTRL-R = |i_CTRL-R|.  E.g., to call a function:
+
         :imap <F2> <C-R>=MyFunc()<CR>
 
 When the 'whichwrap' option is set appropriately, the <Left> and <Right>
@@ -444,11 +460,13 @@ keys on the first/last character in the line make the cursor wrap to the
 previous/next line.
 
 The CTRL-G j and CTRL-G k commands can be used to insert text in front of a
-column.  Example: >
+column.  Example:
+
    int i;
    int j;
 Position the cursor on the first "int", type "istatic <C-G>j       ".  The
-result is: >
+result is:
+
    static int i;
           int j;
 When inserting the same text in front of the column in every line, use the
@@ -655,11 +673,11 @@ CTRL-N (next), and CTRL-P (previous).
 To get the current completion information, |complete_info()| can be used.
 Also see the 'infercase' option if you want to adjust the case of the match.
 
-                                                        *complete_CTRL-E*
+*complete_CTRL-E*
 When completion is active you can use CTRL-E to stop it and go back to the
 originally typed text.  The CTRL-E will not be inserted.
 
-                                                        *complete_CTRL-Y*
+*complete_CTRL-Y*
 When the popup menu is displayed you can use CTRL-Y to stop completion and
 accept the currently selected entry.  The CTRL-Y is not inserted.  Typing a
 space, Enter, or some other unprintable character will leave completion mode
@@ -677,7 +695,8 @@ Note: While completion is active Insert mode can't be used recursively.
 Mappings that somehow invoke ":normal i.." will generate an E523 error.
 
 The following mappings are suggested to make typing the completion commands
-a bit easier (although they will hide other commands): >
+a bit easier (although they will hide other commands):
+
     :inoremap ^] ^X^]
     :inoremap ^F ^X^F
     :inoremap ^D ^X^D
@@ -692,7 +711,8 @@ had been typed.
 
 For example, the following will map <Tab> to either actually insert a <Tab> if
 the current line is currently only whitespace, or start/continue a CTRL-N
-completion operation: >
+completion operation:
+
 
         function! CleverTab()
            if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
@@ -707,7 +727,7 @@ completion operation: >
 
 Completing whole lines                                  *compl-whole-line*
 
-                                                        *i_CTRL-X_CTRL-L*
+*i_CTRL-X_CTRL-L*
 CTRL-X CTRL-L           Search backwards for a line that starts with the
                         same characters as those in the current line before
                         the cursor.  Indent is ignored.  The matching line is
@@ -729,8 +749,8 @@ CTRL-X CTRL-L           Search backwards for a line that starts with the
 
 Completing keywords in current file                     *compl-current*
 
-                                                        *i_CTRL-X_CTRL-P*
-                                                        *i_CTRL-X_CTRL-N*
+*i_CTRL-X_CTRL-P*
+*i_CTRL-X_CTRL-N*
 CTRL-X CTRL-N           Search forwards for words that start with the keyword
                         in front of the cursor.  The found keyword is inserted
                         in front of the cursor.
@@ -807,7 +827,7 @@ for those lines starting with this word.
 
 Completing keywords in 'dictionary'                     *compl-dictionary*
 
-                                                        *i_CTRL-X_CTRL-K*
+*i_CTRL-X_CTRL-K*
 CTRL-X CTRL-K           Search the files given with the 'dictionary' option
                         for words that start with the keyword in front of the
                         cursor.  This is like CTRL-N, but only the dictionary
@@ -829,7 +849,7 @@ CTRL-X CTRL-K           Search the files given with the 'dictionary' option
 
 Completing words in 'thesaurus'                         *compl-thesaurus*
 
-                                                        *i_CTRL-X_CTRL-T*
+*i_CTRL-X_CTRL-T*
 CTRL-X CTRL-T           Works as CTRL-X CTRL-K, but in a special way.  It uses
                         the 'thesaurus' option instead of 'dictionary'.  If a
                         match is found in the thesaurus file, all the
@@ -848,7 +868,8 @@ In the file used by the 'thesaurus' option each line in the file should
 contain words with similar meaning, separated by non-keyword characters (white
 space is preferred).  Maximum line length is 510 bytes.
 
-For an example, imagine the 'thesaurus' file has a line like this: >
+For an example, imagine the 'thesaurus' file has a line like this:
+
         angry furious mad enraged
 <Placing the cursor after the letters "ang" and typing CTRL-X CTRL-T would
 complete the word "angry"; subsequent presses would change the word to
@@ -862,7 +883,7 @@ https://github.com/vim/vim/issues/629#issuecomment-443293282
 Unpack thesaurus_pkg.zip, put the thesaurus.txt file somewhere, e.g.
 ~/.vim/thesaurus/english.txt, and the 'thesaurus' option to this file name.
 
-                                        
+
 Completing keywords with 'thesaurusfunc'                *compl-thesaurusfunc*
 
 If the 'thesaurusfunc' option is set, then the user specified function is
@@ -871,7 +892,8 @@ not used. See |complete-functions| for an explanation of how the function is
 invoked and what it should return.
 
 Here is an example that uses the "aiksaurus" command (provided by Magnus
-Groß): >
+Groß):
+
 
         func Thesaur(findstart, base)
             if a:findstart
@@ -903,7 +925,7 @@ Completing keywords in the current and included files   *compl-keyword*
 The 'include' option is used to specify a line that contains an include file
 name.  The 'path' option is used to search for include files.
 
-                                                        *i_CTRL-X_CTRL-I*
+*i_CTRL-X_CTRL-I*
 CTRL-X CTRL-I           Search for the first keyword in the current and
                         included files that starts with the same characters
                         as those before the cursor.  The matched keyword is
@@ -923,7 +945,7 @@ CTRL-X CTRL-I           Search for the first keyword in the current and
                         unless a double CTRL-X is used.
 
 Completing tags                                         *compl-tag*
-                                                        *i_CTRL-X_CTRL-]*
+*i_CTRL-X_CTRL-]*
 CTRL-X CTRL-]           Search for the first tag that starts with the same
                         characters as before the cursor.  The matching tag is
                         inserted in front of the cursor.  Alphabetic
@@ -941,7 +963,7 @@ CTRL-X CTRL-]           Search for the first tag that starts with the same
 
 
 Completing file names                                   *compl-filename*
-                                                        *i_CTRL-X_CTRL-F*
+*i_CTRL-X_CTRL-F*
 CTRL-X CTRL-F           Search for the first file name that starts with the
                         same characters as before the cursor.  The matching
                         file name is inserted in front of the cursor.
@@ -964,7 +986,7 @@ The 'define' option is used to specify a line that contains a definition.
 The 'include' option is used to specify a line that contains an include file
 name.  The 'path' option is used to search for include files.
 
-                                                        *i_CTRL-X_CTRL-D*
+*i_CTRL-X_CTRL-D*
 CTRL-X CTRL-D           Search in the current and included files for the
                         first definition (or macro) name that starts with
                         the same characters as before the cursor.  The found
@@ -989,7 +1011,7 @@ Completion is context-sensitive.  It works like on the Command-line.  It
 completes an Ex command as well as its arguments.  This is useful when writing
 a Vim script.
 
-                                                        *i_CTRL-X_CTRL-V*
+*i_CTRL-X_CTRL-V*
 CTRL-X CTRL-V           Guess what kind of item is in front of the cursor and
                         find the first match for it.
                         Note: When CTRL-V is mapped you can often use CTRL-Q
@@ -1003,7 +1025,8 @@ CTRL-X CTRL-V           Guess what kind of item is in front of the cursor and
 
         CTRL-X CTRL-V   Further use of CTRL-X CTRL-V will do the same as
                         CTRL-V.  This allows mapping a key to do Vim command
-                        completion, for example: >
+                        completion, for example:
+
                                 :imap <Tab> <C-X><C-V>
 
 User defined completion                                 *compl-function*
@@ -1012,7 +1035,7 @@ Completion is done by a function that can be defined by the user with the
 'completefunc' option.  See below for how the function is called and an
 example |complete-functions|.
 
-                                                        *i_CTRL-X_CTRL-U*
+*i_CTRL-X_CTRL-U*
 CTRL-X CTRL-U           Guess what kind of item is in front of the cursor and
                         find the first match for it.
         CTRL-U  or
@@ -1033,7 +1056,7 @@ For remarks about specific filetypes see |compl-omni-filetypes|.
 More completion scripts will appear, check www.vim.org.  Currently there is a
 first version for C++.
 
-                                                        *i_CTRL-X_CTRL-O*
+*i_CTRL-X_CTRL-O*
 CTRL-X CTRL-O           Guess what kind of item is in front of the cursor and
                         find the first match for it.
         CTRL-O  or
@@ -1054,7 +1077,7 @@ before the cursor is used for suggestions, even though it isn't badly spelled.
 NOTE: CTRL-S suspends display in many Unix terminals.  Use 's' instead.  Type
 CTRL-Q to resume displaying.
 
-                                                *i_CTRL-X_CTRL-S* *i_CTRL-X_s*
+*i_CTRL-X_CTRL-S* *i_CTRL-X_s*
 CTRL-X CTRL-S   or
 CTRL-X s                Locate the word in front of the cursor and find the
                         first spell suggestion for it.
@@ -1068,13 +1091,13 @@ CTRL-X s                Locate the word in front of the cursor and find the
 
 Completing keywords from different sources              *compl-generic*
 
-                                                        *i_CTRL-N*
+*i_CTRL-N*
 CTRL-N                  Find next match for words that start with the
                         keyword in front of the cursor, looking in places
                         specified with the 'complete' option.  The found
                         keyword is inserted in front of the cursor.
 
-                                                        *i_CTRL-P*
+*i_CTRL-P*
 CTRL-P                  Find previous match for words that start with the
                         keyword in front of the cursor, looking in places
                         specified with the 'complete' option.  The found
@@ -1094,7 +1117,7 @@ CTRL-P                  Find previous match for words that start with the
 
 Stop completion                                         *compl-stop*
 
-                                                        *i_CTRL-X_CTRL-Z*
+*i_CTRL-X_CTRL-Z*
 CTRL-X CTRL-Z           Stop completion without changing the text.
 
 
@@ -1144,11 +1167,12 @@ Other items are ignored.
 
 For acting upon end of completion, see the |CompleteDone| autocommand event.
 
-For example, the function can contain this: >
+For example, the function can contain this:
+
         let matches = ... list of words ...
         return {'words': matches, 'refresh': 'always'}
-<
-                                                *complete-items*
+
+*complete-items*
 Each list item can either be a string or a Dictionary.  When it is a string it
 is used as the completion.  When it is a Dictionary it can contain these
 items:
@@ -1201,11 +1225,12 @@ match to the total list.  These matches should then not appear in the returned
 list!  Call |complete_check()| now and then to allow the user to press a key
 while still searching for matches.  Stop searching when it returns non-zero.
 
-                                                        *E840*
+*E840*
 The function is allowed to move the cursor, it is restored afterwards.
 The function is not allowed to move to another window or delete text.
 
-An example that completes the names of the months: >
+An example that completes the names of the months:
+
         fun! CompleteMonths(findstart, base)
           if a:findstart
             " locate the start of the word
@@ -1227,8 +1252,9 @@ An example that completes the names of the months: >
           endif
         endfun
         set completefunc=CompleteMonths
-<
-The same, but now pretending searching for matches is slow: >
+
+The same, but now pretending searching for matches is slow:
+
         fun! CompleteMonths(findstart, base)
           if a:findstart
             " locate the start of the word
@@ -1253,10 +1279,10 @@ The same, but now pretending searching for matches is slow: >
           endif
         endfun
         set completefunc=CompleteMonths
-<
+
 
 INSERT COMPLETION POPUP MENU                            *ins-completion-menu*
-                                                        *popupmenu-completion*
+*popupmenu-completion*
 Vim can display the matches in a simplistic popup menu.
 
 The menu is used when:
@@ -1286,10 +1312,11 @@ state.  This doesn't change the list of matches.
 
 When you are back at the original text then you are in the third state.  To
 get there right away you can use a mapping that uses CTRL-P right after
-starting the completion: >
+starting the completion:
+
         :imap <F7> <C-N><C-P>
-<
-                                                *popupmenu-keys*
+
+*popupmenu-keys*
 In the first state these keys have a special meaning:
 <BS> and CTRL-H   Delete one character, find the matches for the word before
                   the cursor.  This reduces the list of matches, often to one
@@ -1337,11 +1364,13 @@ PmenuThumb      thumb of the scrollbar  |hl-PmenuThumb|
 
 There are no special mappings for when the popup menu is visible.  However,
 you can use an Insert mode mapping that checks the |pumvisible()| function to
-do something different.  Example: >
+do something different.  Example:
+
         :inoremap <Down> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>Down>"<CR>
 
 You can use of <expr> in mapping to have the popup menu used when typing a
-character and some condition is met.  For example, for typing a dot: >
+character and some condition is met.  For example, for typing a dot:
+
         inoremap <expr> . MayComplete()
         func MayComplete()
             if (can complete)
@@ -1372,9 +1401,11 @@ A compiled .exe for MS-Windows can be found at:
         https://github.com/universal-ctags/ctags-win32
 
 If you want to complete system functions you can do something like this.  Use
-ctags to generate a tags file for all the system header files: >
+ctags to generate a tags file for all the system header files:
+
         % ctags -R -f ~/.config/nvim/systags /usr/include /usr/local/include
-In your vimrc file add this tags file to the 'tags' option: >
+In your vimrc file add this tags file to the 'tags' option:
+
         set tags+=~/.config/nvim/systags
 
 When using CTRL-X CTRL-O after a name without any "." or "->" it is completed
@@ -1471,11 +1502,11 @@ Explorer and Mozilla Firefox. These two applications are covering over 90% of
 market. Theoretically standards are created by W3C organisation
 (http://www.w3c.org) but they are not always followed/implemented.
 
-                IE      FF      W3C  Omni completion ~
-                +/-     +/-     +    +               ~
-                +       +       -    +               ~
-                +       -       -    -               ~
-                -       +       -    -               ~
+                IE      FF      W3C  Omni completion
+                +/-     +/-     +    +
+                +       +       -    +
+                +       -       -    -
+                -       +       -    -
 
 Regardless from state of implementation in browsers but if element is defined
 in standards, completion plugin will place element in suggestion list. When
@@ -1496,11 +1527,12 @@ Script completes:
     name of class
   - after "->" complete only function and variable names specific for given
     class. To find class location and contents tags file is required. Because
-    PHP isn't strongly typed language user can use @var tag to declare class: >
+    PHP isn't strongly typed language user can use @var tag to declare class:
+
 
         /* @var $myVar myClass */
         $myVar->
-<
+
     Still, to find myClass contents tags file is required.
 
 - function names with additional info:
@@ -1532,7 +1564,7 @@ and modules defined in the current buffer.
 
 The completions provided by CTRL-X CTRL-O are sensitive to the context:
 
-          CONTEXT                          COMPLETIONS PROVIDED ~
+          CONTEXT                          COMPLETIONS PROVIDED
 
  1. Not inside a class definition    Classes, constants and globals
 
@@ -1552,14 +1584,14 @@ Notes:
    classes to the completion results. This feature is turned off by default,
    to enable it add >
      let g:rubycomplete_classes_in_global = 1
-<  to your vimrc
+  to your vimrc
  - In context 2 above, anonymous classes are not supported.
  - In context 3 above, Vim will attempt to determine the methods supported by
    the object.
  - Vim can detect and load the Rails environment for files within a rails
    project. The feature is disabled by default, to enable it add >
      let g:rubycomplete_rails = 1
-<  to your vimrc
+  to your vimrc
 
 
 SYNTAX                                                  *ft-syntax-omni*
@@ -1572,11 +1604,13 @@ does this by populating the omni completion list with the text Vim already
 knows how to color highlight.  It can be used for any filetype and provides a
 minimal language-sensitive completion.
 
-To enable syntax code completion you can run: >
+To enable syntax code completion you can run:
+
     setlocal omnifunc=syntaxcomplete#Complete
 
 You can automate this by placing the following in your |init.vim| (after any
-":filetype" command): >
+":filetype" command):
+
     if has("autocmd") && exists("+omnifunc")
         autocmd Filetype *
                     \   if &omnifunc == "" |
@@ -1591,7 +1625,8 @@ Each filetype can have a wide range of syntax items.  The plugin allows you to
 customize which syntax groups to include or exclude from the list.  Let's have
 a look at the PHP filetype to see how this works.
 
-If you edit a file called, index.php, run the following command: >
+If you edit a file called, index.php, run the following command:
+
     syntax list
 
 The first thing you will notice is that there are many different syntax groups.
@@ -1604,17 +1639,20 @@ phpFunctions.
 If you wish non-filetype syntax items to also be included, you can use a
 regular expression syntax (added in version 13.0 of
 autoload/syntaxcomplete.vim) to add items.  Looking at the output from
-":syntax list" while editing a PHP file I can see some of these entries: >
+":syntax list" while editing a PHP file I can see some of these entries:
+
     htmlArg,htmlTag,htmlTagName,javaScriptStatement,javaScriptGlobalObjects
 
 To pick up any JavaScript and HTML keyword syntax groups while editing a PHP
 file, you can use 3 different regexs, one for each language.  Or you can
 simply restrict the include groups to a particular value, without using
-a regex string: >
+a regex string:
+
     let g:omni_syntax_group_include_php = 'php\w\+,javaScript\w\+,html\w\+'
     let g:omni_syntax_group_include_php = 'phpFunctions,phpMethods'
-<
-The basic form of this variable is: >
+
+The basic form of this variable is:
+
     let g:omni_syntax_group_include_{filetype} = 'regex,comma,separated'
 
 The PHP language has an enormous number of items which it knows how to syntax
@@ -1625,12 +1663,14 @@ items.  There are two ways to prune this list (if necessary).  If you find
 certain syntax groups you do not wish displayed you can use two different
 methods to identify these groups.  The first specifically lists the syntax
 groups by name.  The second uses a regular expression to identify both
-syntax groups.  Simply add one the following to your vimrc: >
+syntax groups.  Simply add one the following to your vimrc:
+
     let g:omni_syntax_group_exclude_php = 'phpCoreConstant,phpConstant'
     let g:omni_syntax_group_exclude_php = 'php\w*Constant'
 
 Add as many syntax groups to this list by comma separating them.  The basic
-form of this variable is: >
+form of this variable is:
+
     let g:omni_syntax_group_exclude_{filetype} = 'regex,comma,separated'
 
 You can create as many of these variables as you need, varying only the
@@ -1642,40 +1682,46 @@ include the "-", call-with-output-file.  Depending on your filetype, this may
 not provide the words you are expecting.  Setting the
 g:omni_syntax_use_iskeyword option to 0 will force the syntax plugin to break
 on word characters.   This can be controlled adding the following to your
-vimrc: >
+vimrc:
+
     let g:omni_syntax_use_iskeyword = 0
 
 For plugin developers, the plugin exposes a public function OmniSyntaxList.
 This function can be used to request a List of syntax items.  When editing a
 SQL file (:e syntax.sql) you can use the ":syntax list" command to see the
-various groups and syntax items.  For example: >
+various groups and syntax items.  For example:
+
     syntax list
 
 Yields data similar to this:
-    sqlOperator    xxx some prior all like and any escape exists in is not ~
-                       or intersect minus between distinct ~
-                       links to Operator ~
-    sqlType        xxx varbit varchar nvarchar bigint int uniqueidentifier ~
-                       date money long tinyint unsigned xml text smalldate ~
-                       double datetime nchar smallint numeric time bit char ~
-                       varbinary binary smallmoney ~
-                       image float integer timestamp real decimal ~
+    sqlOperator    xxx some prior all like and any escape exists in is not
+                       or intersect minus between distinct
+                       links to Operator
+    sqlType        xxx varbit varchar nvarchar bigint int uniqueidentifier
+                       date money long tinyint unsigned xml text smalldate
+                       double datetime nchar smallint numeric time bit char
+                       varbinary binary smallmoney
+                       image float integer timestamp real decimal
 
 There are two syntax groups listed here: sqlOperator and sqlType.  To retrieve
 a List of syntax items you can call OmniSyntaxList a number of different
 ways.  To retrieve all syntax items regardless of syntax group:  >
     echo OmniSyntaxList( [] )
 
-To retrieve only the syntax items for the sqlOperator syntax group: >
+To retrieve only the syntax items for the sqlOperator syntax group:
+
     echo OmniSyntaxList( ['sqlOperator'] )
 
-To retrieve all syntax items for both the sqlOperator and sqlType groups: >
+To retrieve all syntax items for both the sqlOperator and sqlType groups:
+
     echo OmniSyntaxList( ['sqlOperator', 'sqlType'] )
 
-A regular expression can also be used: >
+A regular expression can also be used:
+
     echo OmniSyntaxList( ['sql\w\+'] )
 
-From within a plugin, you would typically assign the output to a List: >
+From within a plugin, you would typically assign the output to a List:
+
     let myKeywords = []
     let myKeywords = OmniSyntaxList( ['sqlKeyword'] )
 
@@ -1730,7 +1776,8 @@ Part two must be exactly the same as name of file.
 The variable is a |Dictionary|.  Keys are tag names and each value is a two
 element |List|.  The first element of the List is also a List with the names
 of possible children.  The second element is a |Dictionary| with the names of
-attributes as keys and the possible values of attributes as values.  Example: >
+attributes as keys and the possible values of attributes as values.  Example:
+
 
     let g:xmldata_crippled = {
     \ "vimxmlentities": ["amp", "lt", "gt", "apos", "quot"],
@@ -1748,7 +1795,8 @@ attributes as keys and the possible values of attributes as values.  Example: >
     \ 'attrofchild': ['Menu info', 'Long information visible in preview window']}}
 
 This example would be put in the "autoload/xml/crippled.vim" file and could
-help to write this file: >
+help to write this file:
+
 
     <tag1 attroftag1b="valueofattr1">
         <childoftag1a attrofchild>
@@ -1803,7 +1851,8 @@ loading of the data file and connecting data with the proper namespace use
 |:XMLns| command.  The first (obligatory) argument is the name of the data
 (xhtml10s, xsl).  The second argument is the code of namespace (h, xsl).  When
 used without a second argument the dialect will be used as default - without
-namespace declaration.  For example to use XML completion in .xsl files: >
+namespace declaration.  For example to use XML completion in .xsl files:
+
 
         :XMLns xhtml10s
         :XMLns xsl xsl
@@ -1813,18 +1862,21 @@ namespace declaration.  For example to use XML completion in .xsl files: >
 
 By default entities will be completed from the data file of the default
 namespace.  The XMLent command should be used in case when there is no default
-namespace: >
+namespace:
+
 
         :XMLent xhtml10s
 
 Usage
 
 While used in this situation (after declarations from previous part, | is
-cursor position): >
+cursor position):
+
 
         <|
 
-Will complete to an appropriate XHTML tag, and in this situation: >
+Will complete to an appropriate XHTML tag, and in this situation:
+
 
         <xsl:|
 
@@ -1833,7 +1885,8 @@ Will complete to an appropriate XSL tag.
 
 The script xmlcomplete.vim, provided through the |autoload| mechanism,
 has the xmlcomplete#GetLastOpenTag() function which can be used in XML files
-to get the name of the last open tag (b:unaryTagsStack has to be defined): >
+to get the name of the last open tag (b:unaryTagsStack has to be defined):
+
 
         :echo xmlcomplete#GetLastOpenTag("b:unaryTagsStack")
 
@@ -1845,12 +1898,12 @@ to get the name of the last open tag (b:unaryTagsStack has to be defined): >
 The following commands can be used to insert new text into the buffer.  They
 can all be undone and repeated with the "." command.
 
-                                                        *a*
+*a*
 a                       Append text after the cursor [count] times.  If the
                         cursor is in the first column of an empty line Insert
                         starts there.  But not when 'virtualedit' is set!
 
-                                                        *A*
+*A*
 A                       Append text at the end of the line [count] times.
                         For using "A" in Visual block mode see |v_b_A|.
 
@@ -1859,7 +1912,7 @@ i                       Insert text before the cursor [count] times.
                         When using CTRL-O in Insert mode |i_CTRL-O| the count
                         is not supported.
 
-                                                        *I*
+*I*
 I                       Insert text before the first non-blank in the line
                         [count] times.
                         When the 'H' flag is present in 'cpoptions' and the
@@ -1867,26 +1920,24 @@ I                       Insert text before the first non-blank in the line
                         the last blank.
                         For using "I" in Visual block mode see |v_b_I|.
 
-                                                        *gI*
+*gI*
 gI                      Insert text in column 1 [count] times.
 
-                                                        *gi*
-gi                      Insert text in the same position as where Insert mode
-                        was stopped last time in the current buffer.
-                        This uses the |'^| mark.  It's different from "`^i"
-                        when the mark is past the end of the line.
-                        The position is corrected for inserted/deleted lines,
-                        but NOT for inserted/deleted characters.
-                        When the |:keepjumps| command modifier is used the |'^|
-                        mark won't be changed.
+*gi*
+    Insert text in the same position as where Insert mode  was stopped last time in the current buffer.
+    This uses the |'^| mark.  It's different from "`^i"  when the mark is past the end of the line.
+    The position is corrected for inserted/deleted lines,
+    but NOT for inserted/deleted characters.
+    When the |:keepjumps| command modifier is used the |'^|
+    mark won't be changed.
 
-                                                        *o*
+*o*
 o                       Begin a new line below the cursor and insert text,
                         repeat [count] times.
                         When the '#' flag is in 'cpoptions' the count is
                         ignored.
 
-                                                        *O*
+*O*
 O                       Begin a new line above the cursor and insert text,
                         repeat [count] times.
                         When the '#' flag is in 'cpoptions' the count is
@@ -1907,34 +1958,40 @@ too long when appending characters a line break is automatically inserted.
 ==============================================================================
 9. Ex insert commands                                   *inserting-ex*
 
-                                                        *:a* *:append*
-:{range}a[ppend][!]     Insert several lines of text below the specified
-                        line.  If the {range} is missing, the text will be
-                        inserted after the current line.
-                        Adding [!] toggles 'autoindent' for the time this
-                        command is executed.
+These two commands will keep on asking for lines,
+until you type a line  containing only a ".".
 
-                                                        *:i* *:in* *:insert*
-:{range}i[nsert][!]     Insert several lines of text above the specified
-                        line.  If the {range} is missing, the text will be
-                        inserted before the current line.
-                        Adding [!] toggles 'autoindent' for the time this
-                        command is executed.
+    *:a* *:append*
+    :{range}a[ppend][!]
+        Insert several lines of text below the specified  line.
+        If the {range} is missing,
+            the text will be  inserted after the current line.
+        Adding [!] toggles 'autoindent' for the time this  command is executed.
 
-These two commands will keep on asking for lines, until you type a line
-containing only a ".".  Watch out for lines starting with a backslash, see
-|line-continuation|.
+    *:i* *:in* *:insert*
+    :{range}i[nsert][!]
+    Insert several lines of text above the specified  line.
+    If the {range} is missing,
+        the text will be  inserted before the current line.
+    Adding [!] toggles 'autoindent' for the time this  command is executed.
 
-When in Ex mode (see |-e|) a backslash at the end of the line can be used to
-insert a NUL character.  To be able to have a line ending in a backslash use
-two backslashes.  This means that the number of backslashes is halved, but
-only at the end of the line.
 
-NOTE: These commands cannot be used with |:global| or |:vglobal|.
-":append" and ":insert" don't work properly in between ":if" and
-":endif", ":for" and ":endfor", ":while" and ":endwhile".
+    Watch out for lines starting with a backslash, see  |line-continuation|.
 
-                                                        *:start* *:startinsert*
+    When in Ex mode (see |-e|),
+        a backslash at the end of the line can be used to  insert a NUL character.
+        To be able to have a line ending in a backslash
+            use  two backslashes.
+            This means that the number of backslashes is halved, but  only at the end of the line.
+
+    NOTE: These commands cannot be used with |:global| or |:vglobal|.
+
+    ":append" and ":insert" don't work properly in between
+        ":if" and  ":endif",
+        ":for" and ":endfor",
+        ":while" and ":endwhile".
+
+*:start* *:startinsert*
 :star[tinsert][!]       Start Insert mode (or |Terminal-mode| in a |terminal|
                         buffer) just after executing this command.
                         Works like typing "i" in Normal mode.  When the ! is
@@ -1945,13 +2002,14 @@ NOTE: These commands cannot be used with |:global| or |:vglobal|.
                         or script is finished.
                         This command does not work from |:normal|.
 
-                                                        *:stopi* *:stopinsert*
+*:stopi* *:stopinsert*
 :stopi[nsert]           Stop Insert mode or |Terminal-mode| as soon as
                         possible.  Works like typing <Esc> in Insert mode.
-                        Can be used in an autocommand, example: >
+                        Can be used in an autocommand, example:
+
                                 :au BufEnter scratch stopinsert
-<
-                                        *replacing-ex* *:startreplace*
+
+*replacing-ex* *:startreplace*
 :startr[eplace][!]      Start Replace mode just after executing this command.
                         Works just like typing "R" in Normal mode.  When the
                         ! is included it acts just like "$R" had been typed
@@ -1961,14 +2019,14 @@ NOTE: These commands cannot be used with |:global| or |:vglobal|.
                         script that the replacement will only start after
                         the function or script is finished.
 
-                                                        *:startgreplace*
+*:startgreplace*
 :startg[replace][!]     Just like |:startreplace|, but use Virtual Replace
                         mode, like with |gR|.
 
 ==============================================================================
 10. Inserting a file                                    *inserting-file*
 
-                                                        *:r* *:re* *:read*
+*:r* *:re* *:read*
 :r[ead] [++opt] [name]
 
                         Insert the file [name] (default: current file) below
@@ -1980,7 +2038,7 @@ NOTE: These commands cannot be used with |:global| or |:vglobal|.
                         the specified line.
                         See |++opt| for the possible values of [++opt].
 
-                                                        *:r!* *:read!*
+*:r!* *:read!*
 :[range]r[ead] [++opt] !{cmd}
                         Execute {cmd} and insert its standard output below
                         the cursor or the specified line.  A temporary file is
@@ -2011,15 +2069,16 @@ be switched off by removing the 'a' flag from the 'cpoptions' option.
 
 Of the [++opt] arguments one is specifically for ":read", the ++edit argument.
 This is useful when the ":read" command is actually used to read a file into
-the buffer as if editing that file.  Use this command in an empty buffer: >
+the buffer as if editing that file.  Use this command in an empty buffer:
+
         :read ++edit filename
 The effect is that the 'fileformat', 'fileencoding', 'bomb', etc. options are
 set to what has been detected for "filename".  Note that a single empty line
 remains, you may want to delete it.
 
-                                                        *file-read*
+*file-read*
 The 'fileformat' option sets the <EOL> style for a file:
-'fileformat'    characters         name                         ~
+'fileformat'    characters         name
   "dos"         <CR><NL> or <NL>   DOS format
   "unix"        <NL>               Unix format
   "mac"         <CR>               Mac format
@@ -2043,19 +2102,20 @@ in Unix format.
 On non-Macintosh systems, the message "[mac format]" is shown if a file is
 read in Mac format.
 
-An example on how to use ":r !": >
+An example on how to use ":r !":
+
         :r !uuencode binfile binfile
 This command reads "binfile", uuencodes it and reads it into the current
 buffer.  Useful when you are editing e-mail and want to include a binary
 file.
 
-                                                        *read-messages*
+*read-messages*
 When reading a file Vim will display a message with information about the read
 file.  In the table is an explanation for some of the items.  The others are
 self explanatory.  Using the long or the short version depends on the
 'shortmess' option.
 
-        long            short           meaning ~
+        long            short           meaning
         [readonly]      {RO}            the file is write protected
         [fifo/socket]                   using a stream
         [fifo]                          using a fifo stream
@@ -2074,3 +2134,4 @@ self explanatory.  Using the long or the short version depends on the
 
 
  vim:tw=78:ts=8:noet:ft=help:norl:
+leo_DIY
