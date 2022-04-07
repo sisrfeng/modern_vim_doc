@@ -73,11 +73,13 @@ achieve special effects.  These options come in three forms:
                         Also see |:set-args| above.
 
 :se[t] {option}^={value}                                *:set^=*
-                        Multiply the {value} to a number option, or prepend
-                        the {value} to a string option.  When the option is a
-                        comma separated list, a comma is added, unless the
-                        value was empty.
-                        Also see |:set-args| above.
+
+    Multiply the {value} to a number option,
+    or prepend  the {value} to a string option.
+     When the option is a comma separated list,
+    a comma is added,
+    unless the value was empty.
+    Also see |:set-args| above.
 
 :se[t] {option}-={value}                                *:set-=*
                         Subtract the {value} from a number option, or remove
@@ -337,17 +339,16 @@ Setting the filetype
 
 *option-window* *optwin*
 :bro[wse] se[t]                 *:set-browse* *:browse-set* *:opt* *:options*
-:opt[ions]              Open a window for viewing and setting all options.
-                        Options are grouped by function.
-                        Offers short help for each option.  Hit <CR> on the
-                        short help to open a help window with more help for
-                        the option.
-                        Modify the value of the option and hit <CR> on the
-                        "set" line to set the new value.  For window and
-                        buffer specific options, the last accessed window is
-                        used to set the option value in, unless this is a help
-                        window, in which case the window below help window is
-                        used (skipping the option-window).
+:opt[ions]
+
+    Open a window for viewing and  setting all options.
+    Options are grouped by function.
+
+    Offers short help for each option.
+    For window and  buffer specific options,
+        the last accessed window is used to set the option value in,
+        unless this is a help window,
+            in which case the window below help window is used (skipping the option-window).
 
 *$HOME*
 Using "~" is like using "$HOME", but it is only recognized at the start of an
@@ -5386,159 +5387,186 @@ default:  "$XDG_CONFIG_HOME/nvim,
                                  Vi default: "blank,buffers,curdir,folds,
                                                help,options,tabpages,winsize")
                         global
-        Changes the effect of the |:mksession| command.  It is a comma
-        separated list of words.  Each word enables saving and restoring
-        something:
+    Changes the effect of the |:mksession| command.
+    It is a comma  separated list of words.
+    Each word enables saving and restoring  something:
            word         save and restore
            blank        empty windows
            buffers      hidden and unloaded buffers, not just those in windows
-           curdir       the current directory
-           folds        manually created folds, opened/closed folds and local
-                        fold options
+           folds        manually created folds, opened/closed folds and local  fold options
            globals      global variables that start with an uppercase letter
-                        and contain at least one lowercase letter.  Only
-                        String and Number types are stored.
+                        and contain at least one lowercase letter.
+                        Only  String and Number types are stored.
            help         the help window
-           localoptions options and mappings local to a window or buffer (not
-                        global values for local options)
-           options      all options and mappings (also global values for local
-                        options)
+
+
+           localoptions options and mappings local to a window or buffer
+                                                 (not  global values for local options)
+
+           options      all options and mappings (also global values for local options)
+
            skiprtp      exclude 'runtimepath' and 'packpath' from the options
            resize       size of the Vim window: 'lines' and 'columns'
+
+           curdir       the current directory
            sesdir       the directory in which the session file is located
-                        will become the current directory (useful with
-                        projects accessed over a network from different
-                        systems)
-           tabpages     all tab pages; without this only the current tab page
-                        is restored, so that you can make a session for each
-                        tab page separately
-           terminal     include terminal windows where the command can be
-                        restored
+                        will become the current directory (useful with  projects accessed over a network from different  systems)
+
+                        Don't include both "curdir" and "sesdir".
+                        When neither is included
+                            filenames are stored as absolute paths.
+
+           tabpages     all tab pages;
+                        without this only the current tab page  is restored,
+                                   so that you can make a session for each tab page separately
+           terminal     include terminal windows where the command can be  restored
+
            winpos       position of the whole Vim window
            winsize      window sizes
+
            slash        |deprecated| Always enabled. Uses "/" in filenames.
            unix         |deprecated| Always enabled. Uses "\n" line endings.
 
-        Don't include both "curdir" and "sesdir". When neither is included
-        filenames are stored as absolute paths.
 
 *'shada'* *'sd'* *E526* *E527* *E528*
 'shada' 'sd'            string  (Vim default for
                                    Win32:  !,'100,<50,s10,h,rA:,rB:
                                    others: !,'100,<50,s10,h
-                                 Vi default: "")
                         global
-        When non-empty, the shada file is read upon startup and written
-        when exiting Vim (see |shada-file|).  The string should be a comma
-        separated list of parameters, each consisting of a single character
-        identifying the particular parameter, followed by a number or string
-        which specifies the value of that parameter.  If a particular
-        character is left out, then the default value is used for that
-        parameter.  The following is a list of the identifying characters and
-        the effect of their value.
-        CHAR    VALUE
-*shada-!*
-        !       When included, save and restore global variables that start
-                with an uppercase letter, and don't contain a lowercase
-                letter.  Thus "KEEPTHIS and "K_L_M" are stored, but "KeepThis"
-                and "_K_L_M" are not.  Nested List and Dict items may not be
-                read back correctly, you end up with an empty item.
-*shada-quote*
-        "       Maximum number of lines saved for each register.  Old name of
-                the '<' item, with the disadvantage that you need to put a
-                backslash before the ", otherwise it will be recognized as the
-                start of a comment!
-*shada-%*
-        %       When included, save and restore the buffer list.  If Vim is
-                started with a file name argument, the buffer list is not
-                restored.  If Vim is started without a file name argument, the
-                buffer list is restored from the shada file.  Quickfix
-                ('buftype'), unlisted ('buflisted'), unnamed and buffers on
-                removable media (|shada-r|) are not saved.
-                When followed by a number, the number specifies the maximum
-                number of buffers that are stored.  Without a number all
-                buffers are stored.
-*shada-'*
-        '       Maximum number of previously edited files for which the marks
-                are remembered.  This parameter must always be included when
-                'shada' is non-empty.
-                Including this item also means that the |jumplist| and the
-                |changelist| are stored in the shada file.
-*shada-/*
-        /       Maximum number of items in the search pattern history to be
-                saved.  If non-zero, then the previous search and substitute
-                patterns are also saved.  When not included, the value of
-                'history' is used.
-*shada-:*
-        :       Maximum number of items in the command-line history to be
-                saved.  When not included, the value of 'history' is used.
-*shada-<*
-        <       Maximum number of lines saved for each register.  If zero then
-                registers are not saved.  When not included, all lines are
-                saved.  '"' is the old name for this item.
-                Also see the 's' item below: limit specified in KiB.
-*shada-@*
-        @       Maximum number of items in the input-line history to be
-                saved.  When not included, the value of 'history' is used.
-*shada-c*
-        c       Dummy option, kept for compatibility reasons.  Has no actual
-                effect: ShaDa always uses UTF-8 and 'encoding' value is fixed
 
-                to UTF-8 as well.
-*shada-f*
-        f       Whether file marks need to be stored.  If zero, file marks ('0
-                to '9, 'A to 'Z) are not stored.  When not present or when
-                non-zero, they are all stored.  '0 is used for the current
-                cursor position (when exiting or when doing |:wshada|).
-*shada-h*
-        h       Disable the effect of 'hlsearch' when loading the shada
-                file.  When not included, it depends on whether ":nohlsearch"
-                has been used since the last search command.
-*shada-n*
-        n       Name of the shada file.  The name must immediately follow
-                the 'n'.  Must be at the end of the option!  If the
-                'shadafile' option is set, that file name overrides the one
-                given here with 'shada'.  Environment variables are
-                expanded when opening the file, not when setting the option.
-*shada-r*
-        r       Removable media.  The argument is a string (up to the next
-                ',').  This parameter can be given several times.  Each
-                specifies the start of a path for which no marks will be
-                stored.  This is to avoid removable media.  For Windows you
-                could use "ra:,rb:".  You can also use it for temp files,
-                e.g., for Unix: "r/tmp".  Case is ignored.
-*shada-s*
-        s       Maximum size of an item contents in KiB.  If zero then nothing
-                is saved.  Unlike Vim this applies to all items, except for
-                the buffer list and header.  Full item size is off by three
-                unsigned integers: with `s10` maximum item size may be 1 byte
-                (type: 7-bit integer) + 9 bytes (timestamp: up to 64-bit
-                integer) + 3 bytes (item size: up to 16-bit integer because
-                2^8 < 10240 < 2^16) + 10240 bytes (requested maximum item
-                contents size) = 10253 bytes.
+    When non-empty,
+        the shada file is read upon startup and
+        written when exiting Vim (see |shada-file|).
+    The string should be a comma separated list of parameters,
+    each consisting of a single character identifying the particular parameter,
+        followed by a number or  string,
+        which specifies the value of that parameter.
+    If a particular character is left out,
+        then the default value is used for that parameter.
+    各选项:
+            CHAR    VALUE
+    *shada-!*
+            !       When included, save and restore global variables that
+                    start  with an uppercase letter,
+                    and don't contain a lowercase  letter.
 
-        Example:
-            :set shada='50,<1000,s100,:0,n~/nvim/shada
+                        Thus
+                        "KEEPTHIS and "K_L_M" are stored,
+                        but "KeepThis"  and "_K_L_M" are not.
 
-        '50             Marks will be remembered for the last 50 files you
-                        edited.
-        <1000           Contents of registers (up to 1000 lines each) will be
-                        remembered.
-        s100            Items with contents occupying more then 100 KiB are
-                        skipped.
-        :0              Command-line history will not be saved.
-        n~/nvim/shada   The name of the file to use is "~/nvim/shada".
-        no /            Since '/' is not specified, the default will be used,
-                        that is, save all of the search history, and also the
-                        previous search and substitute patterns.
-        no %            The buffer list will not be saved nor read back.
-        no h            'hlsearch' highlighting will be restored.
+                        Nested List and Dict items may not be read back correctly,
+                        you end up with an empty item.
+    *shada-quote*
+            "       Maximum number of lines saved for each register.  Old name of
+                    the '<' item, with the disadvantage that you need to put a
+                    backslash before the ", otherwise it will be recognized as the
+                    start of a comment!
+    *shada-%*
+            %       When included, save and restore the buffer list.
+                    If Vim is  started with a file name argument,
+                        the buffer list is not  restored.
+                    If Vim is started without a file name argument,
+                    the  buffer list is restored from the shada file.
+                   
+                    not saved:
+                        Quickfix  ('buftype'),
+                        unlisted ('buflisted'),
+                        unnamed 
+                        buffers on  removable media (|shada-r|)
 
-        When setting 'shada' from an empty value you can use |:rshada| to
-        load the contents of the file, this is not done automatically.
+                    When followed by a number, the number specifies the maximum
+                    number of buffers that are stored. 
+                    Without a number all  buffers are stored.
+    *shada-'*
+            '       Maximum number of previously edited files for which the marks
+                    are remembered.  This parameter must always be included when
+                    'shada' is non-empty.
+                    Including this item also means that the |jumplist| and the
+                    |changelist| are stored in the shada file.
+    *shada-/*
+            /       Maximum number of items in the search pattern history to be
+                    saved.  If non-zero, then the previous search and substitute
+                    patterns are also saved.  When not included, the value of
+                    'history' is used.
+    *shada-:*
+            :       Maximum number of items in the command-line history to be
+                    saved.  When not included, the value of 'history' is used.
+    *shada-<*
+            <       Maximum number of lines saved for each register.  If zero then
+                    registers are not saved.  When not included, all lines are
+                    saved.  '"' is the old name for this item.
+                    Also see the 's' item below: limit specified in KiB.
+    *shada-@*
+            @       Maximum number of items in the input-line history to be
+                    saved.  When not included, the value of 'history' is used.
+    *shada-c*
+            c       Dummy option, kept for compatibility reasons.  Has no actual
+                    effect: ShaDa always uses UTF-8 and 'encoding' value is fixed
 
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+                    to UTF-8 as well.
+    *shada-f*
+                    If zero
+                        file marks ('0  to '9, 'A to 'Z) are not stored.
+                                    '0 is used for the current cursor position (when exiting or when doing |:wshada|).
+                    When not present or when  non-zero, they are all stored.
+    *shada-h*
+            h       Disable the effect of 'hlsearch' when loading the shada
+                    file.  When not included, it depends on whether ":nohlsearch"
+                    has been used since the last search command.
+    *shada-n*
+            n       Name of the shada file.  The name must immediately follow
+                    the 'n'.  Must be at the end of the option!  If the
+                    'shadafile' option is set, that file name overrides the one
+                    given here with 'shada'.
+                    Environment variables are  expanded when opening the file, not when setting the option.
+    *shada-r*
+            r       Removable media. 
+                    The argument is a string (up to the next
+                    ','). 
+                    This parameter can be given several times.
+                    Each  specifies the start of a path for which no marks will be
+                    stored.
+                    This is to avoid removable media.
+                    For Windows you  could use "ra:,rb:".
+                    You can also use it for temp files,
+                    e.g., for Unix: "r/tmp".  Case is ignored.
+    *shada-s*
+            s       Maximum size of an item contents in KiB.
+                    If zero then nothing  is saved.
+                    Unlike Vim this applies to all items,
+                    except for  the buffer list and header.
+
+                    Full item size is off by three unsigned integers:
+                    with `s10
+                    maximum item size may be:
+
+                        1024x10 bytes (requested maximum item  contents size) 
+                        + 9 bytes (timestamp: up to 64-bit integer)
+                        + 3 bytes (item size: up to 16-bit integer because 2^8 < 10240 < 2^16)
+                        + 1 byte  (type: 7-bit integer)
+
+                        = 10253 bytes.
+
+            Example:
+                :set shada='50,<1000,s100,:0,n~/nvim/shada
+
+            '50             Marks will be remembered for the last 50 files you
+                            edited.
+            <1000           Contents of registers (up to 1000 lines each) will be  remembered.
+            s100            Items with contents occupying more then 100 KiB are  skipped.
+            :0              Command-line history will not be saved.
+            n~/nvim/shada   The name of the file to use is "~/nvim/shada".
+            no /            Since '/' is not specified, the default will be used,
+                            that is, save all of the search history, and also the
+                            previous search and substitute patterns.
+            no %            The buffer list will not be saved nor read back.
+            no h            'hlsearch' highlighting will be restored.
+
+            When setting 'shada' from an empty value you can use |:rshada| to
+            load the contents of the file, this is not done automatically.
+
+            This option cannot be set from a |modeline| or in the |sandbox|, for
+            security reasons.
 
 *'shadafile'* *'sdf'*
 'shadafile' 'sdf'       string  (default: "")

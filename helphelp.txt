@@ -156,7 +156,7 @@ Help on help files                                      *helphelp*
 *:lh* *:lhelpgrep*
 :lh[elpgrep] {pattern}[@xx]
         Same as ":helpgrep",
-        except the location list is used instead of the quickfix list.
+        the location list is used instead of the quickfix list.
         If the help window is already opened,
         then the location list for that window is used.
         Otherwise,

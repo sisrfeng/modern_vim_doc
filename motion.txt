@@ -315,10 +315,10 @@ k               or                                      *k*
 <Up>            or                                      *<Up>* *CTRL-P*
 CTRL-P                  [count] lines upward |linewise|.
 
- *j*              or                                     
- *<Down>*         or                                     
- *CTRL-J*         or                                     
- *<NL>*           or                                     
+ *j*              or
+ *<Down>*         or
+ *CTRL-J*         or
+ *<NL>*           or
  *CTRL-N*                [count] lines downward |linewise|.
 
 gk              or                                      *gk* *g<Up>*
@@ -872,11 +872,13 @@ the mark remains correct, even if you insert/delete lines or edit another file
 for a moment.  When the 'shada' option is not empty, uppercase marks are
 kept in the .shada file.  See |shada-file-marks|.
 
-Numbered marks '0 to '9 are quite different.  They can not be set directly.
-They are only present when using a shada file |shada-file|.  Basically '0
-is the location of the cursor when you last exited Vim, '1 the last but one
-time, etc.  Use the "r" flag in 'shada' to specify files for which no
-Numbered mark should be stored.  See |shada-file-marks|.
+Numbered marks '0 to '9 are quite different.
+They can not be set directly.
+They are only present when using a shada file |shada-file|.
+Basically '0  is the location of the cursor when you last exited Vim,
+'1 the last but one  time, etc.
+Use the "r" flag in 'shada' to specify files for which no  Numbered mark should be stored.
+See |shada-file-marks|.
 
 
 *'[* *`[*

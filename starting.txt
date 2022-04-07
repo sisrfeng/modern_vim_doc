@@ -173,9 +173,8 @@ argument.
     {file} cannot start with a "-".
 
 -S
-    Works like "-S Session.vim".
-    Only when used as the last
-    argument or when another "-" option follows.
+    Works like "-S Session.vim". Session.vim是默认的保存Session的文件
+    Only when used as the last  argument or when another "-" option follows.
 
 -L                                                      *-L* *-r*
 -r              Recovery mode.  Without a file name argument, a list of
@@ -729,60 +728,54 @@ code 1.  Errors can be avoided by using `:silent!` or with `:catch`.
 ==============================================================================
 Saving settings                                         *save-settings*
 
-Mostly you will edit your vimrc files manually.  This gives you the greatest
-flexibility.  There are a few commands to generate a vimrc file automatically.
-You can use these files as they are, or copy/paste lines to include in another
-vimrc file.
+Mostly you will edit your vimrc files manually.
+This gives you the greatest  flexibility.
+There are a few commands to generate a vimrc file automatically.
+You can use these files as they are,
+or copy/paste lines to include in another  vimrc file.
 
 *:mk* *:mkexrc*
-:mk[exrc] [file]        Write current key mappings and changed options to
-                        [file] (default ".exrc" in the current directory),
+:mk[exrc] [file]        Write current key mappings and changed options to  [file]
+                        (default ".exrc" in the current directory),
                         unless it already exists.
 
-:mk[exrc]! [file]       Always write current key mappings and changed
-                        options to [file] (default ".exrc" in the current
-                        directory).
+:mk[exrc]! [file]
 
 *:mkv* *:mkvi* *:mkvimrc*
-:mkv[imrc][!] [file]    Like ":mkexrc", but the default is ".nvimrc" in the
-                        current directory.  The ":version" command is also
-                        written to the file.
+    :mkv[imrc][!] [file]    Like ":mkexrc", but the default is ".nvimrc" in the  current directory.
+                            The ":version" command is also written to the file.
 
-These commands will write ":map" and ":set" commands to a file, in such a way
-that when these commands are executed, the current key mappings and options
-will be set to the same values.  The options 'columns', 'endofline',
-'fileformat', 'lines', 'modified', and 'scroll' are not included, because
-these are terminal or file dependent.
-Note that the options 'binary', 'paste' and 'readonly' are included, this
-might not always be what you want.
+    These commands will write
+    ":map" and ":set" commands to a file,
+    in such a way  that when these commands are executed,
+    the current key mappings and options  will be set to the same values.
+    The options
+        'columns',
+        'endofline',
+        'fileformat',
+        'lines',
+        'modified',
+        and 'scroll',
+    are not included, because these are terminal or file dependent.
+    Note that the options 'binary', 'paste' and 'readonly' are included,
+    this  might not always be what you want.
 
-When special keys are used in mappings, The 'cpoptions' option will be
-temporarily set to its Vim default, to avoid the mappings to be
-misinterpreted.  This makes the file incompatible with Vi, but makes sure it
-can be used with different terminals.
+    When special keys are used in mappings,
+        The 'cpoptions' option will be  temporarily set to its Vim default,
+        to avoid the mappings to be  misinterpreted.
+        This makes the file incompatible with Vi,
+        but makes sure it  can be used with different terminals.
 
-Only global mappings are stored, not mappings local to a buffer.
+    Only global mappings are stored, not mappings local to a buffer.
 
-A common method is to use a default |config| file, make some modifications
-with ":map" and ":set" commands and write the modified file.  First read the
-default vimrc in with a command like ":source ~piet/.vimrc.Cprogs", change
-the settings and then save them in the current directory with ":mkvimrc!".  If
-you want to make this file your default |config|, move it to
-$XDG_CONFIG_HOME/nvim.  You could also use autocommands |autocommand| and/or
-modelines |modeline|.
+    A common method is to use a default |config| file,
+    make some modifications  with ":map" and ":set" commands and
+    write the modified file.
+    First read the  default vimrc in with a command like ":source ~piet/.vimrc.Cprogs",
+    change  the settings and then save them in the current directory with ":mkvimrc!".
+    If  you want to make this file your default |config|, move it to
+    $XDG_CONFIG_HOME/nvim.
 
-*vimrc-option-example*
-If you only want to add a single option setting to your vimrc, you can use
-these steps:
-1. Edit your vimrc file with Vim.
-2. Play with the option until it's right.  E.g., try out different values for
-   'guifont'.
-3. Append a line to set the value of the option, using the expression register
-   '=' to enter the value.  E.g., for the 'guifont' option:
-
-   o:set guifont=<C-R>=&guifont<CR><Esc>
-  [<C-R> is a CTRL-R, <CR> is a return, <Esc> is the escape key]
-   You need to escape special characters, esp. spaces.
 
 ==============================================================================
 Views and Sessions                                      *views-sessions*
@@ -790,601 +783,623 @@ Views and Sessions                                      *views-sessions*
 This is introduced in sections |21.4| and |21.5| of the user manual.
 
 *View* *view-file*
-A View is a collection of settings that apply to one window.  You can save a
-View and when you restore it later, the text is displayed in the same way.
-The options and mappings in this window will also be restored, so that you can
-continue editing like when the View was saved.
+    A View is a collection of settings that apply to one window.
+    You can save a  View and when you restore it later,
+    the text is displayed in the same way.
+
+    The options and mappings in this window will also be restored,
+    so that you can continue editing like when the View was saved.
 
 *Session* *session-file*
-A Session keeps the Views for all windows, plus the global settings.  You can
-save a Session and when you restore it later the window layout looks the same.
-You can use a Session to quickly switch between different projects,
-automatically loading the files you were last working on in that project.
+    A Session keeps the Views for all windows,
+    plus the global settings.
+    You can  save a Session and when you restore it later the window layout looks the same.
 
-Views and Sessions are a nice addition to ShaDa files, which are used to
-remember information for all Views and Sessions together |shada-file|.
+    Views and Sessions are a nice addition to ShaDa files,
+    which are used to  remember information for all Views and Sessions together |shada-file|.
 
-You can quickly start editing with a previously saved View or Session with the
-|-S| argument:
+    You can quickly start editing with a previously saved View or Session with the  |-S| argument:
 
-        vim -S Session.vim
+            vim -S Session.vim
 
-*:mks* *:mksession*
-:mks[ession][!] [file]  Write a Vim script that restores the current editing
-                        session.
-                        When [!] is included an existing file is overwritten.
-                        When [file] is omitted "Session.vim" is used.
 
-The output of ":mksession" is like ":mkvimrc", but additional commands are
-added to the file.  Which ones depends on the 'sessionoptions' option.  The
-resulting file, when executed with a ":source" command:
-1. Restores global mappings and options, if 'sessionoptions' contains
-   "options".  Script-local mappings will not be written.
-2. Restores global variables that start with an uppercase letter and contain
-   at least one lowercase letter, if 'sessionoptions' contains "globals".
-3. Closes all windows in the current tab page, except the current one; closes
-   all tab pages except the current one (this results in currently loaded
-   buffers to be unloaded, some may become hidden if 'hidden' is set or
-   otherwise specified); wipes out the current buffer, if it is empty
-   and unnamed.
-4. Restores the current directory if 'sessionoptions' contains "curdir", or
-   sets the current directory to where the Session file is if 'sessionoptions'
-   contains "sesdir".
-5. Restores GUI Vim window position, if 'sessionoptions' contains "winpos".
-6. Restores screen size, if 'sessionoptions' contains "resize".
-7. Reloads the buffer list, with the last cursor positions.  If
-   'sessionoptions' contains "buffers" then all buffers are restored,
-   including hidden and unloaded buffers.  Otherwise only buffers in windows
-   are restored.
-8. Restores all windows with the same layout.  If 'sessionoptions' contains
-   "help", help windows are restored.  If 'sessionoptions' contains "blank",
-   windows editing a buffer without a name will be restored.
-   If 'sessionoptions' contains "winsize" and no (help/blank) windows were
-   left out, the window sizes are restored (relative to the screen size).
-   Otherwise, the windows are just given sensible sizes.
-9. Restores the Views for all the windows, as with |:mkview|.  But
-   'sessionoptions' is used instead of 'viewoptions'.
-10. If a file exists with the same name as the Session file, but ending in
-   "x.vim" (for eXtra), executes that as well.  You can use *x.vim files to
-   specify additional settings and actions associated with a given Session,
-   such as creating menu items in the GUI version.
+Views and Sessions are not perfect:
+    defined functions, autocommands  and ":syntax on" are not included.
+    Things like register contents and  command line history are in ShaDa, not in Sessions or Views.
 
-After restoring the Session, the full filename of your current Session is
-available in the internal variable |v:this_session|.
-An example mapping:
+    - Global option values are only set when they differ from the default value.
+      When the current value is not the default value,
+      loading a Session will not  set it back to the default value.
+      Local 💛options💛 will be set back to the default value though.
+    - Existing mappings will be overwritten without warning.
+    - When storing
+            manual folds
+            and  manually opened/closed folds,
+      changes in the file between saving and loading the view will mess it up.
+    - The Vim script is not very efficient.
+        But still faster than typing the  commands yourself!
 
-  :nmap <F2> :wa<Bar>exe "mksession! " . v:this_session<CR>:so ~/sessions/
-This saves the current Session, and starts off the command to load another.
+view的make和load:
+    *:mkvie* *:mkview*
+    :mkvie[w][!] [file]
 
-A session includes all tab pages, unless "tabpages" was removed from
-'sessionoptions'. |tab-page|
+        Write a Vim script that restores the contents of the  current window.
+        When [!] is included
+            an existing file is overwritten.
+        When [file] is omitted or  is a number from 1 to 9,
+            a name is generated and  'viewdir' prepended.
+        When the last path part of 'viewdir' does not exist,
+            this directory is created.
 
-The |SessionLoadPost| autocmd event is triggered after a session file is
-loaded/sourced.
-*SessionLoad-variable*
-While the session file is loading the SessionLoad global variable is set to 1.
-Plugins can use this to postpone some work until the SessionLoadPost event is
-triggered.
+         E.g.,
+            when 'viewdir' is "$VIM/vimfiles/view"
+                then "view" is created in "$VIM/vimfiles".
+                An existing file is always overwritten then.
+            Use |:loadview| to load this view again.
 
-*:mkvie* *:mkview*
-:mkvie[w][!] [file]     Write a Vim script that restores the contents of the
-                        current window.
-                        When [!] is included an existing file is overwritten.
-                        When [file] is omitted or is a number from 1 to 9, a
-                        name is generated and 'viewdir' prepended.  When the
-                        last path part of 'viewdir' does not exist, this
-                        directory is created.  E.g., when 'viewdir' is
-                        "$VIM/vimfiles/view" then "view" is created in
-                        "$VIM/vimfiles".
-                        An existing file is always overwritten then.  Use
-                        |:loadview| to load this view again.
-                        When [file] is the name of a file ('viewdir' is not
-                        used), a command to edit the file is added to the
-                        generated file.
+        When [file] is the name of a file ('viewdir' is not used),
+        a command to edit the file is added to the generated file.
 
-The output of ":mkview" contains these items:
-1. The argument list used in the window.  When the global argument list is
-   used it is reset to the global list.
-   The index in the argument list is also restored.
-2. The file being edited in the window.  If there is no file, the window is
-   made empty.
-3. Restore mappings, abbreviations and options local to the window if
-   'viewoptions' contains "options" or "localoptions".  For the options it
-   restores only values that are local to the current buffer and values local
-   to the window.
-   When storing the view as part of a session and "options" is in
-   'sessionoptions', global values for local options will be stored too.
-4. Restore folds when using manual folding and 'viewoptions' contains
-   "folds".  Restore manually opened and closed folds.
-5. The scroll position and the cursor position in the file.  Doesn't work very
-   well when there are closed folds.
-6. The local current directory, if it is different from the global current
-   directory and 'viewoptions' contains "curdir".
+        The output of ":mkview" contains these items:
+            1. The argument list used in the window.  When the global argument list is
+               used it is reset to the global list.
+               The index in the argument list is also restored.
+            2. The file being edited in the window.  If there is no file, the window is
+               made empty.
+            3. Restore mappings, abbreviations and options local to the window if
+               'viewoptions' contains "options" or "localoptions".  For the options it
+               restores only values that are local to the current buffer and values local
+               to the window.
+               When storing the view as part of a session and "options" is in
+               'sessionoptions', global values for local options will be stored too.
+            4. Restore folds when using manual folding and 'viewoptions' contains
+               "folds".  Restore manually opened and closed folds.
+            5. The scroll position and the cursor position in the file.  Doesn't work very
+               well when there are closed folds.
+            6. The local current directory, if it is different from the global current
+               directory and 'viewoptions' contains "curdir".
 
-Note that Views and Sessions are not perfect:
-- They don't restore everything.  For example, defined functions, autocommands
-  and ":syntax on" are not included.  Things like register contents and
-  command line history are in ShaDa, not in Sessions or Views.
-- Global option values are only set when they differ from the default value.
-  When the current value is not the default value, loading a Session will not
-  set it back to the default value.  Local options will be set back to the
-  default value though.
-- Existing mappings will be overwritten without warning.  An existing mapping
-  may cause an error for ambiguity.
-- When storing manual folds and when storing manually opened/closed folds,
-  changes in the file between saving and loading the view will mess it up.
-- The Vim script is not very efficient.  But still faster than typing the
-  commands yourself!
 
-*:lo* *:loadview*
-:lo[adview] [nr]        Load the view for the current file.  When [nr] is
-                        omitted, the view stored with ":mkview" is loaded.
-                        When [nr] is specified, the view stored with ":mkview
-                        [nr]" is loaded.
+    *:lo* *:loadview*
+    :lo[adview] [nr]        Load the view for the current file.  When [nr] is
+                            omitted, the view stored with ":mkview" is loaded.
+                            When [nr] is specified, the view stored with ":mkview
+                            [nr]" is loaded.
 
-The combination of ":mkview" and ":loadview" can be used to store up to ten
-different views of a file.  These are remembered in the directory specified
-with the 'viewdir' option.  The views are stored using the file name.  If a
-file is renamed or accessed through a (symbolic) link the view will not be
-found.
+    The combination of ":mkview" and ":loadview" can be used to
+    store up to ten  different views of a file.
+    These are remembered in the directory specified with the 'viewdir' option.
+    The views are stored using the file name.
+    If a  file is renamed or accessed through a (symbolic) link the view will not be  found.
 
-You might want to clean up your 'viewdir' directory now and then.
+    You might want to clean up your 'viewdir' directory now and then.
 
-To automatically save and restore views for *.c files:
+    To automatically save and restore views for *.c files:
 
-        au BufWinLeave *.c mkview
-        au BufWinEnter *.c silent! loadview
+            au BufWinLeave *.c mkview
+            au BufWinEnter *.c silent! loadview
+
+session的make和source
+    *:mks* *:mksession*
+    :mks[ession][!] [file]
+        Write a Vim script that restores the current editing  session.
+        When [!] is included an existing file is overwritten.
+        When [file] is omitted "Session.vim" is used.
+
+        The output of ":mksession" is like ":mkvimrc",
+        but additional commands are  added to the file,
+        Those commands depends on the 'sessionoptions' option.
+
+        when executed with a ":source 保存的文件" :
+            1. Restores global mappings and options, if 'sessionoptions' contains
+               "options".  Script-local mappings will not be written.
+            2. if 'sessionoptions' contains "globals":
+                    Restores global variables that start with an uppercase letter and
+                    contain  at least one lowercase letter,
+
+            3. Closes all windows in the current tab page, except the current one; closes
+               all tab pages except the current one (this results in currently loaded
+               buffers to be unloaded, some may become hidden if 'hidden' is set or
+               otherwise specified); wipes out the current buffer, if it is empty
+               and unnamed.
+            4. Restores the current directory if 'sessionoptions' contains "curdir", or
+               sets the current directory to where the Session file is if 'sessionoptions'
+               contains "sesdir".
+            5. Restores GUI Vim window position, if 'sessionoptions' contains "winpos".
+            6. Restores screen size, if 'sessionoptions' contains "resize".
+            7. Reloads the buffer list, with the last cursor positions.  If
+               'sessionoptions' contains "buffers" then all buffers are restored,
+               including hidden and unloaded buffers.  Otherwise only buffers in windows
+               are restored.
+            8. Restores all windows with the same layout.  If 'sessionoptions' contains
+               "help", help windows are restored.  If 'sessionoptions' contains "blank",
+               windows editing a buffer without a name will be restored.
+               If 'sessionoptions' contains "winsize" and no (help/blank) windows were
+               left out, the window sizes are restored (relative to the screen size).
+               Otherwise, the windows are just given sensible sizes.
+            9. Restores the Views for all the windows, as with |:mkview|.  But
+               'sessionoptions' is used instead of 'viewoptions'.
+            10. If a file exists with the same name as the Session file, but ending in
+               "x.vim" (for eXtra), executes that as well.  You can use *x.vim files to
+               specify additional settings and actions associated with a given Session,
+               such as creating menu items in the GUI version.
+
+        After restoring the Session, the full filename of your current Session is
+        available in the internal variable |v:this_session|.
+
+        An example mapping:
+
+                  :nmap <F2> :wa<Bar>exe "mksession! " . v:this_session<CR>:so ~/sessions/
+            This saves the current Session,
+            and starts off the command to load another. 自己敲文件名
+
+        The |SessionLoadPost| autocmd event is triggered after a session file is  loaded/sourced.
+            *SessionLoad-variable*
+            While the session file is loading the SessionLoad global variable is set to 1.
+            Plugins can use this to postpone some work until the SessionLoadPost event is
+            triggered.
+
+    source  session文件
+            vim -S Session.vim
+    可以敲:source {session文件}
+    但不知道会不会buggy
 
 ==============================================================================
 Shada ("shared data") file                      *shada* *shada-file*
 
-    If you exit Vim and
-    later start it again,
+    If you exit Vim and  later start it again,
     you would normally lose a lot of information.
+
     The ShaDa file can be used to remember that information,
-    which
-    enables you to continue where you left off.
-    Its name is the abbreviation of SHAred DAta because it is used for sharing data between Neovim sessions.
+    which  enables you to continue where you left off.
+     it is used for sharing data between Neovim sessions.
 
-This is introduced in section |21.3| of the user manual.
+    This is introduced in section |21.3| of the user manual.
 
-The ShaDa file is used to store:
-    - The command line history.
-    - The search string history.
-    - The input-line history.
-    - Contents of non-empty registers.
-    - Marks for several files.
-    - File marks, pointing to locations in files.
-    - Last search/substitute pattern (for 'n' and '&').
-    - The buffer list.
-    - Global variables.
+    The ShaDa file is used to store:
+        - The command line history.
+        - The search string history.
+        - The input-line history.
+        - Contents of non-empty registers.
+        - Marks for several files.
+        - File marks, pointing to locations in files.
+        - Last search/substitute pattern (for 'n' and '&').
+        - The buffer list.
+        - 🔑Global variables.🔑
 
-    You could also use a Session file.
-    The difference is that the ShaDa file does not depend on what you are working on.
-    There normally is only one ShaDa file.
-    Session files are used to save the state of a specific editing Session.
-    You could have several Session files,
-    one for each project you are working on.
-    ShaDa and
-    Session files together can be used to effectively enter Vim and
-    directly start working in your desired setup.
-    |session-file|
+    shada vs Session:
+        ShaDa file does not depend on what you are working on.
+        Session files are used to save the state of a specific editing Session.
 
-*shada-read*
-When Vim is started and the 'shada' option is non-empty, the contents of
-the ShaDa file are read and the info can be used in the appropriate places.
-The |v:oldfiles| variable is filled.  The marks are not read in at startup
-(but file marks are).  See |initialization| for how to set the 'shada'
-option upon startup.
+        There normally is only one ShaDa file.
+        You could have several Session files,  one for each project you are working on.
 
-*shada-write*
-When Vim exits and 'shada' is non-empty, the info is stored in the ShaDa file
-(it's actually merged with the existing one, if one exists |shada-merging|).
-The 'shada' option is a string containing information about what info should
-be stored, and contains limits on how much should be stored (see 'shada').
+        ShaDa and  Session files together can be used to effectively enter Vim and
+        directly start working in your desired setup.
+        |session-file|
 
-Notes for Unix:
-- The file protection for the ShaDa file will be set to prevent other users
-  from being able to read it, because it may contain any text or commands that
-  you have worked with.
-- If you want to share the ShaDa file with other users (e.g. when you "su"
-  to another user), you can make the file writable for the group or everybody.
-  Vim will preserve this when writing new ShaDa files.  Be careful, don't
-  allow just anybody to read and write your ShaDa file!
-- Vim will not overwrite a ShaDa file that is not writable by the current
-  "real" user.  This helps for when you did "su" to become root, but your
-  $HOME is still set to a normal user's home directory.  Otherwise Vim would
-  create a ShaDa file owned by root that nobody else can read.
-- The ShaDa file cannot be a symbolic link.  This is to avoid security
-  issues.
+    *shada-read*
+        When Vim is started and the 'shada' option is non-empty,
+        the contents of  the ShaDa file are read and the info can be used in the appropriate places.
+        The |v:oldfiles| variable is filled.
+        The marks are not read in   at startup  (but file marks are. ??).
+        See |initialization| for how to set the 'shada'  option upon startup.
 
-Marks are stored for each file separately.  When a file is read and 'shada'
-is non-empty, the marks for that file are read from the ShaDa file.  NOTE:
-The marks are only written when exiting Vim, which is fine because marks are
-remembered for all the files you have opened in the current editing session,
-unless ":bdel" is used.  If you want to save the marks for a file that you are
-about to abandon with ":bdel", use ":wsh".  The '[' and ']' marks are not
-stored, but the '"' mark is.  The '"' mark is very useful for jumping to the
-cursor position when the file was last exited.  No marks are saved for files
-that start with any string given with the "r" flag in 'shada'.  This can be
-used to avoid saving marks for files on removable media (for MS-Windows you
-would use "ra:,rb:").
-The |v:oldfiles| variable is filled with the file names that the ShaDa file
-has marks for.
+    *shada-write*
+        When Vim exits and 'shada' is non-empty, the info is stored in the ShaDa file
+        (it's actually merged with the existing one, if one exists |shada-merging|).
 
-*shada-file-marks*
-Uppercase marks ('A to 'Z) are stored when writing the ShaDa file.  The
-numbered marks ('0 to '9) are a bit special.  When the ShaDa file is written
-(when exiting or with the |:wshada| command), '0 is set to the current cursor
-position and file.  The old '0 is moved to '1, '1 to '2, etc.  This
-resembles what happens with the "1 to "9 delete registers.  If the current
-cursor position is already present in '0 to '9, it is moved to '0, to avoid
-having the same position twice.  The result is that with "'0", you can jump
-back to the file and line where you exited Vim.  To do that right away, try
-using this command:
+    Notes for Unix:
+        - The ShaDa file cannot be a symbolic link.  This is to avoid security  issues.
+        关于权限:
+            - The file protection for the ShaDa file will be set to prevent other users
+              from being able to read it
+            - If you want to share the ShaDa file with other users (e.g. when you "su"
+              to another user), you can make the file writable for the group or everybody.
+              Vim will preserve this when writing new ShaDa files.  Be careful, don't
+              allow just anybody to read and write your ShaDa file!
+            - Vim will not overwrite a ShaDa file that is not writable by the current
+              "real" user.  This helps for when you did "su" to become root, but your
+              $HOME is still set to a normal user's home directory.  Otherwise Vim would
+              create a ShaDa file owned by root that nobody else can read.
 
+    Marks
+        are stored for each file separately.
+        When a file is read and 'shada'  is non-empty,
+        the marks for that file are read from the ShaDa file.
+        The marks are only written when exiting Vim,
+        which is fine because marks are remembered for all the files you have opened in the current editing session,
+        unless ":bdel" is used.
+        If you want to save the marks for a file that you are  about to abandon with ":bdel",
+        use ":wsh".
 
-        vim -c "normal '0"
+        The '[' and ']' marks are not  stored
 
-In a csh compatible shell you could make an alias for it:
+        The '"' mark is very useful for jumping to the cursor position when the file was last exited.
+        This can be  used to avoid saving marks for files on removable media
+        (for MS-Windows you  would use "ra:,rb:").
+        The |v:oldfiles| variable is filled with the file names that the ShaDa file has marks for.
 
+    *shada-file-marks*
+        Uppercase marks ('A to 'Z) are stored when writing the ShaDa file.
+        The numbered marks ('0 to '9) are a bit special.
+            When the ShaDa file is written  (when exiting or  with the |:wshada| command),
+                '0 is set to the current cursor  position and file.
+                The old '0 is moved to '1, '1 to '2, etc.
+                This  resembles what happens with the "1 to "9 delete registers.
+                If the current  cursor position is already present in '0 to '9,
+                it is moved to '0, to avoid  having the same position twice.
+                The result is that with "'0", you can jump  back to the file and line where you exited Vim.
+                To do that right away, try  using this command:
 
-        alias lvim vim -c '"'normal "'"0'"'
+                        vim -c "normal '0"
 
-For a bash-like shell:
+        For a bash-like shell:
 
+                        alias lvim='vim -c "normal '\''0"'
 
-        alias lvim='vim -c "normal '\''0"'
+        Use the "r" flag in 'shada' to specify for which files no marks should be  remembered.
 
-Use the "r" flag in 'shada' to specify for which files no marks should be
-remembered.
+    *shada-merging*
+    MERGING
 
-MERGING                                                 *shada-merging*
+    When writing ShaDa files
+            with |:wshada| without bang or
+            at regular exit
+        information in the existing ShaDa file is merged with information from current Neovim instance.
+        For this purpose ShaDa files store timestamps associated with ❤️ShaDa entries❤️.
+        Specifically the following is being done:
 
-When writing ShaDa files
-        with |:wshada| without bang or
-        at regular exit
-    information in the existing ShaDa file is merged with information from current Neovim instance.
-    For this purpose ShaDa files store timestamps associated with ❤️ShaDa entries❤️.
-    Specifically the following is being done:
+        1. History lines are merged, ordered by timestamp.  Maximum amount of items in
+           ShaDa file is defined by 'shada' option (|shada-/|, |shada-:|, |shada-@|,
+           etc: one suboption for each character that represents history name
+           (|:history|)).
+        2. Local marks and changes for files that were not opened by Neovim are copied
+           to new ShaDa file. Marks for files that were opened by Neovim are merged,
+           changes to files opened by Neovim are ignored. |shada-'|
+        3. Jump list is merged: jumps are ordered by timestamp, identical jumps
+           (identical position AND timestamp) are squashed.
+        4. Search patterns and substitute strings are not merged: search pattern or
+           substitute string which has greatest timestamp will be the only one copied
+           to ShaDa file.
+        5. For each register entity with greatest timestamp is the only saved.
+           |shada-<|
+        6. All saved variables are saved from current Neovim instance.
+            Additionally  existing variable values are copied,
+            meaning that the only way to remove  variable from a ShaDa file is
+                either removing it by hand
+                or disabling  writing variables completely. |shada-!|
+        7. For each global mark entity with greatest timestamp is the only saved.
+        8. Buffer list and header are the only entries which are not merged in any
+           fashion: the only header and buffer list present are the ones from the
+           Neovim instance which was last writing the file. |shada-%|
 
-    1. History lines are merged, ordered by timestamp.  Maximum amount of items in
-       ShaDa file is defined by 'shada' option (|shada-/|, |shada-:|, |shada-@|,
-       etc: one suboption for each character that represents history name
-       (|:history|)).
-    2. Local marks and changes for files that were not opened by Neovim are copied
-       to new ShaDa file. Marks for files that were opened by Neovim are merged,
-       changes to files opened by Neovim are ignored. |shada-'|
-    3. Jump list is merged: jumps are ordered by timestamp, identical jumps
-       (identical position AND timestamp) are squashed.
-    4. Search patterns and substitute strings are not merged: search pattern or
-       substitute string which has greatest timestamp will be the only one copied
-       to ShaDa file.
-    5. For each register entity with greatest timestamp is the only saved.
-       |shada-<|
-    6. All saved variables are saved from current Neovim instance. Additionally
-       existing variable values are copied, meaning that the only way to remove
-       variable from a ShaDa file is either removing it by hand or disabling
-       writing variables completely. |shada-!|
-    7. For each global mark entity with greatest timestamp is the only saved.
-    8. Buffer list and header are the only entries which are not merged in any
-       fashion: the only header and buffer list present are the ones from the
-       Neovim instance which was last writing the file. |shada-%|
+    *shada-compatibility*
+    COMPATIBILITY
 
-COMPATIBILITY                                           *shada-compatibility*
+    ShaDa files are forward and backward compatible.  This means that
 
-ShaDa files are forward and backward compatible.  This means that
+        1. Entries which have unknown type (i.e. that hold unidentified data) are
+           ignored when reading and blindly copied when writing.
+        2. Register entries with unknown register name are ignored when reading and
+           blindly copied when writing. Limitation: only registers that use name with
+           code in interval [1, 255] are supported. |registers|
+        3. Register entries with unknown register type are ignored when reading and
+           merged as usual when writing. |getregtype()|
+        4. Local and global mark entries with unknown mark names are ignored when
+           reading. When writing global mark entries are blindly copied and local mark
+           entries are also blindly copied, but only if file they are attached to fits
+           in the |shada-'| limit. Unknown local mark entry's timestamp is also taken
+           into account when calculating which files exactly should fit into this
+           limit. Limitation: only marks that use name with code in interval [1, 255]
+           are supported. |mark-motions|
+        5. History entries with unknown history type are ignored when reading and
+           blindly copied when writing. Limitation: there can be only up to 256
+           history types. |history|
+        6. Unknown keys found in register, local mark, global mark, change, jump and
+           search pattern entries are saved internally and dumped when writing.
+           Entries created during Neovim session never have such additions.
+        7. Additional elements found in replacement string and history entries are
+           saved internally and dumped. Entries created during Neovim session never
+           have such additions.
+        8. Additional elements found in variable entries are simply ignored when  reading.
+           When writing  new variables
+               they will be preserved during merging,
+               but
+               Variable values dumped from current Neovim session never  have additional elements,
+               even if variables themselves were obtained by  reading ShaDa files.
 
-    1. Entries which have unknown type (i.e. that hold unidentified data) are
-       ignored when reading and blindly copied when writing.
-    2. Register entries with unknown register name are ignored when reading and
-       blindly copied when writing. Limitation: only registers that use name with
-       code in interval [1, 255] are supported. |registers|
-    3. Register entries with unknown register type are ignored when reading and
-       merged as usual when writing. |getregtype()|
-    4. Local and global mark entries with unknown mark names are ignored when
-       reading. When writing global mark entries are blindly copied and local mark
-       entries are also blindly copied, but only if file they are attached to fits
-       in the |shada-'| limit. Unknown local mark entry's timestamp is also taken
-       into account when calculating which files exactly should fit into this
-       limit. Limitation: only marks that use name with code in interval [1, 255]
-       are supported. |mark-motions|
-    5. History entries with unknown history type are ignored when reading and
-       blindly copied when writing. Limitation: there can be only up to 256
-       history types. |history|
-    6. Unknown keys found in register, local mark, global mark, change, jump and
-       search pattern entries are saved internally and dumped when writing.
-       Entries created during Neovim session never have such additions.
-    7. Additional elements found in replacement string and history entries are
-       saved internally and dumped. Entries created during Neovim session never
-       have such additions.
-    8. Additional elements found in variable entries are simply ignored when
-       reading. When writing new variables they will be preserved during merging,
-       but that's all. Variable values dumped from current Neovim session never
-       have additional elements, even if variables themselves were obtained by
-       reading ShaDa files.
+        "Blindly" here means that there will be no attempts to somehow merge them,
+        even if other entries (with known name/type/etc) are merged. |shada-merging|
 
-    "Blindly" here means that there will be no attempts to somehow merge them,
-    even if other entries (with known name/type/etc) are merged. |shada-merging|
+    *shada-file-name*
+    SHADA FILE NAME
 
-SHADA FILE NAME                                         *shada-file-name*
-
-    - Default name of the |shada| file is:
-          Unix:     "$XDG_DATA_HOME/nvim/shada/main.shada"
-          Windows:  "$XDG_DATA_HOME/nvim-data/shada/main.shada"
-      See also |base-directories|.
-    - To choose a different file name you can use:
-        - The "n" flag in the 'shada' option.
-        - The |-i| startup argument.  "NONE" means no shada file is ever read or
-          written.  Also not for the commands below!
-        - The 'shadafile' option.  The value from the "-i" argument (if any) is
-          stored in the 'shadafile' option.
-    - For the commands below, another file name can be given, overriding the
-      default and the name given with 'shada' or "-i" (unless it's NONE).
+        - Default name of the |shada| file is:
+              Unix:     "$XDG_DATA_HOME/nvim/shada/main.shada"
+              Windows:  "$XDG_DATA_HOME/nvim-data/shada/main.shada"
+          See also |base-directories|.
+        - To choose a different file name you can use:
+            - The "n" flag in the 'shada' option.
+            - The |-i| startup argument.  "NONE" means no shada file is ever read or
+              written.  Also not for the commands below!
+            - The 'shadafile' option.  The value from the "-i" argument (if any) is
+              stored in the 'shadafile' option.
+        - For the commands below, another file name can be given, overriding the
+          default and the name given with 'shada' or "-i" (unless it's NONE).
 
 
-MANUALLY READING AND WRITING                            *shada-read-write*
+    MANUALLY READING AND WRITING
+    *shada-read-write*
 
-    Two commands can be used to read and write the ShaDa file manually.  This
-    can be used to exchange registers between two running Vim programs: First
-    type ":wsh" in one and then ":rsh" in the other.  Note that if the register
-    already contained something, then ":rsh!" would be required.  Also note
-    however that this means everything will be overwritten with information from
-    the first Vim, including the command line history, etc.
+        Two commands can be used to read and write the ShaDa file manually.  This
+        can be used to exchange registers between two running Vim programs: First
+        type ":wsh" in one and then ":rsh" in the other.  Note that if the register
+        already contained something, then ":rsh!" would be required.  Also note
+        however that this means everything will be overwritten with information from
+        the first Vim, including the command line history, etc.
 
-    The ShaDa file itself can be edited by hand too, although we suggest you
-    start with an existing one to get the format right.  You need to understand
-    MessagePack (or, more likely, find software that is able to use it) format to
-    do this.  This can be useful in order to create a second file, say
-    "~/.my.shada" which could contain certain settings that you always want when
-    you first start Neovim.  For example, you can preload registers with
-    particular data, or put certain commands in the command line history.  A line
-    in your |config| file like >
-            :rshada! ~/.my.shada
-    can be used to load this information.  You could even have different ShaDa
-    files for different types of files (e.g., C code) and load them based on the
-    file name, using the ":autocmd" command (see |:autocmd|).  More information on
-    ShaDa file format is contained in |shada-format| section.
+        The ShaDa file itself can be edited by hand too, although we suggest you
+        start with an existing one to get the format right.  You need to understand
+        MessagePack (or, more likely, find software that is able to use it) format to
+        do this.  This can be useful in order to create a second file, say
+        "~/.my.shada" which could contain certain settings that you always want when
+        you first start Neovim.  For example, you can preload registers with
+        particular data, or put certain commands in the command line history.  A line
+        in your |config| file like >
+                :rshada! ~/.my.shada
+        can be used to load this information.  You could even have different ShaDa
+        files for different types of files (e.g., C code) and load them based on the
+        file name, using the ":autocmd" command (see |:autocmd|).  More information on
+        ShaDa file format is contained in |shada-format| section.
 
-    *E136* *E929* *shada-error-handling*
-    Some errors make Neovim leave temporary file named `{basename}.tmp.X` (X is
-    any free letter from `a` to `z`) while normally it will create this file,
-    write to it and then rename `{basename}.tmp.X` to `{basename}`. Such errors
-    include:
+        *E136* *E929* *shada-error-handling*
+        Some errors make Neovim leave temporary file named `{basename}.tmp.X` (X is
+        any free letter from `a` to `z`) while normally it will create this file,
+        write to it and then rename `{basename}.tmp.X` to `{basename}`. Such errors
+        include:
 
-    - Errors which make Neovim think that read file is not a ShaDa file at all:
-      non-ShaDa files are not overwritten for safety reasons to avoid accidentally
-      destroying an unrelated file.  This could happen e.g. when typing "nvim -i
-      file" in place of "nvim -R file" (yes, somebody did that at least with Vim).
-      Such errors are listed at |shada-critical-contents-errors|.
-    - If writing to the temporary file failed: e.g. because of the insufficient
-      space left.
-    - If renaming file failed: e.g. because of insufficient permissions.
-    - If target ShaDa file has different from the Neovim instance's owners (user
-      and group) and changing them failed.  Unix-specific, applies only when
-      Neovim was launched from root.
+        - Errors which make Neovim think that read file is not a ShaDa file at all:
+          non-ShaDa files are not overwritten for safety reasons to avoid accidentally
+          destroying an unrelated file.  This could happen e.g. when typing "nvim -i
+          file" in place of "nvim -R file" (yes, somebody did that at least with Vim).
+          Such errors are listed at |shada-critical-contents-errors|.
+        - If writing to the temporary file failed: e.g. because of the insufficient
+          space left.
+        - If renaming file failed: e.g. because of insufficient permissions.
+        - If target ShaDa file has different from the Neovim instance's owners (user
+          and group) and changing them failed.  Unix-specific, applies only when
+          Neovim was launched from root.
 
-    Do not forget to remove the temporary file or replace the target file with
-    temporary one after getting one of the above errors or all attempts to create
-    a ShaDa file may fail with |E929|.  If you got one of them when using
-    |:wshada| (and not when exiting Neovim: i.e. when you have Neovim session
-    running) you have additional options:
+        Do not forget to remove the temporary file or replace the target file with
+        temporary one after getting one of the above errors or all attempts to create
+        a ShaDa file may fail with |E929|.  If you got one of them when using
+        |:wshada| (and not when exiting Neovim: i.e. when you have Neovim session
+        running) you have additional options:
 
-    - First thing which you should consider if you got any error, except failure
-      to write to the temporary file: remove existing file and replace it with the
-      temporary file.  Do it even if you have running Neovim instance.
-    - Fix the permissions and/or file ownership, free some space and attempt to
-      write again.  Do not remove the existing file.
-    - Use |:wshada| with bang.  Does not help in case of permission error.  If
-      target file was actually the ShaDa file some information may be lost in this
-      case.  To make the matters slightly better use |:rshada| prior to writing,
-      but this still will loose buffer-local marks and change list entries for any
-      file which is not opened in the current Neovim instance.
-    - Remove the target file from shell and use |:wshada|.  Consequences are not
-      different from using |:wshada| with bang, but "rm -f" works in some cases
-      when you don't have write permissions.
+        - First thing which you should consider if you got any error, except failure
+          to write to the temporary file: remove existing file and replace it with the
+          temporary file.  Do it even if you have running Neovim instance.
+        - Fix the permissions and/or file ownership, free some space and attempt to
+          write again.  Do not remove the existing file.
+        - Use |:wshada| with bang.  Does not help in case of permission error.  If
+          target file was actually the ShaDa file some information may be lost in this
+          case.  To make the matters slightly better use |:rshada| prior to writing,
+          but this still will loose buffer-local marks and change list entries for any
+          file which is not opened in the current Neovim instance.
+        - Remove the target file from shell and use |:wshada|.  Consequences are not
+          different from using |:wshada| with bang, but "rm -f" works in some cases
+          when you don't have write permissions.
 
-    *:rsh* *:rshada* *E886*
-    :rsh[ada][!] [file]     Read from ShaDa file [file] (default: see above).
-                            If [!] is given, then any information that is
-                            already set (registers, marks, |v:oldfiles|, etc.)
-                            will be overwritten.
+        *:rsh* *:rshada* *E886*
+        :rsh[ada][!] [file]     Read from ShaDa file [file] (default: see above).
+                                If [!] is given, then any information that is
+                                already set (registers, marks, |v:oldfiles|, etc.)
+                                will be overwritten.
 
-    *:wsh* *:wshada* *E137*
-    :wsh[ada][!] [file]     Write to ShaDa file [file] (default: see above).
-                            The information in the file is first read in to make
-                            a merge between old and new info.  When [!] is used,
-                            the old information is not read first, only the
-                            internal info is written (also disables safety checks
-                            described in |shada-error-handling|).  If 'shada' is
-                            empty, marks for up to 100 files will be written.
-                            When you get error "E929: All .tmp.X files exist,
-                            cannot write ShaDa file!" check that no old temp files
-                            were left behind (e.g.
-                            ~/.local/share/nvim/shada/main.shada.tmp*).
+        *:wsh* *:wshada* *E137*
+        :wsh[ada][!] [file]     Write to ShaDa file [file] (default: see above).
+                                The information in the file is first read in to make
+                                a merge between old and new info.  When [!] is used,
+                                the old information is not read first, only the
+                                internal info is written (also disables safety checks
+                                described in |shada-error-handling|).  If 'shada' is
+                                empty, marks for up to 100 files will be written.
+                                When you get error "E929: All .tmp.X files exist,
+                                cannot write ShaDa file!" check that no old temp files
+                                were left behind (e.g.
+                                ~/.local/share/nvim/shada/main.shada.tmp*).
 
-                            Note: Executing :wshada will reset all |'quote| marks.
+                                Note: Executing :wshada will reset all |'quote| marks.
 
-    *:o* *:ol* *:oldfiles*
-    :o[ldfiles]             List the files that have marks stored in the ShaDa
-                            file.  This list is read on startup and only changes
-                            afterwards with `:rshada!`.  Also see |v:oldfiles|.
-                            The number can be used with |c_#<|.
-                            The output can be filtered with |:filter|, e.g.:
+        *:o* *:ol* *:oldfiles*
+        :o[ldfiles]             List the files that have marks stored in the ShaDa  file.
+                                This list is read on startup and only changes  afterwards with `:rshada!`.
+                                Also see |v:oldfiles|.
+                                The number can be used with |c_#<|.
+                                The output can be filtered with |:filter|, e.g.:
 
-                                    filter /\.vim/ oldfiles
-                           The filtering happens on the file name.
+                                        filter /\.vim/ oldfiles
+                               The filtering happens on the file name.
 
-    :bro[wse] o[ldfiles][!]
-                            List file names as with |:oldfiles|, and then prompt
-                            for a number.  When the number is valid that file from
-                            the list is edited.
-                            If you get the |press-enter| prompt you can press "q"
-                            and still get the prompt to enter a file number.
-                            Use ! to abandon a modified buffer. |abandon|
+        :bro[wse] o[ldfiles][!]
+                                List file names as with |:oldfiles|, and then prompt
+                                for a number.  When the number is valid that file from
+                                the list is edited.
+                                If you get the |press-enter| prompt you can press "q"
+                                and still get the prompt to enter a file number.
+                                Use ! to abandon a modified buffer. |abandon|
 
-SHADA FILE FORMAT                                               *shada-format*
+    *shada-format*
+    SHADA FILE FORMAT
 
-ShaDa files are concats of MessagePack entries.  Each entry is a concat of
-exactly four MessagePack objects:
+    ShaDa files are concats of 💛MessagePack💛 entries.
+    Each entry is a concat of  exactly four MessagePack objects:
 
-1. First goes type of the entry.  Object type must be an unsigned integer.
-   Object type must not be equal to zero.
-2. Second goes entry timestamp.  It must also be an unsigned integer.
-3. Third goes the length of the fourth entry.  Unsigned integer as well, used
-   for fast skipping without parsing.
-4. Fourth is actual entry data.  All currently used ShaDa entries use
-   containers to hold data: either map or array.  All string values in those
-   containers are either binary (applies to filenames) or UTF-8, yet parser
-   needs to expect that invalid bytes may be present in a UTF-8 string.
+        1. First goes type of the entry.  Object type must be an unsigned integer.
+           Object type must not be equal to zero.
+        2. Second goes entry timestamp.  It must also be an unsigned integer.
+        3. Third goes the length of the fourth entry.  Unsigned integer as well, used
+           for fast skipping without parsing.
+        4. Fourth is actual entry data.  All currently used ShaDa entries use
+           containers to hold data: either map or array.  All string values in those
+           containers are either binary (applies to filenames) or UTF-8, yet parser
+           needs to expect that invalid bytes may be present in a UTF-8 string.
 
-   Exact format depends on the entry type:
+       Exact format depends on the entry type:
 
-   Entry type (name)   Entry data
-   1 (Header)          Map containing data that describes the generator
-                       instance that wrote this ShaDa file.  It is ignored
-                       when reading ShaDa files.  Contains the following data:
-                       Key        Data
-                       generator  Binary, software used to generate ShaDa
-                                  file. Is equal to "nvim" when ShaDa file was
-                                  written by Neovim.
-                       version    Binary, generator version.
-                       encoding   Binary, effective 'encoding' value.
-                       max_kbyte  Integer, effective |shada-s| limit value.
-                       pid        Integer, instance process ID.
-                       *          It is allowed to have any number of
-                                  additional keys with any data.
-   2 (SearchPattern)   Map containing data describing last used search or
-                       substitute pattern.  Normally ShaDa file contains two
-                       such entries: one with "ss" key set to true (describes
-                       substitute pattern, see |:substitute|), and one set to
-                       false (describes search pattern, see
-                       |search-commands|). "su" key should be true on one of
-                       the entries.  If key value is equal to default then it
-                       is normally not present.  Keys:
-                       Key  Type     Default  Description
-                       sm   Boolean  true     Effective 'magic' value.
-                       sc   Boolean  false    Effective 'smartcase' value.
-                       sl   Boolean  true     True if search pattern comes
-                                              with a line offset.  See
-                                              |search-offset|.
-                       se   Boolean  false    True if |search-offset|
-                                              requested to place cursor at
-                                              (relative to) the end of the
-                                              pattern.
-                       so   Integer  0        Offset value. |search-offset|
-                       su   Boolean  false    True if current entry was the
-                                              last used search pattern.
-                       ss   Boolean  false    True if current entry describes
-                                              |:substitute| pattern.
-                       sh   Boolean  false    True if |v:hlsearch| is on.
-                                              With |shada-h| or 'nohlsearch'
-                                              this key is always false.
-                       sp   Binary   N/A      Actual pattern.  Required.
-                       sb   Boolean  false    True if search direction is
-                                              backward.
-                       *    any      none     Other keys are allowed for
-                                              compatibility reasons, see
-                                              |shada-compatibility|.
-   3 (SubString)       Array containing last |:substitute| replacement string.
-                       Contains single entry: binary, replacement string used.
-                       More entries are allowed for compatibility reasons, see
-                       |shada-compatibility|.
-   4 (HistoryEntry)    Array containing one entry from history.  Should have
-                       two or three entries.  First one is history type
-                       (unsigned integer), second is history line (binary),
-                       third is the separator character (unsigned integer,
-                       must be in interval [0, 255]).  Third item is only
-                       valid for search history.  Possible history types are
-                       listed in |hist-names|, here are the corresponding
-                       numbers: 0 - cmd, 1 - search, 2 - expr, 3 - input,
-                       4 - debug.
-   5 (Register)        Map describing one register (|registers|).  If key
-                       value is equal to default then it is normally not
-                       present.  Keys:
-                       Key  Type             Def   Description
-                       rt   UInteger         0     Register type:
-                                                   No  Description
-                                                   0   |charwise-register|
-                                                   1   |linewise-register|
-                                                   2   |blockwise-register|
-                       rw   UInteger         0     Register width. Only valid
-                                                   for |blockwise-register|s.
-                       rc   Array of binary  N/A   Register contents.  Each
-                                                   entry in the array
-                                                   represents its own line.
-                                                   NUL characters inside the
-                                                   line should be represented
-                                                   as NL according to
-                                                   |NL-used-for-Nul|.
-                       ru   Boolean          false Unnamed register. Whether
-                                                   the unnamed register had
-                                                   pointed to this register.
-                       n    UInteger         N/A   Register name: character
-                                                   code in range [1, 255].
-                                                   Example: |quote0| register
-                                                   has name 48 (ASCII code for
-                                                   zero character).
-                       *    any              none  Other keys are allowed
-                                                   for compatibility reasons,
-                                                   see |shada-compatibility|.
-   6 (Variable)        Array containing two items: variable name (binary) and
-                       variable value (any object).  Values are converted
-                       using the same code |msgpackparse()| uses when reading,
-                       |msgpackdump()| when writing, so there may appear
-                       |msgpack-special-dict|s.  If there are more then two
-                       entries then the rest are ignored
-                       (|shada-compatibility|).
-   7 (GlobalMark)
-   8 (Jump)
-   10 (LocalMark)
-   11 (Change)         Map containing some position description:
-                       Entry      Position
-                       GlobaMark  Global mark position. |'A|
-                       LocalMark  Local mark position. |'a|
-                       Jump       One position from the |jumplist|.
-                       Change     One position from the |changelist|.
+           Entry type (name)   Entry data
+           1 (Header)          Map containing data that describes the generator
+                               instance that wrote this ShaDa file.  It is ignored
+                               when reading ShaDa files.  Contains the following data:
+                               Key        Data
+                               generator  Binary, software used to generate ShaDa
+                                          file. Is equal to "nvim" when ShaDa file was
+                                          written by Neovim.
+                               version    Binary, generator version.
+                               encoding   Binary, effective 'encoding' value.
+                               max_kbyte  Integer, effective |shada-s| limit value.
+                               pid        Integer, instance process ID.
+                               *          It is allowed to have any number of
+                                          additional keys with any data.
+           2 (SearchPattern)   Map containing data describing last used search or
+                               substitute pattern.  Normally ShaDa file contains two
+                               such entries: one with "ss" key set to true (describes
+                               substitute pattern, see |:substitute|), and one set to
+                               false (describes search pattern, see
+                               |search-commands|). "su" key should be true on one of
+                               the entries.  If key value is equal to default then it
+                               is normally not present.  Keys:
+                               Key  Type     Default  Description
+                               sm   Boolean  true     Effective 'magic' value.
+                               sc   Boolean  false    Effective 'smartcase' value.
+                               sl   Boolean  true     True if search pattern comes
+                                                      with a line offset.  See
+                                                      |search-offset|.
+                               se   Boolean  false    True if |search-offset|
+                                                      requested to place cursor at
+                                                      (relative to) the end of the
+                                                      pattern.
+                               so   Integer  0        Offset value. |search-offset|
+                               su   Boolean  false    True if current entry was the
+                                                      last used search pattern.
+                               ss   Boolean  false    True if current entry describes
+                                                      |:substitute| pattern.
+                               sh   Boolean  false    True if |v:hlsearch| is on.
+                                                      With |shada-h| or 'nohlsearch'
+                                                      this key is always false.
+                               sp   Binary   N/A      Actual pattern.  Required.
+                               sb   Boolean  false    True if search direction is
+                                                      backward.
+                               *    any      none     Other keys are allowed for
+                                                      compatibility reasons, see
+                                                      |shada-compatibility|.
+           3 (SubString)       Array containing last |:substitute| replacement string.
+                               Contains single entry: binary, replacement string used.
+                               More entries are allowed for compatibility reasons, see
+                               |shada-compatibility|.
+           4 (HistoryEntry)    Array containing one entry from history.  Should have
+                               two or three entries.  First one is history type
+                               (unsigned integer), second is history line (binary),
+                               third is the separator character (unsigned integer,
+                               must be in interval [0, 255]).  Third item is only
+                               valid for search history.  Possible history types are
+                               listed in |hist-names|, here are the corresponding
+                               numbers: 0 - cmd, 1 - search, 2 - expr, 3 - input,
+                               4 - debug.
+           5 (Register)        Map describing one register (|registers|).  If key
+                               value is equal to default then it is normally not
+                               present.  Keys:
+                               Key  Type             Def   Description
+                               rt   UInteger         0     Register type:
+                                                           No  Description
+                                                           0   |charwise-register|
+                                                           1   |linewise-register|
+                                                           2   |blockwise-register|
+                               rw   UInteger         0     Register width. Only valid
+                                                           for |blockwise-register|s.
+                               rc   Array of binary  N/A   Register contents.  Each
+                                                           entry in the array
+                                                           represents its own line.
+                                                           NUL characters inside the
+                                                           line should be represented
+                                                           as NL according to
+                                                           |NL-used-for-Nul|.
+                               ru   Boolean          false Unnamed register. Whether
+                                                           the unnamed register had
+                                                           pointed to this register.
+                               n    UInteger         N/A   Register name: character
+                                                           code in range [1, 255].
+                                                           Example: |quote0| register
+                                                           has name 48 (ASCII code for
+                                                           zero character).
+                               *    any              none  Other keys are allowed
+                                                           for compatibility reasons,
+                                                           see |shada-compatibility|.
+           6 (Variable)        Array containing two items:
+                                   variable name (binary)
+                                   variable value (any object).
+                                       Values are converted  using the same code
+                                           |msgpackparse()| uses when reading,
+                                           |msgpackdump()| when writing,
+                                       so there may appear  |msgpack-special-dict|s.
+                                       If there are more  then two  entries
+                                           then the rest are ignored
+                               (|shada-compatibility|).
+           7 (GlobalMark)
+           8 (Jump)
+           10 (LocalMark)
+           11 (Change)         Map containing some position description:
+                               Entry      Position
+                               GlobaMark  Global mark position. |'A|
+                               LocalMark  Local mark position. |'a|
+                               Jump       One position from the |jumplist|.
+                               Change     One position from the |changelist|.
 
-                       Data contained in the map:
-                       Key  Type      Default  Description
-                       l    UInteger  1        Position line number.  Must be
-                                               greater then zero.
-                       c    UInteger  0        Position column number.
-                       n    UInteger  34 ('"') Mark name.  Only valid for
-                                               GlobalMark and LocalMark
-                                               entries.
-                       f    Binary    N/A      File name.  Required.
-                       *    any       none     Other keys are allowed for
-                                               compatibility reasons, see
-                                               |shada-compatibility|.
-   9 (BufferList)      Array containing maps.  Each map in the array
-                       represents one buffer.  Possible keys:
-                       Key  Type      Default  Description
-                       l    UInteger  1        Position line number.  Must be
-                                               greater then zero.
-                       c    UInteger  0        Position column number.
-                       f    Binary    N/A      File name.  Required.
-                       *    any       none     Other keys are allowed for
-                                               compatibility reasons, see
-                                               |shada-compatibility|.
-   * (Unknown)         Any other entry type is allowed for compatibility
-                       reasons, see |shada-compatibility|.
+                               Data contained in the map:
+                               Key  Type      Default  Description
+                               l    UInteger  1        Position line number.  Must be
+                                                       greater then zero.
+                               c    UInteger  0        Position column number.
+                               n    UInteger  34 ('"') Mark name.  Only valid for
+                                                       GlobalMark and LocalMark
+                                                       entries.
+                               f    Binary    N/A      File name.  Required.
+                               *    any       none     Other keys are allowed for
+                                                       compatibility reasons, see
+                                                       |shada-compatibility|.
+           9 (BufferList)      Array containing maps.  Each map in the array
+                               represents one buffer.  Possible keys:
+                               Key  Type      Default  Description
+                               l    UInteger  1        Position line number.  Must be
+                                                       greater then zero.
+                               c    UInteger  0        Position column number.
+                               f    Binary    N/A      File name.  Required.
+                               *    any       none     Other keys are allowed for
+                                                       compatibility reasons, see
+                                                       |shada-compatibility|.
+           * (Unknown)         Any other entry type is allowed for compatibility
+                               reasons, see |shada-compatibility|.
 
-*E575* *E576*
-Errors in ShaDa file may have two types: E575 used for all “logical” errors
-and E576 used for all “critical” errors.  Critical errors trigger behaviour
-described in |shada-error-handling| when writing and skipping the rest of the
-file when reading and include:
-*shada-critical-contents-errors*
-- Any of first three MessagePack objects being not an unsigned integer.
-- Third object requesting amount of bytes greater then bytes left in the ShaDa
-  file.
-- Entry with zero type.  I.e. first object being equal to zero.
-- MessagePack parser failing to parse the entry data.
-- MessagePack parser consuming less or requesting greater bytes then described
-  in the third object for parsing fourth object.  I.e. when fourth object
-  either contains more then one MessagePack object or it does not contain
-  complete MessagePack object.
+    *E575* *E576*
+    Errors in ShaDa file may have two types:
+        E575 used for all “logical” errors
+        E576 used for all “critical” errors.
+
+            *shada-critical-contents-errors*
+            Critical errors trigger behaviour described in |shada-error-handling|
+            when  writing and skipping the rest of the file
+                  when reading
+                       and include:
+                        - Any of first three MessagePack objects being not an unsigned integer.
+                        - Third object requesting amount of bytes greater then bytes left in the ShaDa
+                          file.
+                        - Entry with zero type.  I.e. first object being equal to zero.
+                        - MessagePack parser failing to parse the entry data.
+                        - MessagePack parser consuming less or requesting greater bytes then described
+                          in the third object for parsing fourth object.  I.e. when fourth object
+                          either contains more then one MessagePack object or it does not contain
+                          complete MessagePack object.
 
 ==============================================================================
 Standard Paths                                  *standard-path*

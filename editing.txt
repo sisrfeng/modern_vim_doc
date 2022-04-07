@@ -1160,6 +1160,11 @@ The names can be in upper- or lowercase.
                         When 'hidden' is set and there are more windows, the
                         current buffer becomes hidden, after writing the file.
 
+对比 :[range]up[date][!] [++opt] [>>] [file]
+                        Like ":write", but only write when the buffer has been
+                        modified.
+
+
 *:exi* *:exit*
 :[range]exi[t][!] [++opt] [file]
                         Same as :xit.

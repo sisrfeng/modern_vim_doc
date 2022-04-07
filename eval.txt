@@ -1656,15 +1656,19 @@ v:numbersize    Number of bits in a Number.  This is normally 64, but on some
         systems it may be 32.
 
 *v:oldfiles* *oldfiles-variable*
-v:oldfiles  List of file names that is loaded from the |shada| file on
-        startup.  These are the files that Vim remembers marks for.
-        The length of the List is limited by the ' argument of the
-        'shada' option (default is 100).
-        When the |shada| file is not used the List is empty.
-        Also see |:oldfiles| and |c_#<|.
-        The List can be modified, but this has no effect on what is
-        stored in the |shada| file later.  If you use values other
-        than String this will cause trouble.
+v:oldfiles
+
+    List of file names that is loaded from the |shada| file on  startup.
+    These are the files that Vim remembers marks for.
+
+    The length of the List is limited by the ' argument of the 'shada' option (default is 100).
+    When the |shada| file is not used the List is empty.
+    Also see |:oldfiles| and |c_#<|.
+
+    The List can be modified,
+    but this has no effect on what is stored in the |shada| file later.
+
+    If you use values other than String this will cause trouble.
 
 *v:option_new*
 v:option_new    New value of the option. Valid while executing an |OptionSet|

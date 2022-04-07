@@ -12,34 +12,34 @@ updated.
 
 ==============================================================================
 
-API ~
+API
 *nvim_buf_clear_highlight()*	Use |nvim_buf_clear_namespace()| instead.
 *nvim_buf_set_virtual_text()*	Use |nvim_buf_set_extmark()| instead.
 *nvim_command_output()*		Use |nvim_exec()| instead.
 *nvim_execute_lua()*		Use |nvim_exec_lua()| instead.
 
-Commands ~
+Commands
 *:rv*
 *:rviminfo*		Deprecated alias to |:rshada| command.
 *:wv*
 *:wviminfo*		Deprecated alias to |:wshada| command.
 
-Environment Variables ~
+Environment Variables
 *$NVIM_LISTEN_ADDRESS*	Deprecated in favor of |--listen|.  If both are given,
 			$NVIM_LISTEN_ADDRESS is ignored.
 
-Events ~
+Events
 *BufCreate*		Use |BufAdd| instead.
 *EncodingChanged*	Never fired; 'encoding' is always "utf-8".
 *FileEncoding*		Never fired; equivalent to |EncodingChanged|.
 *GUIEnter*		Never fired; use |UIEnter| instead.
 *GUIFailed*		Never fired.
 
-Keycodes ~
+Keycodes
 *<MouseDown>*		Use <ScrollWheelUp> instead.
 *<MouseUp>*		Use <ScrollWheelDown> instead.
 
-Functions ~
+Functions
 *buffer_exists()*	Obsolete name for |bufexists()|.
 *buffer_name()*		Obsolete name for |bufname()|.
 *buffer_number()*	Obsolete name for |bufnr()|.
@@ -55,7 +55,7 @@ Functions ~
 			without stopping the job. Use chanclose(id) to close
 			any socket.
 
-LSP Diagnostics ~
+LSP Diagnostics
 
 For each of the functions below, use the corresponding function in
 |vim.diagnostic| instead (unless otherwise noted). For example, use
@@ -99,27 +99,27 @@ internally and are no longer exposed as part of the API. Instead, use
 *vim.lsp.diagnostic.set_underline()*
 *vim.lsp.diagnostic.set_virtual_text()*
 
-LSP Utility Functions ~
+LSP Utility Functions
 
 *vim.lsp.util.diagnostics_to_items()*	Use |vim.diagnostic.toqflist()| instead.
 *vim.lsp.util.set_qflist()*		Use |setqflist()| instead.
 *vim.lsp.util.set_loclist()*		Use |setloclist()| instead.
 
-Lua ~
+Lua
 *vim.register_keystroke_callback()* Use |vim.on_key()| instead.
 
-Modifiers ~
+Modifiers
 *cpo-<*
 *:menu-<special>*
 *:menu-special*		<> notation is always enabled.
 *:map-<special>*
 *:map-special*		<> notation is always enabled.
 
-Normal commands ~
+Normal commands
 *]f*
 *[f*			Same as "gf".
 
-Options ~
+Options
 *'cscopeverbose'*	Enabled by default. Use |:silent| instead.
 *'exrc'* *'ex'*		Security risk: downloaded files could include
 			a malicious .nvimrc or .exrc file. See 'secure'.
@@ -133,8 +133,8 @@ Options ~
 'sessionoptions'	Flags "unix", "slash" are ignored and always enabled.
 *'vi'*
 'viewoptions'		Flags "unix", "slash" are ignored and always enabled.
-*'viminfo'*		Deprecated alias to 'shada' option.
-*'viminfofile'*		Deprecated alias to 'shadafile' option.
+*'viminfo'*	       Deprecated alias to 'shada' option.
+*'viminfofile'*	   Deprecated alias to 'shadafile' option.
 
 UI extensions~
 *ui-wildmenu*		Use |ui-cmdline| with |ui-popupmenu| instead. Enabled
@@ -148,3 +148,4 @@ Variables~
 			Use `jobpid(&channel)` instead.
 
  vim:noet:tw=78:ts=8:ft=help:norl:
+leo_DIY

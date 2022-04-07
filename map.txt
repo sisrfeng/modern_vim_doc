@@ -1223,29 +1223,34 @@ The string "<SID>" can be used in a mapping or menu.
 ==============================================================================
 4. User-defined commands                                *user-commands*
 
-It is possible to define your own Ex commands.  A user-defined command can act
-just like a built-in command (it can have a range or arguments, arguments can
-be completed as filenames or buffer names, etc), except that when the command
-is executed, it is transformed into a normal Ex command and then executed.
+It is possible to define your own Ex commands.
+A user-defined command can act  just like a built-in command
+(it can have a range or arguments, arguments can be completed as filenames or buffer names, etc),
+
+except that when the command  is executed,
+    it is transformed into a normal Ex command and then executed.
 
 For starters: See section |40.2| in the user manual.
 
 *E183* *E841* *user-cmd-ambiguous*
-All user defined commands must start with an uppercase letter, to avoid
-confusion with builtin commands.  Exceptions are these builtin commands:
+All user defined commands must start with an uppercase letter,
+to avoid  confusion with builtin commands.
+Exceptions are these builtin commands:
         :Next
 They cannot be used for a user defined command.
 
-The other characters of the user command can be uppercase letters, lowercase
-letters or digits.  When using digits, note that other commands that take a
-numeric argument may become ambiguous.  For example, the command ":Cc2" could
-be the user command ":Cc2" without an argument, or the command ":Cc" with
-argument "2".  It is advised to put a space between the command name and the
-argument to avoid these problems.
+The other characters of the user command can be uppercase letters,
+lowercase  letters or digits.
+When using digits,
+    note that other commands that take a  numeric argument may become ambiguous.
+    For example, the command ":Cc2" could  be the user command ":Cc2" without an argument,
+    or the command ":Cc" with  argument "2".
+    It is advised to put a space between the command name and the  argument to avoid these problems.
 
-When using a user-defined command, the command can be abbreviated.  However, if
-an abbreviation is not unique, an error will be issued.  Furthermore, a
-built-in command will always take precedence.
+When using a user-defined command,
+the command can be abbreviated.
+However, if  an abbreviation is not unique, an error will be issued.
+Furthermore, a  built-in command will always take precedence.
 
 Example:
         :command Rename ...
@@ -1255,21 +1260,18 @@ Example:
         :Ren                            " Error - ambiguous
         :command Paste ...
 
-It is recommended that full names for user-defined commands are used in
-scripts.
+It is recommended that full names for user-defined commands are used in  scripts.
 
 :com[mand]                                              *:com* *:command*
-                        List all user-defined commands.  When listing commands,
-                        the characters in the first columns are:
-                            !   Command has the -bang attribute
-                            "   Command has the -register attribute
-                            |   Command has the -bar attribute
-                            b   Command is local to current buffer
-                        (see below for details on attributes)
-                        The list can be filtered on command name with
-                        |:filter|, e.g., to list all commands with "Pyth" in
-                        the name:
-                                filter Pyth command
+    List all user-defined commands.  When listing commands,
+    the characters in the first columns are:
+        !   Command has the -bang attribute
+        "   Command has the -register attribute
+        |   Command has the -bar attribute
+        b   Command is local to current buffer
+    (see below for details on attributes)
+    The list can be filtered on command name with  |:filter|, e.g., to list all commands with "Pyth" in  the name:
+            filter Pyth command
 
 :com[mand] {cmd}        List the user-defined commands that start with {cmd}
 
@@ -1286,14 +1288,18 @@ See |:verbose-cmd| for more information.
 
 *E174* *E182*
 :com[mand][!] [{attr}...] {cmd} {repl}
-                        Define a user command.  The name of the command is
-                        {cmd} and its replacement text is {repl}.  The
-                        command's attributes (see below) are {attr}.  If the
-                        command already exists, an error is reported, unless a
-                        ! is specified, in which case the command is
-                        redefined.  There is one exception: When sourcing a
-                        script again, a command that was previously defined in
-                        that script will be silently replaced.
+
+Define a user command.
+The name of the command is {cmd} and its replacement text is {repl}.
+ The command's attributes (see below) are {attr}.
+ If the command already exists,
+an error is reported,
+unless a !
+is specified,
+in which case the command is redefined.
+ There is one exception:
+When sourcing a script again,
+a command that was previously defined in that script will be silently replaced.
 
 
 :delc[ommand] {cmd}                             *:delc* *:delcommand* *E184*
@@ -1638,3 +1644,4 @@ invokes the user command, it will run in the context of the script it was
 defined in.  This matters if |<SID>| is used in a command.
 
  vim:tw=78:ts=8:noet:ft=help:norl:
+leo_DIY
