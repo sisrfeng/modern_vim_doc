@@ -875,11 +875,25 @@ An ordinary atom can be:
                          /home/linuxbrew/.linuxbrew/Cellar/neovim/0.6.1/share/nvim/runtime/doc/usr_41.txt
 
                whitespace characters 的另一处定义:
-                        [:space:]这个character class, 匹配 whitespace characters
-                        whitespace characters包括:
-                                space, tab, CR,  NL, vertical tab, form feed
+                        [:space:]这个character class, 匹配 whitespace characters, 包括:
+                          (通过i_ctrl_v输入的显示方式)
+                           <Space>                      ctrl+`显示<C-Space>
+                           ^I                           (无法插入caret形式), ctrl+I和敲tab键一样, 插入<Tab> (set list可以显示)
+                           <BS>
+                           
+                           
+                             NL
+                            form feed:
+                                 Text editors can use this character when you "insert a page break".
+                                 also used as section separators.
+                                 (It's uncommonly used in source code to
+                                 divide logically independent functions or groups of functions.)
 
-                        [a-b\s]不匹配 <space> <Tab>, 而匹配 todo .. ..
+                           : vertical tab, VT '\v'
+
+                          
+                    /\v[a-z\s]: 无效的regex,
+                                []里面的\s不能表示white space
 
 
                                                              对应的collection
@@ -1091,10 +1105,9 @@ An ordinary atom can be:
                         page and document layout and formatting.
 
 
-                    *[:graph:]*        isgraph                ASCII printable characters,  excluding  space
+                    *[:graph:]*        isgraph                ASCII printable characters,  excluding space
                     *[:punct:]*        ispunct                ASCII punctuation characters
-                                                                printable character 刨掉 space 再刨掉 alphanumeric
-
+                                                                = [:graph:]  alphanumeric
                     *[:digit:]*                               decimal digits '0' to '9'
                     *[:xdigit:]*                              hexadecimal digits: 0-9, a-f, A-F
 
@@ -1105,11 +1118,6 @@ An ordinary atom can be:
                     *[:tab:]*                                 the <Tab> character
                     *[:blank:]*                               space and tab
                     *[:space:]*                               这名字容易让人误以为只匹配<space>, 其实匹配这些whitespace characters:
-                                                                    space, tab,
-                                                                    CR,  NL,
-                                                                    vertical tab,
-                                                                    form feed (由^L表示)
-
                     *[:return:]*                               <CR> character
                     *[:escape:]*                               <Esc> character
                     *[:backspace:]*                            <BS> character

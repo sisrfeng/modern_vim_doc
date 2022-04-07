@@ -190,7 +190,7 @@ CTRL-D          Delete one shiftwidth of indent at the start of the current
                 restored in the next line.  This is useful when inserting a
                 label.
 
-*i_CTRL-V*      
+*i_CTRL-V*
 CTRL-V          Insert next non-digit literally.
                 For special keys,
                     the  terminal code is inserted.
@@ -283,7 +283,7 @@ except a line break  (<NL>, value 10).
 There are five ways to enter the character value:
 
 first char      mode         max nr of chars   max value
-(none)          decimal            3            255   
+(none)          decimal            3            255
 不足3位时,敲0
 o or O          octal              3            377      (255)
 x or X          hexadecimal        2            ff       (255)
@@ -305,7 +305,7 @@ This  happens for the other modes as well:
     when i_ctrl_v后敲10<esc键>,
                或0<esc键>
                       buffer上都显示  .  (10 end up in the file as a 0 / the <NL> character is translated into <Nul>  )
-                      <NL> is used internally to represent the <Nul> character.             
+                      <NL> is used internally to represent the <Nul> character.
 
     when  make a line break.
         The actual <NL>  character, instead of   <Nul> is written at the end of each line.
@@ -504,6 +504,11 @@ mode: hit "v", move to the end of the block, and type "gq".  See also |gq|.
 
 ==============================================================================
 4. 'expandtab', 'smarttab' and 'softtabstop' options    *ins-expandtab*
+
+Tabs vs space:
+    https://www.quora.com/Why-are-tabs-better-than-spaces-in-programming
+    Tabs would allow people with different display preferences
+    to work with each other’s code on the same codebase
 
 'expandtab'
 

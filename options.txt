@@ -726,12 +726,13 @@ When 'smartindent' or 'cindent' is on the indent is changed in a different way.
 *'background'* *'bg'*
 'background' 'bg'       string  (default "dark")
                         global
-        When set to "dark" or "light", adjusts the default color groups for
-        that background type.  The |TUI| or other UI sets this on startup
+        When set to "dark" or "light",
+        adjusts the default color groups for  that background type.
+        The |TUI| or other UI sets this on startup
         (triggering |OptionSet|) if it can detect the background color.
 
-        This option does NOT change the background color, it tells Nvim what
-        the "inherited" (terminal/GUI) background looks like.
+        This option does NOT change the background color,
+        it tells Nvim what the "inherited" (terminal/GUI) background looks like.
         See |:hi-normal| if you want to set the background color explicitly.
 *g:colors_name*
         When a color scheme is loaded (the "g:colors_name" variable is set)
@@ -2299,15 +2300,17 @@ vim里的这些option, nvim扔了:
 *'expandtab'* *'et'* *'noexpandtab'* *'noet'*
 'expandtab' 'et'        boolean (default off)
                         local to buffer
-        In Insert mode: Use the appropriate number of spaces to insert a  <Tab>.
+        无法expand显存的
+        In Insert mode:
+            Use the appropriate number of spaces to insert a  <Tab>.
+
         with the '>' and '<' commands and  when 'autoindent' is on:
             Spaces are used in indents
+
         To insert a real tab when 'expandtab' is  on,
             use CTRL-V<Tab>.
         See also |:retab| and |ins-expandtab|.
 
-        This option is reset when the 'paste' option is set and
-        restored when  the 'paste' option is reset.
 
 *'fileencoding'* *'fenc'* *E213*
 'fileencoding' 'fenc'   string (default: "")
@@ -2837,9 +2840,6 @@ vim里的这些option, nvim扔了:
     This is a sequence of letters which
     describes how automatic formatting is to be done
     |fo-table|.
-
-    When the 'paste' option is  on,
-    no formatting is done (like 'formatoptions' is empty).
 
     Commas can  be inserted for readability.
     To avoid problems with flags that are added in the future,
@@ -6210,47 +6210,49 @@ This is done in order for the signcolumn appearence not appear weird during line
         When nonempty, this option determines the content of the status line.
         Also see |status-line|.
 
-        The option consists of printf style '%' items interspersed with
-        normal text.  Each status line item is of the form:
+        The option consists of 🔑printf style '%'🔑 items interspersed with  normal text.
+        Each status line item is of the form:
           %-0{minwid}.{maxwid}{item}
-        All fields except the {item} are optional.  A single percent sign can
-        be given as "%%".
+        All fields except the {item} are optional.
+        A single percent sign can  be given as "%%".
 
         When the option starts with "%!" then it is used as an expression,
-        evaluated and the result is used as the option value.  Example:
+            the result is used as the option value.  Example:
                 :set statusline=%!MyStatusLine()
-        The *g:statusline_winid* variable will be set to the |window-ID| of the
-        window that the status line belongs to.
-        The result can contain %{} items that will be evaluated too.
-        Note that the "%!" expression is evaluated in the context of the
-        current window and buffer, while %{} items are evaluated in the
-        context of the window that the statusline belongs to.
+            The *g:statusline_winid* variable will be set to the |window-ID| of the  window that the status line belongs to.
+            The result can contain %{} items that will be evaluated too.
 
-        When there is error while evaluating the option then it will be made
-        empty to avoid further errors.  Otherwise screen updating would loop.
+            Note that the "%!" expression is evaluated in the context  of the  current window and buffer,
+            while %{} items are evaluated in the  context of the window that the statusline belongs to.
 
-        Note that the only effect of 'ruler' when this option is set (and
-        'laststatus' is 2) is controlling the output of |CTRL-G|.
+        When there is error while evaluating the option
+            then it will be made  empty to avoid further errors.
+            (Otherwise screen updating would loop.)
+
+        effect of 'ruler' when this option is set (and  'laststatus' is 2) is controlling the output of |CTRL-G|.
 
         field       meaning
         -           Left justify the item.  The default is right justified
                     when minwid is larger than the length of the item.
         0           Leading zeroes in numeric items.  Overridden by '-'.
+
         minwid      Minimum width of the item, padding as set by '-' & '0'.
                     Value must be 50 or less.
+
         maxwid      Maximum width of the item.  Truncation occurs with a '<'
                     on the left for text items.  Numeric items will be
                     shifted down to maxwid-2 digits followed by '>'number
                     where number is the amount of missing digits, much like
                     an exponential notation.
+
         item        A one letter code as described below.
 
-        Following is a description of the possible statusline items.  The
-        second character in "item" is the type:
-                N for number
-                S for string
-                F for flags as described below
-                - not applicable
+    Following is a description of the possible statusline items.
+    The second character in "item" is the type:
+          N :   number
+          S :   string
+          F :   flags as described below
+          - :   applicable
 
         item  meaning
         f S   Path to the file in the buffer, as typed or relative to current
@@ -6556,44 +6558,45 @@ This is done in order for the signcolumn appearence not appear weird during line
 'tabstop' 'ts'          number  (default 8)
                         local to buffer
 
-The value of 'tabstop' will be ignored if
-|'vartabstop'| is set to  anything other than an empty string.
+if  |'vartabstop'| is not an empty string.
+    'tabstop' will be ignored
 
-这是真的输入space, 而softtabstop
+insert时, 输入space, 而softtabstop插入的还是tab
 Number of spaces that a <Tab> in the file counts for.
 Also see |:retab| command,
 and 'softtabstop' option.
 
-        Note: Setting 'tabstop' to any other value than 🔑8🔑 can make your file
-        appear wrong in many places (e.g., when printing it).
-
-        我用python, 8空格缩进不现实
-
 There are four main ways to use tabs in Vim:
 
-1.  傻逼方法:
-    Always keep 'tabstop' at 8,
-    set 'softtabstop' and 'shiftwidth' to 4 (or 3 or whatever you prefer) and use 'noexpandtab'.
-    Then Vim will use a mix of tabs and spaces,
-    but typing <Tab> and <BS> will behave like a tab appears every 4 (or 3) characters.
+1.  此方法不适用于python:
+        Spaces are the preferred indentation method.
+        Tabs should be used solely to remain consistent with code that is already indented with tabs.
+        🔑Python disallows mixing tabs and spaces for indentation.🔑
+    方法:
+        Always keep 'tabstop' at 8,
+        set 'softtabstop' and 'shiftwidth' to 4 (or 3 or whatever you prefer) and use 'noexpandtab'.
+        Then Vim will use a mix of tabs and spaces,
+        but typing <Tab> and <BS> will behave like a tab appears every 4 (or 3) characters.
 
-2.
-        Set 'tabstop' and 'shiftwidth' to whatever you prefer and use 'expandtab'.
-        This way you will always insert spaces.
-        The formatting will never be messed up when 'tabstop' is changed.
+2.  python用户首选?
+    Set 'tabstop' and 'shiftwidth' to whatever you prefer and use 'expandtab'.
+    This way you will always insert <Space>  没有<Tab>
+    The formatting will never be messed up when 'tabstop' is changed.
 
-3.
-        Set 'tabstop' and 'shiftwidth' to whatever you prefer and use a |modeline| to set these values when
-        editing the file again. Only works when using Vim to edit the file.
+3.  Set 'tabstop' and 'shiftwidth' to whatever you prefer
+    (set noexpandtab?)
+    敲TAB键时, 插入真的<Tab>, 而非<Space>?
+    and use a |modeline| to set these values when
+    editing the file again.
+    Only works when using Vim to edit the file.
 
-4.
-        Always set 'tabstop' and 'shiftwidth' to the same value,
-        and 'noexpandtab'.
-        This should then work (for initial indents only)  for any tabstop setting that people use.
-        if you do this
-        It might be nice to  have tabs after the first non-blank inserted as spaces
-
-        Otherwise aligned comments will be wrong when 'tabstop' is  changed.
+4.  Always set 'tabstop' and 'shiftwidth' to the same value,
+    and 'noexpandtab'.
+    This should then work (for initial indents only, 行中间的空格 可能会乱?)  for any tabstop setting that people use.
+    after the first non-blank
+         inserted <Space>s instead of <tab>会更好
+         Otherwise
+             aligned comments (行末的?) will be wrong when 'tabstop' is  changed.
 
 
 
@@ -7106,32 +7109,31 @@ There are four main ways to use tabs in Vim:
 *'virtualedit'* *'ve'*
 'virtualedit' 've'      string  (default "")
                         global
-        A comma separated list of these words:
-            block       Allow virtual editing in Visual block mode.
-            insert      Allow virtual editing in Insert mode.
-            all         Allow virtual editing in all modes.
-            onemore:    只影响normal mode
-                        it will only allow moving the cursor just after the last character of the line.
-                        This makes some commands more consistent.
+    A comma separated list of these words:
+        block       Allow virtual editing in Visual block mode.
+        insert      Allow virtual editing in Insert mode.
+        all         Allow virtual editing in all modes.
+        onemore:    只影响normal mode
+                    it will only allow moving the cursor just after the last character of the line.
+                    This makes some commands more consistent.
 
-            It doesn't make sense to combine "all" with "onemore",  but you will not get a warning for it.
+        It doesn't make sense to combine "all" with "onemore",  but you will not get a warning for it.
 
-    Virtual editing means that the cursor  can be positioned where there is no actual character.
-    This can be
-        halfway into a tab or
-        beyond the end of the line.
+    Virtual editing means that
+        the cursor  can be positioned where there is no actual character.
+        This can be
+            halfway into a tab or
+            beyond the end of the line.
 
     It may also break some plugins or  Vim scripts.
-        For example:
-        because |l| can move the cursor after the last character.
-    Use with care!
+        For example,  because |l| can move the cursor after the last character.
 
-    Using the `$` command
-    will move to the last character in the line,  not past it.
-    如果cursor is beyond the last character in the line: will move the cursor to the left
+    `$` command
+        will move to the last character in the line,  not past it.
+        如果cursor is beyond the last character in the line
+            will move the cursor to the left
 
-    To the end of the screen line.
-        The `g$` command will move
+    To the end of the screen line:  `g$` command
 
 
 

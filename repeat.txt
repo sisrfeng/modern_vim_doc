@@ -192,77 +192,76 @@ q                       Stops recording.
 ==============================================================================
 Using Vim scripts                                       *using-scripts*
 
-        For writing a Vim script,
-        see chapter 41 of the user manual |usr_41.txt|.
+    For writing a Vim script,
+    see chapter 41 of the user manual |usr_41.txt|.
 
 *:so* *:source* *load-vim-script*
-        :[range]so[urce] [file]
-                Runs |Ex| commands or
-                Lua code (".lua" files) from [file],
-                or from the current buffer if no [file] is given.
-                Triggers the |SourcePre| autocommand.
+    :[range]so[urce] [file]
+            Runs |Ex| commands or
+            Lua code (".lua" files) from [file],
+            or from the current buffer if no [file] is given.
+            Triggers the |SourcePre| autocommand.
 
-        if you have a  "other.vimrc" file in the same directory as your |init.vim| file,
-        you can  source it from your |init.vim| file with this command:
+    if you have a  "other.vimrc" file in the same directory as your |init.vim| file,
+    you can  source it from your |init.vim| file with this command:
 
-                :source <sfile>:h/other.vimrc
+            :source <sfile>:h/other.vimrc
 
-        <sfile>  will be  replaced by the file name of the sourced file.
+    <sfile>  will be  replaced by the file name of the sourced file.
 
 *:source!*
-        :[range]so[urce]! {file}
-                Runs |Normal-mode| commands from {file}.
-                When used after |:global|,
-                                                |:argdo|,
-                                                |:windo|,
-                                                |:bufdo|,
-                                   in a loop or
-                                   when another command follows,
-                the display won't be updated while executing the commands.
+:[range]so[urce]! {file}
+    Runs |Normal-mode| commands from {file}.
+    When used after |:global|,
+                    |:argdo|,
+                    |:windo|,
+                    |:bufdo|,
+               in a loop or
+               when another command follows,
+        the display won't be updated while executing the commands.
 
 *:ru* *:runtime*
-        :ru[ntime][!] [where] {file} ..
-                Sources |Ex| commands or
-                Lua code (".lua" files) read from {file} (a relative path) in each directory given by
-                'runtimepath' and/or 'packpath'.
+:ru[ntime][!] [where] {file} ..
+    Sources |Ex| commands or  Lua code (".lua" files)
+    read from {file} (a relative path) in each directory given by
+    'runtimepath' and/or 'packpath'.
 
-                Ignores non-existing files.
+    Ignores non-existing files.
 
-                Example:
-                                        :runtime syntax/c.vim
-                                        :runtime syntax/c.lua
-                There can be multiple space-separated {file} arguments.
-                        Each {file} is searched for in the first directory from 'runtimepath',
-                        then in the second directory,
-                        etc.
-                        When [!] is included,
-                                        all found files are sourced.
-                        Else only the first found file is sourced.
+    Example:
+        :runtime syntax/c.vim
+        :runtime syntax/c.lua
 
-                        关于[where] :
-                                        不写    first 'runtimepath'
-                                                        then   'packpath' 下的"start"的目录
+    There can be multiple space-separated {file} arguments.
+        Each {file} is searched for in the first directory from 'runtimepath',
+        then in the second directory,
+        etc.
+        When [!] is included,
+                        all found files are sourced.
+        Else
+            only the first found file is sourced.
 
-                                        START   search only under "start" in 'packpath'
-                                        OPT     search only under "opt" in 'packpath'
+        关于[where] :
+            空着    first 'runtimepath'
+                           'packpath' 下的"start"的目录
 
-                                        PACK    search under "start" and "opt" in  'packpath'
+            START   search only under "start" in 'packpath'
+            OPT     search only under "opt" in 'packpath'
 
-                                        ALL     first use 'runtimepath', then search  under "start" and "opt" in 'packpath'
+            PACK    search under "start" and "opt" in  'packpath'
 
-                        {file}
-                                        if  contains wildcards it is expanded to all matching files.
-                                        Example:
-                                                                                        :runtime! plugin/**/*.vim
-                                        This is what Vim uses to load the plugin files when starting up.
-                                        This similar command:
-                                                                                        :runtime plugin/**/*.vim
-                                        would source the first file only.
+            ALL     first use 'runtimepath', then search  under "start" and "opt" in 'packpath'
 
-                        When 'verbose' is one or  higher,
-                                        there is a message when no file could be found.
-                        When 'verbose' is two or higher,
-                                        there is a message about each searched file.
+        {file}
+            if  contains wildcards it is expanded to all matching files.
+            Example:
+                :runtime! plugin/**/*.vim
+                🔑This is what Vim uses🔑 to load the plugin files when starting up.
+
+            When 'verbose' is one or  higher,
+                there is a message when no file could be found.
+            When 'verbose' is two or higher,
+                there is a message about each searched file.
 
 *:pa* *:packadd* *E919*
         :pa[ckadd][!] {name}

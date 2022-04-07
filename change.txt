@@ -949,23 +949,32 @@ white-space (whitespace) character:
 *:ret* *:retab* *:retab!*
 :[range]ret[ab][!] [new_tabstop]
 
-    The current value of 'tabstop' is always used to compute the width of existing tabs.
 
-    没叹号时:
-        Replace all 🔑sequences of white-space containing a <Tab>🔑 with
-        new strings of white-space using the new tabstop value given.
-        If you do not specify a new tabstop size or  it is zero,
-            Vim uses the current value of 'tabstop' 作为 [new_tabstop]
+    'set noexpandtab | retab'  (没叹号时 )
+        Replace all 🔑sequences of <Space>(可有可无)+ <Tab>🔑
+        with  new strings of <Tab>和<Space>的组会
+        using the new tabstop value given.
 
-        With !, 会尽可能多的换上tab. 对于连续n个空格, n小于新的tabstop时, 无法变成tab.
+        Width of existing tabs:
+            compute with the current value of 'tabstop' , 不受[new_tabstop]影响
+        [new_tabstop]
+            If not given or  0:
+                option 'tabstop' 不变
 
-    With 'expandtab' on,
-    Vim replaces all tabs with the appropriate number of spaces.
+    'set noexpandtab | retab!'
+        white-space里 只有<Space>, 没有<Tab>时, 也会尽量变tab
+            对于连续n个空格, n小于新的tabstop时, 无法变成tab.
 
-    This command  sets 'tabstop' to the new value given,
-    and  if performed on the whole file,
-    which is default,
-    💛should not make any visible change.💛
+     ----------------------------------------------------------------------------------------------
+
+    'expandtab' on时, :retab
+        相当于比'noexpandtab'时 单独的:retab 多一个操作:
+            将已经存在的 <Tab>裂成tabstop个<Space>  (单独`:set expandtab` 可没这能耐)
+
+    
+
+    If performed on the whole file,  which is default:
+        💛should not make any visible change.💛
 
     Careful:
     This command
@@ -974,27 +983,24 @@ white-space (whitespace) character:
 
     `:retab!` may also change a sequence of spaces by <Tab> characters,
     which can mess up a printf().
+
     A list of tab widths separated by commas may be used in place of a single tabstop.
-    Each value in the list represents the width of one tabstop,
-    except the final value which applies to all following tabstops.
+        Each value in the list represents the width of one tabstop,
+        except the final value which applies to all following tabstops.
 
 *retab-example*
-
-Example  for
-using autocommands and
-":retab" to edit a file which is stored with tabstops at 8 but edited with tabstops set at 4.
- Warning:
-    white space inside of strings may change!
-    Also see 'softtabstop' option.
+Example for  using autocommands and
+":retab" to edit a file which is stored with tabstops at 8
+                                    but edited with tabstops set at 4.
+Also see 'softtabstop' option.
 >
-
   :auto BufReadPost *.xx    retab! 4
 
   :auto BufWritePre *.xx    retab! 8
   :auto BufWritePost    *.xx    retab! 4
 
   :auto BufNewFile  *.xx    set ts=4
-
+<
 ==============================================================================
 5. Copying and moving text              *copy-move*
 
@@ -1504,140 +1510,140 @@ paragraph) or set 'formatprg' to "par".
 *format-comments*
 An overview of comment formatting is in section |30.6| of the user manual.
 
-Vim can automatically insert and format comments in a special way.  Vim
-recognizes a comment by a specific string at the start of the line (💛ignoring
-white space)💛.  Three types of comments can be used:
+    Vim can automatically insert and format comments in a special way.  Vim
+    recognizes a comment by a specific string at the start of the line (💛ignoring
+    white space)💛.  Three types of comments can be used:
 
-- A comment string that repeats at the start of each line.  An example is the  type of comment used in shell scripts, starting with "#".
-- A comment string that occurs only in the first line, not in the following  lines.
-  An example is 🎹this list with dashes.🎹
-- Three-piece comments that have a start string, an end string, and optional
-  lines in between.  The strings for the start, middle and end are different.
-  An example is the C style comment:
-    /*
-     * this is a C comment
-     */
+    - A comment string that repeats at the start of each line.  An example is the  type of comment used in shell scripts, starting with "#".
+    - A comment string that occurs only in the first line, not in the following  lines.
+      An example is 🎹this list with dashes.🎹
+    - Three-piece comments that have a start string, an end string, and optional
+      lines in between.  The strings for the start, middle and end are different.
+      An example is the C style comment:
+        /*
+         * this is a C comment
+         */
 
-The 'comments' option is a comma-separated list of parts.  Each part defines a
-type of comment string.  A part consists of:
-    {flags}:{string}
+    The 'comments' option is a comma-separated list of parts.  Each part defines a
+    type of comment string.  A part consists of:
+        {flags}:{string}
 
-{string} is the literal text that 💛must💛 appear.
+    {string} is the literal text that 💛must💛 appear.
 
-{flags}:
-  n Nested comment.  Nesting with mixed parts is allowed.  If 'comments'
-    is "n:),n:>" a line starting with "> ) >" is a comment.
+    {flags}:
+      n Nested comment.  Nesting with mixed parts is allowed.  If 'comments'
+        is "n:),n:>" a line starting with "> ) >" is a comment.
 
-  b Blank (<Space>, <Tab> or <EOL>) required after {string}.
+      b Blank (<Space>, <Tab> or <EOL>) required after {string}.
 
-  f Only the first line has the comment string.  Do not repeat comment on
-    the next line, but preserve indentation (e.g., a bullet-list).
+      f Only the first line has the comment string.  Do not repeat comment on
+        the next line, but preserve indentation (e.g., a bullet-list).
 
-  💛
-  s Start of three-piece comment
+      💛
+      s Start of three-piece comment
 
-  m Middle of a three-piece comment
+      m Middle of a three-piece comment
 
-  e End of a three-piece comment
+      e End of a three-piece comment
 
-  l Left align. Used together with 's' or 'e', the leftmost character of
-    start or end will line up with the leftmost character from the middle.
-    This is the default and can be omitted. See below for more details.
+      l Left align. Used together with 's' or 'e', the leftmost character of
+        start or end will line up with the leftmost character from the middle.
+        This is the default and can be omitted. See below for more details.
 
-  r Right align. Same as above but rightmost instead of leftmost. See
-    below for more details.
+      r Right align. Same as above but rightmost instead of leftmost. See
+        below for more details.
 
-  x Allows three-piece comments to be ended by just typing the last
-    character of the end-comment string as the first action on a new
-    line when the middle-comment string has been inserted automatically.
-    See below for more details.
-  💛
+      x Allows three-piece comments to be ended by just typing the last
+        character of the end-comment string as the first action on a new
+        line when the middle-comment string has been inserted automatically.
+        See below for more details.
+      💛
 
-  O Don't consider this comment for the "O" command.
+      O Don't consider this comment for the "O" command.
 
 
-  {digits}
-    When together with 's' or 'e': add {digit} amount of offset to an
-    automatically inserted middle or end comment leader. The offset begins
-    from a left alignment. See below for more details.
+      {digits}
+        When together with 's' or 'e': add {digit} amount of offset to an
+        automatically inserted middle or end comment leader. The offset begins
+        from a left alignment. See below for more details.
 
-  -{digits}
-    Like {digits} but reduce the indent.  This only works when there is
-    some indent for the start or end part that can be removed.
+      -{digits}
+        Like {digits} but reduce the indent.  This only works when there is
+        some indent for the start or end part that can be removed.
 
-The flags field may be  empty.
+    The flags field may be  empty.
 
-    When a string has none of the 'f', 's', 'm' or 'e' flags,
-    Vim assumes the  comment string repeats at the start of each line.
+        When a string has none of the 'f', 's', 'm' or 'e' flags,
+        Vim assumes the  comment string repeats at the start of each line.
 
-Any blank space in the text before and after the {string} is part of the  {string},
-so do not include leading or trailing blanks unless the blanks are a required part of the comment string.
+    Any blank space in the text before and after the {string} is part of the  {string},
+    so do not include leading or trailing blanks unless the blanks are a required part of the comment string.
 
-When one comment leader is part of another, specify the part after the whole.
-For example, to include both "-" and "->", use >
-    :set comments=f:->,f:-
+    When one comment leader is part of another, specify the part after the whole.
+    For example, to include both "-" and "->", use >
+        :set comments=f:->,f:-
 
-A three-piece comment must always be given as start,middle,end, with no other
-parts in between.  An example of a three-piece comment is >
-    sr:/*,mb:*,ex:*/
-for C-comments.  To avoid recognizing "*ptr" as a comment, the middle string
-includes the 'b' flag.  For three-piece comments, Vim checks the text after
-the start and middle strings for the end string.  If Vim finds the end string,
-the comment does not continue on the next line.  Three-piece comments must
-have a middle string because otherwise Vim can't recognize the middle lines.
+    A three-piece comment must always be given as start,middle,end, with no other
+    parts in between.  An example of a three-piece comment is >
+        sr:/*,mb:*,ex:*/
+    for C-comments.  To avoid recognizing "*ptr" as a comment, the middle string
+    includes the 'b' flag.  For three-piece comments, Vim checks the text after
+    the start and middle strings for the end string.  If Vim finds the end string,
+    the comment does not continue on the next line.  Three-piece comments must
+    have a middle string because otherwise Vim can't recognize the middle lines.
 
-Notice the use of the "x" flag in the above three-piece comment definition.
-When you hit Return in a C-comment, Vim will insert the middle comment leader
-for the new line: " * ".  To close this comment you just have to type "/"
-before typing anything else on the new line.  This will replace the
-middle-comment leader with the end-comment leader and apply any specified
-alignment, leaving just " */".  There is no need to hit Backspace first.
+    Notice the use of the "x" flag in the above three-piece comment definition.
+    When you hit Return in a C-comment, Vim will insert the middle comment leader
+    for the new line: " * ".  To close this comment you just have to type "/"
+    before typing anything else on the new line.  This will replace the
+    middle-comment leader with the end-comment leader and apply any specified
+    alignment, leaving just " */".  There is no need to hit Backspace first.
 
-When there is a match with a middle part, but there also is a matching end
-part which is longer, the end part is used.  This makes a C style comment work
-without requiring the middle part to end with a space.
+    When there is a match with a middle part, but there also is a matching end
+    part which is longer, the end part is used.  This makes a C style comment work
+    without requiring the middle part to end with a space.
 
-Here is an example of alignment flags at work to make a comment stand out
-(kind of looks like a 1 too). Consider comment string:
+    Here is an example of alignment flags at work to make a comment stand out
+    (kind of looks like a 1 too). Consider comment string:
 
-    :set comments=sr:/***,m:**,ex-2:******/
+        :set comments=sr:/***,m:**,ex-2:******/
 
-                                   /***
-                                     **<--right aligned from "r" flag
-                                     **
-offset 2 spaces for the "-2" flag--->**
-                                   ******/
-In this case, the first comment was typed, then return was pressed 4 times,
-then "/" was pressed to end the comment.
+                                       /***
+                                         **<--right aligned from "r" flag
+                                         **
+    offset 2 spaces for the "-2" flag--->**
+                                       ******/
+    In this case, the first comment was typed, then return was pressed 4 times,
+    then "/" was pressed to end the comment.
 
-Here are some finer points of three part comments. There are three times when
-alignment and offset flags are taken into consideration: opening a new line
-after a start-comment, opening a new line before an end-comment, and
-automatically ending a three-piece comment.  The end alignment flag has a
-backwards perspective; the result is that the same alignment flag used with
-"s" and "e" will result in the same indent for the starting and ending pieces.
-Only one alignment per comment part is meant to be used, but an offset number
-will override the "r" and "l" flag.
+    Here are some finer points of three part comments. There are three times when
+    alignment and offset flags are taken into consideration: opening a new line
+    after a start-comment, opening a new line before an end-comment, and
+    automatically ending a three-piece comment.  The end alignment flag has a
+    backwards perspective; the result is that the same alignment flag used with
+    "s" and "e" will result in the same indent for the starting and ending pieces.
+    Only one alignment per comment part is meant to be used, but an offset number
+    will override the "r" and "l" flag.
 
-Enabling 'cindent' will override the alignment flags in many cases.
-Reindenting using a different method like |gq| or |=| will not consult
-alignment flags either. The same behaviour can be defined in those other
-formatting options. One consideration is that 'cindent' has additional options
-for context based indenting of comments but cannot replicate many three piece
-indent alignments.  However, 'indentexpr' has the ability to work better with
-three piece comments.
+    Enabling 'cindent' will override the alignment flags in many cases.
+    Reindenting using a different method like |gq| or |=| will not consult
+    alignment flags either. The same behaviour can be defined in those other
+    formatting options. One consideration is that 'cindent' has additional options
+    for context based indenting of comments but cannot replicate many three piece
+    indent alignments.  However, 'indentexpr' has the ability to work better with
+    three piece comments.
 
-Other examples:
+    Other examples:
 
-   "b:*"    Includes lines starting with "*", but not if the "*" is
-        followed by a non-blank.  This avoids a pointer dereference
-        like "*str" to be recognized as a comment.
-   "n:>"    Includes a line starting with ">", ">>", ">>>", etc.
-   "fb:-"   Format a list that starts with "- ".
+       "b:*"    Includes lines starting with "*", but not if the "*" is
+            followed by a non-blank.  This avoids a pointer dereference
+            like "*str" to be recognized as a comment.
+       "n:>"    Includes a line starting with ">", ">>", ">>>", etc.
+       "fb:-"   Format a list that starts with "- ".
 
-By default, "b:#" is included.  This means that a line that starts with
-"#include" is not recognized as a comment line.  But a line that starts with
-"# define" is recognized.  This is a compromise.
+    By default, "b:#" is included.  This means that a line that starts with
+    "#include" is not recognized as a comment line.  But a line that starts with
+    "# define" is recognized.  This is a compromise.
 
 *fo-table*
 

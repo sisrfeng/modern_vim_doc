@@ -907,21 +907,19 @@ Note: these are typed literally,  they are not special keys!
        the file name isn't used  to match with (for FileType,  Syntax and SpellFileMissing  events).
 
 *:<sfile>* *<sfile>*
-        <sfile>     1. When executing a ":source" command, is replaced with
-                                        the file name of the 🔑sourced file.🔑 (the name of the file containing this line.)
-                                        Example:
-                                                :au BufNewFile,BufRead *.html so <sfile>:h/html.vim
-                                        Here Vim expands <sfile> to
-
+<sfile>     1. When executing a ":source" command, is replaced with
+                the file name of the 🔑sourced file.🔑 (the name of the file containing this line.)
+                Example:
+                        :au BufNewFile,BufRead *.html so <sfile>:h/html.vim
 *E498*
-                    2. When executing a function, is replaced with:
-                   "function {function-name}[{lnum}]"
-            例子: 💦function ReloaD💦
+            2. When executing a function, is replaced with:
+               "function {function-name}[{lnum}]"
+                例子: 💦function ReloaD💦
 
-                   function call nesting is indicated like this:
-                   "function {function-name1}[{lnum}]..{function-name2}[{lnum}]"
+               function call nesting is indicated like this:
+               "function {function-name1}[{lnum}]..{function-name2}[{lnum}]"
 
-                   Note that filename-modifiers are useless when <sfile> is  used inside a function.
+               Note that filename-modifiers are useless when <sfile> is  used inside a function.
 
 *:<slnum>* *<slnum>*
         <slnum>
@@ -1263,3 +1261,4 @@ The character used for the pattern indicates the type of command-line:
         -       text for |:insert| or |:append|
 
  vim:tw=78:ts=8:noet:ft=help:norl:
+leo_DIY

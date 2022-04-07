@@ -2265,23 +2265,26 @@ If you don't want to highlight these errors, leave it unset.
 
 NROFF                                           *nroff.vim* *ft-nroff-syntax*
 
-The nroff syntax file works with AT&T n/troff out of the box.  You need to
-activate the GNU groff extra features included in the syntax file before you
+The nroff syntax file works with AT&T n/troff out of the box.
+You need to  activate the GNU groff extra features included in the syntax file before you
 can use them.
 
-For example, Linux and BSD distributions use groff as their default text
-processing package.  In order to activate the extra syntax highlighting
-features for groff, arrange for files to be recognized as groff (see
-|ft-groff-syntax|) or add the following option to your start-up files:
+For example,
+Linux and BSD distributions use groff as their default text  processing package.
+In order to activate the extra syntax highlighting features for groff,
+    arrange for files to be recognized as groff (see |ft-groff-syntax|) or
+    add the following option to your start-up files:
 
   :let nroff_is_groff = 1
 
-Groff is different from the old AT&T n/troff that you may still find in
-Solaris.  Groff macro and request names can be longer than 2 characters and
-there are extensions to the language primitives.  For example, in AT&T troff
-you access the year as a 2-digit number with the request \(yr.  In groff you
-can use the same request, recognized for compatibility, or you can use groff's
-native syntax, \[yr].  Furthermore, you can use a 4-digit year directly:
+Groff is different from the old AT&T n/troff that you may still find in  Solaris.
+Groff macro and request names
+    can be longer than 2 characters and  there are extensions to the language primitives.
+    For example, in AT&T troff
+    you access the year as a 2-digit number with the request \(yr.
+    In groff you  can use the same request,
+    recognized for compatibility,
+    or you can use groff's  native syntax, \[yr].  Furthermore, you can use a 4-digit year directly:
 \[year].  Macro requests can be longer than 2 characters, for example, GNU mm
 accepts the requests ".VERBON" and ".VERBOFF" for creating verbatim
 environments.
@@ -3488,7 +3491,7 @@ set "tf_minlines" to the value you desire.  Example:
 
 VIM                     *vim.vim*               *ft-vim-syntax*
 *g:vimsyn_minlines*     *g:vimsyn_maxlines*
-There is a trade-off between more accurate syntax highlighting versus screen  updating speed. 
+There is a trade-off between more accurate syntax highlighting versus screen  updating speed.
 To improve accuracy,
 you may wish to increase the  g:vimsyn_minlines variable.
 The g:vimsyn_maxlines variable may be used to  improve screen updating rates (see |:syn-sync| for more on this).
@@ -3650,7 +3653,7 @@ The syntax script for zsh allows for syntax-based folding:
         for a lot of groups.
 
     A syntax group and  a highlight group are similar.
-    For a highlight 
+    For a highlight
         group you will have given highlight attributes.
         These attributes will be used for the syntax group with the same name.
 
@@ -3675,7 +3678,7 @@ DEFINING CASE                                           *:syn-case* *E390*
 :sy[ntax] case [match | ignore]
         This defines if the following ":syntax" commands will work with  matching case,
         or with ignoring case,  when using  "ignore".
-        Any items before this are not affected, 
+        Any items before this are not affected,
         all  items until the next ":syntax case" command are affected.
 
 :sy[ntax] case
@@ -4825,28 +4828,31 @@ in their own color.
                         In case g:colors_name has not been defined :colo will
                         output "default".
 
-:colo[rscheme] {name}   Load color scheme {name}.  This searches 'runtimepath'
-                        for the file "colors/{name}.(vim|lua)".  The first one that
-                        is found is loaded.
-                        Note: "colors/{name}.vim" is tried first.
-                        Also searches all plugins in 'packpath', first below
-                        "start" and then under "opt".
+:colo[rscheme] {name}
+    Load color scheme {name}.
+    This searches 'runtimepath'  for the file "colors/{name}.(vim|lua)".
+    The first one that  is found is loaded.
+    Note: "colors/{name}.vim" is tried first.
+    Also searches all plugins in 'packpath',
+    first below  "start" and
+    then under "opt".
 
-                        Doesn't work recursively, thus you can't use
-                        ":colorscheme" in a color scheme script.
+    Doesn't work recursively,
+    thus you can't use  ":colorscheme" in a color scheme script.
 
-                        To customize a color scheme use another name, e.g.
-                        "~/.config/nvim/colors/mine.vim", and use `:runtime` to
-                        load the original colorscheme:
-                                runtime colors/evening.vim
-                                hi Statement ctermfg=Blue guifg=Blue
+    To customize a color scheme use another name,
+    e.g.
+    "~/.config/nvim/colors/mine.vim",
+    and use `:runtime` to  load the original colorscheme:
+            runtime colors/evening.vim
+            hi Statement ctermfg=Blue guifg=Blue
 
-                        Before the color scheme will be loaded the
-                        |ColorSchemePre| autocommand event is triggered.
-                        After the color scheme has been loaded the
-                        |ColorScheme| autocommand event is triggered.
-                        For info about writing a colorscheme file:
-                                :edit $VIMRUNTIME/colors/README.txt
+    Before the color scheme will be loaded the
+    |ColorSchemePre| autocommand event is triggered.
+    After the color scheme has been loaded the
+    |ColorScheme| autocommand event is triggered.
+    For info about writing a colorscheme file:
+            :edit $VIMRUNTIME/colors/README.txt
 
 :hi[ghlight]            List all the current highlight groups that have
                         attributes set.
