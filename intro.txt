@@ -201,7 +201,7 @@ When syntax highlighting is used to read this, text that is not typed
 literally is often highlighted with the Special group.  These are items in [],
 {} and <>, and CTRL-X.
 
-Note that Vim uses all possible characters in commands.  Sometimes the [], {}
+Vim uses all possible characters in commands.  Sometimes the [], {}
 and <> are part of what you type, the context should make this clear.
 
 
@@ -210,7 +210,7 @@ and <> are part of what you type, the context should make this clear.
 *count* *[count]*
 [count]         An optional number that may precede the command to multiply
                 or iterate the command.  If no number is given, a count of one
-                is used, unless otherwise noted.  Note that in this manual the
+                is used, unless otherwise noted.  In this manual the
                 [count] is not mentioned in the description of the command,
                 but only in the explanation.  This was done to make the
                 commands easier to look up.  If the 'showcmd' option is on,
@@ -334,7 +334,7 @@ vim里i_ctrl_v后ctrl+m或enter, 得到 :
 <xCSI>          CSI when typed in the GUI                               *<xCSI>*
 能插入
 *<EOL>*           end-of-line (can be <CR>, <NL> or <CR><NL>,
-                            depends on system and 'fileformat')  
+                            depends on system and 'fileformat')
 <Ignore>        cancel wait-for-character               *<Ignore>*
 <NOP>           no-op: do nothing (useful in mappings)  *<Nop>*
 
@@ -403,7 +403,7 @@ but often it can be typed literally, e.g., with  the ":map" command.  The rules 
          Backslash is represented with "\\",
          or "<Bslash>".
 
-         Literal "<" is represented with "\<" or "<lt>". 
+         Literal "<" is represented with "\<" or "<lt>".
          When there is no  confusion possible
              "<" can be used directly.
  4.  "<key>" means the special key typed (see the table above).  Examples:
@@ -417,7 +417,7 @@ but often it can be typed literally, e.g., with  the ":map" command.  The rules 
 
 The <> notation uses <lt> to escape the special meaning of key names.
 when 'cpoptions' does not include the 'B' flag.
-    Using a  backslash also works  
+    Using a  backslash also works
 
     Examples to get six characters 💦<Home>💦:
             :imap <C-l> \<Home>
@@ -764,10 +764,10 @@ buffer lines    logical lines   window lines    screen lines
                                                 8.  ccc ccc c
 1. aaa          1. aaa          1. aaa          9.  cc
 2. bbb          2. bbb          2. bbb          10. ddd
-3. ccc ccc ccc  3. ccc ccc ccc  3. ccc ccc c    11.    
+3. ccc ccc ccc  3. ccc ccc ccc  3. ccc ccc c    11.
 4. ddd          4. ddd          4. cc           12. === status line ===
                                 5. ddd          13. (command line)
-                                6.    
+                                6.
 
 
 API client

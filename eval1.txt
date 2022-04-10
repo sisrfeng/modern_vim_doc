@@ -1,0 +1,1874 @@
+*eval.txt*  Nvim
+
+Expression evaluation           *expression* *expr* *E15* *eval*
+
+Using expressions is introduced in chapter 41 of the user manual |usr_41.txt|.
+
+==============================================================================
+
+1. Variables                        *variables*
+
+1.1 Variable types
+*E712* *E896* *E897* *E899*
+There are seven types of variables:
+
+*Number* *Integer*
+Number      A 32 or 64 bit signed number.  |expr-number|
+        The number of bits is available in |v:numbersize|.
+        Examples:  -123  0x10  0177  0o177  0b1011
+
+Float       A floating point number. |floating-point-format| *Float*
+        Examples: 123.456  1.15e-6  -1.1e3
+
+String      A NUL terminated string of 8-bit unsigned characters (bytes).
+        |expr-string| Examples: "ab\txx\"--"  'x-z''a,c'
+
+Funcref     A reference to a function |Funcref|.
+        Example: function("strlen")
+        It can be bound to a dictionary and arguments, it then works
+        like a Partial.
+        Example: function("Callback", [arg], myDict)
+
+List        An ordered sequence of items, see |List| for details.
+        Example: [1, 2, ['a', 'b']]
+
+Dictionary  An associative, unordered array: Each entry has a key and a
+        value. |Dictionary|
+        Examples:
+            {'blue': "#0000ff", 'red': "#ff0000"}
+            #{blue: "#0000ff", red: "#ff0000"}
+
+Blob        Binary Large Object. Stores any sequence of bytes.  See |Blob|
+        for details.
+        Example: 0zFF00ED015DAF
+        0z is an empty Blob.
+
+The Number and String types are converted automatically, depending on how they
+are used.
+
+Conversion from a Number to a String is by making the ASCII representation of
+the Number.  Examples:
+    Number 123  --> String "123"
+    Number 0    --> String "0"
+    Number -1   --> String "-1"
+*octal*
+Conversion from a String to a Number is done by converting the first digits to
+a number.  Hexadecimal "0xf9", Octal "017" or "0o17", and Binary "0b10"
+numbers are recognized.  If the String doesn't start with digits, the result
+is zero. Examples:
+    String "456"    --> Number 456
+    String "6bar"   --> Number 6
+    String "foo"    --> Number 0
+    String "0xf1"   --> Number 241
+    String "0100"   --> Number 64
+    String "0o100"  --> Number 64
+    String "0b101"  --> Number 5
+    String "-8" --> Number -8
+    String "+8" --> Number 0
+
+To force conversion from String to Number, add zero to it:
+    :echo "0100" + 0
+    64
+
+To avoid a leading zero to cause octal conversion, or for using a different
+base, use |str2nr()|.
+
+*TRUE* *FALSE* *Boolean*
+For boolean operators Numbers are used.  Zero is FALSE, non-zero is TRUE.
+You can also use |v:false| and |v:true|.
+When TRUE is returned from a function it is the Number one, FALSE is the
+number zero.
+
+In the command:
+    :if "foo"
+    :" NOT executed
+"foo" is converted to 0, which means FALSE.  If the string starts with a
+non-zero number it means TRUE:
+    :if "8foo"
+    :" executed
+To test for a non-empty string, use empty():
+    :if !empty("foo")
+
+*non-zero-arg*
+Function arguments often behave slightly different from |TRUE|: If the
+argument is present and it evaluates to a non-zero Number, |v:true| or a
+non-empty String, then the value is considered to be TRUE.
+" " and "0" are also non-empty strings, thus considered to be TRUE.
+A List, Dictionary or Float is not a Number or String, thus evaluate to FALSE.
+
+*E745* *E728* *E703* *E729* *E730* *E731*
+*E974* *E975* *E976*
+|List|, |Dictionary|, |Funcref|, and |Blob| types are not automatically
+converted.
+
+*E805* *E806* *E808*
+When mixing Number and Float the Number is converted to Float.  Otherwise
+there is no automatic conversion of Float.  You can use str2float() for String
+to Float, printf() for Float to String and float2nr() for Float to Number.
+
+*E891* *E892* *E893* *E894*
+When expecting a Float a Number can also be used, but nothing else.
+
+*no-type-checking*
+You will not get an error if you try to change the type of a variable.
+
+
+1.2 Function references
+*Funcref* *E695* *E718*
+A Funcref variable is obtained
+    with the |function()| function,
+    the |funcref()| function
+    or created with the |expr-lambda|.
+It can be used  in an expression in the place of a function name,
+before the parenthesis around the arguments,
+to invoke the function it refers to.
+Example:
+
+    :let Fn = function("MyFunc")
+    :echo Fn()
+*E704* *E705* *E707*
+A Funcref variable must start with
+    a capital,
+    "s:",
+    "w:",
+    "t:" or "b:".
+
+ You can use "g:" but the following name must still start with a capital.
+ You cannot have both a Funcref variable and a function with the same name.
+A special case is defining a function and directly assigning its Funcref to a
+Dictionary entry.  Example:
+    :function dict.init() dict
+    :   let self.val = 0
+    :endfunction
+
+The key of the Dictionary can start with a lower case letter.  The actual
+function name is not used here.  Also see |numbered-function|.
+
+A Funcref can also be used with the |:call| command:
+    :call Fn()
+    :call dict.init()
+
+The name of the referenced function can be obtained with |string()|.
+    :let func = string(Fn)
+
+You can use |call()| to invoke a Funcref
+and use a list variable for the  arguments:
+    :let r = call(Fn, mylist)
+
+*Partial*
+A Funcref optionally binds a Dictionary and/or arguments.  This is also called
+
+a Partial.  This is created by passing the Dictionary and/or arguments to
+function() or funcref().  When calling the function the Dictionary and/or
+arguments will be passed to the function.  Example:
+
+    let Cb = function('Callback', ['foo'], myDict)
+    call Cb('bar')
+
+This will invoke the function as if using:
+    call myDict.Callback('foo', 'bar')
+
+Binding a function to a Dictionary also happens when the function is
+a member of the Dictionary:
+
+    let myDict.myFunction = MyFunction
+    call myDict.myFunction()
+
+Here MyFunction() will get myDict passed as "self".  This happens when the
+"myFunction" member is accessed.  When assigning "myFunction" to otherDict
+and calling it, it will be bound to otherDict:
+
+    let otherDict.myFunction = myDict.myFunction
+    call otherDict.myFunction()
+
+Now "self" will be "otherDict".  But when the dictionary was bound explicitly
+this won't happen:
+
+    let myDict.myFunction = function(MyFunction, myDict)
+    let otherDict.myFunction = myDict.myFunction
+    call otherDict.myFunction()
+
+Here "self" will be "myDict", because it was bound explicitly.
+
+
+1.3 Lists
+*list* *List* *Lists* *E686*
+A List is an ordered sequence of items.  An item can be of any type.  Items
+can be accessed by their index number.  Items can be added and removed at any
+position in the sequence.
+
+
+List creation
+*E696* *E697*
+A List is created with a comma separated list of items in square brackets.
+Examples:
+    :let mylist = [1, two, 3, "four"]
+    :let emptylist = []
+
+An item can be any expression.  Using a List for an item creates a
+List of Lists:
+    :let nestlist = [[11, 12], [21, 22], [31, 32]]
+
+An extra comma after the last item is ignored.
+
+
+List index
+*list-index* *E684*
+An item in the List can be accessed by putting the index in square brackets
+after the List.  Indexes are zero-based, thus the first item has index zero.
+    :let item = mylist[0]       " get the first item: 1
+    :let item = mylist[2]       " get the third item: 3
+
+When the resulting item is a list this can be repeated:
+    :let item = nestlist[0][1]  " get the first list, second item: 12
+
+A negative index is counted from the end.  Index -1 refers to the last item in
+the List, -2 to the last but one item, etc.
+    :let last = mylist[-1]      " get the last item: "four"
+
+To avoid an error for an invalid index use the |get()| function.  When an item
+is not available it returns zero or the default value you specify:
+    :echo get(mylist, idx)
+    :echo get(mylist, idx, "NONE")
+
+
+List concatenation
+
+Two lists can be concatenated with the "+" operator:
+    :let longlist = mylist + [5, 6]
+    :let mylist += [7, 8]
+
+To prepend or append an item turn the item into a list by putting [] around
+it.  To change a list in-place see |list-modification| below.
+
+
+Sublist
+*sublist*
+A part of the List can be obtained by specifying the first and last index,
+separated by a colon in square brackets:
+    :let shortlist = mylist[2:-1]   " get List [3, "four"]
+
+Omitting the first index is similar to zero.  Omitting the last index is
+similar to -1.
+    :let endlist = mylist[2:]   " from item 2 to the end: [3, "four"]
+    :let shortlist = mylist[2:2]    " List with one item: [3]
+    :let otherlist = mylist[:]  " make a copy of the List
+
+If the first index is beyond the last item of the List or the second item is
+before the first item, the result is an empty list.  There is no error
+message.
+
+If the second index is equal to or greater than the length of the list the
+length minus one is used:
+    :let mylist = [0, 1, 2, 3]
+    :echo mylist[2:8]       " result: [2, 3]
+
+NOTE: mylist[s:e] means using the variable "s:e" as index.  Watch out for
+using a single letter variable before the ":".  Insert a space when needed:
+mylist[s : e].
+
+
+List identity
+*list-identity*
+When variable "aa" is a list and you assign it to another variable "bb", both
+variables refer to the same list.  Thus changing the list "aa" will also
+change "bb":
+    :let aa = [1, 2, 3]
+    :let bb = aa
+    :call add(aa, 4)
+    :echo bb
+    [1, 2, 3, 4]
+
+Making a copy of a list is done with the |copy()| function.  Using [:] also
+works, as explained above.  This creates a shallow copy of the list: Changing
+a list item in the list will also change the item in the copied list:
+    :let aa = [[1, 'a'], 2, 3]
+    :let bb = copy(aa)
+    :call add(aa, 4)
+    :let aa[0][1] = 'aaa'
+    :echo aa
+    [[1, aaa], 2, 3, 4]
+    :echo bb
+    [[1, aaa], 2, 3]
+
+To make a completely independent list use |deepcopy()|.  This also makes a
+copy of the values in the list, recursively.  Up to a hundred levels deep.
+
+The operator "is" can be used to check if two variables refer to the same
+List.  "isnot" does the opposite.  In contrast "==" compares if two lists have
+the same value.
+    :let alist = [1, 2, 3]
+    :let blist = [1, 2, 3]
+    :echo alist is blist
+    0
+    :echo alist == blist
+    1
+
+Note about comparing lists: Two lists are considered equal if they have the
+same length and all items compare equal, as with using "==".  There is one
+exception: When comparing a number with a string they are considered
+different.  There is no automatic type conversion, as with using "==" on
+variables.  Example:
+    echo 4 == "4"
+    1
+    echo [4] == ["4"]
+    0
+
+Thus comparing Lists is more strict than comparing numbers and strings.  You
+can compare simple values this way too by putting them in a list:
+
+    :let a = 5
+    :let b = "5"
+    :echo a == b
+    1
+    :echo [a] == [b]
+    0
+
+
+List unpack
+
+To unpack the items in a list to individual variables, put the variables in
+square brackets, like list items:
+    :let [var1, var2] = mylist
+
+When the number of variables does not match the number of items in the list
+this produces an error.  To handle any extra items from the list append ";"
+and a variable name:
+    :let [var1, var2; rest] = mylist
+
+This works like:
+    :let var1 = mylist[0]
+    :let var2 = mylist[1]
+    :let rest = mylist[2:]
+
+Except that there is no error if there are only two items.  "rest" will be an
+empty list then.
+
+
+List modification
+*list-modification*
+To change a specific item of a list use |:let| this way:
+    :let list[4] = "four"
+    :let listlist[0][3] = item
+
+To change part of a list you can specify the first and last item to be
+modified.  The value must at least have the number of items in the range:
+    :let list[3:5] = [3, 4, 5]
+
+Adding and removing items from a list is done with functions.  Here are a few
+examples:
+    :call insert(list, 'a')     " prepend item 'a'
+    :call insert(list, 'a', 3)  " insert item 'a' before list[3]
+    :call add(list, "new")      " append String item
+    :call add(list, [1, 2])     " append a List as one new item
+    :call extend(list, [1, 2])  " extend the list with two more items
+    :let i = remove(list, 3)    " remove item 3
+    :unlet list[3]          " idem
+    :let l = remove(list, 3, -1)    " remove items 3 to last item
+    :unlet list[3 : ]       " idem
+    :call filter(list, 'v:val !~ "x"')  " remove items with an 'x'
+
+Changing the order of items in a list:
+    :call sort(list)        " sort a list alphabetically
+    :call reverse(list)     " reverse the order of items
+    :call uniq(sort(list))      " sort and remove duplicates
+
+
+For loop
+
+The |:for| loop executes commands for each item in a |List| or |Blob|.
+A variable is set to each item in the sequence.  Example with a List:
+    :for item in mylist
+    :   call Doit(item)
+    :endfor
+
+This works like:
+    :let index = 0
+    :while index < len(mylist)
+    :   let item = mylist[index]
+    :   :call Doit(item)
+    :   let index = index + 1
+    :endwhile
+
+If all you want to do is modify each item in the list then the |map()|
+function will be a simpler method than a for loop.
+
+Just like the |:let| command, |:for| also accepts a list of variables.  This
+requires the argument to be a list of lists.
+    :for [lnum, col] in [[1, 3], [2, 8], [3, 0]]
+    :   call Doit(lnum, col)
+    :endfor
+
+This works like a |:let| command is done for each list item.  Again, the types
+must remain the same to avoid an error.
+
+It is also possible to put remaining items in a List variable:
+    :for [i, j; rest] in listlist
+    :   call Doit(i, j)
+    :   if !empty(rest)
+    :      echo "remainder: " . string(rest)
+    :   endif
+    :endfor
+
+For a Blob one byte at a time is used.
+
+
+List functions
+*E714*
+Functions that are useful with a List:
+    :let r = call(funcname, list)   " call a function with an argument list
+    :if empty(list)         " check if list is empty
+    :let l = len(list)      " number of items in list
+    :let big = max(list)        " maximum value in list
+    :let small = min(list)      " minimum value in list
+    :let xs = count(list, 'x')  " count nr of times 'x' appears in list
+    :let i = index(list, 'x')   " index of first 'x' in list
+    :let lines = getline(1, 10) " get ten text lines from buffer
+    :call append('$', lines)    " append text lines in buffer
+    :let list = split("a b c")  " create list from items in a string
+    :let string = join(list, ', ')  " create string from list items
+    :let s = string(list)       " String representation of list
+    :call map(list, '">> " . v:val')  " prepend ">> " to each item
+
+Don't forget that a combination of features can make things simple.  For
+example, to add up all the numbers in a list:
+    :exe 'let sum = ' . join(nrlist, '+')
+
+
+1.4 Dictionaries
+又称为map?
+*Dict* *dict* *Dictionaries* *Dictionary*
+
+    A Dictionary is an associative array:
+    Each entry has a key and a value.
+    The entry can be located with the key.
+    The entries are stored without a specific ordering.
+
+
+Dictionary creation
+*E720* *E721* *E722* *E723*
+    A Dictionary is created with a comma separated list of entries in curly braces.
+    Each entry has a key and a value,
+    separated by a colon.
+    Each key can only appear once.
+    Examples:
+
+    :let mydict = {1: 'one', 2: 'two', 3: 'three'}
+    :let emptydict = {}
+*E713* *E716* *E717*
+    A key is always a String.
+    You can use a Number,
+    it will be converted to a String automatically.
+    'Thus the String '4' and the number 4 will find the same entry'  The String '04' and the Number 04 are different,
+    since the Number will be converted to the String '4'.
+    The empty string can also be used as a key.
+
+
+*literal-Dict*
+        To 💚avoid having to put quotes around every key💚 the #{} form can be used.
+    This does require the key to consist only of ASCII letters,
+    digits,
+    '-' and '_'. (不能用括号等字符作为key)
+    Example:
+
+    :let mydict = #{zero: 0, one_key: 1, two-key: 2, 333: 3}
+
+        333 here is the string "333".
+        🔑Empty keys are not possible with #{}.🔑
+        A value can be any expression.
+        Using a Dictionary for a value creates a nested Dictionary:
+
+    :let nestdict = {1: {11: 'a', 12: 'b'}, 2: {21: 'c'}}
+
+        An extra comma after the last entry is ignored.
+
+Accessing entries
+
+The normal way to access an entry is by putting the key in square brackets:
+    :let val = mydict["one"]
+    :let mydict["four"] = 4
+
+You can add new entries to an existing Dictionary this way, unlike Lists.
+
+For keys that consist entirely of letters, digits and underscore the following
+form can be used |expr-entry|:
+    :let val = mydict.one
+    :let mydict.four = 4
+
+Since an entry can be any type, also a List and a Dictionary, the indexing and
+key lookup can be repeated:
+    :echo dict.key[idx].key
+
+
+Dictionary to List conversion
+
+You may want to loop over the entries in a dictionary.  For this you need to
+turn the Dictionary into a List and pass it to |:for|.
+
+Most often you want to loop over the keys, using the |keys()| function:
+    :for key in keys(mydict)
+    :   echo key . ': ' . mydict[key]
+    :endfor
+
+The List of keys is unsorted.  You may want to sort them first:
+    :for key in sort(keys(mydict))
+
+To loop over the values use the |values()| function:
+    :for v in values(mydict)
+    :   echo "value: " . v
+    :endfor
+
+If you want both the key and the value use the |items()| function.  It returns
+a List in which each item is a List with two items, the key and the value:
+    :for [key, value] in items(mydict)
+    :   echo key . ': ' . value
+    :endfor
+
+
+Dictionary identity
+*dict-identity*
+Just like Lists you need to use |copy()| and |deepcopy()| to make a copy of a
+Dictionary.  Otherwise, assignment results in referring to the same
+Dictionary:
+    :let onedict = {'a': 1, 'b': 2}
+    :let adict = onedict
+    :let adict['a'] = 11
+    :echo onedict['a']
+    11
+
+Two Dictionaries compare equal if all the key-value pairs compare equal.  For
+more info see |list-identity|.
+
+
+Dictionary modification
+*dict-modification*
+To change an already existing entry of a Dictionary, or to add a new entry,
+use |:let| this way:
+    :let dict[4] = "four"
+    :let dict['one'] = item
+
+Removing an entry from a Dictionary is done with |remove()| or |:unlet|.
+Three ways to remove the entry with key "aaa" from dict:
+    :let i = remove(dict, 'aaa')
+    :unlet dict.aaa
+    :unlet dict['aaa']
+
+Merging a Dictionary with another is done with |extend()|:
+    :call extend(adict, bdict)
+This extends adict with all entries from bdict.  Duplicate keys cause entries
+in adict to be overwritten.  An optional third argument can change this.
+The order of entries in a Dictionary is irrelevant, thus don't
+expect ":echo adict" to show the items from bdict after the older entries in
+adict.
+
+Weeding out entries from a Dictionary can be done with |filter()|:
+    :call filter(dict, 'v:val =~ "x"')
+This removes all entries from "dict" with a value not matching 'x'.
+This can also be used to remove all entries:
+    call filter(dict, 0)
+
+
+Dictionary function
+*Dictionary-function* *self* *E725* *E862*
+When a function is defined with the "dict" attribute it can be used in a
+special way with a dictionary.  Example:
+    :function Mylen() dict
+    :   return len(self.data)
+    :endfunction
+    :let mydict = {'data': [0, 1, 2, 3], 'len': function("Mylen")}
+    :echo mydict.len()
+
+This is like a
+ethod in object oriented programming.
+The entry in the  Dictionary is a |Funcref|.
+The local variable "self" refers to the dictionary
+the function was invoked from.
+
+It is also possible to add a function without the "dict" attribute as a
+Funcref to a Dictionary, but the "self" variable is not available then.
+
+*numbered-function* *anonymous-function*
+To avoid the extra name for the function it can be defined and directly
+assigned to a Dictionary in this way:
+    :let mydict = {'data': [0, 1, 2, 3]}
+    :function mydict.len()
+    :   return len(self.data)
+    :endfunction
+    :echo mydict.len()
+
+The function will then get a number and the value of dict.len is a |Funcref|
+that references this function.  The function can only be used through a
+|Funcref|.  It will automatically be deleted when there is no |Funcref|
+remaining that refers to it.
+
+It is not necessary to use the "dict" attribute for a numbered function.
+
+If you get an error for a numbered function, you can find out what it is with
+a trick.  Assuming the function is 42, the command is:
+    :function g:42
+
+
+Functions for Dictionaries
+*E715*
+Functions that can be used with a Dictionary:
+    :if has_key(dict, 'foo')    " TRUE if dict has entry with key "foo"
+    :if empty(dict)         " TRUE if dict is empty
+    :let l = len(dict)      " number of items in dict
+    :let big = max(dict)        " maximum value in dict
+    :let small = min(dict)      " minimum value in dict
+    :let xs = count(dict, 'x')  " count nr of times 'x' appears in dict
+    :let s = string(dict)       " String representation of dict
+    :call map(dict, '">> " . v:val')  " prepend ">> " to each item
+
+
+1.5 Blobs
+*blob* *Blob* *Blobs* *E978*
+A Blob is a binary object.
+It can be used to read an image from a file and
+send it over a channel,
+for example.
+
+A Blob mostly behaves like a |List| of numbers,
+where each number has the value of an 8-bit byte,
+from 0 to 255.
+
+
+Blob creation
+
+A Blob can be created with a |blob-literal|:
+    :let b = 0zFF00ED015DAF
+Dots can be inserted between bytes (pair of hex characters) for readability,
+they don't change the value:
+    :let b = 0zFF00.ED01.5DAF
+
+A blob can be read from a file with |readfile()| passing the {type} argument
+set to "B", for example:
+    :let b = readfile('image.png', 'B')
+
+
+Blob index
+*blob-index* *E979*
+A byte in the Blob can be accessed by putting the index in square brackets
+after the Blob.  Indexes are zero-based, thus the first byte has index zero.
+    :let myblob = 0z00112233
+    :let byte = myblob[0]       " get the first byte: 0x00
+    :let byte = myblob[2]       " get the third byte: 0x22
+
+A negative index is counted from the end.  Index -1 refers to the last byte in
+the Blob, -2 to the last but one byte, etc.
+    :let last = myblob[-1]      " get the last byte: 0x33
+
+To avoid an error for an invalid index use the |get()| function.  When an item
+is not available it returns -1 or the default value you specify:
+    :echo get(myblob, idx)
+    :echo get(myblob, idx, 999)
+
+
+Blob iteration
+
+The |:for| loop executes commands for each byte of a Blob.  The loop variable is
+set to each byte in the Blob.  Example:
+    :for byte in 0z112233
+    :   call Doit(byte)
+    :endfor
+This calls Doit() with 0x11, 0x22 and 0x33.
+
+
+Blob concatenation
+
+Two blobs can be concatenated with the "+" operator:
+    :let longblob = myblob + 0z4455
+    :let myblob += 0z6677
+
+To change a blob in-place see |blob-modification| below.
+
+
+Part of a blob
+
+A part of the Blob can be obtained by specifying the first and last index,
+separated by a colon in square brackets:
+    :let myblob = 0z00112233
+    :let shortblob = myblob[1:2]    " get 0z1122
+    :let shortblob = myblob[2:-1]   " get 0z2233
+
+Omitting the first index is similar to zero.  Omitting the last index is
+similar to -1.
+    :let endblob = myblob[2:]   " from item 2 to the end: 0z2233
+    :let shortblob = myblob[2:2]    " Blob with one byte: 0z22
+    :let otherblob = myblob[:]  " make a copy of the Blob
+
+If the first index is beyond the last byte of the Blob or the second byte is
+before the first byte, the result is an empty Blob.  There is no error
+message.
+
+If the second index is equal to or greater than the length of the Blob the
+length minus one is used:
+    :echo myblob[2:8]       " result: 0z2233
+
+
+Blob modification
+*blob-modification*
+To change a specific byte of a blob use |:let| this way:
+    :let blob[4] = 0x44
+
+When the index is just one beyond the end of the Blob, it is appended. Any
+higher index is an error.
+
+To change a sequence of bytes the [:] notation can be used:
+    let blob[1:3] = 0z445566
+The length of the replaced bytes must be exactly the same as the value
+provided. *E972*
+
+To change part of a blob you can specify the first and last byte to be
+modified.  The value must at least have the number of bytes in the range:
+    :let blob[3:5] = [3, 4, 5]
+
+You can also use the functions |add()|, |remove()| and |insert()|.
+
+
+Blob identity
+
+Blobs can be compared for equality:
+    if blob == 0z001122
+And for equal identity:
+    if blob is otherblob
+*blob-identity* *E977*
+When variable "aa" is a Blob and you assign it to another variable "bb", both
+variables refer to the same Blob.  Then the "is" operator returns true.
+
+When making a copy using [:] or |copy()| the values are the same, but the
+identity is different:
+    :let blob = 0z112233
+    :let blob2 = blob
+    :echo blob == blob2
+    1
+    :echo blob is blob2
+    1
+    :let blob3 = blob[:]
+    :echo blob == blob3
+    1
+    :echo blob is blob3
+    0
+
+Making a copy of a Blob is done with the |copy()| function.  Using [:] also
+works, as explained above.
+
+
+1.6 More about variables
+*more-variables*
+If you need to know the type of a variable or expression, use the |type()|
+function.
+
+When the '!' flag is included in the 'shada' option, global variables that
+start with an uppercase letter, and don't contain a lowercase letter, are
+stored in the shada file |shada-file|.
+
+When the 'sessionoptions' option contains "global", global variables that
+start with an uppercase letter and contain at least one lowercase letter are
+stored in the session file |session-file|.
+
+variable name       can be stored where
+my_var_6        not
+My_Var_6        session file
+MY_VAR_6        shada file
+
+
+It's possible to form a variable name with curly braces, see
+|curly-braces-names|.
+
+==============================================================================
+2. Expression syntax                    *expression-syntax*
+
+Expression syntax summary, from least to most significant:
+
+|expr1| expr2
+    expr2 ? expr1 : expr1   if-then-else
+
+|expr2| expr3
+    expr3 || expr3 ...  logical OR
+
+|expr3| expr4
+    expr4 && expr4 ...  logical AND
+
+|expr4| expr5
+    expr5 == expr5      equal
+    expr5 != expr5      not equal
+    expr5 >  expr5      greater than
+    expr5 >= expr5      greater than or equal
+    expr5 <  expr5      smaller than
+    expr5 <= expr5      smaller than or equal
+    💚
+    expr5 =~ expr5      regexp matches
+    expr5 !~ expr5      regexp doesn't match
+    💚
+
+    expr5 ==? expr5     equal, ignoring case
+    expr5 ==# expr5     equal, match case
+
+    etc.
+    ?  for ignoring case,
+    # for matching case
+
+    expr5 is expr5      same |List|, |Dictionary| or |Blob| instance
+    expr5 isnot expr5   different |List|, |Dictionary| or |Blob|
+                instance
+
+|expr5| expr6
+    expr6 +  expr6 ...  number addition, list or blob concatenation
+    expr6 -  expr6 ...  number subtraction
+    💚
+    expr6 .  expr6 ...  string concatenation
+    💚
+
+    💚
+    expr6 .. expr6 ...  string concatenation
+    💚
+
+|expr6| expr7
+    expr7 *  expr7 ...  number multiplication
+    expr7 /  expr7 ...  number division
+    expr7 %  expr7 ...  number modulo
+
+|expr7| expr8
+    ! expr7         logical NOT
+    - expr7         unary minus
+    + expr7         unary plus
+
+|expr8| expr9
+    expr8[expr1]                byte of a String or item of a |List|
+    expr8[expr1 : expr1]        substring of a String or sublist of a |List|
+    expr8.name                  entry in a |Dictionary|
+    expr8(expr1, ...)           function call with |Funcref| variable
+    expr8->name(expr1, ...)     |method| call
+
+|expr9| number          number constant
+    "string"        string constant, backslash is special
+    'string'        string constant, ' is doubled
+    [expr1, ...]        |List|
+    {expr1: expr1, ...} |Dictionary|
+    #{key: expr1, ...}  |Dictionary|
+    &option         option value
+    (expr1)         nested expression
+    variable        internal variable
+    va{ria}ble      internal variable with curly braces
+    $VAR            environment variable
+    @r          contents of register 'r'
+    function(expr1, ...)    function call
+    func{ti}on(expr1, ...)  function call with curly braces
+    {args -> expr1}     lambda expression
+
+
+"..." indicates that the operations in this level can be concatenated.
+Example:
+    &nu || &list && &shell == "csh"
+
+All expressions within one level are parsed from left to right.
+
+*expr1* -  *expr9*
+详见:
+/home/linuxbrew/.linuxbrew/Cellar/neovim/0.6.1/share/nvim/runtime/doc/expr1到9.txt
+
+*float-pi* *float-e*
+A few useful values to copy&paste:
+    :let pi = 3.14159265359
+    :let e  = 2.71828182846
+Or, if you don't want to write them in as floating-point literals, you can
+also use functions, like the following:
+    :let pi = acos(-1.0)
+    :let e  = exp(1.0)
+
+*floating-point-precision*
+The precision and range of floating points numbers depends on what "double"
+means in the library Vim was compiled with.  There is no way to change this at
+runtime.
+
+The default for displaying a |Float| is to use 6 decimal places, like using
+printf("%g", f).  You can select something else when using the |printf()|
+function.  Example:
+    :echo printf('%.15e', atan(1))
+    7.853981633974483e-01
+
+
+
+string                  *string* *String* *expr-string* *E114*
+------
+"string"        string constant     *expr-quote*
+
+Double quotes are used.
+
+A string constant accepts these special characters:
+\...    three-digit octal number (e.g., "\316")
+\.. two-digit octal number (must be followed by non-digit)
+\.  one-digit octal number (must be followed by non-digit)
+\x..    byte specified with two hex numbers (e.g., "\x1f")
+\x. byte specified with one hex number (must be followed by non-hex char)
+\X..    same as \x..
+\X. same as \x.
+\u....  character specified with up to 4 hex numbers, stored as UTF-8
+    (e.g., "\u02a4")
+\U....  same as \u but allows up to 8 hex numbers.
+\b  backspace <BS>
+\e  escape <Esc>
+\f  formfeed 0x0C
+\n  newline <NL>
+\r  return <CR>
+\t  tab <Tab>
+\\  backslash
+\"  double quote
+\<xxx>  Special key named "xxx".  e.g. "\<C-W>" for CTRL-W.  This is for use
+    in mappings, the 0x80 byte is escaped.
+    To use the double quote character it must be escaped: "<M-\">".
+    Don't use <Char-xxxx> to get a UTF-8 character, use \uxxxx as
+    mentioned above.
+
+"\xff" is stored as the byte 255, which may be invalid in some
+encodings.  Use "\u00ff" to store character 255 correctly as UTF-8.
+
+"\000" and "\x00" force the end of the string.
+
+
+blob-literal                *blob-literal* *E973*
+------------
+
+Hexadecimal starting with 0z or 0Z, with an arbitrary number of bytes.
+The sequence must be an even number of hex characters.  Example:
+    :let b = 0zFF00ED015DAF
+
+
+literal-string                      *literal-string* *E115*
+---------------
+'string'        string constant         *expr-'*
+
+Single quotes are used.
+
+This string is taken as it is.  No backslashes are removed or have a special
+meaning.  The only exception is that two quotes stand for one quote.
+
+Single quoted strings are useful for patterns, so that backslashes do not need
+to be doubled.  These two commands are equivalent:
+    if a =~ "\\s*"
+    if a =~ '\s*'
+
+
+option                      *expr-option* *E112* *E113*
+------
+&option         option value, local value if possible
+&g:option       global option value
+&l:option       local option value
+
+Examples:
+    echo "tabstop is " . &tabstop
+    if &insertmode
+
+Any option name can be used here.  See |options|.  When using the local value
+and there is no buffer-local or window-local value, the global value is used
+anyway.
+
+
+register                        *expr-register* *@r*
+--------
+@r          contents of register 'r'
+
+The result is the contents of the named register, as a single string.
+Newlines are inserted where required.  To get the contents of the unnamed
+register use @" or @@.  See |registers| for an explanation of the available
+registers.
+
+When using the '=' register you get the expression itself, not what it
+evaluates to.  Use |eval()| to evaluate it.
+
+
+nesting                         *expr-nesting* *E110*
+-------
+(expr1)         nested expression
+
+
+environment variable                    *expr-env*
+--------------------
+$VAR            environment variable
+
+The String value of any environment variable.  When it is not defined, the
+result is an empty string.
+
+The functions `getenv()` and `setenv()` can also be used and work for
+environment variables with non-alphanumeric names.
+The function `environ()` can be used to get a Dict with all environment
+variables.
+
+
+*expr-env-expand*
+There is a difference between using $VAR directly and using
+expand("$VAR").  Using it directly will only expand environment variables that
+are known inside the current Vim session.  Using expand() will first try using
+the environment variables known inside the current Vim session.  If that
+fails, a shell will be used to expand the variable.  This can be slow, but it
+does expand all variables that the shell knows about.  Example:
+    :echo $shell
+    :echo expand("$shell")
+The first one probably doesn't echo anything, the second echoes the $shell
+variable (if your shell supports it).
+
+
+internal variable                   *expr-variable*
+-----------------
+variable        internal variable
+See below |internal-variables|.
+
+
+function call       *expr-function* *E116* *E118* *E119* *E120*
+-------------
+function(expr1, ...)    function call
+See below |functions|.
+
+
+lambda expression               *expr-lambda* *lambda*
+-----------------
+{args -> expr1}     lambda expression
+
+    A lambda expression creates a new unnamed function which
+    returns the result of  evaluating |expr1|.
+    Lambda expressions differ from |user-function|s in  the following ways:
+
+        1. The body of the lambda expression is an |expr1| and not a sequence of |Ex|
+           commands.
+        2. The prefix "a:" should not be used for arguments.  E.g.:
+            `:let F = {arg1, arg2 -> arg1 - arg2}`
+            `:echo F(5, 2)`
+
+            3
+
+    The arguments are optional.  Example:
+        :let F = {-> 'error function'}
+        :echo F('ignored')
+        error function
+    *closure*
+    Lambda expressions can access outer scope variables and arguments.  This is
+    often called a closure.  Example where "i" and "a:arg" are used in a lambda
+    while they already exist in the function scope.  They remain valid even after
+    the function returns:
+        :function Foo(arg)
+        :  let i = 3
+        :  return {x -> x + i - a:arg}
+        :endfunction
+        :let Bar = Foo(4)
+        :echo Bar(6)
+        5
+    The variables must exist in the outer scope before the lamba is
+    defined for this to work.  See also |:func-closure|.
+
+    Lambda and closure support can be checked with:
+        if has('lambda')
+
+    Examples for using a lambda expression with |sort()|, |map()| and |filter()|:
+        :echo map([1, 2, 3], {idx, val -> val + 1})
+        [2, 3, 4]
+        :echo sort([3,7,2,1,4], {a, b -> a - b})
+        [1, 2, 3, 4, 7]
+
+    The lambda expression is also useful for jobs and timers:
+        :let timer = timer_start(500,
+                \ {-> execute("echo 'Handler called'", "")},
+                \ {'repeat': 3})
+        Handler called
+        Handler called
+        Handler called
+
+    It is possible to cause memory to be used and not freed if the
+    closure is referenced by the context it depends on:
+        function Function()
+           let x = 0
+           let F = {-> x}
+         endfunction
+    The closure uses "x" from the function scope, and "F" in that same scope
+    refers to the closure.  This cycle results in the memory not being freed.
+    Recommendation: don't do this.
+
+    Notice how execute() is used to execute an Ex command.  That's ugly though.
+
+
+    Lambda expressions have internal names like '<lambda>42'.  If you get an error
+    for a lambda expression, you can find what it is with the following command:
+        :function {'<lambda>42'}
+    See also: |numbered-function|
+
+==============================================================================
+3. Internal variable                *internal-variables* *E461*
+
+        An internal variable name can be made up of letters,
+        digits and '_'.
+        But it cannot start with a digit.
+        It's also possible to use curly braces,
+        see |curly-braces-names|.
+
+        An internal variable is created with the ":let" command |:let|.
+        An internal variable is explicitly destroyed with the ":unlet" command |:unlet|.
+        Using a name that is not an internal variable or
+        refers to a variable that has been destroyed results in an error.
+
+*variable-scope*
+        There are several name spaces for variables.
+        Which one is to be used is specified by what is prepended:
+        In a function:
+                没刻意声明,  就local to a function;
+
+
+        |function-argument|  a:   Function argument (only inside a function).
+        |local-variable|     l:   function. (用f: 比l: 更符合直觉?)
+
+        |buffer-variable|    b:   current buffer.
+        |window-variable|    w:   current window.
+        |tabpage-variable|   t:   current tab page.
+
+        |script-variable|    s:   a |:source|'ed Vim script.
+
+        |global-variable|    g:   Global.
+        |vim-variable|       v:   Global, predefined by Vim.
+
+        The scope name by itself can be used as a |Dictionary|.
+        For example,
+        to delete all script-local variables:
+                        :for k in keys(s:)
+                        :    unlet s:[k]
+                        :endfor
+
+*buffer-variable* *b:var* *b:*
+        A variable name that is preceded with "b:" is local to the current buffer.
+        Thus you can have several "b:foo" variables,
+        one for each buffer.
+        This kind of variable is deleted when the buffer is wiped out or
+        deleted with |:bdelete|.
+
+        One local buffer variable is predefined:
+*b:changedtick*  *changetick*
+        b:changedtick   The total number of changes to the current buffer.
+        It is incremented for each change.
+        An undo command is also a change in this case.
+        Resetting 'modified' when writing the buffer is also counted.
+        This can be used to perform an action only when the buffer has changed.
+        Example:
+                 :if my_changedtick != b:changedtick
+         :   let my_changedtick = b:changedtick
+         :   call My_Update()
+         :endif
+        You cannot change or delete the b:changedtick variable.
+
+*window-variable* *w:var* *w:*
+A variable name that is preceded with "w:" is local to the current window.  It
+is deleted when the window is closed.
+
+*tabpage-variable* *t:var* *t:*
+A variable name that is preceded with "t:" is local to the current tab page,
+It is deleted when the tab page is closed.
+
+*global-variable* *g:var* *g:*
+        Inside functions global variables are accessed with "g:".
+        Omitting this will access a variable local to a function.
+        But "g:" can also be used in any other place if you like.
+
+*local-variable* *l:var* *l:*
+    Inside functions
+    local variables are accessed without prepending anything.
+    But you can also prepend "l:" if you like.
+
+    注意: Without prepending "l:" you may run into reserved variable names.
+
+    For example "count".
+    By itself it refers to "v:count".
+    Using "l:count" you can have a local variable with the same name.
+
+*script-variable* *s:var*
+
+    In a Vim script variables starting with "s:" can be used.  They cannot be
+        accessed from outside of the scripts, thus are local to the script.
+
+        They can be used in:
+        - commands executed while the script is sourced
+        - functions defined in the script
+        - autocommands defined in the script
+        - functions and autocommands defined in functions and autocommands which were
+          defined in the script (recursively)
+        - user defined commands defined in the script
+        Thus not in:
+        - other scripts sourced from this one
+        - mappings
+        - menus
+        - etc.
+
+        Script variables can be used to avoid conflicts with global variable names.
+        Take this example:
+
+                let s:counter = 0
+                function MyCounter()
+                  let s:counter = s:counter + 1
+                  echo s:counter
+                endfunction
+                command Tick call MyCounter()
+
+        You can now invoke "Tick" from any script, and the "s:counter" variable in
+        that script will not be changed, only the "s:counter" in the script where
+        "Tick" was defined is used.
+
+        Another example that does the same:
+
+                let s:counter = 0
+                command Tick let s:counter = s:counter + 1 | echo s:counter
+
+        When calling a function and invoking a user-defined command, the context for
+        script variables is set to the script where the function or command was
+        defined.
+
+        The script variables are also available when a function is defined inside a
+        function that is defined in a script.  Example:
+
+                let s:counter = 0
+                function StartCounting(incr)
+                  if a:incr
+                        function MyCounter()
+                          let s:counter = s:counter + 1
+                        endfunction
+                  else
+                        function MyCounter()
+                          let s:counter = s:counter - 1
+                        endfunction
+                  endif
+                endfunction
+
+        This defines the MyCounter() function either for counting up or counting down
+        when calling StartCounting().  It doesn't matter from where StartCounting() is
+        called, the s:counter variable will be accessible in MyCounter().
+
+        When the same script is sourced again it will use the same script variables.
+        They will remain valid as long as Vim is running.  This can be used to
+        maintain a counter:
+
+                if !exists("s:counter")
+                  let s:counter = 1
+                  echo "script executed for the first time"
+                else
+                  let s:counter = s:counter + 1
+                  echo "script executed " . s:counter . " times now"
+                endif
+
+        This means that filetype plugins don't get a different set of script variables for each buffer.
+        Use local buffer variables instead |b:var|.
+
+PREDEFINED VIM VARIABLES            *vim-variable* *v:var* *v:*
+
+*E963*
+Some variables can be set by the user, but the type cannot be changed.
+
+*v:argv* *argv-variable*
+v:argv      The command line arguments Vim was invoked with.  This is a
+        list of strings.  The first item is the Vim command.
+
+Only  valid while evaluating the 'balloonexpr' option:
+    *v:beval_col* *beval_col-variable*
+    v:beval_col
+        The number of the column, over which the mouse pointer is.
+        This is the byte index in the |v:beval_lnum| line.
+
+    *v:beval_bufnr* *beval_bufnr-variable*
+    v:beval_bufnr   The number of the buffer, over which the mouse pointer is.
+
+    *v:beval_lnum* *beval_lnum-variable*
+    v:beval_lnum    The number of the line, over which the mouse pointer is
+
+    *v:beval_winnr* *beval_winnr-variable*
+    v:beval_winnr   The number of the window, over which the mouse pointer is.
+        The first
+            window has number zero (unlike most other places where a
+            window gets a number).
+
+*v:beval_text* *beval_text-variable*
+v:beval_text
+    The text under or after the mouse pointer. (cursor吧? 为gui设计的?)
+    Usually a word as  it is useful for debugging a C program.
+    'iskeyword' applies,  but a dot and "->" before the position is included.
+    When on a  ']'
+        the text before it is used,
+        including the matching '[' and  word before it.
+    Only valid while evaluating the 'balloonexpr' option(淘汰了):
+    When on a Visual area within one line
+        the  highlighted text is used.
+        Also see |<cexpr>|.
+
+
+*v:beval_winid* *beval_winid-variable*
+v:beval_winid   The |window-ID| of the window, over which the mouse pointer
+        is.  Otherwise like v:beval_winnr.
+
+*v:char* *char-variable*
+v:char
+Argument for  evaluating 'formatexpr' and used for  the typed character when using <expr> in an abbreviation |:map-<expr>|.
+It is also used by the |InsertCharPre| and |InsertEnter| events.
+
+*v:charconvert_from* *charconvert_from-variable*
+v:charconvert_from
+        The name of the character encoding of a file to be converted.
+        Only valid while evaluating the 'charconvert' option.
+
+*v:charconvert_to* *charconvert_to-variable*
+v:charconvert_to
+        The name of the character encoding of a file after conversion.
+        Only valid while evaluating the 'charconvert' option.
+
+*v:cmdarg* *cmdarg-variable*
+v:cmdarg    This variable is used for two purposes:
+        1. The extra arguments given to a file read/write command.
+           Currently these are "++enc=" and "++ff=".  This variable is
+           set before an autocommand event for a file read/write
+           command is triggered.  There is a leading space to make it
+           possible to append this variable directly after the
+           read/write command.  The "+cmd" argument isn't
+           included here, because it will be executed anyway.
+        2. When printing a PostScript file with ":hardcopy" this is
+           the argument for the ":hardcopy" command.  This can be used
+           in 'printexpr'.
+
+*v:collate* *collate-variable*
+v:collate   The current locale setting for collation order of the runtime
+        environment.  This allows Vim scripts to be aware of the
+        current locale encoding.  Technical: it's the value of
+        LC_COLLATE.  When not using a locale the value is "C".
+        This variable can not be set directly, use the |:language|
+        command.
+        See |multi-lang|.
+
+*v:cmdbang* *cmdbang-variable*
+v:cmdbang   Set like v:cmdarg for a file read/write command.  When a "!"
+        was used the value is 1, otherwise it is 0.  This
+        can only be used in autocommands.  For user commands |<bang>|
+        can be used.
+
+*v:completed_item* *completed_item-variable*
+v:completed_item
+        Dictionary containing the most recent |complete-items| after
+        |CompleteDone|.  Empty if the completion failed, or after
+        leaving and re-entering insert mode.
+
+*v:count* *count-variable*
+v:count     The count given for the last Normal mode command.  Can be used
+        to get the count before a mapping.  Read-only.  Example:
+    :map _x :<C-U>echo "the count is " . v:count<CR>
+        The <C-U> is required to remove the line range that you
+        get when typing ':' after a count.
+        When there are two counts, as in "3d2w", they are multiplied,
+        just like what happens in the command, "d6w" for the example.
+
+        Also used for evaluating the 'formatexpr'.
+
+*v:count1* *count1-variable*
+v:count1    Just like "v:count", but defaults to one when no count is
+        used.
+
+*v:ctype* *ctype-variable*
+v:ctype     The current locale setting for characters of the runtime
+        environment.  This allows Vim scripts to be aware of the
+        current locale encoding.  Technical: it's the value of
+        LC_CTYPE.  When not using a locale the value is "C".
+        This variable can not be set directly, use the |:language|
+        command.
+        See |multi-lang|.
+
+*v:dying* *dying-variable*
+v:dying     Normally zero.  When a deadly signal is caught it's set to
+        one.  When multiple signals are caught the number increases.
+        Can be used in an autocommand to check if Vim didn't
+        terminate normally. {only works on Unix}
+        Example:
+    :au VimLeave * if v:dying | echo "\nAAAAaaaarrrggghhhh!!!\n" | endif
+        Note: if another deadly signal is caught when v:dying is one,
+        VimLeave autocommands will not be executed.
+
+*v:exiting* *exiting-variable*
+v:exiting   Exit code, or |v:null| before invoking the |VimLeavePre|
+        and |VimLeave| autocmds.  See |:q|, |:x| and |:cquit|.
+        Example:
+            :au VimLeave * echo "Exit value is " .. v:exiting
+
+*v:echospace* *echospace-variable*
+v:echospace Number of screen cells that can be used for an `:echo` message
+        in the last screen line before causing the |hit-enter-prompt|.
+        Depends on 'showcmd', 'ruler' and 'columns'.  You need to
+        check 'cmdheight' for whether there are full-width lines
+        available above the last line.
+
+*v:errmsg* *errmsg-variable*
+v:errmsg    Last given error message.
+        Modifiable (can be set).
+        Example:
+    :let v:errmsg = ""
+    :silent! next
+    :if v:errmsg != ""
+    :  ... handle error
+
+*v:errors* *errors-variable* *assert-return*
+v:errors    Errors found by assert functions, such as |assert_true()|.
+        This is a list of strings.
+        The assert functions append an item when an assert fails.
+        The return value indicates this: a one is returned if an item
+        was added to v:errors, otherwise zero is returned.
+        To remove old results make it empty:
+    :let v:errors = []
+        If v:errors is set to anything but a list it is made an empty
+        list by the assert function.
+
+*v:event* *event-variable*
+v:event     Dictionary of event data for the current |autocommand|.  Valid
+        only during the event lifetime; storing or passing v:event is
+        invalid!  Copy it instead:
+            au TextYankPost * let g:foo = deepcopy(v:event)
+        Keys vary by event; see the documentation for the specific
+        event, e.g. |DirChanged| or |TextYankPost|.
+            KEY     DESCRIPTION
+            abort       Whether the event triggered during
+                    an aborting condition (e.g. |c_Esc| or
+                    |c_CTRL-C| for |CmdlineLeave|).
+            chan        |channel-id| or 0 for "internal".
+            cmdlevel    Level of cmdline.
+            cmdtype     Type of cmdline, |cmdline-char|.
+            cwd     Current working directory.
+            inclusive   Motion is |inclusive|, else exclusive.
+            scope       Event-specific scope name.
+            operator    Current |operator|.  Also set for Ex
+                    commands (unlike |v:operator|). For
+                    example if |TextYankPost| is triggered
+                    by the |:yank| Ex command then
+                    `v:event.operator` is "y".
+            regcontents Text stored in the register as a
+                    |readfile()|-style list of lines.
+            regname     Requested register (e.g "x" for "xyy)
+                    or the empty string for an unnamed
+                    operation.
+            regtype     Type of register as returned by
+                    |getregtype()|.
+            visual      Selection is visual (as opposed to,
+                    e.g., via motion).
+            completed_item    Current selected complete item on
+                    |CompleteChanged|, Is `{}` when no complete
+                    item selected.
+            height      Height of popup menu on |CompleteChanged|
+            width       width of popup menu on |CompleteChanged|
+            row         Row count of popup menu on |CompleteChanged|,
+                    relative to screen.
+            col         Col count of popup menu on |CompleteChanged|,
+                    relative to screen.
+            size        Total number of completion items on
+                    |CompleteChanged|.
+            scrollbar   Is |v:true| if popup menu have scrollbar, or
+                    |v:false| if not.
+            changed_window  Is |v:true| if the the event fired
+                    while changing window (or tab) on |DirChanged|.
+            status      Job status or exit code, -1 means "unknown". |TermClose|
+
+*v:exception* *exception-variable*
+v:exception The value of the exception most recently caught and not
+        finished.  See also |v:throwpoint| and |throw-variables|.
+        Example:
+    :try
+    :  throw "oops"
+    :catch /.*/
+    :  echo "caught " .. v:exception
+    :endtry
+        Output: "caught oops".
+
+*v:false* *false-variable*
+v:false     Special value used to put "false" in JSON and msgpack.  See
+        |json_encode()|.  This value is converted to "v:false" when used
+        as a String (e.g. in |expr5| with string concatenation
+        operator) and to zero when used as a Number (e.g. in |expr5|
+        or |expr7| when used with numeric operators). Read-only.
+
+*v:fcs_reason* *fcs_reason-variable*
+v:fcs_reason    The reason why the |FileChangedShell| event was triggered.
+        Can be used in an autocommand to decide what to do and/or what
+        to set v:fcs_choice to.  Possible values:
+            deleted     file no longer exists
+            conflict    file contents, mode or timestamp was
+                    changed and buffer is modified
+            changed     file contents has changed
+            mode        mode of file changed
+            time        only file timestamp changed
+
+*v:fcs_choice* *fcs_choice-variable*
+v:fcs_choice    What should happen after a |FileChangedShell| event was
+        triggered.  Can be used in an autocommand to tell Vim what to
+        do with the affected buffer:
+            reload      Reload the buffer (does not work if
+                    the file was deleted).
+            ask     Ask the user what to do, as if there
+                    was no autocommand.  Except that when
+                    only the timestamp changed nothing
+                    will happen.
+            <empty>     Nothing, the autocommand should do
+                    everything that needs to be done.
+        The default is empty.  If another (invalid) value is used then
+        Vim behaves like it is empty, there is no warning message.
+
+*v:fname* *fname-variable*
+v:fname     When evaluating 'includeexpr': the file name that was
+        detected.  Empty otherwise.
+
+*v:fname_in* *fname_in-variable*
+v:fname_in  The name of the input file.  Valid while evaluating:
+            option      used for
+            'charconvert'   file to be converted
+            'diffexpr'  original file
+            'patchexpr' original file
+            'printexpr' file to be printed
+        And set to the swap file name for |SwapExists|.
+
+*v:fname_out* *fname_out-variable*
+v:fname_out The name of the output file.  Only valid while
+        evaluating:
+            option      used for
+            'charconvert'   resulting converted file (*)
+            'diffexpr'  output of diff
+            'patchexpr' resulting patched file
+        (*) When doing conversion for a write command (e.g., ":w
+        file") it will be equal to v:fname_in.  When doing conversion
+        for a read command (e.g., ":e file") it will be a temporary
+        file and different from v:fname_in.
+
+*v:fname_new* *fname_new-variable*
+v:fname_new The name of the new version of the file.  Only valid while
+        evaluating 'diffexpr'.
+
+*v:fname_diff* *fname_diff-variable*
+v:fname_diff    The name of the diff (patch) file.  Only valid while
+        evaluating 'patchexpr'.
+
+*v:folddashes* *folddashes-variable*
+v:folddashes    Used for 'foldtext': dashes representing foldlevel of a closed
+        fold.
+        Read-only in the |sandbox|. |fold-foldtext|
+
+*v:foldlevel* *foldlevel-variable*
+v:foldlevel Used for 'foldtext': foldlevel of closed fold.
+        Read-only in the |sandbox|. |fold-foldtext|
+
+*v:foldend* *foldend-variable*
+v:foldend   Used for 'foldtext': last line of closed fold.
+        Read-only in the |sandbox|. |fold-foldtext|
+
+*v:foldstart* *foldstart-variable*
+v:foldstart Used for 'foldtext': first line of closed fold.
+        Read-only in the |sandbox|. |fold-foldtext|
+
+*v:hlsearch* *hlsearch-variable*
+v:hlsearch  Variable that indicates whether search highlighting is on.
+        Setting it makes sense only if 'hlsearch' is enabled. Setting
+        this variable to zero acts like the |:nohlsearch| command,
+        setting it to one acts like
+            let &hlsearch = &hlsearch
+        The value is restored when returning from a
+        function. |function-search-undo|.
+
+*v:insertmode* *insertmode-variable*
+v:insertmode    Used for the |InsertEnter| and |InsertChange| autocommand
+        events.  Values:
+            i   Insert mode
+            r   Replace mode
+            v   Virtual Replace mode
+
+*v:key* *key-variable*
+v:key       Key of the current item of a |Dictionary|.  Only valid while
+        evaluating the expression used with |map()| and |filter()|.
+        Read-only.
+
+*v:lang* *lang-variable*
+v:lang      The current locale setting for messages of the runtime
+        environment.  This allows Vim scripts to be aware of the
+        current language.  Technical: it's the value of LC_MESSAGES.
+        The value is system dependent.
+        This variable can not be set directly, use the |:language|
+        command.
+        It can be different from |v:ctype| when messages are desired
+        in a different language than what is used for character
+        encoding.  See |multi-lang|.
+
+*v:lc_time* *lc_time-variable*
+v:lc_time   The current locale setting for time messages of the runtime
+        environment.  This allows Vim scripts to be aware of the
+        current language.  Technical: it's the value of LC_TIME.
+        This variable can not be set directly, use the |:language|
+        command.  See |multi-lang|.
+
+*v:lnum* *lnum-variable*
+v:lnum
+    tab page number for 'guitablabel'  and 'guitabtooltip'.
+
+    Ony valid while one of these expressions is being evaluated:
+        Line number for the 'foldexpr' |fold-expr|
+                            'formatexpr'
+                            'indentexpr'
+
+    Read-only when in the |sandbox|.
+
+*v:lua* *lua-variable*
+v:lua       Prefix for calling Lua functions from expressions.
+        See |v:lua-call| for more information.
+
+*v:mouse_win* *mouse_win-variable*
+v:mouse_win Window number for a mouse click obtained with |getchar()|.
+        First window has number 1, like with |winnr()|.  The value is
+        zero when there was no mouse button click.
+
+*v:mouse_winid* *mouse_winid-variable*
+v:mouse_winid   |window-ID| for a mouse click obtained with |getchar()|.
+        The value is zero when there was no mouse button click.
+
+*v:mouse_lnum* *mouse_lnum-variable*
+v:mouse_lnum    Line number for a mouse click obtained with |getchar()|.
+        This is the text line number, not the screen line number.  The
+        value is zero when there was no mouse button click.
+
+*v:mouse_col* *mouse_col-variable*
+v:mouse_col Column number for a mouse click obtained with |getchar()|.
+        This is the screen column number, like with |virtcol()|.  The
+        value is zero when there was no mouse button click.
+
+*v:msgpack_types* *msgpack_types-variable*
+v:msgpack_types Dictionary containing msgpack types used by |msgpackparse()|
+        and |msgpackdump()|. All types inside dictionary are fixed
+        (not editable) empty lists. To check whether some list is one
+        of msgpack types, use |is| operator.
+
+*v:null* *null-variable*
+v:null      Special value used to put "null" in JSON and NIL in msgpack.
+        See |json_encode()|.  This value is converted to "v:null" when
+        used as a String (e.g. in |expr5| with string concatenation
+        operator) and to zero when used as a Number (e.g. in |expr5|
+        or |expr7| when used with numeric operators). Read-only.
+
+*v:numbermax* *numbermax-variable*
+v:numbermax Maximum value of a number.
+
+*v:numbermin* *numbermin-variable*
+v:numbermin Minimum value of a number (negative).
+
+*v:numbersize* *numbersize-variable*
+v:numbersize    Number of bits in a Number.  This is normally 64, but on some
+        systems it may be 32.
+
+*v:oldfiles* *oldfiles-variable*
+v:oldfiles
+
+    List of file names that is loaded from the |shada| file on  startup.
+    These are the files that Vim remembers marks for.
+
+    The length of the List is limited by the ' argument of the 'shada' option (default is 100).
+    When the |shada| file is not used the List is empty.
+    Also see |:oldfiles| and |c_#<|.
+
+    The List can be modified,
+    but this has no effect on what is stored in the |shada| file later.
+
+    If you use values other than String this will cause trouble.
+
+*v:option_new*
+v:option_new    New value of the option. Valid while executing an |OptionSet|
+        autocommand.
+*v:option_old*
+v:option_old    Old value of the option. Valid while executing an |OptionSet|
+        autocommand.
+*v:option_type*
+v:option_type   Scope of the set command. Valid while executing an
+        |OptionSet| autocommand. Can be either "global" or "local"
+*v:operator* *operator-variable*
+v:operator  The last operator given in Normal mode.  This is a single
+        character except for commands starting with <g> or <z>,
+        in which case it is two characters.  Best used alongside
+        |v:prevcount| and |v:register|.  Useful if you want to cancel
+        Operator-pending mode and then use the operator, e.g.:
+            :omap O <Esc>:call MyMotion(v:operator)<CR>
+        The value remains set until another operator is entered, thus
+        don't expect it to be empty.
+        v:operator is not set for |:delete|, |:yank| or other Ex
+        commands.
+        Read-only.
+
+*v:prevcount* *prevcount-variable*
+v:prevcount The count given for the last but one Normal mode command.
+        This is the v:count value of the previous command.  Useful if
+        you want to cancel Visual or Operator-pending mode and then
+        use the count, e.g.:
+            :vmap % <Esc>:call MyFilter(v:prevcount)<CR>
+        Read-only.
+
+*v:profiling* *profiling-variable*
+v:profiling Normally zero.  Set to one after using ":profile start".
+        See |profiling|.
+
+*v:progname* *progname-variable*
+v:progname  The name by which Nvim was invoked (with path removed).
+        Read-only.
+
+*v:progpath* *progpath-variable*
+v:progpath  Absolute path to the current running Nvim.
+        Read-only.
+
+*v:register* *register-variable*
+v:register  The name of the register in effect for the current normal mode
+        command (regardless of whether that command actually used a
+        register).  Or for the currently executing normal mode mapping
+        (use this in custom commands that take a register).
+        If none is supplied it is the default register '"', unless
+        'clipboard' contains "unnamed" or "unnamedplus", then it is
+        '*' or '+'.
+        Also see |getreg()| and |setreg()|
+
+*v:scrollstart* *scrollstart-variable*
+v:scrollstart   String describing the script or function that caused the
+        screen to scroll up.  It's only set when it is empty, thus the
+        first reason is remembered.  It is set to "Unknown" for a
+        typed command.
+        This can be used to find out why your script causes the
+        hit-enter prompt.
+
+*v:servername* *servername-variable*
+v:servername    Primary listen-address of the current Nvim instance, the first
+        item returned by |serverlist()|.  Can be set by |--listen| or
+        |$NVIM_LISTEN_ADDRESS| at startup. |serverstart()| |serverstop()|
+        Read-only.
+
+
+v:searchforward         *v:searchforward* *searchforward-variable*
+        Search direction:  1 after a forward search, 0 after a
+        backward search.  It is reset to forward when directly setting
+        the last search pattern, see |quote/|.
+        The value is restored when returning from a
+        function. |function-search-undo|.
+        Read-write.
+
+*v:shell_error* *shell_error-variable*
+v:shell_error   Result of the last shell command.  When non-zero, the last
+        shell command had an error.  When zero, there was no problem.
+        This only works when the shell returns the error code to Vim.
+        The value -1 is often used when the command could not be
+        executed.  Read-only.
+        Example:
+    :!mv foo bar
+    :if v:shell_error
+    :  echo 'could not rename "foo" to "bar"!'
+    :endif
+
+*v:statusmsg* *statusmsg-variable*
+v:statusmsg Last given status message.
+        Modifiable (can be set).
+
+*v:stderr* *stderr-variable*
+v:stderr    |channel-id| corresponding to stderr. The value is always 2;
+        use this variable to make your code more descriptive.
+        Unlike stdin and stdout (see |stdioopen()|), stderr is always
+        open for writing. Example:
+            :call chansend(v:stderr, "error: toaster empty\n")
+
+*v:swapname* *swapname-variable*
+v:swapname  Only valid when executing |SwapExists| autocommands: Name of
+        the swap file found.  Read-only.
+
+*v:swapchoice* *swapchoice-variable*
+v:swapchoice    |SwapExists| autocommands can set this to the selected choice
+        for handling an existing swap file:
+            'o' Open read-only
+            'e' Edit anyway
+            'r' Recover
+            'd' Delete swapfile
+            'q' Quit
+            'a' Abort
+        The value should be a single-character string.  An empty value
+        results in the user being asked, as would happen when there is
+        no SwapExists autocommand.  The default is empty.
+
+*v:swapcommand* *swapcommand-variable*
+v:swapcommand   Normal mode command to be executed after a file has been
+        opened.  Can be used for a |SwapExists| autocommand to have
+        another Vim open the file and jump to the right place.  For
+        example, when jumping to a tag the value is ":tag tagname\r".
+        For ":edit +cmd file" the value is ":cmd\r".
+
+*v:t_TYPE* *v:t_bool* *t_bool-variable*
+v:t_bool    Value of |Boolean| type.  Read-only.  See: |type()|
+*v:t_dict* *t_dict-variable*
+v:t_dict    Value of |Dictionary| type.  Read-only.  See: |type()|
+*v:t_float* *t_float-variable*
+v:t_float   Value of |Float| type.  Read-only.  See: |type()|
+*v:t_func* *t_func-variable*
+v:t_func    Value of |Funcref| type.  Read-only.  See: |type()|
+*v:t_list* *t_list-variable*
+v:t_list    Value of |List| type.  Read-only.  See: |type()|
+*v:t_number* *t_number-variable*
+v:t_number  Value of |Number| type.  Read-only.  See: |type()|
+*v:t_string* *t_string-variable*
+v:t_string  Value of |String| type.  Read-only.  See: |type()|
+*v:t_blob* *t_blob-variable*
+v:t_blob    Value of |Blob| type.  Read-only.  See: |type()|
+
+*v:termresponse* *termresponse-variable*
+v:termresponse  The escape sequence returned by the terminal for the DA
+        (request primary device attributes) control sequence.  It is
+        set when Vim receives an escape sequence that starts with ESC
+        [ or CSI and ends in a 'c', with only digits, ';' and '.' in
+        between.
+        When this option is set, the TermResponse autocommand event is
+        fired, so that you can react to the response from the
+        terminal.
+        The response from a new xterm is: "<Esc>[ Pp ; Pv ; Pc c".  Pp
+        is the terminal type: 0 for vt100 and 1 for vt220.  Pv is the
+        patch level (since this was introduced in patch 95, it's
+        always 95 or bigger).  Pc is always zero.
+
+*v:testing* *testing-variable*
+v:testing   Must be set before using `test_garbagecollect_now()`.
+
+*v:this_session* *this_session-variable*
+v:this_session  Full filename of the last loaded or saved session file.
+        Empty when no session file has been saved.  See |:mksession|.
+        Modifiable (can be set).
+
+*v:throwpoint* *throwpoint-variable*
+v:throwpoint    The point where the exception most recently caught and not
+        finished was thrown.  Not set when commands are typed.  See
+        also |v:exception| and |throw-variables|.
+        Example:
+    :try
+    :  throw "oops"
+    :catch /.*/
+    :  echo "Exception from" v:throwpoint
+    :endtry
+        Output: "Exception from test.vim, line 2"
+
+*v:true* *true-variable*
+v:true      Special value used to put "true" in JSON and msgpack.  See
+        |json_encode()|.  This value is converted to "v:true" when used
+        as a String (e.g. in |expr5| with string concatenation
+        operator) and to one when used as a Number (e.g. in |expr5| or
+        |expr7| when used with numeric operators). Read-only.
+
+*v:val* *val-variable*
+   Value of the current item of a |List| or |Dictionary|.
+   Only  valid while evaluating the expression used with |map()| and  |filter()|.  Read-only.
+
+*v:version* *version-variable*
+v:version   Vim version number: major version times 100 plus minor
+        version.  Vim 5.0 is 500, Vim 5.1 is 501.
+        Read-only.
+        Use |has()| to check the Nvim (not Vim) version:
+            :if has("nvim-0.2.1")
+
+
+*v:vim_did_enter* *vim_did_enter-variable*
+v:vim_did_enter 0 during startup, 1 just before |VimEnter|.
+        Read-only.
+
+*v:warningmsg* *warningmsg-variable*
+v:warningmsg    Last given warning message.
+        Modifiable (can be set).
+
+*v:windowid* *windowid-variable*
+v:windowid  Application-specific window "handle" which may be set by any
+        attached UI. Defaults to zero.
+        For Nvim |windows| use |winnr()| or |win_getid()|, see
+        |window-ID|.
+
