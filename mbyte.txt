@@ -6,24 +6,28 @@
 
 Multi-byte support				*multibyte* *multi-byte*
 						*Chinese* *Japanese* *Korean*
-This is about editing text in languages which have many characters that can
-not be represented using one byte (one octet).  Examples are Chinese, Japanese
-and Korean.  Unicode is also covered here.
+This is about editing text in languages
+which have many characters that can  not be represented using one byte (one octet).
+Examples are Chinese,
+Japanese and
+Korean.
+Unicode is also covered here.
 
-For an introduction to the most common features, see |usr_45.txt| in the user
-manual.
-For changing the language of messages and menus see |mlang.txt|.
+For an introduction to the most common features,
+see |usr_45.txt| in the user manual.
+For changing the language of messages and
+menus see |mlang.txt|.
 
                                       Type |gO| to see the table of contents.
 
 ==============================================================================
 Getting started						*mbyte-first*
 
-This is a summary of the multibyte features in Vim.  If you are lucky it works
-as described and you can start using Vim without much trouble.  If something
-doesn't work you will have to read the rest.  Don't be surprised if it takes
-quite a bit of work and experimenting to make Vim use all the multibyte
-features.  Unfortunately, every system has its own way to deal with multibyte
+This is a summary of the multibyte features in Vim.
+If you are lucky it works as described and you can start using Vim without much trouble.
+If something  doesn't work you will have to read the rest.
+Don't be surprised if it takes quite a bit of work and experimenting to make Vim use all the multibyte  features.
+Unfortunately, every system has its own way to deal with multibyte
 languages and it is quite complicated.
 
 
@@ -32,16 +36,19 @@ LOCALE
 First of all, you must make sure your current locale is set correctly.  If
 your system has been installed to use the language, it probably works right
 away.  If not, you can often make it work by setting the $LANG environment
-variable in your shell: >
+variable in your shell:
+
 
 	setenv LANG ja_JP.EUC
 
 Unfortunately, the name of the locale depends on your system.  Japanese might
-also be called "ja_JP.EUCjp" or just "ja".  To see what is currently used: >
+also be called "ja_JP.EUCjp" or just "ja".  To see what is currently used:
+
 
 	:language
 
-To change the locale inside Vim use: >
+To change the locale inside Vim use:
+
 
 	:language ja_JP.EUC
 
@@ -74,7 +81,8 @@ be displayed and edited correctly.
 For the GUI you must select fonts that work with UTF-8.  You can set 'guifont'
 and 'guifontwide'.  'guifont' is used for the single-width characters,
 'guifontwide' for the double-width characters. Thus the 'guifontwide' font
-must be exactly twice as wide as 'guifont'. Example for UTF-8: >
+must be exactly twice as wide as 'guifont'. Example for UTF-8:
+
 
 	:set guifont=-misc-fixed-medium-r-normal-*-18-120-100-100-c-90-iso10646-1
 	:set guifontwide=-misc-fixed-medium-r-normal-*-18-120-100-100-c-180-iso10646-1
@@ -147,7 +155,7 @@ the locale name for a specific language, territory and codeset is not unified
 and depends on your system.
 
 Examples of locale name:
-    charset	    language		  locale name ~
+    charset	    language		  locale name
     GB2312	    Chinese (simplified)  zh_CN.EUC, zh_CN.GB2312
     Big5	    Chinese (traditional) zh_TW.BIG5, zh_TW.Big5
     CNS-11643	    Chinese (traditional) zh_TW
@@ -169,7 +177,8 @@ use Korean and the |locale| name is "ko", do this:
 
 You can put this in your ~/.profile or ~/.cshrc file to always use it.
 
-To use a locale in Vim only, use the |:language| command: >
+To use a locale in Vim only, use the |:language| command:
+
 
 	:language ko
 
@@ -280,7 +289,8 @@ u   ucs-4le	like ucs-4, little endian
 The {name} can be any encoding name that your system supports.  It is passed
 to iconv() to convert between UTF-8 and the encoding of the file.
 For MS-Windows "cp{number}" means using codepage {number}.
-Examples: >
+Examples:
+
 		:set fileencoding=8bit-cp1252
 		:set fileencoding=2byte-cp932
 
@@ -309,7 +319,7 @@ u   utf-32le	same as ucs-4le
 For the UCS codes the byte order matters.  This is tricky, use UTF-8 whenever
 you can.  The default is to use big-endian (most significant byte comes
 first):
-	    name	bytes		char ~
+	    name	bytes		char
 	    ucs-2	      11 22	    1122
 	    ucs-2le	      22 11	    1122
 	    ucs-4	11 22 33 44	11223344
@@ -506,7 +516,7 @@ this. >
 	*international: True
 	*.inputMethod: your_input_server_name
 	*.preeditType: your_input_style
-<
+
 input_server_name	is your |IM-server| name (check your |IM-server|
 			manual).
 your_input_style	is one of |OverTheSpot|, |OffTheSpot|, |Root|.  See
@@ -520,7 +530,7 @@ For example, when you are using kinput2 as |IM-server|, >
 	*international: True
 	*.inputMethod: kinput2
 	*.preeditType: OverTheSpot
-<
+
 When using |OverTheSpot|, GUI Vim always connects to the IM Server even in
 Normal mode, so you can input your language with commands like "f" and "r".
 But when using one of the other two methods, GUI Vim connects to the IM Server
@@ -538,7 +548,7 @@ If needed, you can set the XMODIFIERS environment variable:
 For example, when you are using kinput2 as |IM-server| and sh, >
 
 	export XMODIFIERS="@im=kinput2"
-<
+
 
 ==============================================================================
 Input with a keymap					*mbyte-keymap*
@@ -559,7 +569,8 @@ Here {keymap} is the value of the 'keymap' option.
 The file name with "utf-8" included is tried first.
 
 'runtimepath' is used to find these files.  To see an overview of all
-available keymap files, use this: >
+available keymap files, use this:
+
 	:echo globpath(&rtp, "keymap/*.vim")
 
 In Insert and Command-line mode you can use CTRL-^ to toggle between using the
@@ -572,16 +583,18 @@ For Command-line mode the flag is NOT remembered.  You are expected to type an
 Ex command first, which is ASCII.
 For typing search patterns the 'imsearch' option is used.  It can be set to
 use the same value as for 'iminsert'.
-								*lCursor*
+*lCursor*
 It is possible to give the GUI cursor another color when the language mappings
 are being used.  This is disabled by default, to avoid that the cursor becomes
 invisible when you use a non-standard background color.  Here is an example to
-use a brightly colored cursor: >
+use a brightly colored cursor:
+
 	:highlight Cursor guifg=NONE guibg=Green
 	:highlight lCursor guifg=NONE guibg=Cyan
-<
+
 		*keymap-file-format* *:loadk* *:loadkeymap* *E105* *E791*
-The keymap file looks something like this: >
+The keymap file looks something like this:
+
 
 	" Maintainer:	name <email@address>
 	" Last Changed:	2001 Jan 1
@@ -606,18 +619,21 @@ is mapped to "A" and "b" to "B".  Thus the first item is mapped to the second
 item.  This is done for each line, until the end of the file.
 These items are exactly the same as what can be used in a |:lmap| command,
 using "<buffer>" to make the mappings local to the buffer.
-You can check the result with this command: >
+You can check the result with this command:
+
 	:lmap
 The two items must be separated by white space.  You cannot include white
 space inside an item, use the special names "<Tab>" and "<Space>" instead.
 The length of the two items together must not exceed 200 bytes.
 
 It's possible to have more than one character in the first column.  This works
-like a dead key.  Example: >
+like a dead key.  Example:
+
 	'a	á
 Since Vim doesn't know if the next character after a quote is really an "a",
 it will wait for the next character.  To be able to insert a single quote,
-also add this line: >
+also add this line:
+
 	''	'
 Since the mapping is defined with |:lmap| the resulting quote will not be
 used for the start of another character defined in the 'keymap'.
@@ -632,7 +648,8 @@ Note that the Alt mappings may not work, depending on your keyboard and
 terminal.
 
 Although it's possible to have more than one character in the second column,
-this is unusual.  But you can use various ways to specify the character: >
+this is unusual.  But you can use various ways to specify the character:
+
 	A	a		literal character
 	A	<char-97>	decimal value
 	A	<char-0x61>	hexadecimal value
@@ -646,7 +663,8 @@ conversion is done on the keymap file, not on the resulting character.
 
 The lines after "loadkeymap" are interpreted with 'cpoptions' set to "C".
 This means that continuation lines are not used and a backslash has a special
-meaning in the mappings.  Examples: >
+meaning in the mappings.  Examples:
+
 
 	" a comment line
 	\"	x	maps " to x
@@ -662,8 +680,8 @@ HEBREW KEYMAP						*keymap-hebrew*
 This file explains what characters are available in UTF-8 and CP1255 encodings,
 and what the keymaps are to get those characters:
 
-glyph   encoding	   keymap ~
-Char UTF-8 cp1255  hebrew  hebrewp  name ~
+glyph   encoding	   keymap
+Char UTF-8 cp1255  hebrew  hebrewp  name
 א    0x5d0  0xe0     t	      a     'alef
 ב    0x5d1  0xe1     c	      b     bet
 ג    0x5d2  0xe2     d	      g     gimel
@@ -877,7 +895,8 @@ this:
 1. Set 'guifont' and let Vim find a matching 'guifontwide'
 2. Set 'guifont' and 'guifontwide'
 
-See the documentation for each option for details.  Example: >
+See the documentation for each option for details.  Example:
+
 
    :set guifont=-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1
 
@@ -894,7 +913,8 @@ If your system does not provide support for typing UTF-8, you can use the
 'keymap' feature.  This allows writing a keymap file, which defines a UTF-8
 character as a sequence of ASCII characters.  See |mbyte-keymap|.
 
-If everything else fails, you can type any character as four hex bytes: >
+If everything else fails, you can type any character as four hex bytes:
+
 
 	CTRL-V u 1234
 
@@ -932,20 +952,16 @@ These options are relevant for editing multibyte files.
 
 'charconvert'	Expression used to convert files from one encoding to another.
 
-'formatoptions' The 'm' flag can be included to have formatting break a line
-		at a multibyte character of 256 or higher.  Thus is useful for
-		languages where a sequence of characters can be broken
-		anywhere.
+'formatoptions'
+The 'm' flag can be included to have formatting break a line at a multibyte character of 256 or
+higher.
+Thus is useful for languages
+where a sequence of characters can be broken  anywhere.
 
 'keymap'	Specify the name of a keyboard mapping.
 
 ==============================================================================
 
-Contributions specifically for the multibyte features by:
-	Chi-Deok Hwang <hwang@mizi.co.kr>
-	SungHyun Nam <goweol@gmail.com>
-	K.Nagano <nagano@atese.advantest.co.jp>
-	Taro Muraoka  <koron@tka.att.ne.jp>
-	Yasuhiro Matsumoto <mattn@mail.goo.ne.jp>
 
  vim:tw=78:ts=8:noet:ft=help:norl:
+leo_DIY

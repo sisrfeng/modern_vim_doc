@@ -15,7 +15,7 @@ Get specific help:  It is possible to go directly to whatever you want help
                     on, by giving an argument to the |:help| command.
                     Prepend something to specify the context:  *help-context*
 
-                          WHAT                  PREPEND    EXAMPLE      ~
+                          WHAT                  PREPEND    EXAMPLE
                       Normal mode command                  :help x
                       Visual mode command         v_       :help v_u
                       Insert mode command         i_       :help i_<Esc>
@@ -37,7 +37,7 @@ Get specific help:  It is possible to go directly to whatever you want help
 Vim stands for Vi IMproved.  Most of Vim was made by Bram Moolenaar, but only
 through the help of many others.  See |credits|.
 ------------------------------------------------------------------------------
-                                                *doc-file-list* *Q_ct*
+*doc-file-list* *Q_ct*
 BASIC:
 |quickref|      Overview of the most common commands you will use
 |tutor|         30-minute interactive course for beginners
@@ -51,7 +51,7 @@ USER MANUAL: These files explain how to accomplish an editing task.
 
 |usr_toc.txt|   Table Of Contents
 
-Getting Started ~
+Getting Started
 |usr_01.txt|  About the manuals
 |usr_02.txt|  The first steps in Vim
 |usr_03.txt|  Moving around
@@ -65,7 +65,7 @@ Getting Started ~
 |usr_11.txt|  Recovering from a crash
 |usr_12.txt|  Clever tricks
 
-Editing Effectively ~
+Editing Effectively
 |usr_20.txt|  Typing command-line commands quickly
 |usr_21.txt|  Go away and come back
 |usr_22.txt|  Finding the file to edit
@@ -80,7 +80,7 @@ Editing Effectively ~
 |usr_31.txt|  Exploiting the GUI
 |usr_32.txt|  The undo tree
 
-Tuning Vim ~
+Tuning Vim
 |usr_40.txt|  Make new commands
 |usr_41.txt|  Write a Vim script
 |usr_42.txt|  Add new menus
@@ -91,7 +91,7 @@ Tuning Vim ~
 
 REFERENCE MANUAL: These files explain every detail of Vim.      *reference_toc*
 
-General subjects ~
+General subjects
 |intro.txt|     general introduction to Vim; notation used in help files
 |nvim.txt|      Transitioning from Vim
 |help.txt|      overview and quick reference (this file)
@@ -104,7 +104,7 @@ General subjects ~
 |debug.txt|     debugging Vim itself
 |uganda.txt|    Vim distribution conditions and what to do with your money
 
-Basic editing ~
+Basic editing
 |starting.txt|  starting Vim, Vim command arguments, initialisation
 |editing.txt|   editing and writing files
 |motion.txt|    commands for moving around
@@ -117,7 +117,7 @@ Basic editing ~
 |various.txt|   various remaining commands
 |recover.txt|   recovering from a crash
 
-Advanced editing ~
+Advanced editing
 |cmdline.txt|   Command-line editing
 |options.txt|   description of all options
 |pattern.txt|   regexp patterns and search commands
@@ -133,12 +133,12 @@ Advanced editing ~
 |lua.txt|       Lua API
 |api.txt|       Nvim API via RPC, Lua and VimL
 
-Special issues ~
+Special issues
 |testing.txt|       testing Vim and Vim scripts
 |print.txt|         printing
 |remote_plugin.txt|   Nvim support for remote plugins
 
-Programming language support ~
+Programming language support
 |indent.txt|       automatic indenting for C and other languages
 |lsp.txt|          Language Server Protocol (LSP)
 |treesitter.txt|   tree-sitter library for incremental parsing of buffers
@@ -153,7 +153,7 @@ Programming language support ~
 |ft_rust.txt|      Filetype plugin for Rust
 |ft_sql.txt|       about the SQL filetype plugin
 
-Language support ~
+Language support
 |digraph.txt|   list of available digraphs
 |mbyte.txt|     multibyte text support
 |mlang.txt|     non-English language support
@@ -162,22 +162,22 @@ Language support ~
 |hebrew.txt|    Hebrew language support and editing
 |russian.txt|   Russian language support and editing
 
-GUI ~
+GUI
 |gui.txt|       Graphical User Interface (GUI)
 
-Interfaces ~
+Interfaces
 |if_cscop.txt|  using Cscope with Vim
 |if_perl.txt|   Perl interface
 |if_pyth.txt|   Python interface
 |if_ruby.txt|   Ruby interface
 |sign.txt|      debugging signs
 
-Versions ~
+Versions
 |vim_diff.txt|  Main differences between Nvim and Vim
 |vi_diff.txt|   Main differences between Vim and Vi
 |deprecated.txt|  Deprecated items that have been or will be removed
 
-Other ~
+Other
 |terminal_emulator.txt| Terminal buffers
 |term.txt|              Terminal UI
 |ui.txt|                Nvim UI protocol
@@ -185,8 +185,8 @@ Other ~
 |dev_style.txt|         Nvim style guide
 |job_control.txt|       Spawn and control multiple processes
 
-                                                *standard-plugin-list*
-Standard plugins ~
+*standard-plugin-list*
+Standard plugins
 |matchit.txt|      Extended |%| matching
 |pi_gzip.txt|      Reading and writing compressed files
 |pi_health.txt|    Healthcheck framework
@@ -198,6 +198,37 @@ Standard plugins ~
 |pi_zip.txt|       Zip archive explorer
 
 LOCAL ADDITIONS:                                *local-additions*
+|commentary.txt|  Comment stuff out
+|trans.txt|   Translate text using translate-shell in vim.
+|matchup.txt|    modern matching words
+|vim-markdown|  Vim Markdown
+|NERDTree.txt|   A tree explorer plugin to rule the Vim world. Bwahahaha!!
+|fugitive.txt|  A Git wrapper so awesome, it should be illegal
+|copilot.txt|  GitHub Copilot - Your AI pair programmer
+|coc-nvim.txt|					NodeJS client for Vim & Neovim.
+|anzu.txt|	A plug-in that displays the position information of search.
+|Tabular.txt|   Configurable, flexible, intuitive text aligning
+|easy-align.txt|	easy-align	Last change: December 14 2014
+|easymotion.txt|        Version 3.0
+|pairs.txt| For Vim version 7                          Last change: 16 August 2013
+|AutoPairs.txt|  Insert or delete brackets, parens, quotes in pair
+|operator-sandwich.txt|	The operator plugin to edit sandwiched textobjects.
+|sandwich.txt|				Last change:06-Feb-2022.
+|textobj-sandwich.txt|	The textobject plugin to select sandwiched texts.
+|nerdcommenter.txt|         Plugin for commenting code
+|leaderf.txt|   Quickly locate files, buffers, mrus, tags, ... in large project.
+|toggle-bool.txt| A short multi line description of your plugin
+|undotree.txt|  The undo history visualizer for VIM
+|far.vim|   Find And Replace
+|linediff.txt|	Diff two blocks of text
+|diffchar.txt|  Highlight the exact differences, based on characters and words
+|terminal_help|  Preface
+|scriptease.txt|  Write Vim scripts with ease
+|devicons|
+|denite.txt|	Dark powered asynchronous unite all interfaces for NeoVim/Vim.
+|vimscript_lasterror.txt|  jump to the Vim script's last error.
+|VimRegexConverter.txt| Convert Vim regex from a magic mode to another
+|nvim-treesitter|  Treesitter configurations and abstraction layer for Neovim.
 |trans.txt|   Translate text using translate-shell in vim.
 |matchup.txt|    modern matching words
 |easy-align.txt|	easy-align	Last change: December 14 2014
@@ -240,3 +271,4 @@ will try to find help for it.  Especially for options in single quotes, e.g.
 
 ------------------------------------------------------------------------------
  vim:tw=78:isk=!-~,^*,^\|,^\":ts=8:noet:ft=help:norl:
+leo_DIY

@@ -32,8 +32,8 @@ a non-superuser:
   curl -LO http://invisible-island.net/datafiles/current/terminfo.src.gz
   gunzip terminfo.src.gz
   tic terminfo.src
-<
-								*$TERM*
+
+*$TERM*
 The $TERM environment variable must match the terminal you are using!
 Otherwise Nvim cannot know what sequences your terminal expects, and weird
 or sub-optimal behavior will result (scrolling quirks, wrong colors, etc.).
@@ -76,7 +76,8 @@ supplying an external one with entries for the terminal type.
 Settings depending on terminal			*term-dependent-settings*
 
 If you want to set terminal-dependent options or mappings, you can do this in
-your init.vim.  Example: >
+your init.vim.  Example:
+
 
     if $TERM =~ '^\(rxvt\|screen\|interix\|putty\)\(-.*\)\?$'
         set notermguicolors
@@ -95,7 +96,7 @@ your init.vim.  Example: >
     elseif $TERM =~ ...
         ... and so forth ...
     endif
-<
+
 					*scroll-region* *xterm-scroll-region*
 Where possible, Nvim will use the terminal's ability to set a scroll region in
 order to redraw faster when a window is scrolled.  If the terminal's terminfo
@@ -170,11 +171,13 @@ are not in terminfo you must add them by setting "terminal-overrides" in
 ~/.tmux.conf .
 
 See the tmux(1) manual page for the details of how and what to do in the tmux
-configuration file.  It will look something like: >
+configuration file.  It will look something like:
+
 	set -ga terminal-overrides '*:Ss=\E[%p1%d q:Se=\E[ q'
-<or (alas!) for Konsole 18.07.70 or older, something more complex like: >
+<or (alas!) for Konsole 18.07.70 or older, something more complex like:
+
 	set -ga terminal-overrides 'xterm*:\E]50;CursorShape=%?%p1%{3}%<%t%{0}%e%{1}%;%d\007'
-<
+
 ==============================================================================
 Window size						*window-size*
 
@@ -210,7 +213,8 @@ See the "Options" chapter |options|.
 
 If you are using a color terminal that is slow when displaying lines beyond
 the end of a buffer, this is because Nvim is drawing the whitespace twice, in
-two sets of colours and attributes.  To prevent this, use this command: >
+two sets of colours and attributes.  To prevent this, use this command:
+
 	hi NonText cterm=NONE ctermfg=NONE
 This draws the spaces with the default colours and attributes, which allows the
 second pass of drawing to be optimized away.  Note: Although in theory the
@@ -308,7 +312,7 @@ alt key is pressed (it may move the window).
 Double, triple and quadruple clicks are supported when the GUI is active, for
 Win32 and for an xterm.  For selecting text, extra clicks extend the
 selection:
-	click		select ~
+	click		select
 	double		word or % match		*<2-LeftMouse>*
 	triple		line			*<3-LeftMouse>*
 	quadruple	rectangular block	*<4-LeftMouse>*
@@ -320,7 +324,8 @@ that has a match selects until that match (like using "v%").  If the match is
 an #if/#else/#endif block, the selection becomes linewise.
 For MS-Windows and xterm the time for double clicking can be set with the
 'mousetime' option. For the other systems this time is defined outside of Vim.
-An example, for using a double click to jump to the tag under the cursor: >
+An example, for using a double click to jump to the tag under the cursor:
+
 	:map <2-LeftMouse> :exe "tag ". expand("<cword>")<CR>
 
 Dragging the mouse with a double click (button-down, button-up, button-down
@@ -356,7 +361,8 @@ The X1 and X2 buttons refer to the extra buttons found on some mice.  The
 'Microsoft Explorer' mouse has these buttons available to the right thumb.
 Currently X1 and X2 only work on Win32 and X11 environments.
 
-Examples: >
+Examples:
+
 	:noremap <MiddleMouse> <LeftMouse><MiddleMouse>
 Paste at the position of the middle mouse button click (otherwise the paste
 would be done at the cursor position). >
@@ -372,7 +378,8 @@ Map the X1 and X2 buttons to go forwards and backwards in the jump list, see
 |CTRL-O| and |CTRL-I|.
 
 						*mouse-swap-buttons*
-To swap the meaning of the left and right mouse buttons: >
+To swap the meaning of the left and right mouse buttons:
+
 	:noremap	<LeftMouse>	<RightMouse>
 	:noremap	<LeftDrag>	<RightDrag>
 	:noremap	<LeftRelease>	<RightRelease>
@@ -387,5 +394,6 @@ To swap the meaning of the left and right mouse buttons: >
 	:noremap!	<RightMouse>	<LeftMouse>
 	:noremap!	<RightDrag>	<LeftDrag>
 	:noremap!	<RightRelease>	<LeftRelease>
-<
+
  vim:tw=78:ts=8:ft=help:norl:
+leo_DIY

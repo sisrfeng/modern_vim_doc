@@ -314,6 +314,7 @@ vim里i_ctrl_v后ctrl+j, 得到 , 而非^J
 <Tab>           tab                     CTRL-I    9                     *tab* *Tab*
 
 <NL>            linefeed                CTRL-J   10 (used for <Nul>)    *linefeed*
+NL(没带括号) 等于<EOL>, depends on 'fileformat' ?
 
 vim里i_ctrl_v后ctrl+m或enter, 得到 :
 <CR>            carriage return         CTRL-M   13                     *carriage-return*
@@ -332,7 +333,8 @@ vim里i_ctrl_v后ctrl+m或enter, 得到 :
 <CSI>           command sequence intro  ALT-Esc 155                     *<CSI>*
 <xCSI>          CSI when typed in the GUI                               *<xCSI>*
 能插入
-<EOL>           end-of-line (can be <CR>, <NL> or <CR><NL>, depends on system and 'fileformat')     *<EOL>*
+*<EOL>*           end-of-line (can be <CR>, <NL> or <CR><NL>,
+                            depends on system and 'fileformat')  
 <Ignore>        cancel wait-for-character               *<Ignore>*
 <NOP>           no-op: do nothing (useful in mappings)  *<Nop>*
 
@@ -762,10 +764,10 @@ buffer lines    logical lines   window lines    screen lines
                                                 8.  ccc ccc c
 1. aaa          1. aaa          1. aaa          9.  cc
 2. bbb          2. bbb          2. bbb          10. ddd
-3. ccc ccc ccc  3. ccc ccc ccc  3. ccc ccc c    11. ~
+3. ccc ccc ccc  3. ccc ccc ccc  3. ccc ccc c    11.    
 4. ddd          4. ddd          4. cc           12. === status line ===
                                 5. ddd          13. (command line)
-                                6. ~
+                                6.    
 
 
 API client

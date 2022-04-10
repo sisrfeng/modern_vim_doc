@@ -72,17 +72,18 @@ centralized reference of the differences.
 - 'wildoptions' defaults to "pum,tagfile"
 
 - |man.vim| plugin is enabled, so |:Man| is available by default.
-- |matchit| plugin is enabled. To disable it in your config: >
+- |matchit| plugin is enabled. To disable it in your config:
+
     :let loaded_matchit = 1
 
 - |g:vimsyn_embed| defaults to "l" to enable Lua highlighting
 
 
-Default Mappings ~
+Default Mappings
 							*default-mappings*
 我全盘吸收了
 
-Default Autocommands ~
+Default Autocommands
 							*default-autocmds*
 Default autocommands exist in the following groups. Use ":autocmd! {group}" to
 remove them and ":autocmd {group}" to see how they're defined.
@@ -96,7 +97,7 @@ nvim_cmdwin:
 ==============================================================================
 3. New Features						       *nvim-features*
 
-MAJOR COMPONENTS ~
+MAJOR COMPONENTS
 
 API				|API|
 Job control			|job-control|
@@ -114,7 +115,7 @@ Terminal emulator		|terminal|
 Vimscript parser		|nvim_parse_expression()|
 XDG base directories		|xdg|
 
-USER EXPERIENCE  ~
+USER EXPERIENCE
 
 Working intuitively and consistently is a major goal of Nvim.
 
@@ -145,7 +146,7 @@ Some features are built in that otherwise required external plugins:
 
 - Highlighting the yanked region, see |lua-highlight|.
 
-ARCHITECTURE ~
+ARCHITECTURE
 
 External plugins run in separate processes. |remote-plugin| This improves
 stability and allows those plugins to work without blocking the editor. Even
@@ -156,7 +157,7 @@ Platform and I/O facilities are built upon libuv. Nvim benefits from libuv
 features and bug fixes, and other projects benefit from improvements to libuv
 by Nvim developers.
 
-FEATURES ~
+FEATURES
 
 Command-line highlighting:
   The expression prompt (|@=|, |c_CTRL-R_=|, |i_CTRL-R_=|) is highlighted
@@ -252,7 +253,7 @@ are always available and may be used simultaneously. See |provider-python|.
 
 |mkdir()| behaviour changed:
 1. Assuming /tmp/foo does not exist and /tmp can be written to
-   mkdir('/tmp/foo/bar', 'p', 0700) will create both /tmp/foo and /tmp/foo/bar 
+   mkdir('/tmp/foo/bar', 'p', 0700) will create both /tmp/foo and /tmp/foo/bar
    with 0700 permissions. Vim mkdir will create /tmp/foo with 0755.
 2. If you try to create an existing directory with `'p'` (e.g. mkdir('/',
    'p')) mkdir() will silently exit. In Vim this was an error.
@@ -267,7 +268,7 @@ are always available and may be used simultaneously. See |provider-python|.
 
        let l = []
        echo [l, l]
-<
+
    it does not use "[...]" (was: "[[], [...]]", now: "[[], []]"). "..." is
    only used for recursive containers.
 3. |:echo| printing nested containers adds "@level" after "..." designating
@@ -277,16 +278,16 @@ are always available and may be used simultaneously. See |provider-python|.
    error out.
 4. Stringifyed infinite and NaN values now use |str2float()| and can be evaled
    back.
-5. (internal) Trying to print or stringify VAR_UNKNOWN in Vim results in 
+5. (internal) Trying to print or stringify VAR_UNKNOWN in Vim results in
    nothing, E908, in Nvim it is internal error.
 
 |json_decode()| behaviour changed:
 1. It may output |msgpack-special-dict|.
-2. |msgpack-special-dict| is emitted also in case of duplicate keys, while in 
+2. |msgpack-special-dict| is emitted also in case of duplicate keys, while in
    Vim it errors out.
 3. It accepts only valid JSON.  Trailing commas are not accepted.
 
-|json_encode()| behaviour slightly changed: now |msgpack-special-dict| values 
+|json_encode()| behaviour slightly changed: now |msgpack-special-dict| values
 are accepted, but |v:none| is not.
 
 Viminfo text files were replaced with binary (messagepack) ShaDa files.
@@ -305,10 +306,10 @@ Additional differences:
   |shada-error-handling|
 - ShaDa file keeps search direction (|v:searchforward|), viminfo does not.
 
-|printf()| returns something meaningful when used with `%p` argument: in Vim 
-it used to return useless address of the string (strings are copied to the 
-newly allocated memory all over the place) and fail on types which cannot be 
-coerced to strings. See |id()| for more details, currently it uses 
+|printf()| returns something meaningful when used with `%p` argument: in Vim
+it used to return useless address of the string (strings are copied to the
+newly allocated memory all over the place) and fail on types which cannot be
+coerced to strings. See |id()| for more details, currently it uses
 `printf("%p", {expr})` internally.
 
 |c_CTRL-R| pasting a non-special register into |cmdline| omits the last <CR>.
@@ -394,14 +395,15 @@ Syntax highlighting:
 
 TUI:
 			*:set-termcap*
-  Start Nvim with 'verbose' level 3 to show terminal capabilities: >
+  Start Nvim with 'verbose' level 3 to show terminal capabilities:
+
 	nvim -V3
-<
+
 			*'term'* *E529* *E530* *E531*
   'term' reflects the terminal type derived from |$TERM| and other environment
   checks.  For debugging only; not reliable during startup. >
 	  :echo &term
-<  "builtin_x" means one of the |builtin-terms| was chosen, because the expected
+  "builtin_x" means one of the |builtin-terms| was chosen, because the expected
   terminfo file was not found on the system.
 
   Nvim will use 256-colour capability on Linux virtual terminals.  Vim uses
@@ -495,7 +497,7 @@ Highlight groups:
       autocmd TermOpen,WinEnter * if &buftype=='terminal'
         \|setlocal winhighlight=StatusLine:StatusLineTerm,StatusLineNC:StatusLineTermNC
         \|else|setlocal winhighlight=|endif
-<
+
 
 Options:
   'antialias'
@@ -567,8 +569,10 @@ Test functions:
 
 TUI:
 			  *t_xx* *termcap-options* *t_AB* *t_Sb* *t_vb* *t_SI*
-  Nvim does not have special `t_XX` options nor <t_XX> keycodes to configure
-  terminal capabilities. Instead Nvim treats the terminal as any other UI,
+
+  Nvim does not have special `t_XX` options
+  nor <t_XX> keycodes to configure  terminal capabilities.
+  Instead Nvim treats the terminal as any other UI,
   e.g. 'guicursor' sets the terminal cursor style if possible.
 
 			  *termcap*
@@ -584,3 +588,4 @@ TUI:
 
 ==============================================================================
  vim:tw=78:ts=8:sw=2:et:ft=help:norl:
+leo_DIY

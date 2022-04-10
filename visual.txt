@@ -125,7 +125,7 @@ gN                      Like |gn| but searches backward, like with `N`.
                         is closest, to the position of the click.  Only when
                         'mouse' option contains 'n' or 'a'.
 
-                        Note: when 'mousemodel' is set to "popup",
+                        when 'mousemodel' is set to "popup",
                         <S-LeftMouse> has to be used instead of <RightMouse>.
 
 *<LeftRelease>*
@@ -266,7 +266,7 @@ Additionally the following commands can be used:
      using CTRL-V.
 (4): When using CTRL-V operates on the block only.
 
-Note that the ":vmap" command can be used to specifically map keys in Visual
+The ":vmap" command can be used to specifically map keys in Visual
 mode.  For example, if you would like the "/" command not to extend the Visual
 area, but instead take the highlighted text and search for that:
 
@@ -290,7 +290,7 @@ pattern.  For example, to replace all '(' in the Visual area with '#':
 
         :'<,'>s/\%V(/#/g
 
-Note that the "'<,'>" will appear automatically when you press ":" in Visual
+The "'<,'>" will appear automatically when you press ":" in Visual
 mode.
 
 ==============================================================================
@@ -317,7 +317,7 @@ block RHS is not straight, due to different line lengths:
     In this case the string is appended to the end of the block on each line,
     and whitespace is inserted to pad to the end-of-block column.
 See |v_b_A_example|.
-Note: "I" and "A" behave differently for lines that don't extend into the
+"I" and "A" behave differently for lines that don't extend into the
 selected block.  This was done intentionally, so that you can do it the way
 you want.
 Works only for adding text to a line, not for deletions.
@@ -398,7 +398,7 @@ selected text:
 (In the <> notation |<>|, when typing it you should type it literally; you
 need to remove the 'B' flag from 'cpoptions')
 
-Note that special characters (like '.' and '*') will cause problems.
+Special characters (like '.' and '*') will cause problems.
 
 Visual-block Examples                                   *blockwise-examples*
 With the following text, I will indicate the commands to produce the block and

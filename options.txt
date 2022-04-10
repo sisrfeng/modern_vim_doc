@@ -165,10 +165,12 @@ result which is probably not what you want.  Avoid it.
 Some options are a list of flags.  When you want to add a flag to such an
 option, without changing the existing ones, you can do it like this:
    :set guioptions+=a
+
 Remove a flag from an option like this:
    :set guioptions-=a
 This removes the 'a' flag from 'guioptions'.
-Note that you should add or remove one flag at a time.  If 'guioptions' has
+
+you should add or remove one flag at a time.  If 'guioptions' has
 the value "ab", using "set guioptions-=ba" won't work, because the string "ba"
 doesn't appear.
 
@@ -229,7 +231,7 @@ command you have also set the global value.
         :e two
 Now the 'list' option is not set, because ":set nolist" resets the global
 value, ":setlocal list" only changes the local value and ":e two" gets the
-global value.  Note that if you do this next:
+global value.  if you do this next:
         :e one
 You will get back the 'list' value as it was the last time you edited "one".
 The options local to a window are remembered for each buffer.  This also
@@ -307,14 +309,14 @@ You can switch back to using the global value by making the local value empty:
 This only works for a string option.  For a number or boolean option you need
 to use the "<" flag, like this:
         :setlocal autoread<
-Note that for non-boolean and non-number options using "<" copies the global
+for non-boolean and non-number options using "<" copies the global
 value to the local value, it doesn't switch back to using the global value
 (that matters when the global value changes later).  You can also use:
         :set path<
 This will make the local value of 'path' empty, so that the global value is
 used.  Thus it does the same as:
         :setlocal path=
-Note: In the future more global options can be made global-local.  Using
+In the future more global options can be made global-local.  Using
 ":setlocal" on a global option might work differently then.
 
 
@@ -360,7 +362,7 @@ of user "user".  Example:
     :set path=~mool/include,/usr/include,.
 
 On Unix systems the form "${HOME}" can be used too.  The name between {} can
-contain non-id characters then.  Note that if you want to use this for the
+contain non-id characters then.  if you want to use this for the
 "gf" command, you need to add the '{' and '}' characters to 'isfname'.
 
 NOTE: expanding environment variables and "~/" is only done with the ":set"
@@ -492,7 +494,7 @@ The number of lines that are checked can be set with the 'modelines' option.
         If 'modeline' is off or
         'modelines' is 0 no lines are checked.
 
-Note that for the first form all of the rest of the line is used,
+for the first form all of the rest of the line is used,
 thus a line  like:
    /* vi:ts=4: */
 will give an error message for the trailing "*/".  This line is OK:
@@ -635,7 +637,7 @@ A jump table for the options with a short description can be found at |Q_op|.
         open a file, switch buffers, delete a buffer or open/close a window.
         It will change to the directory containing the file which was opened
         or selected.
-        Note: When this option is on some plugins may not work.
+        When this option is on some plugins may not work.
 
 *'arabic'* *'arab'* *'noarabic'* *'noarab'*
 'arabic' 'arab'         boolean (default off)
@@ -651,7 +653,7 @@ A jump table for the options with a short description can be found at |Q_op|.
         Resetting this option will:
         - Reset the 'rightleft' option.
         - Disable the use of 'keymap' (without changing its value).
-        Note that 'arabicshape' and 'delcombine' are not reset (it is a global
+        'arabicshape' and 'delcombine' are not reset (it is a global
         option).
         Also see |arabic.txt|.
 
@@ -703,18 +705,42 @@ When 'smartindent' or 'cindent' is on the indent is changed in a different way.
         using the global value:
                 :set autoread<
 
-*'autowrite'* *'aw'* *'noautowrite'* *'noaw'*
-'autowrite' 'aw'        boolean (default off)
-                        global
+*'autowrite'* *'aw'*
+*'noautowrite'* *'noaw'*
+    boolean (default off)
+    global
 
-        Write the contents of the file, if it has been modified, on each
-        :next, :rewind, :last, :first, :previous, :stop, :suspend, :tag, :!,
-        :make, CTRL-] and CTRL-^ command; and when a :buffer, CTRL-O, CTRL-I,
-        '{A-Z0-9}, or `{A-Z0-9} command takes one to another file.
-        Note that for some commands the 'autowrite' option is not used, see
-        'autowriteall' for that.
-        Some buffers will not be written, specifically when 'buftype' is
-        "nowrite", "nofile", "terminal" or "prompt".
+    Write the contents of the file,
+    if it has been modified  on each  of these commands:
+         :next
+	 :rewind
+	 :last
+	 :first
+	 :previous
+	 :stop
+	 :suspend
+	 :tag
+	 :!
+	  :make
+	  CTRL-]
+          CTRL-^
+
+    and when one of these takes you to another file.
+        :buffer
+	 CTRL-O
+	 CTRL-I
+	 '{A-Z0-9}
+	 `{A-Z0-9}
+
+    for some commands
+        the 'autowrite' option is not used, see  'autowriteall' for that.
+
+    when 'buftype' is
+            "nowrite",
+            "nofile",
+            "terminal"
+            "prompt".
+        buffers will not be written,
 
 *'autowriteall'* *'awa'* *'noautowriteall'* *'noawa'*
 'autowriteall' 'awa'    boolean (default off)
@@ -899,8 +925,7 @@ When 'smartindent' or 'cindent' is on the indent is changed in a different way.
         The use of |:set+=| and |:set-=| is preferred when adding or removing
         directories from the list.  This avoids problems when a future version
         uses another default.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'backupext'* *'bex'* *E589*
 'backupext' 'bex'       string  (default "~")
@@ -936,11 +961,11 @@ When 'smartindent' or 'cindent' is on the indent is changed in a different way.
         lose both the original file and what you were writing.  Only disable
         backups if you don't care about losing the file.
 
-        Note that environment variables are not expanded.  If you want to use
+        environment variables are not expanded.  If you want to use
         $HOME you must expand it explicitly, e.g.:
                 :let backupskip = escape(expand('$HOME'), '\') . '/tmp/*'
 
-        Note that the default also makes sure that "crontab -e" works (when a
+        the default also makes sure that "crontab -e" works (when a
         backup would be made by renaming the original file crontab won't see
         the newly created file).  Also see 'backupcopy' and |crontab|.
 
@@ -1222,8 +1247,7 @@ It can consist of the following optional  items and must be separated by a comma
         a modified version of the following command in your vimrc file to
         override it:
           :let &cdpath = ',' . substitute(substitute($CDPATH, '[, ]', '\\\0', 'g'), ':', ',', 'g')
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
         (parts of 'cdpath' can be passed to the shell to expand file names).
 
 *'cedit'*
@@ -1277,9 +1301,8 @@ It can consist of the following optional  items and must be separated by a comma
                 v:charconvert_to        name of the desired encoding
                 v:fname_in              name of the input file
                 v:fname_out             name of the output file
-        Note that v:fname_in and v:fname_out will never be the same.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        v:fname_in and v:fname_out will never be the same.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'cindent'* *'cin'* *'nocindent'* *'nocin'*
 'cindent' 'cin'         boolean (default off)
@@ -1318,7 +1341,7 @@ It can consist of the following optional  items and must be separated by a comma
         These keywords start an extra indent in the next line when
         'smartindent' or 'cindent' is set.  For 'cindent' this is only done at
         an appropriate place (inside {}).
-        Note that 'ignorecase' isn't used for 'cinwords'.  If case doesn't
+        'ignorecase' isn't used for 'cinwords'.  If case doesn't
         matter, include the keyword both the uppercase and lowercase:
         "if,If,IF".
 
@@ -1411,100 +1434,110 @@ It can consist of the following optional  items and must be separated by a comma
        (只见到这个例子)
            https://github.com/tpope/vim-commentary里利用它了
                autocmd FileType apache setlocal commentstring=#\ %s
+关于补全
+    *'complete'* *'cpt'* *E535*
+    'complete' 'cpt'        string  (default: ".,w,b,u,t")
+                            local to buffer
 
-*'complete'* *'cpt'* *E535*
-'complete' 'cpt'        string  (default: ".,w,b,u,t")
-                        local to buffer
-This option specifies how keyword completion |ins-completion| works when CTRL-P or
-CTRL-N are used.
- It is also used for whole-line completion |i_CTRL-X_CTRL-L|.
- It indicates the type of completion and the places to scan.
- It is a comma separated list of flags:
+    used for:
 
-        .       scan the current buffer ('wrapscan' is ignored)
-        w       scan buffers from other windows
-        b       scan other loaded buffers that are in the buffer list
-        u       scan the unloaded buffers that are in the buffer list
-        U       scan the buffers that are not in the buffer list
-        k       scan the files given with the 'dictionary' option
-        kspell  use the currently active spell checking |spell|
-        k{dict} scan the file {dict}.  Several "k" flags can be given,
-                patterns are valid too.  For example:
-                        :set cpt=k/usr/dict/*,k~/spanish
-        s       scan the files given with the 'thesaurus' option
-        s{tsr}  scan the file {tsr}.  Several "s" flags can be given, patterns
-                are valid too.
-        i       scan current and included files
-        d       scan current and included files for defined name or macro
-                |i_CTRL-X_CTRL-D|
-        ]       tag completion
-        t       same as "]"
+    1. whole-line completion |i_CTRL-X_CTRL-L|.
+    2. when CTRL-P or  CTRL-N are used.
+        This option specifies how keyword completion |ins-completion| works
 
-        Unloaded buffers are not loaded, thus their autocmds |:autocmd| are
-        not executed, this may lead to unexpected completions from some files
-        (gzipped files for example).  Unloaded buffers are not scanned for
-        whole-line completion.
+        CTRL-N and  CTRL-P can be used to do any 'iskeyword'- based expansion
+            (e.g.,
+            dictionary |i_CTRL-X_CTRL-K|,
+            included patterns |i_CTRL-X_CTRL-I|,
+            tags |i_CTRL-X_CTRL-]|
+            and normal expansions).
 
-        As you can see, CTRL-N and CTRL-P can be used to do any 'iskeyword'-
-        based expansion (e.g., dictionary |i_CTRL-X_CTRL-K|, included patterns
-        |i_CTRL-X_CTRL-I|, tags |i_CTRL-X_CTRL-]| and normal expansions).
 
-*'completefunc'* *'cfu'*
-'completefunc' 'cfu'    string  (default: empty)
-                        local to buffer
-        This option specifies a function to be used for Insert mode completion
-        with CTRL-X CTRL-U. |i_CTRL-X_CTRL-U|
-        See |complete-functions| for an explanation of how the function is
-        invoked and what it should return.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        It indicates the type of completion and the places to scan.
+        It is a comma separated list of flags:
 
-*'completeslash'* *'csl'*
-'completeslash' 'csl'   string  (default: "")
-                        local to buffer
-                        {only for MS-Windows}
-        When this option is set it overrules 'shellslash' for completion:
-        - When this option is set to "slash", a forward slash is used for path
-          completion in insert mode. This is useful when editing HTML tag, or
-          Makefile with 'noshellslash' on MS-Windows.
-        - When this option is set to "backslash", backslash is used. This is
-          useful when editing a batch file with 'shellslash' set on MS-Windows.
-        - When this option is empty, same character is used as for
-          'shellslash'.
-        For Insert mode completion the buffer-local value is used.  For
-        command line completion the global value is used.
+            .       scan the current buffer ('wrapscan' is ignored)
+            w       scan buffers from other windows
+            b       scan other loaded buffers that are in the buffer list
+            u       scan the unloaded buffers that are in the buffer list
+                        Unloaded buffers are not loaded,
+                            thus their autocmds |:autocmd| are not executed,
+                            this may lead to unexpected completions from some files (gzipped files for example).
+                            Unloaded buffers are not scanned for whole-line completion.
 
-*'completeopt'* *'cot'*
-'completeopt' 'cot'     string  (default: "menu,preview")
-                        global
-        A comma separated list of options for Insert mode completion
-        |ins-completion|.  The supported values are:
+            U       scan the buffers that are not in the buffer list
 
-           menu     Use a popup menu to show the possible completions.  The
-                    menu is only shown when there is more than one match and
-                    sufficient colors are available.  |ins-completion-menu|
+            k       scan the files given with the 'dictionary' option
+            kspell  use the currently active spell checking |spell|
+            k{dict} scan the file {dict}.  Several "k" flags can be given,  patterns are valid too.  For example:
+                            :set cpt=k/usr/dict/*,k~/spanish
+            s       scan the files given with the 'thesaurus' option
+            s{tsr}  scan the file {tsr}.  Several "s" flags can be given, patterns  are valid too.
 
-           menuone  Use the popup menu also when there is only one match.
-                    Useful when there is additional information about the
-                    match, e.g., what file it comes from.
+            i       scan current and included files
+            d       scan current and included files for defined name or macro
+                    |i_CTRL-X_CTRL-D|
 
-           longest  Only insert the longest common text of the matches.  If
-                    the menu is displayed you can use CTRL-L to add more
-                    characters.  Whether case is ignored depends on the kind
-                    of completion.  For buffer text the 'ignorecase' option is
-                    used.
+            ]       tag completion
+            t       same as "]"
 
-           preview  Show extra information about the currently selected
-                    completion in the preview window.  Only works in
-                    combination with "menu" or "menuone".
 
-          noinsert  Do not insert any text for a match until the user selects
-                    a match from the menu. Only works in combination with
-                    "menu" or "menuone". No effect if "longest" is present.
 
-          noselect  Do not select a match in the menu, force the user to
-                    select one from the menu. Only works in combination with
-                    "menu" or "menuone".
+    *'completefunc'* *'cfu'*
+    'completefunc' 'cfu'    string  (default: empty)
+                            local to buffer
+            This option specifies a function to be used for Insert mode completion
+            with CTRL-X CTRL-U. |i_CTRL-X_CTRL-U|
+            See |complete-functions| for an explanation of how the function is
+            invoked and what it should return.
+            This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
+
+    *'completeslash'* *'csl'*
+    'completeslash' 'csl'   string  (default: "")
+                            local to buffer
+                            {only for MS-Windows}
+            When this option is set it overrules 'shellslash' for completion:
+            - When this option is set to "slash", a forward slash is used for path
+              completion in insert mode. This is useful when editing HTML tag, or
+              Makefile with 'noshellslash' on MS-Windows.
+            - When this option is set to "backslash", backslash is used. This is
+              useful when editing a batch file with 'shellslash' set on MS-Windows.
+            - When this option is empty, same character is used as for
+              'shellslash'.
+            For Insert mode completion the buffer-local value is used.  For
+            command line completion the global value is used.
+
+    *'completeopt'* *'cot'*
+    'completeopt' 'cot'     string  (default: "menu,preview")
+                            global
+            A comma separated list of options for Insert mode completion
+            |ins-completion|.  The supported values are:
+
+               menu     Use a popup menu to show the possible completions.  The
+                        menu is only shown when there is more than one match and
+                        sufficient colors are available.  |ins-completion-menu|
+
+               menuone  Use the popup menu also when there is only one match.
+                        Useful when there is additional information about the
+                        match, e.g., what file it comes from.
+
+               longest  Only insert the longest common text of the matches.  If
+                        the menu is displayed you can use CTRL-L to add more
+                        characters.  Whether case is ignored depends on the kind
+                        of completion.  For buffer text the 'ignorecase' option is
+                        used.
+
+               preview  Show extra information about the currently selected
+                        completion in the preview window.  Only works in
+                        combination with "menu" or "menuone".
+
+              noinsert  Do not insert any text for a match until the user selects
+                        a match from the menu. Only works in combination with
+                        "menu" or "menuone". No effect if "longest" is present.
+
+              noselect  Do not select a match in the menu, force the user to
+                        select one from the menu. Only works in combination with
+                        "menu" or "menuone".
 
 
 *'concealcursor'*
@@ -1549,7 +1582,7 @@ CTRL-N are used.
                         |:syn-cchar|).
         3               Concealed text is completely hidden.
 
-        Note: in the cursor line concealed text is not hidden, so that you can
+        in the cursor line concealed text is not hidden, so that you can
         edit and copy the text.  This can be changed with the 'concealcursor'
         option.
 
@@ -1701,8 +1734,9 @@ vim里的这些option, nvim扔了:
 *cpo-M*
                 M       When excluded, "%" matching will take backslashes into
                         account.  Thus in "( \( )" and "\( ( \)" the outer
-                        parenthesis match.  When included "%" ignores
-                        backslashes, which is Vi compatible.
+                        parenthesis match.
+                        When included
+                            "%" ignores  backslashes, which is Vi compatible.
 *cpo-n*
                 n       When included, the column used for 'number' and
                         'relativenumber' will also be used for text of wrapped
@@ -1836,8 +1870,7 @@ vim里的这些option, nvim扔了:
 'cscopeprg' 'csprg'     string  (default "cscope")
                         global
         Specifies the command to execute cscope.  See |cscopeprg|.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'cscopequickfix'* *'csqf'*
 'cscopequickfix' 'csqf' string  (default "")
@@ -1959,7 +1992,7 @@ vim里的这些option, nvim扔了:
         "x" delete each combining character on its own.  When it is off (the
         default) the character along with its combining characters are
         deleted.
-        Note: When 'delcombine' is set "xx" may work differently from "2x"!
+        When 'delcombine' is set "xx" may work differently from "2x"!
 
         This is useful for Arabic, Hebrew and many other languages where one
         may have combining characters overtop of base characters, and want
@@ -1968,28 +2001,41 @@ vim里的这些option, nvim扔了:
 *'dictionary'* *'dict'*
 'dictionary' 'dict'     string  (default "")
                         global or local to buffer |global-local|
-        List of file names, separated by commas, that are used to lookup words
-        for keyword completion commands |i_CTRL-X_CTRL-K|.  Each file should
-        contain a list of words.  This can be one word per line, or several
-        words per line, separated by non-keyword characters (white space is
-        preferred).  Maximum line length is 510 bytes.
 
-        When this option is empty or an entry "spell" is present, and spell
-        checking is enabled, words in the word lists for the currently active
-        'spelllang' are used. See |spell|.
+    List of file names,  separated by commas,
+        that are used to lookup words for keyword completion commands |i_CTRL-X_CTRL-K|.
 
-        To include a comma in a file name precede it with a backslash.
-        Spaces after a comma are ignored,
-        otherwise spaces are included in the file name.
-        See |option-backslash| about using backslashes.
-        This has nothing to do with the |Dictionary| variable type.
+        Each file should contain a list of words.
+        This can be one word per line,  or several words per line,
+        separated by non-keyword characters (white space is preferred).
+        Maximum line length is 510 bytes.
         Where to find a list of words?
-        - BSD/macOS include the "/usr/share/dict/words" file.
-        Try "apt install spell" to get the "/usr/share/dict/words" file on apt-managed systems (Debian/Ubuntu).
-        The use of |:set+=| and |:set-=| is preferred when adding or
-        removing directories from the list.
+            Try "apt install spell" to get the "/usr/share/dict/words" file
+
+     When this option is empty or
+                         an entry "spell" is present,  and spell  checking is enabled,
+         words in the word lists for the currently active  'spelllang' are used. See |spell|.
+
+    Backticks cannot be used in this option for security reasons.
+
+    when adding or  removing directories from the list.
+        The use of |:set+=| and |:set-=| is preferred
         This avoids problems when a future version uses another default.
-        Backticks cannot be used in this option for security reasons.
+
+    In a file name:
+        To include a comma
+            precede it with a backslash.
+        Spaces:
+            after a comma
+                are ignored,
+            otherwise
+                are included in the file name.
+
+        See |option-backslash| about using backslashes.
+
+        This has nothing to do with the |Dictionary| variable type.
+
+
 
 *'diff'* *'nodiff'*
 'diff'                  boolean (default off)
@@ -2002,8 +2048,7 @@ vim里的这些option, nvim扔了:
                         global
         Expression which is evaluated to obtain a diff file (either ed-style
         or unified-style) from two versions of a file.  See |diff-diffexpr|.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'dip'* *'diffopt'*
 'diffopt' 'dip'         string  (default "internal,filler,closeoff")
@@ -2158,8 +2203,7 @@ vim里的这些option, nvim扔了:
         The use of |:set+=| and |:set-=| is preferred when adding or removing
         directories from the list.  This avoids problems when a future version
         uses another default.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'display'* *'dy'*
 'display' 'dy'          string  (default "lastline,msgsep", Vi default: "")
@@ -2251,13 +2295,10 @@ vim里的这些option, nvim扔了:
 *'equalprg'* *'ep'*
 'equalprg' 'ep'         string  (default "")
                         global or local to buffer |global-local|
-        External program to use for "=" command.  When this option is empty
-        the internal formatting functions are used; either 'lisp', 'cindent'
-        or 'indentexpr'.
-        Environment variables are expanded |:set_env|.  See |option-backslash|
-        about including spaces and backslashes.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        External program to use for "=" command.
+
+        Environment variables are expanded |:set_env|.  See |option-backslash|  about including spaces and backslashes.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'errorbells'* *'eb'* *'noerrorbells'* *'noeb'*
 'errorbells' 'eb'       boolean (default off)
@@ -2277,8 +2318,7 @@ vim里的这些option, nvim扔了:
         NOT used for the ":make" command.  See 'makeef' for that.
         Environment variables are expanded |:set_env|.
         See |option-backslash| about including spaces and backslashes.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'errorformat'* *'efm'*
 'errorformat' 'efm'     string  (default is very long)
@@ -2377,7 +2417,7 @@ vim里的这些option, nvim扔了:
         non-blank characters.
         When the |++enc| argument is used then the value of 'fileencodings' is
         not used.
-        Note that 'fileencodings' is not used for a new file, the global value
+        'fileencodings' is not used for a new file, the global value
         of 'fileencoding' is used instead.  You can set it with:
                 :setglobal fenc=iso-8859-2
         This means that a non-existing file may get a different encoding than
@@ -2725,7 +2765,7 @@ vim里的这些option, nvim扔了:
                     more screen lines.
                     Set to zero to be able to close folds of just one screen line.
 
-                                        Note that this only has an effect on what is displayed.
+                                        this only has an effect on what is displayed.
                     After using "zc" to close a fold,
                     which is displayed open because it's smaller than 'foldminlines',
                     a following "zc" may close a containing fold.
@@ -2765,7 +2805,7 @@ vim里的这些option, nvim扔了:
             When a movement command is used for an operator (e.g., "dl" or "y%")
             this option is not used.  This means the operator will include the
             whole closed fold.
-            Note that vertical movements are not here, because it would make it
+            vertical movements are not here, because it would make it
             very difficult to move onto a closed fold.
             In insert mode the folds containing the cursor will always be open
             when text is inserted.
@@ -2859,8 +2899,7 @@ vim里的这些option, nvim扔了:
         format function will be used |C-indenting|.
         Environment variables are expanded |:set_env|.  See |option-backslash|
         about including spaces and backslashes.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'fsync'* *'fs'*
 'fsync' 'fs'            boolean (default off)
@@ -2877,8 +2916,7 @@ vim里的这些option, nvim扔了:
         - system signals low battery life
         - Nvim exits abnormally
 
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'gdefault'* *'gd'* *'nogdefault'* *'nogd'*
 'gdefault' 'gd'         boolean (default off)
@@ -2921,14 +2959,12 @@ vim里的这些option, nvim扔了:
         |:vimgrepadd| and |:lgrepadd| like |:lvimgrepadd|.
         See also the section |:make_makeprg|, since most of the comments there
         apply equally to 'grepprg'.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'guicursor'* *'gcr'* *E545* *E546* *E548* *E549*
 'guicursor' 'gcr'       string  (default "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20")
                         global
-        Configures the cursor style for each mode. Works in the GUI and many
-        terminals.  See |tui-cursor-shape|.
+        Configures the cursor style for each mode. Works in the GUI and 🔑many  terminals🔑.  See |tui-cursor-shape|.
 
         To disable cursor-styling, reset the option:
                 :set guicursor=
@@ -3044,7 +3080,7 @@ vim里的这些option, nvim扔了:
         For Mac OSX you can use something like this:
             :set guifont=Monaco:h10
 *E236*
-        Note that the fonts must be mono-spaced (all characters have the same
+        the fonts must be mono-spaced (all characters have the same
         width).
 
         To preview a font on X11, you might be able to use the "xfontsel"
@@ -3076,7 +3112,7 @@ vim里的这些option, nvim扔了:
                         global
         Comma-separated list of fonts to be used for double-width characters.
         The first font that can be loaded is used.
-        Note: The size of these fonts must be exactly twice as wide as the one
+        The size of these fonts must be exactly twice as wide as the one
         specified with 'guifont' and the same height.
 
         When 'guifont' has a valid font and 'guifontwide' is empty Vim will
@@ -3216,15 +3252,20 @@ vim里的这些option, nvim扔了:
 'helpfile' 'hf'         string  (default (MS-Windows) "$VIMRUNTIME\doc\help.txt"
                                          (others) "$VIMRUNTIME/doc/help.txt")
                         global
-        Name of the main help file.  All distributed help files should be
-        placed together in one directory.  Additionally, all "doc" directories
-        in 'runtimepath' will be used.
-        Environment variables are expanded |:set_env|.  For example:
-        "$VIMRUNTIME/doc/help.txt".  If $VIMRUNTIME is not set, $VIM is also
-        tried.  Also see |$VIMRUNTIME| and |option-backslash| about including
-        spaces and backslashes.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+
+    Name of the main help file.
+    All distributed help files should be placed together in one directory.
+
+    Additionally,
+    all "doc" directories in 'runtimepath' will be used.
+    Environment variables are expanded |:set_env|.
+     For example:
+        "$VIMRUNTIME/doc/help.txt".
+    If $VIMRUNTIME is not set,
+    $VIM is also tried.
+
+    Also see |$VIMRUNTIME| and |option-backslash| about including spaces and  backslashes.
+    This option cannot be set from a |modeline| or in the |sandbox|,  for  security reasons.
 
 *'helpheight'* *'hh'*
 'helpheight' 'hh'       number  (default 20)
@@ -3253,20 +3294,26 @@ vim里的这些option, nvim扔了:
 
 *'hidden'*  *'hid'*
 *'nohidden'* *'nohid'*
-        boolean (default on)
-        global
-       |'buflisted'| 是local的
+    boolean (default on)
+    global
+    |'buflisted'| 是local的
 
-        When off a buffer is unloaded (including loss of undo information)
-        when it is |abandon|ed.  When on a buffer becomes hidden when it is
-        |abandon|ed.  A buffer displayed in another window does not become
-        hidden, of course.
-        Commands that move through the buffer list sometimes hide a buffer
-        although the 'hidden' option is off: when the buffer is modified,
-        'autowrite' is off or writing is not possible, and the '!' flag was
-        used.  See also |windows|.
-        To hide a specific buffer use the 'bufhidden' option.
-        'hidden' is set for one command with ":hide {command}" |:hide|.
+    when a buffer is |abandon|ed.
+        When off
+            a buffer is unloaded (including loss of undo information)
+        When on
+            a buffer becomes hidden
+
+    A buffer displayed in another window does not become hidden, of course.
+    Commands that move through the buffer list sometimes hide a buffer
+    although the 'hidden' option is off:
+        when the buffer is modified,
+        'autowrite' is off or writing is not possible, and the '!' flag was  used.
+        See also |windows|.
+
+    To hide a specific buffer use the 'bufhidden' option.
+
+    'hidden' is set for one command with ":hide {command}" |:hide|.
 
 *'history'* *'hi'*
 'history' 'hi'          number  (Vim default: 10000, Vi default: 0)
@@ -3368,7 +3415,7 @@ vim里的这些option, nvim扔了:
                 :inoremap <ESC> <ESC>:set iminsert=0<CR>
         This makes :lmap and IM turn off automatically when leaving Insert
         mode.
-        Note that this option changes when using CTRL-^ in Insert mode
+        this option changes when using CTRL-^ in Insert mode
         |i_CTRL-^|.
         The value is set to 1 when setting 'keymap' to a valid keymap name.
         It is also used for the argument of commands like "r" and "f".
@@ -3383,7 +3430,7 @@ vim里的这些option, nvim扔了:
                 0       :lmap is off and IM is off
                 1       :lmap is ON and IM is off
                 2       :lmap is off and IM is ON
-        Note that this option changes when using CTRL-^ in Command-line mode
+        this option changes when using CTRL-^ in Command-line mode
         |c_CTRL-^|.
         The value is set to 1 when it is not -1 and setting the 'keymap'
         option to a valid keymap name.
@@ -3431,8 +3478,7 @@ vim里的这些option, nvim扔了:
         found.  Allows doing "gf" on the name after an 'include' statement.
         Also used for |<cfile>|.
 
-        The expression will be evaluated in the |sandbox| when set from a
-        modeline, see |sandbox-option|.
+        The expression will be evaluated in the |sandbox| when set from a modeline, see |sandbox-option|.
         This option cannot be set in a modeline when 'modelineexpr' is off.
 
         It is not allowed to change text or jump to another window while
@@ -3445,7 +3491,7 @@ vim里的这些option, nvim扔了:
         so far, matches.  The matched string is highlighted.  If the pattern
         is invalid or not found, nothing is shown.  The screen will be updated
         often, this is only useful on fast terminals.
-        Note that the match will be shown, but the cursor will return to its
+        the match will be shown, but the cursor will return to its
         original position when no match is found and when pressing <Esc>.  You
         still need to finish the search command with <Enter> to move the
         cursor to the match.
@@ -3499,8 +3545,7 @@ vim里的这些option, nvim扔了:
         "msg".
         See |indent-expression|.
 
-        The expression will be evaluated in the |sandbox| when set from a
-        modeline, see |sandbox-option|.
+        The expression will be evaluated in the |sandbox| when set from a  modeline, see |sandbox-option|.
         This option cannot be set in a modeline when 'modelineexpr' is off.
 
         It is not allowed to change text or jump to another window while
@@ -3527,30 +3572,35 @@ vim里的这些option, nvim扔了:
         and there is a letter before it, the completed part is made uppercase.
         With 'noinfercase' the match is used as-is.
 
+
+让word用户适应vim?
 *'insertmode'* *'im'* *'noinsertmode'* *'noim'*
 'insertmode' 'im'       boolean (default off)
                         global
-        Makes Vim work in a way that Insert mode is the default mode.  Useful
-        if you want to use Vim as a modeless editor.
+        Makes Vim work in a way that Insert mode is the default mode.
+        Useful  if you want to use Vim as a modeless editor.
         These Insert mode commands will be useful:
-        - Use the cursor keys to move around.
-        - Use CTRL-O to execute one Normal mode command |i_CTRL-O|.  When
-          this is a mapping, it is executed as if 'insertmode' was off.
-          Normal mode remains active until the mapping is finished.
-        - Use CTRL-L to execute a number of Normal mode commands, then use
-          <Esc> to get back to Insert mode.  Note that CTRL-L moves the cursor
-          left, like <Esc> does when 'insertmode' isn't set.  |i_CTRL-L|
+            - Use the cursor keys to move around.
+            - Use CTRL-O to execute one Normal mode command |i_CTRL-O|.
+              When  this is a mapping
+                  it is executed as if 'insertmode' was off.
+                  Normal mode remains active until the mapping is finished.
+            - Use CTRL-L to execute a number of Normal mode commands,
+                then use  <Esc> to get back to Insert mode.
+                CTRL-L moves the cursor  left,
+                like <Esc> does when 'insertmode' isn't set.  |i_CTRL-L|
 
-        These items change when 'insertmode' is set:
-        - when starting to edit of a file, Vim goes to Insert mode.
-        - <Esc> in Insert mode is a no-op and beeps.
-        - <Esc> in Normal mode makes Vim go to Insert mode.
-        - CTRL-L in Insert mode is a command, it is not inserted.
-        - CTRL-Z in Insert mode suspends Vim, see |CTRL-Z|.     *i_CTRL-Z*
-        However, when <Esc> is used inside a mapping, it behaves like
-        'insertmode' was not set.  This was done to be able to use the same
-        mappings with 'insertmode' set or not set.
-        When executing commands with |:normal| 'insertmode' is not used.
+         when 'insertmode' is set:
+            - when starting to edit of a file, Vim goes to Insert mode.
+            - <Esc> in Insert mode is a no-op and beeps.
+            - <Esc> in Normal mode makes Vim go to Insert mode.
+            - CTRL-L in Insert mode is a command, it is not inserted.
+            - CTRL-Z in Insert mode suspends Vim, see |CTRL-Z|.     *i_CTRL-Z*
+            However, when <Esc> is used inside a mapping, it behaves like
+            'insertmode' was not set.  This was done to be able to use the same
+            mappings with 'insertmode' set or not set.
+
+            When executing commands with |:normal| 'insertmode' is not used.
 
 *'isfname'* *'isf'*
 'isfname' 'isf'         string  (default for Windows:
@@ -3568,7 +3618,7 @@ vim里的这些option, nvim扔了:
         doesn't know where a file name starts or ends when doing completion.
         It most likely works better without a space in 'isfname'.
 
-        Note that on systems using a backslash as path separator, Vim tries to
+        on systems using a backslash as path separator, Vim tries to
         do its best to make it work as you would expect.  That is a bit
         tricky, since Vi originally used the backslash to escape special
         characters.  Vim will not remove a backslash in front of a normal file
@@ -3709,7 +3759,7 @@ vim里的这些option, nvim扔了:
                         global or local to buffer |global-local|
         Program to use for the |K| command.  Environment variables are
         expanded |:set_env|.  ":help" may be used to access the Vim internal
-        help.  (Note that previously setting the global option to the empty
+        help.  (previously setting the global option to the empty
         value did this, which is now deprecated.)
         When the first character is ":", the command is invoked as a Vim
         command prefixed with [count].
@@ -3719,8 +3769,7 @@ vim里的这些option, nvim扔了:
         Example:
                 :set keywordprg=man\ -s
                 :set keywordprg=:Man
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'langmap'* *'lmap'* *E357* *E358*
 'langmap' 'lmap'        string  (default "")
@@ -3735,8 +3784,7 @@ vim里的这些option, nvim扔了:
         mapped in Insert mode.
         Also consider setting 'langremap' to off, to prevent 'langmap' from
         applying to characters resulting from a mapping.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
         Example (for Greek, in UTF-8):                          *greek*
             :set langmap=ΑA,ΒB,ΨC,ΔD,ΕE,ΦF,ΓG,ΗH,ΙI,ΞJ,ΚK,ΛL,ΜM,ΝN,ΟO,ΠP,QQ,ΡR,ΣS,ΤT,ΘU,ΩV,WW,ΧX,ΥY,ΖZ,αa,βb,ψc,δd,εe,φf,γg,ηh,ιi,ξj,κk,λl,μm,νn,οo,πp,qq,ρr,σs,τt,θu,ωv,ςw,χx,υy,ζz
@@ -3761,7 +3809,7 @@ vim里的这些option, nvim扔了:
          o Insert/Replace Mode: Register names after CTRL-R
          o Insert/Replace Mode: Mappings
         Characters entered in Command-line mode will NOT be affected by
-        this option.   Note that this option can be changed at any time
+        this option.   this option can be changed at any time
         allowing to switch between mappings for different languages/encodings.
         Use a mapping to avoid having to type it each time!
 
@@ -3830,7 +3878,7 @@ line is visually indented.
 Then, the value  of 'showbreak' is used to put in front of wrapped lines.
 
 
-Note that <Tab> characters after an <EOL> are mostly not displayed  with the right amount of white space.
+<Tab> characters after an <EOL> are mostly not displayed  with the right amount of white space.
 
 *'lines'* *E593*
 'lines'                 number  (default 24 or terminal height)
@@ -3894,7 +3942,7 @@ position while displaying Tabs with spaces,
 use:
                 :set list lcs=tab:\ \
 
-        Note that list mode will also affect formatting (set with 'textwidth'
+        list mode will also affect formatting (set with 'textwidth'
         or 'wrapmargin') when 'cpoptions' includes 'L'.  See 'listchars' for
         changing the way tabs are displayed.
 
@@ -3975,7 +4023,7 @@ use:
                 set listchars=eol:\\x24
                 set listchars=eol:\\u21b5
                 set listchars=eol:\\U000021b5
-        Note that a double backslash is used.  The number of hex characters
+        a double backslash is used.  The number of hex characters
         must be exactly 2 for \\x, 4 for \\u and 8 for \\U.
 
         Examples:
@@ -3992,7 +4040,7 @@ use:
         When on the plugin scripts are loaded when starting up |load-plugins|.
         This option can be reset in your |vimrc| file to disable the loading
         of plugins.
-        Note that using the "-u NONE" and "--noplugin" command line arguments
+        using the "-u NONE" and "--noplugin" command line arguments
         reset this option. |-u| |--noplugin|
 
 *'magic'* *'nomagic'*
@@ -4024,8 +4072,7 @@ use:
         NOT used for the ":cf" command.  See 'errorfile' for that.
         Environment variables are expanded |:set_env|.
         See |option-backslash| about including spaces and backslashes.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'makeencoding'* *'menc'*
 'makeencoding' 'menc'   string  (default "")
@@ -4050,15 +4097,14 @@ use:
         to escape file names in case they contain special characters.
         Environment variables are expanded |:set_env|.  See |option-backslash|
         about including spaces and backslashes.
-        Note that a '|' must be escaped twice: once for ":set" and once for
+        a '|' must be escaped twice: once for ":set" and once for
         the interpretation of a command.  When you use a filter called
         "myfilter" do it like this:
             :set makeprg=gmake\ \\\|\ myfilter
         The placeholder "$*" can be given (even multiple times) to specify
         where the arguments will be included, for example:
             :set makeprg=latex\ \\\\nonstopmode\ \\\\input\\{$*}
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for security reasons.
 
 *'matchpairs'* *'mps'*
 'matchpairs' 'mps'      string  (default "(:),{:},[:]")
@@ -4083,7 +4129,7 @@ use:
 'matchtime' 'mat'       number  (default 5)
                         global
         Tenths of a second to show the matching paren, when 'showmatch' is
-        set.  Note that this is not in milliseconds, like other options that
+        set.  this is not in milliseconds, like other options that
         set a time.  This is to be compatible with Nvi.
 
 *'maxcombine'* *'mco'*
@@ -4178,17 +4224,16 @@ use:
 *'modelineexpr'* *'mle'* *'nomodelineexpr'* *'nomle'*
 'modelineexpr' 'mle'    boolean (default: off)
                         global
-        When on allow some options that are an expression to be set in the
-        modeline.  Check the option for whether it is affected by
-        'modelineexpr'.  Also see |modeline|.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        When on
+            allow some options that are an expression to be set in the  modeline.
+        Also see |modeline|.
+        This option cannot be set from a |modeline| or in the |sandbox|, for security reasons.
 
 *'modeline'* *'ml'* *'nomodeline'* *'noml'*
     See |modeline|.
 
     boolean (Vim default: on (off for root),
-                             Vi default: off)
+
     local to buffer
 
     *'modelines'* *'mls'*
@@ -4230,7 +4275,7 @@ use:
         an explanation.
         When 'buftype' is "nowrite" or "nofile" this option may be set, but
         will be ignored.
-        Note that the text may actually be the same, e.g. 'modified' is set
+        the text may actually be the same, e.g. 'modified' is set
         when using "rA" on an "A".
 
 *'more'* *'nomore'*
@@ -4272,7 +4317,7 @@ use:
 
         For scrolling with a mouse wheel see |scroll-mouse-wheel|.
 
-        Note: When enabling the mouse in a terminal, copy/paste will use the
+        When enabling the mouse in a terminal, copy/paste will use the
         "* register if possible. See also 'clipboard'.
 
         Related options:
@@ -4341,7 +4386,7 @@ use:
         In the "popup" model the right mouse button produces a pop-up menu.
         You need to define this first, see |popup-menu|.
 
-        Note that you can further refine the meaning of buttons with mappings.
+        you can further refine the meaning of buttons with mappings.
         See |mouse-overview|.  But mappings are NOT used for modeless selection.
 
         Example:
@@ -4505,14 +4550,13 @@ use:
 *'omnifunc'* *'ofu'*
 'omnifunc' 'ofu'        string  (default: empty)
                         local to buffer
-        This option specifies a function to be used for Insert mode omni
-        completion with CTRL-X CTRL-O. |i_CTRL-X_CTRL-O|
-        See |complete-functions| for an explanation of how the function is
-        invoked and what it should return.
-        This option is usually set by a filetype plugin:
-        |:filetype-plugin-on|
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+
+    This option specifies a function to be used for Insert mode omni completion with CTRL-X CTRL-O.
+    |i_CTRL-X_CTRL-O| See |complete-functions| for an explanation of how the function is invoked and
+    what it should return.
+    This option is usually set by a filetype plugin:
+    |:filetype-plugin-on|
+    This option cannot be set from a |modeline| or in the |sandbox|,  for security reasons.
 
 
 *'opendevice'* *'odev'* *'noopendevice'* *'noodev'*
@@ -4522,7 +4566,7 @@ use:
         Enable reading and writing from devices.  This may get Vim stuck on a
         device that can be opened but doesn't actually do the I/O.  Therefore
         it is off by default.
-        Note that on Windows editing "aux.h", "lpt1.txt" and the like also
+        on Windows editing "aux.h", "lpt1.txt" and the like also
         result in editing a device.
 
 
@@ -4532,8 +4576,7 @@ use:
         This option specifies a function to be called by the |g@| operator.
         See |:map-operator| for more info and an example.
 
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'packpath'* *'pp'*
     string  (default: see 'runtimepath')
@@ -4543,8 +4586,7 @@ use:
 *'paragraphs'* *'para'*
 'paragraphs' 'para'     string  (default "IPLPPPQPP TPHPLIPpLpItpplpipbp")
                         global
-        Specifies the nroff macros that separate paragraphs.  These are pairs
-        of two letters (see |object-motions|).
+        Specifies the nroff macros that separate paragraphs.  These are pairs  of two letters (see |object-motions|).
 
 *'paste'* *'nopaste'*
 'paste'                 boolean (default off)
@@ -4622,7 +4664,7 @@ use:
             :imap <F11> <nop>
             :set pastetoggle=<F11>
         This will make <F10> start paste mode and <F11> stop paste mode.
-        Note that typing <F10> in paste mode inserts "<F10>",
+        typing <F10> in paste mode inserts "<F10>",
         since in paste  mode everything is inserted literally,
         except the 'pastetoggle' key  sequence.
         No timeout is used, this means that a multi-key 'pastetoggle' can not  be triggered manually.
@@ -4716,7 +4758,7 @@ use:
                 in which directory names are separated with a semi-colon:
                                         :let &path = &path . "," . substitute($INCL, ';', ',', 'g')
                 Replace the ';' with a ':' or whatever separator is used.
-                Note that this doesn't work when $INCL contains a comma or
+                this doesn't work when $INCL contains a comma or
                 white space.
 
 *'preserveindent'* *'pi'* *'nopreserveindent'* *'nopi'*
@@ -4755,8 +4797,7 @@ use:
                         global
         The name of the printer to be used for |:hardcopy|.
         See |pdev-option|.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'printencoding'* *'penc'*
 'printencoding' 'penc'  string  (default empty, except for some systems)
@@ -4769,8 +4810,7 @@ use:
                         global
         Expression used to print the PostScript produced with |:hardcopy|.
         See |pexpr-option|.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'printfont'* *'pfn'*
 'printfont' 'pfn'       string  (default "courier")
@@ -4853,8 +4893,7 @@ use:
         'pyxversion' has no effect. The pyx* functions and commands are
         always the same as the installed version.
 
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'quickfixtextfunc'* *'qftf'*
 'quickfixtextfunc' 'qftf'       string (default "")
@@ -4867,8 +4906,7 @@ use:
         function and an example. The value can be the name of a function or a
         lambda.
 
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'quoteescape'* *'qe'*
 'quoteescape' 'qe'      string  (default "\")
@@ -4944,7 +4982,7 @@ use:
                 0       automatic selection
                 1       old engine
                 2       NFA engine
-        Note that when using the NFA engine and the pattern contains something
+        when using the NFA engine and the pattern contains something
         that is not supported the pattern will not match.  This is only useful
         for debugging the regexp engine.
         Using automatic selection enables Vim to switch the engine, if the
@@ -5061,7 +5099,10 @@ use:
 
 
 *'runtimepath'* *'rtp'* *vimfiles*
-        目前 我的是:
+    global
+    string
+
+    目前 我的是:
         /home/wf/dotF/cfg/nvim   (附近2000行都没搜到lua, 但我这个目录下 有个lua/)
         /home/wf/.local/share/nvim/plugged/vim-plug
         /home/wf/.local/share/nvim/plugged/w3m.vim
@@ -5128,9 +5169,7 @@ use:
         /home/wf/.local/share/nvim/plugged/vim-sandwich/after
         /home/wf/dotF/cfg/nvim/after  # 不存在
 
-global
-string
-是个List, of directories to be searched for these 🔑runtime files🔑:
+    是个List, of directories to be searched for these 🔑runtime files🔑:
 
           filetype.vim  filetypes by file name |new-filetype|
           scripts.vim   filetypes by file contents |new-filetype-scripts|
@@ -5156,7 +5195,7 @@ string
                                                                                                   或者          :lua require('文件名_不带lua后缀')
 
 
-default:  "$XDG_CONFIG_HOME/nvim,
+    default:  "$XDG_CONFIG_HOME/nvim,
                    $XDG_CONFIG_DIRS[1]/nvim,
                    $XDG_CONFIG_DIRS[2]/nvim,
                    …
@@ -5178,7 +5217,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
 
 
 
-        Defaults are setup to search these locations:
+    Defaults (runtimepath的默认值?)are setup to search these locations:
                 1.  Given by `stdpath("config")`.
                     |$XDG_CONFIG_HOME|
                     又称Your home directory(不是$HOME), for personal preferences.
@@ -5204,7 +5243,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
                     This is for preferences to 💛overrule💛 or add to the
                     distributed defaults or system-wide settings (rarely needed).
 
-*rtp-packages*
+                        *rtp-packages*
                         rtp: runtimepath
 
                                 "start" packages will additionally be used to
@@ -5343,8 +5382,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         to do a "chown",
         那种情况下. you better set  'secure' at the end of your |init.vim|
 
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'selection'* *'sel'*
 'selection' 'sel'       string  (default "inclusive")
@@ -5363,7 +5401,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         selection.
         When "old" is used and 'virtualedit' allows the cursor to move past
         the end of line the line break still isn't included.
-        Note that when "exclusive" is used and selecting from the end
+        when "exclusive" is used and selecting from the end
         backwards, you cannot include the last character of a line, when
         starting in Normal mode and 'virtualedit' empty.
 
@@ -5382,21 +5420,42 @@ default:  "$XDG_CONFIG_HOME/nvim,
         The 'selectmode' option is set by the |:behave| command.
 
 *'sessionoptions'* *'ssop'*
-'sessionoptions' 'ssop' string  (default: "blank,buffers,curdir,folds,
-                                               help,tabpages,winsize"
-                                 Vi default: "blank,buffers,curdir,folds,
-                                               help,options,tabpages,winsize")
-                        global
+'sessionoptions' 'ssop' string
+
+    global
+    默认:
+        blank,
+        buffers,
+        curdir,
+        folds,
+        help,
+        tabpages,
+        winsize,
+
+
+        buffers,
+        curdir,
+        folds,
+        help,
+        tabpages,
+        winsize,
+
+
+
     Changes the effect of the |:mksession| command.
     It is a comma  separated list of words.
     Each word enables saving and restoring  something:
+
            word         save and restore
+          -------------------------------
            blank        empty windows
            buffers      hidden and unloaded buffers, not just those in windows
            folds        manually created folds, opened/closed folds and local  fold options
            globals      global variables that start with an uppercase letter
                         and contain at least one lowercase letter.
                         Only  String and Number types are stored.
+                        保持插件的状态?
+
            help         the help window
 
 
@@ -5404,8 +5463,9 @@ default:  "$XDG_CONFIG_HOME/nvim,
                                                  (not  global values for local options)
 
            options      all options and mappings (also global values for local options)
-
+                        option都在init.vim里, 没必要存
            skiprtp      exclude 'runtimepath' and 'packpath' from the options
+
            resize       size of the Vim window: 'lines' and 'columns'
 
            curdir       the current directory
@@ -5413,6 +5473,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
                         will become the current directory (useful with  projects accessed over a network from different  systems)
 
                         Don't include both "curdir" and "sesdir".
+
                         When neither is included
                             filenames are stored as absolute paths.
 
@@ -5420,7 +5481,6 @@ default:  "$XDG_CONFIG_HOME/nvim,
                         without this only the current tab page  is restored,
                                    so that you can make a session for each tab page separately
            terminal     include terminal windows where the command can be  restored
-
            winpos       position of the whole Vim window
            winsize      window sizes
 
@@ -5457,25 +5517,23 @@ default:  "$XDG_CONFIG_HOME/nvim,
                         Nested List and Dict items may not be read back correctly,
                         you end up with an empty item.
     *shada-quote*
-            "       Maximum number of lines saved for each register.  Old name of
-                    the '<' item, with the disadvantage that you need to put a
-                    backslash before the ", otherwise it will be recognized as the
-                    start of a comment!
+            "       Old name of  the '<' item
+
     *shada-%*
             %       When included, save and restore the buffer list.
                     If Vim is  started with a file name argument,
                         the buffer list is not  restored.
                     If Vim is started without a file name argument,
                     the  buffer list is restored from the shada file.
-                   
+
                     not saved:
                         Quickfix  ('buftype'),
                         unlisted ('buflisted'),
-                        unnamed 
+                        unnamed
                         buffers on  removable media (|shada-r|)
 
                     When followed by a number, the number specifies the maximum
-                    number of buffers that are stored. 
+                    number of buffers that are stored.
                     Without a number all  buffers are stored.
     *shada-'*
             '       Maximum number of previously edited files for which the marks
@@ -5520,9 +5578,9 @@ default:  "$XDG_CONFIG_HOME/nvim,
                     given here with 'shada'.
                     Environment variables are  expanded when opening the file, not when setting the option.
     *shada-r*
-            r       Removable media. 
+            r       Removable media.
                     The argument is a string (up to the next
-                    ','). 
+                    ',').
                     This parameter can be given several times.
                     Each  specifies the start of a path for which no marks will be
                     stored.
@@ -5540,7 +5598,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
                     with `s10
                     maximum item size may be:
 
-                        1024x10 bytes (requested maximum item  contents size) 
+                        1024x10 bytes (requested maximum item  contents size)
                         + 9 bytes (timestamp: up to 64-bit integer)
                         + 3 bytes (item size: up to 16-bit integer because 2^8 < 10240 < 2^16)
                         + 1 byte  (type: 7-bit integer)
@@ -5565,8 +5623,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
             When setting 'shada' from an empty value you can use |:rshada| to
             load the contents of the file, this is not done automatically.
 
-            This option cannot be set from a |modeline| or in the |sandbox|, for
-            security reasons.
+            This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'shadafile'* *'sdf'*
 'shadafile' 'sdf'       string  (default: "")
@@ -5575,8 +5632,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         When equal to "NONE" no shada file will be read or written.
         This option can be set with the |-i| command line flag.  The |--clean|
         command line flag sets it to "NONE".
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'shell'* *'sh'* *E91*
 'shell' 'sh'            string  (default $SHELL or "sh", Win32: "cmd.exe")
@@ -5595,7 +5651,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         each space (to avoid ending the option value), so better use |:let-&|
         like this:
                 :let &shell='"C:\Program Files\unix\sh.exe" -f'
-        Also note that the "-f" is not inside the quotes, because it is not
+        Also the "-f" is not inside the quotes, because it is not
         part of the command name.
 *shell-unquoting*
         Rules regarding quotes:
@@ -5614,7 +5670,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
            'a"b', '"a\b"' is the same as "a\b" again.
         4. Outside of quotes backslash always means itself, it cannot be used
            to escape quote: 'a\"b"' is the same as "a\b".
-        Note that such processing is done after |:set| did its own round of
+        such processing is done after |:set| did its own round of
         unescaping, so to keep yourself sane use |:let-&| like shown above.
 *shell-powershell*
         To use PowerShell:
@@ -5624,8 +5680,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
                 let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
                 set shellquote= shellxquote=
 
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'shellcmdflag'* *'shcf'*
 'shellcmdflag' 'shcf'   string  (default: "-c"; Windows: "/s /c")
@@ -5639,8 +5694,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         See |option-backslash| about including spaces and backslashes.
         See |shell-unquoting| which talks about separating this option into
         multiple arguments.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'shellpipe'* *'sp'*
 'shellpipe' 'sp'        string  (default ">", ">%s 2>&1", "| tee", "|& tee" or
@@ -5672,8 +5726,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         Don't forget to precede the space with a backslash: ":set sp=\ ".
         In the future pipes may be used for filtering and this option will
         become obsolete (at least for Unix).
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'shellquote'* *'shq'*
 'shellquote' 'shq'      string  (default: ""; Windows, when 'shell'
@@ -5688,9 +5741,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         or bash, where it should be "\"".  The default is adjusted according
         the value of 'shell', to reduce the need to set this option by the
         user.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
-
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 *'shellredir'* *'srr'*
 'shellredir' 'srr'      string  (default ">", ">&" or ">%s 2>&1")
                         global
@@ -5713,8 +5764,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         explicitly set before.
         In the future pipes may be used for filtering and this option will
         become obsolete (at least for Unix).
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'shellslash'* *'ssl'* *'noshellslash'* *'nossl'*
 'shellslash' 'ssl'      boolean (default off)
@@ -5724,7 +5774,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         useful when a Unix-like shell is used instead of cmd.exe.  Backward
         slashes can still be typed, but they are changed to forward slashes by
         Vim.
-        Note that setting or resetting this option has no effect for some
+        setting or resetting this option has no effect for some
         existing file names, thus this option needs to be set before opening
         any file for best results.  This might change in the future.
         'shellslash' only works when a backslash can be used as a path
@@ -5763,8 +5813,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         When the value is '(' then ')' is appended. When the value is '"('
         then ')"' is appended.
         When the value is '(' then also see 'shellxescape'.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'shiftround'* *'sr'* *'noshiftround'* *'nosr'*
 'shiftround' 'sr'       boolean (default off)
@@ -5822,7 +5871,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
                 "Pattern not found", "Back at original", etc.
           q     use "recording" instead of "recording @a"
           F     don't give the file info when editing a file, like `:silent`
-                was used for the command; note that this also affects messages
+                was used for the command; this also affects messages
                 from autocommands
           S     do not show search count message when searching, e.g.
                 "[1/5]"
@@ -5849,7 +5898,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         comma (in a future version the comma might be used to separate the
         part that is shown at the end and at the start of a line).
         The |hl-NonText| highlight group determines the highlighting.
-        Note that tabs after the showbreak will be displayed differently.
+        tabs after the showbreak will be displayed differently.
         If you want the 'showbreak' to appear in between line numbers, add the
         "n" flag to 'cpoptions'.
         A window-local value overrules a global value.  If the global value is
@@ -5877,7 +5926,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         pattern (if there is one) as possible matches.  Thus, if you have
         matched a C function, you can see a template for what arguments are
         required (coding style permitting).
-        Note that this doesn't work well together with having "longest" in
+        this doesn't work well together with having "longest" in
         'completeopt', because the completion from the search pattern may not
         match the typed text.
 
@@ -5899,7 +5948,7 @@ default:  "$XDG_CONFIG_HOME/nvim,
         matches.
         Also see the matchparen plugin for highlighting the match when moving
         around |pi_paren.txt|.
-        Note: Use of the short form is rated PG.
+        Use of the short form is rated PG.
 
 *'showmode'* *'smd'* *'noshowmode'* *'nosmd'*
 'showmode' 'smd'        boolean (Vim default: on, Vi default: off)
@@ -6092,8 +6141,7 @@ This is done in order for the signcolumn appearence not appear weird during line
         name if you want to.  However, it will then only be used when
         'spellfile' is set to it, for entries in 'spelllang' only files
         without region name will be found.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'spelllang'* *'spl'*
 'spelllang' 'spl'       string  (default "en")
@@ -6111,12 +6159,12 @@ This is done in order for the signcolumn appearence not appear weird during line
         the two-letter, lower case region name.  You can use more than one
         region by listing them: "en_us,en_ca" supports both US and Canadian
         English, but not words specific for Australia, New Zealand or Great
-        Britain. (Note: currently en_au and en_nz dictionaries are older than
+        Britain. (currently en_au and en_nz dictionaries are older than
         en_ca, en_gb and en_us).
         If the name "cjk" is included East Asian characters are excluded from
         spell checking.  This is useful when editing text that also has Asian
         words.
-        Note that the "medical" dictionary does not exist, it is just an
+        the "medical" dictionary does not exist, it is just an
         example of a longer name.
 *E757*
         As a special case the name of a .spl file can be given as-is.  The
@@ -6238,23 +6286,25 @@ This is done in order for the signcolumn appearence not appear weird during line
         When nonempty, this option determines the content of the status line.
         Also see |status-line|.
 
-        The option consists of 🔑printf style '%'🔑 items interspersed with  normal text.
+        The option consists of 🔑printf style '%' items🔑 interspersed with  normal text.
         Each status line item is of the form:
-          %-0{minwid}.{maxwid}{item}
-        All fields except the {item} are optional.
-        A single percent sign can  be given as "%%".
+              %-0{minwid}.{maxwid}{item}
+                All fields except the {item} are optional.
+                A single percent sign can  be given as "%%".
 
         When the option starts with "%!" then it is used as an expression,
             the result is used as the option value.  Example:
-                :set statusline=%!MyStatusLine()
-            The *g:statusline_winid* variable will be set to the |window-ID| of the  window that the status line belongs to.
-            The result can contain %{} items that will be evaluated too.
+                :set statusline=%!My某函数()
 
-            Note that the "%!" expression is evaluated in the context  of the  current window and buffer,
-            while %{} items are evaluated in the  context of the window that the statusline belongs to.
+            The result can also contain %{} items that will be evaluated
+            The *g:statusline_winid* variable will be set to the |window-ID| of the  window that the status line belongs to.
+
+            evaluatd in what  context:
+                 %! expression            current window and buffer,
+                 %{} item                 window that the statusline belongs to.
 
         When there is error while evaluating the option
-            then it will be made  empty to avoid further errors.
+            then it will be made empty to avoid further errors.
             (Otherwise screen updating would loop.)
 
         effect of 'ruler' when this option is set (and  'laststatus' is 2) is controlling the output of |CTRL-G|.
@@ -6319,7 +6369,7 @@ This is done in order for the signcolumn appearence not appear weird during line
         a S   Argument list status as in default title.  ({current} of {max})
               Empty if the argument file count is zero or one.
         { NF  Evaluate expression between '%{' and '}' and substitute result.
-              Note that there is no '%' before the closing '}'.  The
+              there is no '%' before the closing '}'.  The
               expression cannot contain a '}' character, call a function to
               work around that.  See |stl-%{| below.
         {% -  This is almost same as { except the result of the expression is
@@ -6368,7 +6418,7 @@ This is done in order for the signcolumn appearence not appear weird during line
                  is a bug that denotes that new mouse button recognition was
                  added without modifying code that reacts on mouse clicks on
                  this label.
-              Note: to test whether your version of Neovim contains this
+              to test whether your version of Neovim contains this
                     feature use `has('tablineat')`.
         < -   Where to truncate line if too long.  Default is at the start.
               No width fields allowed.
@@ -6537,7 +6587,7 @@ This is done in order for the signcolumn appearence not appear weird during line
         names.  Example:
                 /* vim: set syntax=c.doxygen : */
         This will use the "c" syntax first, then the "doxygen" syntax.
-        Note that the second one must be prepared to be loaded as an addition,
+        the second one must be prepared to be loaded as an addition,
         otherwise it will be skipped.  More than one dot may appear.
         To switch off syntax highlighting for the current file, use:
                 :set syntax=OFF
@@ -6560,7 +6610,7 @@ This is done in order for the signcolumn appearence not appear weird during line
         The tab pages line only appears as specified with the 'showtabline'
         option and only when there is no GUI tab line.  When 'e' is in
         'guioptions' and the GUI supports a tab line 'guitablabel' is used
-        instead.  Note that the two tab pages lines are very different.
+        instead.  the two tab pages lines are very different.
 
         The value is evaluated like with 'statusline'.  You can use
         |tabpagenr()|, |tabpagewinnr()| and |tabpagebuflist()| to figure out
@@ -6661,7 +6711,7 @@ There are four main ways to use tabs in Vim:
         sorted with the -f switch to "sort" in most unices, as in the command:
         "sort -f -o tags tags".  For "Exuberant ctags" version 5.x or higher
         (at least 5.5) the --sort=foldcase switch can be used for this as
-        well.  Note that case must be folded to uppercase for this to work.
+        well.  case must be folded to uppercase for this to work.
 
         By default, tag searches are case-sensitive.  Case is ignored when
         'ignorecase' is set and 'tagcase' is "followic", or when 'tagcase' is
@@ -6750,7 +6800,7 @@ There are four main ways to use tabs in Vim:
         that some languages (such as Arabic) require.
         Setting this option implies that 'rightleft' will not be set when
         'arabic' is set and the value of 'arabicshape' will be ignored.
-        Note that setting 'termbidi' has the immediate effect that
+        setting 'termbidi' has the immediate effect that
         'arabicshape' is ignored, but 'rightleft' isn't changed automatically.
         For further details see |arabic.txt|.
 
@@ -6803,34 +6853,32 @@ There are four main ways to use tabs in Vim:
             When 'textwidth' is zero,
                 A zero value disables this.
                 'wrapmargin' may be used.
+找同义词, 丰富词汇?
+    *'thesaurusfunc'* *'tsrfu'*
+    'thesaurusfunc' 'tsrfu' string  (default: empty)
+                            global or local to buffer |global-local|
+            This option specifies a function to be used for thesaurus completion
+            with CTRL-X CTRL-T. |i_CTRL-X_CTRL-T| See |compl-thesaurusfunc|.
 
+            This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
-*'thesaurus'* *'tsr'*
-'thesaurus' 'tsr'       string  (default "")
-                        global or local to buffer |global-local|
-        List of file names, separated by commas, that are used to lookup words
-        for thesaurus completion commands |i_CTRL-X_CTRL-T|.  See
-        |compl-thesaurus|.
+    *'thesaurus'* *'tsr'*
+    'thesaurus' 'tsr'       string  (default "")
+                            global or local to buffer |global-local|
+            List of file names,  separated by commas,
+            that are used to lookup words  for thesaurus completion commands |i_CTRL-X_CTRL-T|.  See  |compl-thesaurus|.
 
-        This option is not used if 'thesaurusfunc' is set, either for the
-        buffer or globally.
+            This option is not used if 'thesaurusfunc' is set,
+            either for the  buffer or globally.
 
-        To include a comma in a file name precede it with a backslash.  Spaces
-        after a comma are ignored, otherwise spaces are included in the file
-        name.  See |option-backslash| about using backslashes.  The use of
-        |:set+=| and |:set-=| is preferred when adding or removing directories
-        from the list.  This avoids problems when a future version uses
-        another default.  Backticks cannot be used in this option for security
-        reasons.
+            To include a comma in a file name precede it with a backslash.  Spaces
+            after a comma are ignored, otherwise spaces are included in the file
+            name.  See |option-backslash| about using backslashes.  The use of
+            |:set+=| and |:set-=| is preferred when adding or removing directories
+            from the list.  This avoids problems when a future version uses
+            another default.  Backticks cannot be used in this option for security
+            reasons.
 
-*'thesaurusfunc'* *'tsrfu'*
-'thesaurusfunc' 'tsrfu' string  (default: empty)
-                        global or local to buffer |global-local|
-        This option specifies a function to be used for thesaurus completion
-        with CTRL-X CTRL-T. |i_CTRL-X_CTRL-T| See |compl-thesaurusfunc|.
-
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
 
 *'tildeop'* *'top'* *'notildeop'* *'notop'*
 'tildeop' 'top'         boolean (default off)
@@ -6950,10 +6998,9 @@ There are four main ways to use tabs in Vim:
         undo file that exists is used.  When it cannot be read an error is
         given, no further entry is used.
         See |undo-persistence|.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
-        Note that unlike 'directory' and 'backupdir', 'undodir' always acts as
+        unlike 'directory' and 'backupdir', 'undodir' always acts as
         though the trailing slashes are present (see 'backupdir' for what this
         means).
 
@@ -7002,7 +7049,7 @@ There are four main ways to use tabs in Vim:
 
         When saving undo for a reload, any undo file is not read.
 
-        Note that this causes the whole buffer to be stored in memory.  Set
+        this causes the whole buffer to be stored in memory.  Set
         this option to a lower value if you run out of memory.
 
 *'updatecount'* *'uc'*
@@ -7046,14 +7093,14 @@ There are four main ways to use tabs in Vim:
         This will set 🔑soft tabstops🔑 at the 8th and 40th columns, and at every
         8th column thereafter.
 
-        Note that the value of |'softtabstop'| will be ignored while
+        the value of |'softtabstop'| will be ignored while
         'varsofttabstop' is set.
 
 *'vartabstop'* *'vts'*
 'vartabstop' 'vts'      string  (default "")
                         local to buffer
 
-        Note that the value of |'tabstop'| will be ignored while 'vartabstop'
+        the value of |'tabstop'| will be ignored while 'vartabstop'
         is set.
 
         For example:
@@ -7073,6 +7120,9 @@ There are four main ways to use tabs in Vim:
 *'verbose'* *'vbs'*
 'verbose' 'vbs'         number  (default 0)
                         global
+
+        When the 'verbosefile' option is set then the verbose messages are not  displayed.
+
         When bigger than zero, Vim will give messages about what it is doing.
         Currently, these messages are given:
         >= 1    When the shada file is read or written.
@@ -7094,26 +7144,26 @@ There are four main ways to use tabs in Vim:
         This option can also be set with the "-V" argument.  See |-V|.
         This option is also set by the |:verbose| command.
 
-        When the 'verbosefile' option is set then the verbose messages are not
-        displayed.
 
 *'verbosefile'* *'vfile'*
 'verbosefile' 'vfile'   string  (default empty)
                         global
         When not empty all messages are written in a file with this name.
         When the file exists messages are appended.
+
         Writing to the file ends when Vim exits or when 'verbosefile' is made
-        empty.  Writes are buffered, thus may not show up for some time.
+        empty.
+
+        Writes are buffered, thus may not show up for some time.
         Setting 'verbosefile' to a new value is like making it empty first.
-        The difference with |:redir| is that verbose messages are not
-        displayed when 'verbosefile' is set.
+        The difference with |:redir| is that
+            verbose messages are not  displayed when 'verbosefile' is set.
 
 *'viewdir'* *'vdir'*
 'viewdir' 'vdir'        string  (default: "$XDG_DATA_HOME/nvim/view//")
                         global
         Name of the directory where to store files for |:mkview|.
-        This option cannot be set from a |modeline| or in the |sandbox|, for
-        security reasons.
+        This option cannot be set from a |modeline| or in the |sandbox|, for  security reasons.
 
 *'viewoptions'* *'vop'*
 'viewoptions' 'vop'     string  (default: "folds,cursor,curdir")
@@ -7389,7 +7439,7 @@ There are four main ways to use tabs in Vim:
         in a much smarter way, taking care of wrapping lines.
         When resizing the Vim window, the value is smaller than 1 or more than
         or equal to 'lines' it will be set to 'lines' minus 1.
-        Note: Do not confuse this with the height of the Vim window, use
+        Do not confuse this with the height of the Vim window, use
         'lines' for that.
 
 *'winheight'* *'wh'* *E591*

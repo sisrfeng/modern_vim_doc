@@ -11,6 +11,7 @@ Using expressions is introduced in chapter 41 of the user manual |usr_41.txt|.
                       Type |gO| to see the table of contents.
 
 ==============================================================================
+
 1. Variables                        *variables*
 
 1.1 Variable types
@@ -84,7 +85,7 @@ You can also use |v:false| and |v:true|.
 When TRUE is returned from a function it is the Number one, FALSE is the
 number zero.
 
-Note that in the command:
+In the command:
     :if "foo"
     :" NOT executed
 "foo" is converted to 0, which means FALSE.  If the string starts with a
@@ -98,7 +99,7 @@ To test for a non-empty string, use empty():
 Function arguments often behave slightly different from |TRUE|: If the
 argument is present and it evaluates to a non-zero Number, |v:true| or a
 non-empty String, then the value is considered to be TRUE.
-Note that " " and "0" are also non-empty strings, thus considered to be TRUE.
+" " and "0" are also non-empty strings, thus considered to be TRUE.
 A List, Dictionary or Float is not a Number or String, thus evaluate to FALSE.
 
 *E745* *E728* *E703* *E729* *E730* *E731*
@@ -123,7 +124,7 @@ You will not get an error if you try to change the type of a variable.
 A Funcref variable is obtained
     with the |function()| function,
     the |funcref()| function
-    or created with the lambda expression |expr-lambda|.
+    or created with the |expr-lambda|.
 It can be used  in an expression in the place of a function name,
 before the parenthesis around the arguments,
 to invoke the function it refers to.
@@ -173,7 +174,7 @@ arguments will be passed to the function.  Example:
 This will invoke the function as if using:
     call myDict.Callback('foo', 'bar')
 
-Note that binding a function to a Dictionary also happens when the function is
+Binding a function to a Dictionary also happens when the function is
 a member of the Dictionary:
 
     let myDict.myFunction = MyFunction
@@ -464,7 +465,7 @@ Dictionary creation
     A key is always a String.
     You can use a Number,
     it will be converted to a String automatically.
-    'Thus the String '4' and the number 4 will find the same entry'  Note that the String '04' and the Number 04 are different,
+    'Thus the String '4' and the number 4 will find the same entry'  The String '04' and the Number 04 are different,
     since the Number will be converted to the String '4'.
     The empty string can also be used as a key.
 
@@ -478,7 +479,7 @@ Dictionary creation
 
     :let mydict = #{zero: 0, one_key: 1, two-key: 2, 333: 3}
 
-        Note that 333 here is the string "333".
+        333 here is the string "333".
         🔑Empty keys are not possible with #{}.🔑
         A value can be any expression.
         Using a Dictionary for a value creates a nested Dictionary:
@@ -562,7 +563,7 @@ Merging a Dictionary with another is done with |extend()|:
     :call extend(adict, bdict)
 This extends adict with all entries from bdict.  Duplicate keys cause entries
 in adict to be overwritten.  An optional third argument can change this.
-Note that the order of entries in a Dictionary is irrelevant, thus don't
+The order of entries in a Dictionary is irrelevant, thus don't
 expect ":echo adict" to show the items from bdict after the older entries in
 adict.
 
@@ -899,7 +900,7 @@ string                  *string* *String* *expr-string* *E114*
 ------
 "string"        string constant     *expr-quote*
 
-Note that double quotes are used.
+Double quotes are used.
 
 A string constant accepts these special characters:
 \...    three-digit octal number (e.g., "\316")
@@ -926,10 +927,10 @@ A string constant accepts these special characters:
     Don't use <Char-xxxx> to get a UTF-8 character, use \uxxxx as
     mentioned above.
 
-Note that "\xff" is stored as the byte 255, which may be invalid in some
+"\xff" is stored as the byte 255, which may be invalid in some
 encodings.  Use "\u00ff" to store character 255 correctly as UTF-8.
 
-Note that "\000" and "\x00" force the end of the string.
+"\000" and "\x00" force the end of the string.
 
 
 blob-literal                *blob-literal* *E973*
@@ -944,7 +945,7 @@ literal-string                      *literal-string* *E115*
 ---------------
 'string'        string constant         *expr-'*
 
-Note that single quotes are used.
+Single quotes are used.
 
 This string is taken as it is.  No backslashes are removed or have a special
 meaning.  The only exception is that two quotes stand for one quote.
@@ -1002,7 +1003,7 @@ variables.
 
 
 *expr-env-expand*
-Note that there is a difference between using $VAR directly and using
+There is a difference between using $VAR directly and using
 expand("$VAR").  Using it directly will only expand environment variables that
 are known inside the current Vim session.  Using expand() will first try using
 the environment variables known inside the current Vim session.  If that
@@ -1030,70 +1031,71 @@ lambda expression               *expr-lambda* *lambda*
 -----------------
 {args -> expr1}     lambda expression
 
-A lambda expression creates a new unnamed function which returns the result of
-evaluating |expr1|.  Lambda expressions differ from |user-function|s in
-the following ways:
+    A lambda expression creates a new unnamed function which
+    returns the result of  evaluating |expr1|.
+    Lambda expressions differ from |user-function|s in  the following ways:
 
-1. The body of the lambda expression is an |expr1| and not a sequence of |Ex|
-   commands.
-2. The prefix "a:" should not be used for arguments.  E.g.:
-    :let F = {arg1, arg2 -> arg1 - arg2}
-    :echo F(5, 2)
-    3
+        1. The body of the lambda expression is an |expr1| and not a sequence of |Ex|
+           commands.
+        2. The prefix "a:" should not be used for arguments.  E.g.:
+            `:let F = {arg1, arg2 -> arg1 - arg2}`
+            `:echo F(5, 2)`
 
-The arguments are optional.  Example:
-    :let F = {-> 'error function'}
-    :echo F('ignored')
-    error function
-*closure*
-Lambda expressions can access outer scope variables and arguments.  This is
-often called a closure.  Example where "i" and "a:arg" are used in a lambda
-while they already exist in the function scope.  They remain valid even after
-the function returns:
-    :function Foo(arg)
-    :  let i = 3
-    :  return {x -> x + i - a:arg}
-    :endfunction
-    :let Bar = Foo(4)
-    :echo Bar(6)
-    5
-Note that the variables must exist in the outer scope before the lamba is
-defined for this to work.  See also |:func-closure|.
+            3
 
-Lambda and closure support can be checked with:
-    if has('lambda')
+    The arguments are optional.  Example:
+        :let F = {-> 'error function'}
+        :echo F('ignored')
+        error function
+    *closure*
+    Lambda expressions can access outer scope variables and arguments.  This is
+    often called a closure.  Example where "i" and "a:arg" are used in a lambda
+    while they already exist in the function scope.  They remain valid even after
+    the function returns:
+        :function Foo(arg)
+        :  let i = 3
+        :  return {x -> x + i - a:arg}
+        :endfunction
+        :let Bar = Foo(4)
+        :echo Bar(6)
+        5
+    The variables must exist in the outer scope before the lamba is
+    defined for this to work.  See also |:func-closure|.
 
-Examples for using a lambda expression with |sort()|, |map()| and |filter()|:
-    :echo map([1, 2, 3], {idx, val -> val + 1})
-    [2, 3, 4]
-    :echo sort([3,7,2,1,4], {a, b -> a - b})
-    [1, 2, 3, 4, 7]
+    Lambda and closure support can be checked with:
+        if has('lambda')
 
-The lambda expression is also useful for jobs and timers:
-    :let timer = timer_start(500,
-            \ {-> execute("echo 'Handler called'", "")},
-            \ {'repeat': 3})
-    Handler called
-    Handler called
-    Handler called
+    Examples for using a lambda expression with |sort()|, |map()| and |filter()|:
+        :echo map([1, 2, 3], {idx, val -> val + 1})
+        [2, 3, 4]
+        :echo sort([3,7,2,1,4], {a, b -> a - b})
+        [1, 2, 3, 4, 7]
 
-Note that it is possible to cause memory to be used and not freed if the
-closure is referenced by the context it depends on:
-    function Function()
-       let x = 0
-       let F = {-> x}
-     endfunction
-The closure uses "x" from the function scope, and "F" in that same scope
-refers to the closure.  This cycle results in the memory not being freed.
-Recommendation: don't do this.
+    The lambda expression is also useful for jobs and timers:
+        :let timer = timer_start(500,
+                \ {-> execute("echo 'Handler called'", "")},
+                \ {'repeat': 3})
+        Handler called
+        Handler called
+        Handler called
 
-Notice how execute() is used to execute an Ex command.  That's ugly though.
+    It is possible to cause memory to be used and not freed if the
+    closure is referenced by the context it depends on:
+        function Function()
+           let x = 0
+           let F = {-> x}
+         endfunction
+    The closure uses "x" from the function scope, and "F" in that same scope
+    refers to the closure.  This cycle results in the memory not being freed.
+    Recommendation: don't do this.
+
+    Notice how execute() is used to execute an Ex command.  That's ugly though.
 
 
-Lambda expressions have internal names like '<lambda>42'.  If you get an error
-for a lambda expression, you can find what it is with the following command:
-    :function {'<lambda>42'}
-See also: |numbered-function|
+    Lambda expressions have internal names like '<lambda>42'.  If you get an error
+    for a lambda expression, you can find what it is with the following command:
+        :function {'<lambda>42'}
+    See also: |numbered-function|
 
 ==============================================================================
 3. Internal variable                *internal-variables* *E461*
@@ -1253,7 +1255,7 @@ It is deleted when the tab page is closed.
                   echo "script executed " . s:counter . " times now"
                 endif
 
-        Note that this means that filetype plugins don't get a different set of script variables for each buffer.
+        This means that filetype plugins don't get a different set of script variables for each buffer.
         Use local buffer variables instead |b:var|.
 
 PREDEFINED VIM VARIABLES            *vim-variable* *v:var* *v:*
@@ -1323,7 +1325,7 @@ v:cmdarg    This variable is used for two purposes:
            set before an autocommand event for a file read/write
            command is triggered.  There is a leading space to make it
            possible to append this variable directly after the
-           read/write command.  Note: The "+cmd" argument isn't
+           read/write command.  The "+cmd" argument isn't
            included here, because it will be executed anyway.
         2. When printing a PostScript file with ":hardcopy" this is
            the argument for the ":hardcopy" command.  This can be used
@@ -1340,7 +1342,7 @@ v:collate   The current locale setting for collation order of the runtime
 
 *v:cmdbang* *cmdbang-variable*
 v:cmdbang   Set like v:cmdarg for a file read/write command.  When a "!"
-        was used the value is 1, otherwise it is 0.  Note that this
+        was used the value is 1, otherwise it is 0.  This
         can only be used in autocommands.  For user commands |<bang>|
         can be used.
 
@@ -1354,7 +1356,7 @@ v:completed_item
 v:count     The count given for the last Normal mode command.  Can be used
         to get the count before a mapping.  Read-only.  Example:
     :map _x :<C-U>echo "the count is " . v:count<CR>
-        Note: The <C-U> is required to remove the line range that you
+        The <C-U> is required to remove the line range that you
         get when typing ':' after a count.
         When there are two counts, as in "3d2w", they are multiplied,
         just like what happens in the command, "d6w" for the example.
@@ -1565,7 +1567,7 @@ v:hlsearch  Variable that indicates whether search highlighting is on.
         this variable to zero acts like the |:nohlsearch| command,
         setting it to one acts like
             let &hlsearch = &hlsearch
-        Note that the value is restored when returning from a
+        The value is restored when returning from a
         function. |function-search-undo|.
 
 *v:insertmode* *insertmode-variable*
@@ -1741,7 +1743,7 @@ v:searchforward         *v:searchforward* *searchforward-variable*
         Search direction:  1 after a forward search, 0 after a
         backward search.  It is reset to forward when directly setting
         the last search pattern, see |quote/|.
-        Note that the value is restored when returning from a
+        The value is restored when returning from a
         function. |function-search-undo|.
         Read-write.
 
@@ -1851,9 +1853,8 @@ v:true      Special value used to put "true" in JSON and msgpack.  See
         |expr7| when used with numeric operators). Read-only.
 
 *v:val* *val-variable*
-v:val       Value of the current item of a |List| or |Dictionary|.  Only
-        valid while evaluating the expression used with |map()| and
-        |filter()|.  Read-only.
+   Value of the current item of a |List| or |Dictionary|.
+   Only  valid while evaluating the expression used with |map()| and  |filter()|.  Read-only.
 
 *v:version* *version-variable*
 v:version   Vim version number: major version times 100 plus minor
@@ -1874,7 +1875,7 @@ v:warningmsg    Last given warning message.
 *v:windowid* *windowid-variable*
 v:windowid  Application-specific window "handle" which may be set by any
         attached UI. Defaults to zero.
-        Note: For Nvim |windows| use |winnr()| or |win_getid()|, see
+        For Nvim |windows| use |winnr()| or |win_getid()|, see
         |window-ID|.
 
 ==============================================================================
@@ -1920,7 +1921,7 @@ add({object}, {expr})                   *add()*
         the resulting |List| or |Blob|.  Examples:
             :let alist = add([1, 2, 3], item)
             :call add(mylist, "woodstock")
-    Note that when {expr} is a |List| it is appended as a single item.
+    When {expr} is a |List| it is appended as a single item.
     Use |extend()| to concatenate |Lists|.
     When {object} is a |Blob| then {expr} must be a number.
     Use |insert()| to add an item at another position.
@@ -1965,7 +1966,7 @@ appendbufline({buf}, {lnum}, {text})            *appendbufline()*
 
         For the use of {buf}, see |bufname()|.
 
-        {lnum} is used like with |append()|.  Note that using |line()|
+        {lnum} is used like with |append()|.  Using |line()|
         would use the current buffer, not the one appending to.
         Use "$" to append at the end of the buffer.
 
@@ -2115,7 +2116,7 @@ bufexists({buf})                    *bufexists()*
         - The name of a buffer with 'buftype' set to "nofile".
         - A URL name.
         Unlisted buffers will be found.
-        Note that help files are listed by their short name in the
+        Help files are listed by their short name in the
         output of |:buffers|, but bufexists() requires using their
         long name to be able to find them.
         bufexists() may report a buffer exists, but to use the name
@@ -2199,7 +2200,7 @@ bufnr([{buf} [, {create}]])
         bufnr("$") is the last buffer:
             :let last_buffer = bufnr("$")
         The result is a Number, which is the highest buffer number
-        of existing buffers.  Note that not all buffers with a smaller
+        of existing buffers.  Not all buffers with a smaller
         number necessarily exist, because ":bwipeout" may have removed
         them.  Use bufexists() to test for the existence of a buffer.
 
@@ -2365,8 +2366,10 @@ char2nr({string} [, {utf8}])                    *char2nr()*
             char2nr("\<M-x>")   returns 128
 
         Non-ASCII characters are always treated as UTF-8 characters.
-        {utf8} is ignored, it exists only for backwards-compatibility.
+        {utf8} is ignored,
+            it exists only for backwards-compatibility.
         A combining character is a separate character.
+
         |nr2char()| does the opposite.
 
         用作method:
@@ -2452,7 +2455,7 @@ col({expr})
         1. string:
             .               the cursor position
             $               the end of the cursor line , 即 number of bytes in the cursor line + 1
-           'x               mark x  (Note that only marks in the current file can be used. )
+           'x               mark x  (Only marks in the current file can be used. )
            其他同line()一样, (但没有w0, w$)
         2. list
            :echo col([131,$])
@@ -2489,7 +2492,7 @@ complete({startcol}, {matches})         *complete()* *E785*
         {matches} must be a |List|.  Each |List| item is one match.
         See |complete-items| for the kind of items that are possible.
         "longest" in 'completeopt' is ignored.
-        Note that the after calling this function you need to avoid
+        The after calling this function you need to avoid
         inserting anything that would cause completion to stop.
         The match can be selected with CTRL-N and CTRL-P as usual with
         Insert mode completion.  The popup menu will appear if
@@ -2532,13 +2535,11 @@ complete_check()                *complete_check()*
 
 
 complete_info([{what}])             *complete_info()*
-        Returns a |Dictionary| with information about Insert mode
-        completion.  See |ins-completion|.
+        Returns a |Dictionary| with information about Insert mode  completion.  See |ins-completion|.
         The items are:
            mode     Current completion mode name string.
-                See |complete_info_mode| for the values.
-           pum_visible  |TRUE| if popup menu is visible.
-                See |pumvisible()|.
+                    See |complete_info_mode| for the values.
+           pum_visible  |TRUE| if popup menu is visible.  See |pumvisible()|.
            items    List of completion matches.  Each item is a
                 dictionary containing the entries "word",
                 "abbr", "menu", "kind", "info" and "user_data".
@@ -2720,7 +2721,7 @@ cscope_connection([{num} , {dbpath} [, {prepend}]])
         4   Use {prepend}, use exact string matches for both
             {dbpath} and {prepend}.
 
-        Note: All string comparisons are case sensitive!
+        All string comparisons are case sensitive!
 
         Examples.  Suppose we had the following (from ":cs show"):
 
@@ -2972,7 +2973,7 @@ environ()                       *environ()*
         Return all of environment variables as dictionary. You can
         check if an environment variable exists like this:
             :echo has_key(environ(), 'HOME')
-        Note that the variable name may be CamelCase; to ignore case
+        The variable name may be CamelCase; to ignore case
         use this:
             :echo index(keys(environ()), 'HOME', 0, 1) != -1
 
@@ -3043,16 +3044,16 @@ execute({command} [, {silent}])             *execute()*
             ""      no `:silent` used
             "silent"    `:silent` used
             "silent!"   `:silent!` used
-        The default is "silent".  Note that with "silent!", unlike
+        The default is "silent".  With "silent!", unlike
         `:redir`, error messages are dropped.
 
         To get a list of lines use |split()| on the result:
             split(execute('args'), "\n")
 
         This function is not available in the |sandbox|.
-        Note: If nested, an outer execute() will not observe output of
+        If nested, an outer execute() will not observe output of
         the inner calls.
-        Note: Text attributes (highlights) are not captured.
+        Text attributes (highlights) are not captured.
         To execute a command in another window than the current one
         use `win_execute()`.
 
@@ -3146,7 +3147,7 @@ exists({expr})  The result is a Number, which is |TRUE| if {expr} is
         NOT working example:
             exists(":make install")
 
-        Note that the argument must be a string, not the name of the
+        The argument must be a string, not the name of the
         variable itself.  For example:
             exists(bufcount)
         This doesn't check for existence of the "bufcount" variable,
@@ -3220,12 +3221,12 @@ expand({string} [, {nosuf} [, {list}]])             *expand()*
 
         Example:
             :let &tags = expand("%:p:h") . "/tags"
-        Note that when expanding a string that starts with '%', '#' or
+        When expanding a string that starts with '%', '#' or
         '<', any following text is ignored.  This does NOT work:
             :let doesntwork = expand("%:h.bak")
         Use this:
             :let doeswork = expand("%:h") . ".bak"
-        Also note that expanding "<cfile>" and others only returns the
+        Also Expanding "<cfile>" and others only returns the
         referenced file name without further expansion.  If "<cfile>"
         is "~/.cshrc", you need to do another expand() to have the
         "~/" expanded into the path of the home directory:
@@ -3346,11 +3347,11 @@ feedkeys({string} [, {mode}])               *feedkeys()*
             similar to using ":normal!".  You can call feedkeys()
             several times without 'x' and then one time with 'x'
             (possibly with an empty {string}) to execute all the
-            typeahead.  Note that when Vim ends in Insert mode it
+            typeahead.  When Vim ends in Insert mode it
             will behave as if <Esc> is typed, to avoid getting
             stuck, waiting for a character to be typed before the
             script continues.
-            Note that if you manage to call feedkeys() while
+            If you manage to call feedkeys() while
             executing commands, thus calling it recursively, then
             all typehead will be consumed by the last call.
         '!' When used with 'x' will not end Insert mode. Can be
@@ -3409,7 +3410,7 @@ filter({expr1}, {expr2})                    *filter()*
             call filter(var, 0)
         Removes all the items, thus clears the |List| or |Dictionary|.
 
-        Note that {expr2} is the result of expression and is then
+        {expr2} is the result of expression and is then
         used as an expression again.  Often it is good to use a
         |literal-string| to avoid having to double backslashes.
 
@@ -3572,7 +3573,7 @@ fnamemodify({fname}, {mods})                *fnamemodify()*
         results in:
             /home/mool/vim/vim/src
         If {mods} is empty then {fname} is returned.
-        Note: Environment variables don't work in {fname}, use
+        Environment variables don't work in {fname}, use
         |expand()| first then.
 
         用作method:
@@ -3863,7 +3864,7 @@ getbufline({buf}, {lnum} [, {end}])
 
 getbufvar({buf}, {varname} [, {def}])               *getbufvar()*
         The result is the value of option or local buffer variable
-        {varname} in buffer {buf}.  Note that the name without "b:"
+        {varname} in buffer {buf}.  The name without "b:"
         must be used.
         The {varname} argument is a string.
         When {varname} is empty returns a |Dictionary| with all the
@@ -4131,7 +4132,7 @@ getcompletion({pat}, {type} [, {filtered}])     *getcompletion()*
             let save_cursor = getcurpos()
             MoveTheCursorAround
             call setpos('.', save_cursor)
-    Note that this only works within the window.  See
+    This only works within the window.  See
     |winrestview()| for restoring more state.
 
 getcwd([{winnr}[, {tabnr}]])                *getcwd()*
@@ -4234,7 +4235,7 @@ getftype({fname})                   *getftype()*
             All other       "other"
         Example:
             getftype("/home")
-        Note that a type such as "link" will only be returned on
+        A type such as "link" will only be returned on
         systems that support it.  On some systems only "dir" and
         "file" are returned.
 
@@ -4309,20 +4310,20 @@ getloclist({nr},[, {what}])             *getloclist()*
             返回一个list
 
             For a location list window本身:
-                它所展示的 location list 
+                它所展示的 location list
             For an invalid  {nr},
-                an empty list 
+                an empty list
             Otherwise,
                 same as |getqflist()|.
 
         加了{what}
             返回一个dict
-            Refer to  |getqflist()| 
+            Refer to  |getqflist()|
 
             If {what} contains 'filewinid' (qflist似乎没这个)
                 from the location list,  return
                 the id of the  window used to display files
-                
+
                 This field is applicable only when
                 called from a location list  window.
                 See |location-list-file-window| for more details.
@@ -4447,7 +4448,7 @@ getpos({expr})
             else:
                 0
 
-        Note that for 💦'< 💦and 💦'>💦  ,  Visual mode matters:
+        For 💦'< 💦and 💦'>💦  ,  Visual mode matters:
                 when it is "V" (visual line mode)
                     the column of '< is zero
                     the column of  '> is a large number.
@@ -4498,23 +4499,23 @@ getpos({expr})
 
         The following string items are supported in {what}:
             id              specify the quickfix list with  |quickfix-ID|;
-                                zero means: 
+                                zero means:
                                              the id for the current list
                                              或者由 "nr"决定
-            nr              specify the quickfix list 
-                                zero means the current quickfix list 
+            nr              specify the quickfix list
+                                zero means the current quickfix list
                                 "$" means  the last quickfix list
 
             idx              in the list specified by 'id' or 'nr':
-                                 get information for the quickfix entry at this index 
+                                 get information for the quickfix entry at this index
                              If set to zero
                                   uses the current entry.
                                  See |quickfix-index|
 
             items             quickfix list entries
-                              
+
             lines             The current quickfix list is not  modified. See |quickfix-parse|.
-                              parse a list of lines using 'efm'. 
+                              parse a list of lines using 'efm'.
                               return  the resulting entries.
                               Only a |List| type is  accepted.
 
@@ -4537,7 +4538,7 @@ getpos({expr})
             Non-string items in {what} are ignored.
             To get the value of a  particular item:
                 🔑set it to zero🔑
-            If "nr" is not present 
+            If "nr" is not present
                 the current quickfix list is used.
 
             To get the number of lists in the quickfix stack, set "nr" to  "$" in {what}.
@@ -4549,10 +4550,10 @@ getpos({expr})
         The returned dictionary contains the following entries:
             If not present, set to 0:
                 winid   quickfix |window-ID|.
-                id      quickfix list ID |quickfix-ID|. 
-                nr      quickfix list number. 
+                id      quickfix list ID |quickfix-ID|.
+                nr      quickfix list number.
                 idx     index of the quickfix entry in the list
-                size    number of entries in the quickfix list. 
+                size    number of entries in the quickfix list.
 
                 changedtick total number of changes made to the  list |quickfix-changedtick|
                 title   quickfix list title text. If not present, set  to "".
@@ -4649,7 +4650,7 @@ gettabvar({tabnr}, {varname} [, {def}])             *gettabvar()*
         Tabs are numbered starting with one.
         The {varname} argument is a string.  When {varname} is empty a
         dictionary with all tab-local variables is returned.
-        Note that the name without "t:" must be used.
+        The name without "t:" must be used.
         When the tab or variable doesn't exist {def} or an empty
         string is returned, there is no error message.
 
@@ -4665,7 +4666,7 @@ gettabwinvar({tabnr}, {winnr}, {varname} [, {def}])     *gettabwinvar()*
         window-local options in a |Dictionary|.
         Otherwise, when {varname} starts with "&" get the value of a
         window-local option.
-        Note that {varname} must be the name without "w:".
+        {varname} must be the name without "w:".
         Tabs are numbered starting with one.  For the current tabpage
         use |getwinvar()|.
         {winnr} can be the window number or the |window-ID|.
@@ -4845,7 +4846,7 @@ glob2regpat({string})                    *glob2regpat()*
             if filename =~ '^Make.*\.mak$'
         When {string} is an empty string the result is "^$", match an
         empty string.
-        Note that the result depends on the system.  On MS-Windows
+        The result depends on the system.  On MS-Windows
         a backslash usually means a path separator.
 
         用作method:
@@ -4860,7 +4861,7 @@ globpath({path}, {expr} [, {nosuf} [, {list} [, {allinks}]]])
         directory name is prepended to {expr} and expanded like with
         |glob()|.  A path separator is inserted when needed.
         To add a comma inside a directory name escape it with a
-        backslash.  Note that on MS-Windows a directory may have a
+        backslash.  On MS-Windows a directory may have a
         trailing backslash, remove it if you put a comma after it.
         If the expansion fails for one of the directories, there is no
         error message.
@@ -5040,16 +5041,17 @@ histdel({history} [, {item}])               *histdel()*
         Clear {history}, i.e. delete all its entries.  See |hist-names|
         for the possible values of {history}.
 
-        If the parameter {item} evaluates to a String, it is used as a
-        regular expression.  All entries matching that expression will
-        be removed from the history (if there are any).
-        Upper/lowercase must match, unless "\c" is used |/\c|.
-        If {item} evaluates to a Number, it will be interpreted as
-        an index, see |:history-indexing|.  The respective entry will
-        be removed if it exists.
+        If the parameter {item} evaluates to a String,
+            it is used as a  regular expression.
+            All entries matching that expression will  be removed from the history (if there are any).
+            Upper/lowercase must match, unless "\c" is used |/\c|.
 
-        The result is TRUE for a successful operation, otherwise FALSE
-        is returned.
+        If {item} evaluates to a Number,
+            it will be interpreted as an index, see |:history-indexing|.
+            The respective entry will be removed if it exists.
+
+        The result is TRUE for a successful operation,
+        otherwise FALSE  is returned.
 
         Examples:
         Clear expression register history:
@@ -5135,7 +5137,7 @@ iconv({string}, {from}, {to})               *iconv()*
         are replaced with "?".
         The encoding names are whatever the iconv() library function
         can accept, see ":!man 3 iconv".
-        Note that Vim uses UTF-8 for all Unicode encodings, conversion
+        Vim uses UTF-8 for all Unicode encodings, conversion
         from/to UCS-2 is automatically changed to use UTF-8.  You
         cannot use UCS-2 in a string anyway, because of the NUL bytes.
 
@@ -5269,7 +5271,7 @@ input({opts})
 
         NOTE: This function must not be used in a startup file, for
         the versions that only run in GUI mode (e.g., the Win32 GUI).
-        Note: When input() is called from within a mapping it will
+        When input() is called from within a mapping it will
         consume remaining characters from that mapping, because a
         mapping is handled like the characters were typed.
         Use |inputsave()| before input() and |inputrestore()|
@@ -5351,7 +5353,7 @@ insert({object}, {item} [, {idx}])          *insert()*
             :call insert(mylist, 4, -1)
             :call insert(mylist, 6, len(mylist))
         The last example can be done simpler with |add()|.
-        Note that when {item} is a |List| it is inserted as a single
+        When {item} is a |List| it is inserted as a single
         item.  Use |extend()| to concatenate |Lists|.
 
         用作method:
@@ -5419,7 +5421,7 @@ id({expr})                      *id()*
         container type (|List|, |Dict|, |Blob| and |Partial|). It is
         guaranteed that for the mentioned types `id(v1) ==# id(v2)`
         returns true iff `type(v1) == type(v2) && v1 is v2`.
-        Note that |v:_null_string|, |v:_null_list|, |v:_null_dict| and
+        |v:_null_string|, |v:_null_list|, |v:_null_dict| and
         |v:_null_blob| have the same `id()` with different types
         because they are internally represented as NULL pointers.
         `id()` returns a hexadecimal representanion of the pointers to
@@ -5572,7 +5574,7 @@ join({list} [, {sep}])                  *join()*
         Join the items in {list} together into one String.
         When {sep} is specified it is put in between the items.  If
         {sep} is omitted a single space is used.
-        Note that {sep} is not added at the end.  You might want to
+        {sep} is not added at the end.  You might want to
         add it there too:
             let lines = join(mylist, "\n") . "\n"
         String items are used as-is.  |Lists| and |Dictionaries| are
@@ -5713,7 +5715,7 @@ line({expr} [, {winid}])                *line()*
             .       the cursor position
             $       the last line in the current buffer
             'x      position of mark x (if the mark is not set, 0 is  returned)
-                    Note that a mark in another file (大写的mark) can be used.  The line number  then applies to another buffer.
+                    A mark in another file (大写的mark) can be used.  The line number  then applies to another buffer.
 
             w0      first line visible in current window (one if the display isn't updated, e.g. in silent Ex mode)
             w$      last line visible in current window (this is one  less than "w0" if no lines are visible)
@@ -5813,51 +5815,63 @@ luaeval({expr}[, {expr}])
             GetExpr()->luaeval()
 
 map({expr1}, {expr2})                   *map()*
-        {expr1} must be a |List|, |Blob| or |Dictionary|.
-        Replace each item in {expr1} with the result of evaluating
-        {expr2}.  For a |Blob| each byte is replaced.
 
+        {expr1} must be a |List|, |Blob| or |Dictionary|.
         {expr2} must be a |string| or |Funcref|.
 
-        If {expr2} is a |string|, inside {expr2} |v:val| has the value
-        of the current item.  For a |Dictionary| |v:key| has the key
-        of the current item and for a |List| |v:key| has the index of
-        the current item.  For a |Blob| |v:key| has the index of the
-        current byte.
+        Replace each item in {expr1} with the result of evaluating  {expr2}.  For a |Blob| each byte is replaced.
+
+
+        If {expr2} is a |string|,
+            inside {expr2}
+            |v:val| has the value  of the current item.
+
+            For a |Dictionary| |v:key| has the key  of the current item and
+            for a |List| |v:key| has the index of  the current item.
+            For a |Blob| |v:key| has the index of the  current byte.
+
         Example:
             :call map(mylist, '"> " . v:val . " <"')
         This puts "> " before and " <" after each item in "mylist".
 
-        Note that {expr2} is the result of an expression and is then
-        used as an expression again.  Often it is good to use a
-        |literal-string| to avoid having to double backslashes.  You
-        still have to double ' quotes
+        {expr2} is the result of an expression and is then  used as an expression again.
+        Often it is good to use a  |literal-string| to avoid having to double backslashes.
+        You  still have to double ' quotes
 
         If {expr2} is a |Funcref| it is called with two arguments:
             1. The key or the index of the current item.
             2. the value of the current item.
-        The function must return the new value of the item. Example
-        that changes each value by "key-value":
-            func KeyValue(key, val)
-              return a:key . '-' . a:val
-            endfunc
-            call map(myDict, function('KeyValue'))
-        It is shorter when using a |lambda|:
-            call map(myDict, {key, val -> key . '-' . val})
-        If you do not use "val" you can leave it out:
-            call map(myDict, {key -> 'item: ' . key})
-        If you do not use "key" you can use a short name:
-            call map(myDict, {_, val -> 'item: ' . val})
+
+            The function must return the new value of the item. Example
+            that changes each value by "key-value":
+
+                func KeyValue(key, val)
+                  return a:key . '-' . a:val
+                endfunc
+                call map(myDict, function('KeyValue'))
+
+            Using a |lambda|  is shorter:
+                call map(myDict, {key, val -> key . '-' . val})
+
+            If you do not use "val" you can leave it out:
+                call map(myDict, {key -> 'item: ' . key})
+
+            If you do not use "key" you can use a short name:
+                call map(myDict, {_, val -> 'item: ' . val})
 
         The operation is done in-place.  If you want a |List| or
         |Dictionary| to remain unmodified make a copy first:
             :let tlist = map(copy(mylist), ' v:val . "\t"')
 
-        Returns {expr1}, the |List|, |Blob| or |Dictionary| that was
-        filtered.  When an error is encountered while evaluating
-        {expr2} no further items in {expr1} are processed.  When
-        {expr2} is a Funcref errors inside a function are ignored,
-        unless it was defined with the "abort" flag.
+        Returns {expr1},
+            the |List|, |Blob| or |Dictionary| that was  filtered.
+
+        When an error is encountered while evaluating  {expr2}
+            no further items in {expr1} are processed. 
+
+            When  {expr2} is a Funcref
+                errors inside a function are ignored,
+            unless it was defined with the "abort" flag.
 
         用作method:
             mylist->map(expr2)
@@ -6008,14 +6022,14 @@ match({expr}, {pat} [, {start} [, {count}]])            *match()*
         character further.  Thus this example results in 1:
             echo match("testing", "..", 0, 2)
         In a |List| the search continues in the next item.
-        Note that when {count} is added the way {start} works changes,
+        When {count} is added the way {start} works changes,
         see above.
 
         See |pattern| for the patterns that are accepted.
         The 'ignorecase' option is used to set the ignore-caseness of
         the pattern.  'smartcase' is NOT used.  The matching is always
         done like 'magic' is set and 'cpoptions' is empty.
-        Note that a match at the start is preferred, thus when the
+        A match at the start is preferred, thus when the
         pattern is using "*" (any number of matches) it tends to find
         zero matches at the start instead of a number of matches
         further down in the text.
@@ -6369,7 +6383,7 @@ mode([expr])    Return a string that indicates the current mode.
         This is useful in the 'statusline' option or when used
         with |remote_expr()| In most other places it always returns
         "c" or "n".
-        Note that in the future more modes and more specific modes may
+        In the future more modes and more specific modes may
         be added. It's better not to compare the whole string but only
         the leading character(s).
         Also see |visualmode()|.
@@ -6491,7 +6505,7 @@ nr2char({expr} [, {utf8}])              *nr2char()*
             nr2char(300)        returns I with bow character
         UTF-8 encoding is always used, {utf8} option has no effect,
         and exists only for backwards-compatibility.
-        Note that a NUL character in the file is specified with
+        A NUL character in the file is specified with
         nr2char(10), because NULs are represented with newline
         characters.  nr2char(0) is a real NUL and terminates the
         string, thus results in an empty string.
@@ -6539,7 +6553,7 @@ perleval({expr})                    *perleval()*
         Dictionaries are represented as Vim |Dictionary| type,
         non-string keys result in error.
 
-        Note: If you want an array or hash, {expr} must return a
+        If you want an array or hash, {expr} must return a
         reference to it.
         Example:
             :echo perleval('[1 .. 4]')
@@ -6739,7 +6753,7 @@ printf({fmt}, {expr1} ...)              *printf()*
             Example:
                 echo printf("%.2f", 12.115)
                 12.12
-            Note that roundoff depends on the system libraries.
+            Roundoff depends on the system libraries.
             Use |round()| when in doubt.
 
 *printf-e* *printf-E*
@@ -6965,8 +6979,8 @@ readfile({fname} [, {type} [, {max}]])
         When {max} is negative -{max} lines from the end of the file
         are returned, or as many as there are.
         When {max} is zero the result is an empty list.
-        Note that without {max} the whole file is read into memory.
-        Also note that there is no recognition of encoding.  Read a
+        Without {max} the whole file is read into memory.
+        Also There is no recognition of encoding.  Read a
         file into a buffer if you need to.
         When the file can't be opened an error message is given and
         the result is an empty list.
@@ -7028,7 +7042,7 @@ reltimestr({time})              *reltimestr()*
             let start = reltime()
             call MyFunction()
             echo reltimestr(reltime(start))
-        Note that overhead for the commands will be added to the time.
+        Overhead for the commands will be added to the time.
         Leading spaces are used to make the string align nicely.  You
         can use split() to remove it.
             echo split(reltimestr(reltime(start)))[0]
@@ -7052,7 +7066,7 @@ remote_expr({server}, {string} [, {idvar} [, {timeout}]])
         seconds.  Otherwise a timeout of 600 seconds is used.
         See also |clientserver| |RemoteReply|.
         This function is not available in the |sandbox|.
-        Note: Any errors will cause a local error message to be issued
+        Any errors will cause a local error message to be issued
         and the result will be the empty string.
 
         Variables will be evaluated in the global namespace,
@@ -7073,7 +7087,7 @@ remote_foreground({server})             *remote_foreground()*
         Except that on Win32 systems the client does the work, to work
         around the problem that the OS doesn't always allow the server
         to bring itself to the foreground.
-        Note: This does not restore the window if it was minimized,
+        This does not restore the window if it was minimized,
         like foreground() does.
         This function is not available in the |sandbox|.
         {only in the Win32 GUI and the Win32 console version}
@@ -7112,7 +7126,7 @@ remote_send({server}, {string} [, {idvar}])
         See also |clientserver| |RemoteReply|.
         This function is not available in the |sandbox|.
 
-        Note: Any errors will be reported in the server and may mess
+        Any errors will be reported in the server and may mess
         up the display.
         Examples:
         :echo remote_send("gvim", ":DropAndReply ".file, "serverid").
@@ -7174,8 +7188,7 @@ rename({from}, {to})                    *rename()*
             GetOldName()->rename(newname)
 
 repeat({expr}, {count})                 *repeat()*
-        Repeat {expr} {count} times and return the concatenated
-        result.  Example:
+        Repeat {expr} {count} times and return the concatenated  result.  Example:
             :let separator = repeat('-', 80)
         When {count} is zero or negative the result is empty.
         When {expr} is a |List| the result is {expr} concatenated
@@ -7185,6 +7198,7 @@ repeat({expr}, {count})                 *repeat()*
 
         用作method:
             mylist->repeat(count)
+
 
 resolve({filename})                 *resolve()* *E655*
         On MS-Windows, when {filename} is a shortcut (a .lnk file),
@@ -7286,7 +7300,7 @@ screencol()                         *screencol()*
         the cursor. The leftmost column has number 1.
         This function is mainly used for testing.
 
-        Note: Always returns the current screen column, thus if used
+        Always returns the current screen column, thus if used
         in a command (e.g. ":echo screencol()") it will return the
         column inside the command line, which is 1 when the command is
         executed. To get the cursor position in the file use one of
@@ -7322,7 +7336,7 @@ screenrow()                         *screenrow()*
         This function is mainly used for testing.
         Alternatively you can use |winline()|.
 
-        Note: Same restrictions as with |screencol()|.
+        Same restrictions as with |screencol()|.
 
 screenstring({row}, {col})                  *screenstring()*
         The result is a String that contains the base character and
@@ -7504,7 +7518,7 @@ searchcount([{options}])                    *searchcount()*
         pattern in the current buffer using "pattern":
 
             " Count '\<foo\>' in this buffer
-            " (Note that it also updates search count)
+            " (It also updates search count)
             let result = searchcount(#{pattern: '\<foo\>'})
 
             " To restore old search count by old pattern,
@@ -7632,7 +7646,7 @@ searchpair({start}, {middle}, {end} [, {flags} [, {skip}
             \ 'getline(".") =~ "^\\s*\""')
 
         The cursor must be at or after the "if" for which a match is
-        to be found.  Note that single-quote strings are used to avoid
+        to be found.  Single-quote strings are used to avoid
         having to double the backslashes.  The skip expression only
         catches comments at the start of a line, not after a command.
         Also, a word "en" or "if" halfway through a line is considered
@@ -7761,7 +7775,7 @@ setbufvar({buf}, {varname}, {val})          *setbufvar()*
         For a local window option the global value is unchanged.
         For the use of {buf}, see |bufname()| above.
         The {varname} argument is a string.
-        Note that the variable name without "b:" must be used.
+        The variable name without "b:" must be used.
         Examples:
             :call setbufvar(1, "&mod", 1)
             :call setbufvar("todo", "myvar", "foobar")
@@ -7856,7 +7870,7 @@ setline({lnum}, {text})                 *setline()*
             :  call setline(n, l)
             :endfor
 
-        Note: The '[ and '] marks are not set.
+        The '[ and '] marks are not set.
 
 setloclist({nr}, {list}  [, {action}[, {what}]])      *setloclist()*
     Also see |location-list|.
@@ -7953,7 +7967,7 @@ setpos({expr}, {list})
                 Else:
                     It sets the preferred column for when moving the cursor vertically.
 
-    Note that for '< and '>  :
+    For '< and '>  :
         changing the line number may result in:
             the marks to be effectively be swapped,
         以保证 '< is always  before '>.
@@ -8006,7 +8020,7 @@ setqflist( {list} [, {action} [, {what}] ] )        *setqflist()*
         If you supply an empty {list},
             the quickfix list will be  cleared.
 
-        Note that the list is not exactly the same as what  |getqflist()| returns.
+        The list is not exactly the same as what  |getqflist()| returns.
         setqflist和getqlist处理的对象基本一致, 但使用后者, 主要是获得返回值
 
     *setqflist-action* *E927*
@@ -8146,7 +8160,7 @@ settabvar({tabnr}, {varname}, {val})            *settabvar()*
         Set tab-local variable {varname} to {val} in tab page {tabnr}.
         |t:var|
         The {varname} argument is a string.
-        Note that the variable name without "t:" must be used.
+        The variable name without "t:" must be used.
         Tabs are numbered starting with one.
         This function is not available in the |sandbox|.
 
@@ -8160,7 +8174,7 @@ settabwinvar({tabnr}, {winnr}, {varname}, {val})    *settabwinvar()*
         This also works for a global or local buffer option, but it
         doesn't work for a global or local buffer variable.
         For a local buffer option the global value is unchanged.
-        Note that the variable name without "w:" must be used.
+        The variable name without "w:" must be used.
         Examples:
             :call settabwinvar(1, 1, "&list", 0)
             :call settabwinvar(3, 2, "myvar", "foobar")
@@ -8276,7 +8290,7 @@ simplify({filename})                    *simplify()*
         standard).
         Example:
             simplify("./dir/.././/file/") == "./file/"
-        Note: The combination "dir/.." is only removed if "dir" is
+        The combination "dir/.." is only removed if "dir" is
         a searchable directory or does not exist.  On Unix, it is also
         removed when "dir" is a symbolic link within the same
         directory.  In order to resolve all the involved symbolic
@@ -8692,7 +8706,7 @@ string({expr})  Return {expr} converted to a String.  If {expr} is a Number,
             Blob        0z00112233.44556677.8899
             List        [item, item]
             Dictionary  {key: value, key: value}
-        Note that in String values the ' character is doubled.
+        In String values the ' character is doubled.
         Also see |strtrans()|.
         Note 2: Output format is mostly compatible with YAML, except
         for infinite and NaN floating-point values representations
@@ -8737,7 +8751,7 @@ strpart({src}, {start} [, {len} [, {chars}]])           *strpart()*
             strpart("abcdefg", 5, 4)    == "fg"
             strpart("abcdefg", 3)       == "defg"
 
-        Note: To get the first character, {start} must be 0.  For
+        To get the first character, {start} must be 0.  For
         example, to get the character under the cursor:
             strpart(getline("."), col(".") - 1, 1, v:true)
 
@@ -8823,98 +8837,113 @@ strwidth({string})                  *strwidth()*
         用作method:
             GetString()->strwidth()
 
+
+substitute({string}, {pat}, {sub}, {flags})     *substitute()*
+
+Example:
+        `:let &path = substitute(&path, ",\\=[^,]*$", "", "")`
+            This removes the last component of the 'path' option.
+
+        `:echo substitute("testing", ".*", "\\U\\0", "")`
+            results in "TESTING".
+
+
+    When {flags} is `""`,
+        the result is a copy of {string},  the first match of {pat} is replaced with {sub}.
+
+    When {flags} is `"g"`
+        all matches of {pat} in {string} are replaced.
+
+    This works like the ":substitute" command (without any flags).
+
+    See |string-match| for how {pat} is used.
+        the matching with {pat} is always done
+            like the 'magic' option is set and
+            'cpoptions' is empty (to make scripts portable).
+            'ignorecase' is still relevant,  'smartcase' is not used.
+                if you want to supress 'ignorecase'
+                use |/\c| or |/\C|
+
+        When {pat} does not match in {string},
+            {string} is returned unmodified.
+
+
+    关于{sub}
+    A "~" in {sub} is not replaced with the previous {sub}.
+        Some codes in {sub} have a special meaning. |sub-replace-special|.
+        For example,
+            to replace something with `\n` (不是换行)
+                use
+                `"\\\\n"` or
+                `'\\n'`    特殊字符想原样输入: 要用单引号包住
+
+            `echo substitute("aaa_T_hhhh", 'T', '\\n','e')`
+        会换行:
+            `echo substitute("aaa_T_hhhh", 'T', "\\n",'e')`
+            `echo substitute("aaa_T_hhhh", 'T', '\n','e')`
+            `echo substitute("aaa_T_hhhh", 'T', "\n",'e')`
+
+        When {sub} starts with "\=":
+            See |sub-replace-expression|.
+
+            Example
+            :echo substitute(s, '%\(\x\x\)',   '\=nr2char("0x" . submatch(1))',     'g')
+
+        When {sub} is a Funcref
+            that function is called, with one optional argument.
+            Example
+               `:echo substitute(s, '%\(\x\x\)',    {m -> '0x' . m[1]},      'g')`
+                                                   {args -> expr1}  lambda expression  ,得到一个Funcref variable
+            被我搞乱了?
+               :echo substitute(s, '%\(\x\x\)', SubNr等funcref, 'g')
+
+                The optional argument of funtion 'SubNr' is a list  which
+                contains  the whole  matched string like what |submatch()| returns.
+                (up to nine submatches)
+
+
+    用作method:
+        GetString()->substitute(pat, sub, flags)
+
+
 submatch({nr} [, {list}])           *submatch()* *E935*
+    Returns the {nr}'th submatch of the matched text.
+    When {nr} is 0
+        the whole matched text is returned.
 
     Examples:
-                :su #\v\d+#\=submatch(0) + 1#c
-
+                `:su #\v\d+#\=  submatch(1) + 1`
             This finds the first number in the line and adds one to it.
 
-                :echo |substitute|(text, '\d\+', '\=submatch(0) + 1', '')
+                `echo substitute('here is a number: 1 __ ok', '\v\d+', '\=submatch(0) + 1', '') .. '___hhh'`
 
-            A line break is included as a newline character.
+            same as above, but
+            A line break  (没见到啊) is included as a newline character
 
     Only for  an expression in a |:substitute| command or
                                   substitute() function.
 
-    Returns the {nr}'th submatch of the matched text.
-        When {nr} is 0
-            the whole matched text is returned.
+                                             这个line break就是a newline?
+    NL characters (等) in the text:  represent NUL characters in the text.
+    A NL in the string:         can 额外stand for a line break of a multi-line match or
 
-    A NL in the string can stand for  a line break of a multi-line match or
-                                                       a NUL character in the text.
+
     Also see |sub-replace-expression|.
 
     If {list} is present and non-zero
         returns a list of strings,
         similar to |getline()| with two arguments.
 
-    NL characters in the text represent NUL characters in the text.
+        for  |:substitute|
+            Returns >=1 item
+        for |substitute()|
+            this list will always contain 1 or 0 item
+            since there are no real line breaks.(不能把items断开?)
 
-    Returns more than one item for  |:substitute|,
-
-    inside |substitute()|
-        this list will always contain one or zero items,
-        since there are no real line breaks.
-
-    When substitute() is used recursively only the submatches in the current (deepest) call can be obtained.
+    When substitute() is used recursively
+        only the submatches in the current (deepest) call can be obtained.
 
 
-substitute({string}, {pat}, {sub}, {flags})     *substitute()*
-
-        The result is a String,
-        which is a copy of {string},
-        in which the first match of {pat} is replaced with {sub}.
-        When {flags} is "g",
-        all matches of {pat} in {string} are replaced.
-        Otherwise {flags} should be "".
-
-        This works like the ":substitute" command (without any flags).
-        But the matching with {pat} is always done like the 'magic' option is set and
-        'cpoptions' is empty (to make scripts portable).
-        'ignorecase' is still relevant,
-        use |/\c| or |/\C| if you want to ignore or
-        match case and
-        ignore 'ignorecase'.
-        'smartcase' is not used.
-        See |string-match| for how {pat} is used.
-
-        A "~" in {sub} is not replaced with the previous {sub}.
-        Note that some codes in {sub} have a special meaning |sub-replace-special|.
-        For example,
-        to replace something with "\n" (two characters),
-        use "\\\\n" or '\\n'.
-        When {pat} does not match in {string},
-        {string} is returned unmodified.
-
-    Example:
-                :let &path = substitute(&path, ",\\=[^,]*$", "", "")
-            This removes the last component of the 'path' option.
-                :echo substitute("testing", ".*", "\\U\\0", "")
-            results in "TESTING".
-
-    When {sub} starts with "\=",
-        the remainder is interpreted as an expression.
-        See |sub-replace-expression|.
-    Example:
-
-        :echo substitute(s, '%\(\x\x\)',
-                       \ '\=nr2char("0x" . submatch(1))', 'g')
-
-    When {sub} is a Funcref
-        that function is called, with one optional argument.
-        Example
-           :echo substitute(s, '%\(\x\x\)', SubNr, 'g')
-
-            The optional argument of funtion 'SubNr' is a list  which contains
-                the whole  matched string and
-                up to nine submatches,
-                like what  |submatch()| returns.
-            Example:
-                   :echo substitute(s, '%\(\x\x\)', {m -> '0x' . m[1]}, 'g')
-
-    用作method:
-        GetString()->substitute(pat, sub, flags)
 
 swapinfo({fname})                   *swapinfo()*
         The result is a dictionary, which holds information about the
@@ -8949,7 +8978,7 @@ synID({lnum}, {col}, {trans})               *synID()*
 
         {col} is 1 for the leftmost column, {lnum} is 1 for the first
         line.  'synmaxcol' applies, in a longer line zero is returned.
-        Note that when the position is after the last character,
+        When the position is after the last character,
         that's where the cursor can be in Insert mode, synID() returns
         zero.  {lnum} is used like with |getline()|.
 
@@ -9077,10 +9106,12 @@ system({cmd} [, {input}])               *system()* *E677*
         If {input} is a string it is written to a pipe and passed as
         stdin to the command.  The string is written as-is, line
         separators are not changed.
-        If {input} is a |List| it is written to the pipe as
-        |writefile()| does with {binary} set to "b" (i.e. with
-        a newline between each list item, and newlines inside list
-        items converted to NULs).
+        If {input} is a |List|
+            it is written to the pipe as
+            |writefile()| does with {binary} set to "b"
+            (i.e. with  a newline between each list item,
+            and newlines inside list  items converted to NULs).
+
         When {input} is given and is a valid buffer id, the content of
         the buffer is written to the file line by line, each line
         terminated by NL (and NUL where the text has NL).
@@ -9094,7 +9125,7 @@ system({cmd} [, {input}])               *system()* *E677*
         redirection syntax) before input can reach it. Use
         |jobstart()| instead.
 
-        Note: Use |shellescape()| or |::S| with |expand()| or
+        Use |shellescape()| or |::S| with |expand()| or
         |fnamemodify()| to escape special characters in a command
         argument. 'shellquote' and 'shellxquote' must be properly
         configured. Example:
@@ -9113,7 +9144,7 @@ systemlist({cmd} [, {input} [, {keepempty}]])       *systemlist()*
         is the same as |readfile()| will output with {binary} argument
         set to "b", except that a final newline is not preserved,
         unless {keepempty} is non-zero.
-        Note that on MS-Windows you may get trailing CR characters.
+        On MS-Windows you may get trailing CR characters.
 
         To see the difference between "echo hello" and "echo -n hello"
         use |system()| and |split()|:
@@ -9135,7 +9166,7 @@ tabpagebuflist([{arg}])                 *tabpagebuflist()*
             for i in range(tabpagenr('$'))
                call extend(buflist, tabpagebuflist(i + 1))
             endfor
-        Note that a buffer may appear in more than one window.
+        A buffer may appear in more than one window.
 
 
 tabpagenr([{arg}])                  *tabpagenr()*
@@ -9519,7 +9550,7 @@ virtcol({expr})                     *virtcol()*
                 cursor is the end).  When not in Visual mode
                 returns the cursor position.  Differs from |'<| in
                 that it's updated right away.
-        Note that only marks in the current file can be used.
+        Only marks in the current file can be used.
         Examples:
   virtcol(".")     with text "foo^Lbar", with cursor on the "^L", returns 5
   virtcol("$")     with text "foo^Lbar", returns 9
@@ -9780,7 +9811,7 @@ winrestcmd()    Returns a sequence of |:resize| commands that should restore
 winrestview({dict})
         Uses the |Dictionary| returned by |winsaveview()| to restore
         the view of the current window.
-        Note: The {dict} does not have to contain all values, that are
+        The {dict} does not have to contain all values, that are
         returned by |winsaveview()|. If values are missing, those
         settings won't be restored. So you can use:
             :call winrestview({'curswant': 4})
@@ -9814,7 +9845,7 @@ winsaveview()   Returns a |Dictionary| that contains information to restore
             leftcol     first column displayed; only used when
                     'wrap' is off
             skipcol     columns skipped
-        Note that no option values are saved.
+        No option values are saved.
 
 
 winwidth({nr})                      *winwidth()*
@@ -9921,2430 +9952,3 @@ Don't forget that "^" will only match at the first character of the String and
 "$" at the last character of the string.  They don't match after or before a
 "\n".
 
-==============================================================================
-5. Defining functions                   *user-function*
-
-New functions can be defined.  These can be called just like builtin
-functions.  The function executes a sequence of Ex commands.  Normal mode
-commands can be executed with the |:normal| command.
-
-The function name must start with an uppercase letter, to avoid confusion with
-builtin functions.  To prevent from using the same name in different scripts
-avoid obvious, short names.  A good habit is to start the function name with
-the name of the script, e.g., "HTMLcolor()".
-
-It's also possible to use curly braces, see |curly-braces-names|.  And the
-|autoload| facility is useful to define a function only when it's called.
-
-*local-function*
-A function local to a script must start with "s:".  A local script function
-can only be called from within the script and from functions, user commands
-and autocommands defined in the script.  It is also possible to call the
-function from a mapping defined in the script, but then |<SID>| must be used
-instead of "s:" when the mapping is expanded outside of the script.
-There are only script-local functions, no buffer-local or window-local
-functions.
-
-*:fu* *:function* *E128* *E129* *E123*
-:fu[nction]     List all functions and their arguments.
-
-:fu[nction][!] {name}   List function {name}, annotated with line numbers
-            unless "!" is given.
-            {name} may be a |Dictionary| |Funcref| entry:
-                :function dict.init
-
-:fu[nction] /{pattern}  List functions with a name matching {pattern}.
-            Example that lists all functions ending with "File":
-                :function /File$
-
-*:function-verbose*
-When 'verbose' is non-zero, listing a function will also display where it was
-last defined. Example:
-
-    :verbose function SetFileTypeSH
-    function SetFileTypeSH(name)
-        Last set from /usr/share/vim/vim-7.0/filetype.vim
-
-See |:verbose-cmd| for more information.
-
-*E124* *E125* *E853* *E884*
-:fu[nction][!] {name}([arguments]) [range] [abort] [dict] [closure]
-            Define a new function by the name {name}.  The body of
-            the function follows in the next lines, until the
-            matching |:endfunction|.
-
-            The name must be made of alphanumeric characters and
-            '_', and must start with a capital or "s:" (see
-            above).  Note that using "b:" or "g:" is not allowed.
-            (since patch 7.4.260 E884 is given if the function
-            name has a colon in the name, e.g. for "foo:bar()".
-            Before that patch no error was given).
-
-            {name} can also be a |Dictionary| entry that is a
-            |Funcref|:
-                :function dict.init(arg)
-            "dict" must be an existing dictionary.  The entry
-            "init" is added if it didn't exist yet.  Otherwise [!]
-            is required to overwrite an existing function.  The
-            result is a |Funcref| to a numbered function.  The
-            function can only be used with a |Funcref| and will be
-            deleted if there are no more references to it.
-*E127* *E122*
-            When a function by this name already exists and [!] is
-            not used an error message is given.  There is one
-            exception: When sourcing a script again, a function
-            that was previously defined in that script will be
-            silently replaced.
-            When [!] is used, an existing function is silently
-            replaced.  Unless it is currently being executed, that
-            is an error.
-            NOTE: Use ! wisely.  If used without care it can cause
-            an existing function to be replaced unexpectedly,
-            which is hard to debug.
-
-            For the {arguments} see |function-argument|.
-
-*:func-range* *a:firstline* *a:lastline*
-            When the [range] argument is added, the function is
-            expected to take care of a range itself.  The range is
-            passed as "a:firstline" and "a:lastline".  If [range]
-            is excluded, ":{range}call" will call the function for
-            each line in the range, with the cursor on the start
-            of each line.  See |function-range-example|.
-            The cursor is still moved to the first line of the
-            range, as is the case with all Ex commands.
-*:func-abort*
-            When the [abort] argument is added, the function will
-            abort as soon as an error is detected.
-*:func-dict*
-            When the [dict] argument is added, the function must
-            be invoked through an entry in a |Dictionary|.  The
-            local variable "self" will then be set to the
-            dictionary.  See |Dictionary-function|.
-*:func-closure* *E932*
-            When the [closure] argument is added, the function
-            can access variables and arguments from the outer
-            scope.  This is usually called a closure.  In this
-            example Bar() uses "x" from the scope of Foo().  It
-            remains referenced even after Foo() returns:
-                :function! Foo()
-                :  let x = 0
-                :  function! Bar() closure
-                :    let x += 1
-                :    return x
-                :  endfunction
-                :  return funcref('Bar')
-                :endfunction
-
-                :let F = Foo()
-                :echo F()
-                1
-                :echo F()
-                2
-                :echo F()
-                3
-
-*function-search-undo*
-            The last used search pattern and the redo command "."
-            will not be changed by the function.  This also
-            implies that the effect of |:nohlsearch| is undone
-            when the function returns.
-
-*:endf* *:endfunction* *E126* *E193* *W22*
-:endf[unction] [argument]
-            The end of a function definition.  Best is to put it
-            on a line by its own, without [argument].
-
-            [argument] can be:
-                | command   command to execute next
-                \n command  command to execute next
-                " comment   always ignored
-                anything else   ignored, warning given when
-                        'verbose' is non-zero
-            The support for a following command was added in Vim
-            8.0.0654, before that any argument was silently
-            ignored.
-
-            To be able to define a function inside an `:execute`
-            command, use line breaks instead of |:bar|:
-                :exe "func Foo()\necho 'foo'\nendfunc"
-
-*:delf* *:delfunction* *E130* *E131* *E933*
-:delf[unction][!] {name}
-            Delete function {name}.
-            {name} can also be a |Dictionary| entry that is a
-            |Funcref|:
-                :delfunc dict.init
-            This will remove the "init" entry from "dict".  The
-            function is deleted if there are no more references to
-            it.
-            With the ! there is no error if the function does not
-            exist.
-*:retu* *:return* *E133*
-:retu[rn] [expr]    Return from a function.  When "[expr]" is given, it is
-            evaluated and returned as the result of the function.
-            If "[expr]" is not given, the number 0 is returned.
-            When a function ends without an explicit ":return",
-            the number 0 is returned.
-            Note that there is no check for unreachable lines,
-            thus there is no warning if commands follow ":return".
-
-            If the ":return" is used after a |:try| but before the
-            matching |:finally| (if present), the commands
-            following the ":finally" up to the matching |:endtry|
-            are executed first.  This process applies to all
-            nested ":try"s inside the function.  The function
-            returns at the outermost ":endtry".
-
-*function-argument* *a:var*
-An argument can be defined by giving its name.  In the function this can then
-be used as "a:name" ("a:" for argument).
-*a:0* *a:1* *a:000* *E740* *...*
-Up to 20 arguments can be given, separated by commas.  After the named
-arguments an argument "..." can be specified, which means that more arguments
-may optionally be following.  In the function the extra arguments can be used
-as "a:1", "a:2", etc.  "a:0" is set to the number of extra arguments (which
-can be 0).  "a:000" is set to a |List| that contains these arguments.  Note
-that "a:1" is the same as "a:000[0]".
-*E742*
-The a: scope and the variables in it cannot be changed, they are fixed.
-However, if a composite type is used, such as |List| or |Dictionary| , you can
-change their contents.  Thus you can pass a |List| to a function and have the
-function add an item to it.  If you want to make sure the function cannot
-change a |List| or |Dictionary| use |:lockvar|.
-
-It is also possible to define a function without any arguments.  You must
-still supply the () then.
-
-It is allowed to define another function inside a function body.
-
-*optional-function-argument*
-You can provide default values for positional named arguments.  This makes
-them optional for function calls.  When a positional argument is not
-specified at a call, the default expression is used to initialize it.
-This only works for functions declared with |function|, not for
-lambda expressions |expr-lambda|.
-
-Example:
-  function Something(key, value = 10)
-     echo a:key .. ": " .. a:value
-  endfunction
-  call Something('empty')   "empty: 10"
-  call Something('key', 20) "key: 20"
-
-The argument default expressions are evaluated at the time of the function
-call, not definition.  Thus it is possible to use an expression which is
-invalid the moment the function is defined.  The expressions are also only
-evaluated when arguments are not specified during a call.
-
-*E989*
-Optional arguments with default expressions must occur after any mandatory
-arguments.  You can use "..." after all optional named arguments.
-
-It is possible for later argument defaults to refer to prior arguments,
-but not the other way around.  They must be prefixed with "a:", as with all
-arguments.
-
-Example that works:
-  :function Okay(mandatory, optional = a:mandatory)
-  :endfunction
-Example that does NOT work:
-  :function NoGood(first = a:second, second = 10)
-  :endfunction
-
-When not using "...", the number of arguments in a function call must be at
-least equal to the number of mandatory named arguments.  When using "...", the
-number of arguments may be larger than the total of mandatory and optional
-arguments.
-
-*local-variables*
-Inside a function local variables can be used.  These will disappear when the
-function returns. Global variables need to be accessed with "g:".
-
-Example:
-  :function Table(title, ...)
-  :  echohl Title
-  :  echo a:title
-  :  echohl None
-  :  echo a:0 . " items:"
-  :  for s in a:000
-  :    echon ' ' . s
-  :  endfor
-  :endfunction
-
-This function can then be called with:
-  call Table("Table", "line1", "line2")
-  call Table("Empty Table")
-
-To return more than one value, return a |List|:
-  :function Compute(n1, n2)
-  :  if a:n2 == 0
-  :    return ["fail", 0]
-  :  endif
-  :  return ["ok", a:n1 / a:n2]
-  :endfunction
-
-This function can then be called with:
-  :let [success, div] = Compute(102, 6)
-  :if success == "ok"
-  :  echo div
-  :endif
-
-*:cal* *:call* *E107* *E117*
-:[range]cal[l] {name}([arguments])
-Call a function.
-The name of the function and its arguments are as specified with `:function`.
-Up to 20 arguments can be  used.
-💦The returned value is discarded 💦
-Without a range and for functions that accept a range, the  function is called once.
-When a range is given,  the cursor is  positioned at the start of the first line before executing the  function.
-When a range is given and the function doesn't handle it  itself, the function is executed for each line in the range,
-with the cursor in the first column of that line.
-The cursor is left at the last line (possibly moved by the last function call).
-The arguments are re-evaluated for each line.
-Thus this works:
-*function-range-example*
-    :function Mynumber(arg)
-    :  echo line(".") . " " . a:arg
-    :endfunction
-    :1,5call Mynumber(getline("."))
-
-        The "a:firstline" and "a:lastline" are defined anyway, they
-        can be used to do something different at the start or end of
-        the range.
-
-        Example of a function that handles the range itself:
-
-    :function Cont() range
-    :  execute (a:firstline + 1) . "," . a:lastline . 's/^/\t\\ '
-    :endfunction
-    :4,8call Cont()
-
-        This function inserts the continuation character "\" in front
-        of all the lines in the range, except the first one.
-
-        When the function returns a composite value it can be further
-        dereferenced, but the range will not be used then.  Example:
-    :4,8call GetDict().method()
-        Here GetDict() gets the range but method() does not.
-
-*E132*
-The recursiveness of user functions is restricted with the |'maxfuncdepth'|
-option.
-
-It is also possible to use `:eval`.  It does not support a range, but does
-allow for method chaining, e.g.:
-    eval GetList()->Filter()->append('$')
-
-
-AUTOMATICALLY LOADING FUNCTIONS
-*autoload-functions*
-When using many or large functions,
-    it's possible to automatically define them
-    only when they are used.
-    There are two methods:
-        with an autocommand
-        with  the "autoload" directory in 'runtimepath'.
-
-    Using an autocommand
-
-        This is introduced in the user manual, section |41.14|.
-
-        if you have a plugin that is a long Vim script file.
-            The autocommand is useful
-            You can define the autocommand and
-                quickly quit the script with `:finish`.
-                That makes Vim startup faster.
-            The autocommand should then load the same file  again,
-                setting a variable to skip the `:finish` command.
-
-            Use the FuncUndefined autocommand event with a pattern that matches the  function(s) to be defined.
-            Example:
-
-                :au FuncUndefined BufNet* source ~/vim/bufnetfuncs.vim
-
-                The file "~/vim/bufnetfuncs.vim" should  then define functions that start with
-                "BufNet".
-                Also see |FuncUndefined|.
-
-
-    Using an autoload script
-    *autoload* *E746*
-        This is introduced in the user manual, section |41.15|.
-
-        Using a script in the "autoload" directory is simpler,
-        but requires using  exactly the right file name.
-        A function that can be autoloaded has a name  like this:
-
-            :call filename#funcname()
-
-        When such a function is called,
-            and it is not defined yet,
-                Vim will search the  "autoload" directories in 'runtimepath'
-                for a script file called  "filename.vim".
-                For example
-                    "~/.config/nvim/autoload/filename.vim".
-                That  file should then define the function like this:
-
-                    function filename#funcname()
-                       echo "Done!"
-                    endfunction
-
-        The file name and the name used before the # in the function must match  exactly,
-        and the defined function must have the name exactly as it will be  called.
-
-        It is possible to use subdirectories.  Every # in the function name works like  a path separator.
-        Thus when calling a function:
-
-            :call foo#bar#func()
-
-            Vim will look for the file "autoload/foo/bar.vim" in 'runtimepath'.
-
-        This also works when reading a variable that has not been set yet:
-
-            :let l = foo#bar#lvar
-
-        However, when the autoload script was already loaded it won't be loaded again  for an unknown variable.
-
-        When assigning a value to such a variable nothing special happens.
-        This can  be used to pass settings to the autoload script before it's loaded:
-
-                :let foo#bar#toggle = 1
-                :call foo#bar#func()
-
-        Note that when you make a mistake and  call a function that is supposed to be  defined in an autoload script,
-        but the script doesn't actually define the  function,
-        you will get an error message for the missing function.
-        If you fix  the autoload script
-            it won't be automatically loaded again.
-            Either restart  Vim or manually source the script.
-
-        if you have two script files,
-            and one calls a function in the  other and vice versa,
-            before the used function is defined,
-                it won't work.
-
-            Avoid using the autoload functionality at the toplevel.
-
-==============================================================================
-6. Curly braces names                   *curly-braces-names*
-
-In most places where you can use a variable, you can use a "curly braces name"
-variable.  This is a regular variable name with one or more expressions
-wrapped in braces {} like this:
-    my_{adjective}_variable
-
-When Vim encounters this, it evaluates the expression inside the braces, puts
-that in place of the expression, and re-interprets the whole as a variable
-name.  So in the above example, if the variable "adjective" was set to
-"noisy", then the reference would be to "my_noisy_variable", whereas if
-"adjective" was set to "quiet", then it would be to "my_quiet_variable".
-
-One application for this is to create a set of variables governed by an option
-value.  For example, the statement
-    echo my_{&background}_message
-
-would output the contents of "my_dark_message" or "my_light_message" depending
-on the current value of 'background'.
-
-You can use multiple brace pairs:
-    echo my_{adverb}_{adjective}_message
-..or even nest them:
-    echo my_{ad{end_of_word}}_message
-where "end_of_word" is either "verb" or "jective".
-
-However, the expression inside the braces must evaluate to a valid single
-variable name, e.g. this is invalid:
-    :let foo='a + b'
-    :echo c{foo}d
-.. since the result of expansion is "ca + bd", which is not a variable name.
-
-*curly-braces-function-names*
-You can call and define functions by an evaluated name in a similar way.
-Example:
-    :let func_end='whizz'
-    :call my_func_{func_end}(parameter)
-
-This would call the function "my_func_whizz(parameter)".
-
-This does NOT work:
-  :let i = 3
-  :let @{i} = ''  " error
-  :echo @{i}      " error
-
-==============================================================================
-7. Commands                     *expression-commands*
-
-:let {var-name} = {expr1}               *:let* *E18*
-            Set internal variable {var-name} to the result of the
-            expression {expr1}.  The variable will get the type
-            from the {expr}.  If {var-name} didn't exist yet, it
-            is created.
-
-:let {var-name}[{idx}] = {expr1}            *E689*
-            Set a list item to the result of the expression
-            {expr1}.  {var-name} must refer to a list and {idx}
-            must be a valid index in that list.  For nested list
-            the index can be repeated.
-            This cannot be used to add an item to a |List|.
-            This cannot be used to set a byte in a String.  You
-            can do that like this:
-                :let var = var[0:2] . 'X' . var[4:]
-            When {var-name} is a |Blob| then {idx} can be the
-            length of the blob, in which case one byte is
-            appended.
-
-*E711* *E719*
-:let {var-name}[{idx1}:{idx2}] = {expr1}        *E708* *E709* *E710*
-            Set a sequence of items in a |List| to the result of
-            the expression {expr1}, which must be a list with the
-            correct number of items.
-            {idx1} can be omitted, zero is used instead.
-            {idx2} can be omitted, meaning the end of the list.
-            When the selected range of items is partly past the
-            end of the list, items will be added.
-
-*:let+=* *:let-=* *:letstar=*
-*:let/=* *:let%=* *:let.=* *:let..=* *E734*
-:let {var} += {expr1}   Like ":let {var} = {var} + {expr1}".
-:let {var} -= {expr1}   Like ":let {var} = {var} - {expr1}".
-:let {var} *= {expr1}   Like ":let {var} = {var} * {expr1}".
-:let {var} /= {expr1}   Like ":let {var} = {var} / {expr1}".
-:let {var} %= {expr1}   Like ":let {var} = {var} % {expr1}".
-:let {var} .= {expr1}   Like ":let {var} = {var} . {expr1}".
-:let {var} ..= {expr1}  Like ":let {var} = {var} .. {expr1}".
-            These fail if {var} was not set yet and when the type
-            of {var} and {expr1} don't fit the operator.
-
-
-:let ${env-name} = {expr1}          *:let-environment* *:let-$*
-            Set environment variable {env-name} to the result of
-            the expression {expr1}.  The type is always String.
-:let ${env-name} .= {expr1}
-            Append {expr1} to the environment variable {env-name}.
-            If the environment variable didn't exist yet this
-            works like "=".
-
-:let @{reg-name} = {expr1}          *:let-register* *:let-@*
-            Write the result of the expression {expr1} in register
-            {reg-name}.  {reg-name} must be a single letter, and
-            must be the name of a writable register (see
-            |registers|).  "@@" can be used for the unnamed
-            register, "@/" for the search pattern.
-            If the result of {expr1} ends in a <CR> or <NL>, the
-            register will be linewise, otherwise it will be set to
-            charwise.
-            This can be used to clear the last search pattern:
-                :let @/ = ""
-            This is different from searching for an empty string,
-            that would match everywhere.
-
-:let @{reg-name} .= {expr1}
-            Append {expr1} to register {reg-name}.  If the
-            register was empty it's like setting it to {expr1}.
-
-:let &{option-name} = {expr1}           *:let-option* *:let-&*
-
-Set option {option-name} to the result of the expression {expr1}.
-A String or Number value is always converted to the type of the option.
-For an option local to a window or buffer the effect is just like using the |:set| command: both the local value and
-the global value are changed.
-            Example:
-                :let &path = &path . ',/usr/local/include'
-
-:let &{option-name} .= {expr1}
-            For a string option: Append {expr1} to the value.
-            Does not insert a comma like |:set+=|.
-
-:let &{option-name} += {expr1}
-:let &{option-name} -= {expr1}
-            For a number or boolean option: Add or subtract
-            {expr1}.
-
-:let &l:{option-name} = {expr1}
-:let &l:{option-name} .= {expr1}
-:let &l:{option-name} += {expr1}
-:let &l:{option-name} -= {expr1}
-            Like above, but only set the local value of an option
-            (if there is one).  Works like |:setlocal|.
-
-:let &g:{option-name} = {expr1}
-:let &g:{option-name} .= {expr1}
-:let &g:{option-name} += {expr1}
-:let &g:{option-name} -= {expr1}
-            Like above, but only set the global value of an option
-            (if there is one).  Works like |:setglobal|.
-
-:let [{name1}, {name2}, ...] = {expr1}      *:let-unpack* *E687* *E688*
-            {expr1} must evaluate to a |List|.  The first item in
-            the list is assigned to {name1}, the second item to
-            {name2}, etc.
-            The number of names must match the number of items in
-            the |List|.
-            Each name can be one of the items of the ":let"
-            command as mentioned above.
-            Example:
-                :let [s, item] = GetItem(s)
-            Detail: {expr1} is evaluated first, then the
-            assignments are done in sequence.  This matters if
-            {name2} depends on {name1}.  Example:
-                :let x = [0, 1]
-                :let i = 0
-                :let [i, x[i]] = [1, 2]
-                :echo x
-            The result is [0, 2].
-
-:let [{name1}, {name2}, ...] .= {expr1}
-:let [{name1}, {name2}, ...] += {expr1}
-:let [{name1}, {name2}, ...] -= {expr1}
-            Like above, but append/add/subtract the value for each
-            |List| item.
-
-:let [{name}, ..., ; {lastname}] = {expr1}              *E452*
-            Like |:let-unpack| above, but the |List| may have more
-            items than there are names.  A list of the remaining
-            items is assigned to {lastname}.  If there are no
-            remaining items {lastname} is set to an empty list.
-            Example:
-                :let [a, b; rest] = ["aval", "bval", 3, 4]
-
-:let [{name}, ..., ; {lastname}] .= {expr1}
-:let [{name}, ..., ; {lastname}] += {expr1}
-:let [{name}, ..., ; {lastname}] -= {expr1}
-            Like above, but append/add/subtract the value for each
-            |List| item.
-
-*:let=<<* *:let-heredoc*
-*E990* *E991* *E172* *E221*
-:let {var-name} =<< [trim] {endmarker}
-text...
-text...
-{endmarker}
-            Set internal variable {var-name} to a |List|
-            containing the lines of text bounded by the string
-            {endmarker}. The lines of text is used as a
-            |literal-string|.
-            {endmarker} must not contain white space.
-            {endmarker} cannot start with a lower case character.
-            The last line should end only with the {endmarker}
-            string without any other character.  Watch out for
-            white space after {endmarker}!
-
-            Without "trim" any white space characters in the lines
-            of text are preserved.  If "trim" is specified before
-            {endmarker}, then indentation is stripped so you can
-            do:
-                let text =<< trim END
-                   if ok
-                     echo 'done'
-                   endif
-                END
-            Results in: ["if ok", "  echo 'done'", "endif"]
-            The marker must line up with "let" and the indentation
-            of the first line is removed from all the text lines.
-            Specifically: all the leading indentation exactly
-            matching the leading indentation of the first
-            non-empty text line is stripped from the input lines.
-            All leading indentation exactly matching the leading
-            indentation before `let` is stripped from the line
-            containing {endmarker}.  Note that the difference
-            between space and tab matters here.
-
-            If {var-name} didn't exist yet, it is created.
-            Cannot be followed by another command, but can be
-            followed by a comment.
-
-            To avoid line continuation to be applied, consider
-            adding 'C' to 'cpoptions':
-                set cpo+=C
-                let var =<< END
-                   \ leading backslash
-                END
-                set cpo-=C
-
-            Examples:
-                let var1 =<< END
-                Sample text 1
-                    Sample text 2
-                Sample text 3
-                END
-
-                let data =<< trim DATA
-                    1 2 3 4
-                    5 6 7 8
-                DATA
-
-*E121*
-:let {var-name} ..  List the value of variable {var-name}.  Multiple
-            variable names may be given.  Special names recognized
-            here:               *E738*
-              g:    global variables
-              b:    local buffer variables
-              w:    local window variables
-              t:    local tab page variables
-              s:    script-local variables
-              l:    local function variables
-              v:    Vim variables.
-
-:let            List the values of all variables.  The type of the
-            variable is indicated before the value:
-                <nothing>   String
-                #   Number
-                *   Funcref
-
-
-:unl[et][!] {name} ...              *:unlet* *:unl* *E108* *E795*
-            Remove the internal variable {name}.  Several variable
-            names can be given, they are all removed.  The name
-            may also be a |List| or |Dictionary| item.
-            With [!] no error message is given for non-existing
-            variables.
-            One or more items from a |List| can be removed:
-                :unlet list[3]    " remove fourth item
-                :unlet list[3:]   " remove fourth item to last
-            One item from a |Dictionary| can be removed at a time:
-                :unlet dict['two']
-                :unlet dict.two
-            This is especially useful to clean up used global
-            variables and script-local variables (these are not
-            deleted when the script ends).  Function-local
-            variables are automatically deleted when the function
-            ends.
-
-:unl[et] ${env-name} ...            *:unlet-environment* *:unlet-$*
-            Remove environment variable {env-name}.
-            Can mix {name} and ${env-name} in one :unlet command.
-            No error message is given for a non-existing
-            variable, also without !.
-            If the system does not support deleting an environment
-            variable, it is made empty.
-
-*:cons* *:const*
-:cons[t] {var-name} = {expr1}
-:cons[t] [{name1}, {name2}, ...] = {expr1}
-:cons[t] [{name}, ..., ; {lastname}] = {expr1}
-            Similar to |:let|, but additionally lock the variable
-            after setting the value.  This is the same as locking
-            the variable with |:lockvar| just after |:let|, thus:
-                :const x = 1
-            is equivalent to:
-                :let x = 1
-                :lockvar! x
-            This is useful if you want to make sure the variable
-            is not modified.  If the value is a List or Dictionary
-            literal then the items also cannot be changed:
-                const ll = [1, 2, 3]
-                let ll[1] = 5  " Error!
-            Nested references are not locked:
-                let lvar = ['a']
-                const lconst = [0, lvar]
-                let lconst[0] = 2  " Error!
-                let lconst[1][0] = 'b'  " OK
-*E995*
-            |:const| does not allow to for changing a variable.
-                :let x = 1
-                :const x = 2  " Error!
-*E996*
-            Note that environment variables, option values and
-            register values cannot be used here, since they cannot
-            be locked.
-
-:cons[t]
-:cons[t] {var-name}
-            If no argument is given or only {var-name} is given,
-            the behavior is the same as |:let|.
-
-:lockv[ar][!] [depth] {name} ...            *:lockvar* *:lockv*
-            Lock the internal variable {name}.  Locking means that
-            it can no longer be changed (until it is unlocked).
-            A locked variable can be deleted:
-                :lockvar v
-                :let v = 'asdf'   " fails!
-                :unlet v      " works
-*E741* *E940*
-            If you try to change a locked variable you get an
-            error message: "E741: Value is locked: {name}".
-            If you try to lock or unlock a built-in variable you
-            will get an error message "E940: Cannot lock or unlock
-            variable {name}".
-
-            [depth] is relevant when locking a |List| or
-            |Dictionary|.  It specifies how deep the locking goes:
-                1   Lock the |List| or |Dictionary| itself,
-                    cannot add or remove items, but can
-                    still change their values.
-                2   Also lock the values, cannot change
-                    the items.  If an item is a |List| or
-                    |Dictionary|, cannot add or remove
-                    items, but can still change the
-                    values.
-                3   Like 2 but for the |List| /
-                    |Dictionary| in the |List| /
-                    |Dictionary|, one level deeper.
-            The default [depth] is 2, thus when {name} is a |List|
-            or |Dictionary| the values cannot be changed.
-*E743*
-            For unlimited depth use [!] and omit [depth].
-            However, there is a maximum depth of 100 to catch
-            loops.
-
-            Note that when two variables refer to the same |List|
-            and you lock one of them, the |List| will also be
-            locked when used through the other variable.
-            Example:
-                :let l = [0, 1, 2, 3]
-                :let cl = l
-                :lockvar l
-                :let cl[1] = 99     " won't work!
-            You may want to make a copy of a list to avoid this.
-            See |deepcopy()|.
-
-
-:unlo[ckvar][!] [depth] {name} ...          *:unlockvar* *:unlo*
-            Unlock the internal variable {name}.  Does the
-            opposite of |:lockvar|.
-
-:if {expr1}         *:if* *:end* *:endif* *:en* *E171* *E579* *E580*
-:en[dif]
-    If {expr1} evaluates to non-zero,
-    execute the commands until the next matching ":else" or ":endif"
-
-    From Vim version 4.5 until 5.0,
-        every Ex command in between the ":if" and ":endif" is ignored.
-        These two commands were just to allow for future expansions in a
-        backward compatible way.
-        Nesting was allowed.
-        Note that any ":else" or ":elseif" was ignored,
-        the "else" part was not executed either.
-
-        You can use this to remain compatible with older versions:
-                    :if version >= 500
-                    :  version-5-specific-commands
-                    :endif
-                The commands still need to be parsed to find the
-                "endif".  Sometimes an older Vim has a problem with a
-                new command.  For example, ":silent" is recognized as
-                a ":substitute" command.  In that case ":execute" can
-                avoid problems:
-                    :if version >= 600
-                    :  execute "silent 1,$delete"
-                    :endif
-
-                NOTE: The ":append" and ":insert" commands don't work
-                properly in between ":if" and ":endif".
-
-*:else* *:el* *E581* *E583*
-:el[se]         Execute the commands until the next matching ":else"
-            or ":endif" if they previously were not being
-            executed.
-
-*:elseif* *:elsei* *E582* *E584*
-:elsei[f] {expr1}   Short for ":else" ":if", with the addition that there
-            is no extra ":endif".
-
-:wh[ile] {expr1}            *:while* *:endwhile* *:wh* *:endw*
-*E170* *E585* *E588* *E733*
-:endw[hile]     Repeat the commands between ":while" and ":endwhile",
-            as long as {expr1} evaluates to non-zero.
-            When an error is detected from a command inside the
-            loop, execution continues after the "endwhile".
-            Example:
-                :let lnum = 1
-                :while lnum <= line("$")
-                   :call FixLine(lnum)
-                   :let lnum = lnum + 1
-                :endwhile
-
-            NOTE: The ":append" and ":insert" commands don't work
-            properly inside a ":while" and ":for" loop.
-
-:for {var} in {object}                  *:for* *E690* *E732*
-:endfo[r]                       *:endfo* *:endfor*
-            Repeat the commands between ":for" and ":endfor" for
-            each item in {object}.  {object} can be a |List| or
-            a |Blob|.  Variable {var} is set to the value of each
-            item.  When an error is detected for a command inside
-            the loop, execution continues after the "endfor".
-            Changing {object} inside the loop affects what items
-            are used.  Make a copy if this is unwanted:
-                :for item in copy(mylist)
-
-            When {object} is a |List| and not making a copy, Vim
-            stores a reference to the next item in the |List|
-            before executing the commands with the current item.
-            Thus the current item can be removed without effect.
-            Removing any later item means it will not be found.
-            Thus the following example works (an inefficient way
-            to make a |List| empty):
-                for item in mylist
-                   call remove(mylist, 0)
-                endfor
-            Note that reordering the |List| (e.g., with sort() or
-            reverse()) may have unexpected effects.
-
-            When {object} is a |Blob|, Vim always makes a copy to
-            iterate over.  Unlike with |List|, modifying the
-            |Blob| does not affect the iteration.
-
-:for [{var1}, {var2}, ...] in {listlist}
-:endfo[r]
-            Like ":for" above, but each item in {listlist} must be
-            a list, of which each item is assigned to {var1},
-            {var2}, etc.  Example:
-                :for [lnum, col] in [[1, 3], [2, 5], [3, 8]]
-                   :echo getline(lnum)[col]
-                :endfor
-
-*:continue* *:con* *E586*
-:con[tinue]     When used inside a ":while" or ":for" loop, jumps back
-            to the start of the loop.
-            If it is used after a |:try| inside the loop but
-            before the matching |:finally| (if present), the
-            commands following the ":finally" up to the matching
-            |:endtry| are executed first.  This process applies to
-            all nested ":try"s inside the loop.  The outermost
-            ":endtry" then jumps back to the start of the loop.
-
-*:break* *:brea* *E587*
-:brea[k]        When used inside a ":while" or ":for" loop, skips to
-            the command after the matching ":endwhile" or
-            ":endfor".
-            If it is used after a |:try| inside the loop but
-            before the matching |:finally| (if present), the
-            commands following the ":finally" up to the matching
-            |:endtry| are executed first.  This process applies to
-            all nested ":try"s inside the loop.  The outermost
-            ":endtry" then jumps to the command after the loop.
-
-:try                *:try* *:endt* *:endtry* *E600* *E601* *E602*
-:endt[ry]       Change the error handling for the commands between
-            ":try" and ":endtry" including everything being
-            executed across ":source" commands, function calls,
-            or autocommand invocations.
-
-            When an error or interrupt is detected and there is
-            a |:finally| command following, execution continues
-            after the ":finally".  Otherwise, or when the
-            ":endtry" is reached thereafter, the next
-            (dynamically) surrounding ":try" is checked for
-            a corresponding ":finally" etc.  Then the script
-            processing is terminated.  Whether a function
-            definition has an "abort" argument does not matter.
-            Example:
-        try | call Unknown() | finally | echomsg "cleanup" | endtry
-        echomsg "not reached"
-
-            Moreover, an error or interrupt (dynamically) inside
-            ":try" and ":endtry" is converted to an exception.  It
-            can be caught as if it were thrown by a |:throw|
-            command (see |:catch|).  In this case, the script
-            processing is not terminated.
-
-            The value "Vim:Interrupt" is used for an interrupt
-            exception.  An error in a Vim command is converted
-            to a value of the form "Vim({command}):{errmsg}",
-            other errors are converted to a value of the form
-            "Vim:{errmsg}".  {command} is the full command name,
-            and {errmsg} is the message that is displayed if the
-            error exception is not caught, always beginning with
-            the error number.
-            Examples:
-        try | sleep 100 | catch /^Vim:Interrupt$/ | endtry
-        try | edit | catch /^Vim(edit):E\d\+/ | echo "error" | endtry
-
-*:cat* *:catch* *E603* *E604* *E605*
-:cat[ch] /{pattern}/    The following commands until the next |:catch|,
-            |:finally|, or |:endtry| that belongs to the same
-            |:try| as the ":catch" are executed when an exception
-            matching {pattern} is being thrown and has not yet
-            been caught by a previous ":catch".  Otherwise, these
-            commands are skipped.
-            When {pattern} is omitted all errors are caught.
-            Examples:
-        :catch /^Vim:Interrupt$/    " catch interrupts (CTRL-C)
-        :catch /^Vim\%((\a\+)\)\=:E/    " catch all Vim errors
-        :catch /^Vim\%((\a\+)\)\=:/ " catch errors and interrupts
-        :catch /^Vim(write):/       " catch all errors in :write
-        :catch /^Vim\%((\a\+)\)\=:E123/ " catch error E123
-        :catch /my-exception/       " catch user exception
-        :catch /.*/         " catch everything
-        :catch              " same as /.*/
-
-            Another character can be used instead of / around the
-            {pattern}, so long as it does not have a special
-            meaning (e.g., '|' or '"') and doesn't occur inside
-            {pattern}.
-            Information about the exception is available in
-            |v:exception|.  Also see |throw-variables|.
-            NOTE: It is not reliable to ":catch" the TEXT of
-            an error message because it may vary in different
-            locales.
-
-*:fina* *:finally* *E606* *E607*
-:fina[lly]      The following commands until the matching |:endtry|
-            are executed whenever the part between the matching
-            |:try| and the ":finally" is left:  either by falling
-            through to the ":finally" or by a |:continue|,
-            |:break|, |:finish|, or |:return|, or by an error or
-            interrupt or exception (see |:throw|).
-
-*:th* *:throw* *E608*
-:th[row] {expr1}    The {expr1} is evaluated and thrown as an exception.
-            If the ":throw" is used after a |:try| but before the
-            first corresponding |:catch|, commands are skipped
-            until the first ":catch" matching {expr1} is reached.
-            If there is no such ":catch" or if the ":throw" is
-            used after a ":catch" but before the |:finally|, the
-            commands following the ":finally" (if present) up to
-            the matching |:endtry| are executed.  If the ":throw"
-            is after the ":finally", commands up to the ":endtry"
-            are skipped.  At the ":endtry", this process applies
-            again for the next dynamically surrounding ":try"
-            (which may be found in a calling function or sourcing
-            script), until a matching ":catch" has been found.
-            If the exception is not caught, the command processing
-            is terminated.
-            Example:
-        :try | throw "oops" | catch /^oo/ | echo "caught" | endtry
-            Note that "catch" may need to be on a separate line
-            for when an error causes the parsing to skip the whole
-            line and not see the "|" that separates the commands.
-
-*:ec* *:echo*
-:ec[ho] {expr1} ..  Echoes each {expr1}, with a space in between.  The
-            first {expr1} starts on a new line.
-            Also see |:comment|.
-            Use "\n" to start a new line.  Use "\r" to move the
-            cursor to the first column.
-            Uses the highlighting set by the |:echohl| command.
-            Cannot be followed by a comment.
-            Example:
-        :echo "the value of 'shell' is" &shell
-*:echo-redraw*
-            A later redraw may make the message disappear again.
-            And since Vim mostly postpones redrawing until it's
-            finished with a sequence of commands this happens
-            quite often.  To avoid that a command from before the
-            ":echo" causes a redraw afterwards (redraws are often
-            postponed until you type something), force a redraw
-            with the |:redraw| command.  Example:
-        :new | redraw | echo "there is a new window"
-*:echo-self-refer*
-            When printing nested containers echo prints second
-            occurrence of the self-referencing container using
-            "[...@level]" (self-referencing |List|) or
-            "{...@level}" (self-referencing |Dict|):
-        :let l = []
-        :call add(l, l)
-        :let l2 = []
-        :call add(l2, [l2])
-        :echo l l2
-            echoes "[[...@0]] [[[...@0]]]". Echoing "[l]" will
-            echo "[[[...@1]]]" because l first occurs at second
-            level.
-
-*:echon*
-:echon {expr1} ..   Echoes each {expr1}, without anything added.  Also see
-            |:comment|.
-            Uses the highlighting set by the |:echohl| command.
-            Cannot be followed by a comment.
-            Example:
-                :echon "the value of 'shell' is " &shell
-
-            Note the difference between using ":echo", which is a
-            Vim command, and ":!echo", which is an external shell
-            command:
-        :!echo %        --> filename
-            The arguments of ":!" are expanded, see |:_%|.
-        :!echo "%"      --> filename or "filename"
-            Like the previous example.  Whether you see the double
-            quotes or not depends on your 'shell'.
-        :echo %         --> nothing
-            The '%' is an illegal character in an expression.
-        :echo "%"       --> %
-            This just echoes the '%' character.
-        :echo expand("%")   --> filename
-            This calls the expand() function to expand the '%'.
-
-*:echoh* *:echohl*
-:echoh[l] {name}    Use the highlight group {name} for the following
-            |:echo|, |:echon| and |:echomsg| commands.  Also used
-            for the |input()| prompt.  Example:
-        :echohl WarningMsg | echo "Don't panic!" | echohl None
-            Don't forget to set the group back to "None",
-            otherwise all following echo's will be highlighted.
-
-*:echom* *:echomsg*
-:echom[sg] {expr1} ..   Echo the expression(s) as a true message, saving the
-            message in the |message-history|.
-            Spaces are placed between the arguments as with the
-            |:echo| command.  But unprintable characters are
-            displayed, not interpreted.
-            The parsing works slightly different from |:echo|,
-            more like |:execute|.  All the expressions are first
-            evaluated and concatenated before echoing anything.
-            If expressions does not evaluate to a Number or
-            String, string() is used to turn it into a string.
-            Uses the highlighting set by the |:echohl| command.
-            Example:
-        :echomsg "It's a Zizzer Zazzer Zuzz, as you can plainly see."
-            See |:echo-redraw| to avoid the message disappearing
-            when the screen is redrawn.
-*:echoe* *:echoerr*
-:echoe[rr] {expr1} ..   Echo the expression(s) as an error message, saving the
-            message in the |message-history|.  When used in a
-            script or function the line number will be added.
-            Spaces are placed between the arguments as with the
-            |:echomsg| command.  When used inside a try conditional,
-            the message is raised as an error exception instead
-            (see |try-echoerr|).
-            Example:
-        :echoerr "This script just failed!"
-            If you just want a highlighted message use |:echohl|.
-            And to get a beep:
-        :exe "normal \<Esc>"
-
-*:eval*
-:eval {expr}        Evaluate {expr} and discard the result.  Example:
-                :eval Getlist()->Filter()->append('$')
-
- The expression is supposed to have a side effect, since the resulting value is not used.
-In the example the `append()` call appends the List with text to
-the buffer.
-This is similar to `:call` but works with any expression .
-
-The  command can be shortened to `:ev` or `:eva`, but these are hard to recognize  and therefore not to be  used.
-
-The command cannot be followed by "|" and another command, since "|" is seen as part of the expression.
-
-
-*:exe* *:execute*
-:exe[cute] {expr1} ..
-    Executes the string that results from the evaluation of {expr1} as an Ex command.
-
-    Multiple arguments are concatenated,  with a space in  between.
-    To avoid the extra space use the ".."  operator to concatenate strings into one argument.
-
-    {expr1} is used as the processed command,
-    command line  editing keys are not recognized.
-    Cannot be followed by a comment.
-                Examples:
-            :execute "buffer" nextbuf
-            :execute "normal" count .. "w"
-
-    ":execute" can be used to append a command to  commands  that don't accept a '|'.
-    Example:
-            :execute '!ls' | echo "theend"
-
-    ":execute" is also a nice way to avoid having to type control characters in a Vim script for a ":normal"  command:
-            :execute "normal ixxx\<Esc>"
-                This has an <Esc> character, see |expr-string|.
-
-    Be careful to correctly escape special characters in file names.
-    The |fnameescape()| function can be used  for Vim commands,
-    |shellescape()| for |:!| commands.
-                Examples:
-            :execute "e " .. fnameescape(filename)
-            :execute "!ls " .. shellescape(filename, 1)
-
-    Note:
-    The executed string may be any command-line,
-    but
-    starting or ending "if",
-                        "while"
-                        "for" does not always work,
-    because when commands are skipped,
-    the ":execute" is not evaluated and
-    Vim loses track of where blocks start and end.
-
-    Also "break" and "continue" should not be inside ":execute".
-
-    This example  does not work:
-         :if 0
-                : execute 'while i > 5'
-                :  echo "test"
-                : endwhile
-                :endif
-
-    because the ":execute" is not evaluated and
-        Vim does not see the "while",
-        and  gives an error for finding an ":endwhile":
-
-    It is allowed to have a "while" or "if" command completely in the executed string:
-            :execute 'while i < 5 | echo i | let i = i + 1 | endwhile'
-
-
-*:exe-comment*
-    ":execute", ":echo" and ":echon" cannot be followed by a comment directly, because they see the '"' as the start of a string.
-     But, you can use '|' followed by a  comment.
-
-     Example:
-             :echo "foo" | "this is a comment
-
-==============================================================================
-8. Exception handling                   *exception-handling*
-
-The Vim script language comprises an exception handling feature.  This section
-explains how it can be used in a Vim script.
-
-Exceptions may be raised by Vim on an error or on interrupt, see
-|catch-errors| and |catch-interrupt|.  You can also explicitly throw an
-exception by using the ":throw" command, see |throw-catch|.
-
-
-TRY CONDITIONALS                    *try-conditionals*
-
-Exceptions can be caught or can cause cleanup code to be executed.  You can
-use a try conditional to specify catch clauses (that catch exceptions) and/or
-a finally clause (to be executed for cleanup).
-   A try conditional begins with a |:try| command and ends at the matching
-|:endtry| command.  In between, you can use a |:catch| command to start
-a catch clause, or a |:finally| command to start a finally clause.  There may
-be none or multiple catch clauses, but there is at most one finally clause,
-which must not be followed by any catch clauses.  The lines before the catch
-clauses and the finally clause is called a try block.
-
-     :try
-     :  ...
-     :  ...             TRY BLOCK
-     :  ...
-     :catch /{pattern}/
-     :  ...
-     :  ...             CATCH CLAUSE
-     :  ...
-     :catch /{pattern}/
-     :  ...
-     :  ...             CATCH CLAUSE
-     :  ...
-     :finally
-     :  ...
-     :  ...             FINALLY CLAUSE
-     :  ...
-     :endtry
-
-The try conditional allows to watch code for exceptions and to take the
-appropriate actions.  Exceptions from the try block may be caught.  Exceptions
-from the try block and also the catch clauses may cause cleanup actions.
-   When no exception is thrown during execution of the try block, the control
-is transferred to the finally clause, if present.  After its execution, the
-script continues with the line following the ":endtry".
-   When an exception occurs during execution of the try block, the remaining
-lines in the try block are skipped.  The exception is matched against the
-patterns specified as arguments to the ":catch" commands.  The catch clause
-after the first matching ":catch" is taken, other catch clauses are not
-executed.  The catch clause ends when the next ":catch", ":finally", or
-":endtry" command is reached - whatever is first.  Then, the finally clause
-(if present) is executed.  When the ":endtry" is reached, the script execution
-continues in the following line as usual.
-   When an exception that does not match any of the patterns specified by the
-":catch" commands is thrown in the try block, the exception is not caught by
-that try conditional and none of the catch clauses is executed.  Only the
-finally clause, if present, is taken.  The exception pends during execution of
-the finally clause.  It is resumed at the ":endtry", so that commands after
-the ":endtry" are not executed and the exception might be caught elsewhere,
-see |try-nesting|.
-   When during execution of a catch clause another exception is thrown, the
-remaining lines in that catch clause are not executed.  The new exception is
-not matched against the patterns in any of the ":catch" commands of the same
-try conditional and none of its catch clauses is taken.  If there is, however,
-a finally clause, it is executed, and the exception pends during its
-execution.  The commands following the ":endtry" are not executed.  The new
-exception might, however, be caught elsewhere, see |try-nesting|.
-   When during execution of the finally clause (if present) an exception is
-thrown, the remaining lines in the finally clause are skipped.  If the finally
-clause has been taken because of an exception from the try block or one of the
-catch clauses, the original (pending) exception is discarded.  The commands
-following the ":endtry" are not executed, and the exception from the finally
-clause is propagated and can be caught elsewhere, see |try-nesting|.
-
-The finally clause is also executed, when a ":break" or ":continue" for
-a ":while" loop enclosing the complete try conditional is executed from the
-try block or a catch clause.  Or when a ":return" or ":finish" is executed
-from the try block or a catch clause of a try conditional in a function or
-sourced script, respectively.  The ":break", ":continue", ":return", or
-":finish" pends during execution of the finally clause and is resumed when the
-":endtry" is reached.  It is, however, discarded when an exception is thrown
-from the finally clause.
-   When a ":break" or ":continue" for a ":while" loop enclosing the complete
-try conditional or when a ":return" or ":finish" is encountered in the finally
-clause, the rest of the finally clause is skipped, and the ":break",
-":continue", ":return" or ":finish" is executed as usual.  If the finally
-clause has been taken because of an exception or an earlier ":break",
-":continue", ":return", or ":finish" from the try block or a catch clause,
-this pending exception or command is discarded.
-
-For examples see |throw-catch| and |try-finally|.
-
-
-NESTING OF TRY CONDITIONALS             *try-nesting*
-
-Try conditionals can be nested arbitrarily.  That is, a complete try
-conditional can be put into the try block, a catch clause, or the finally
-clause of another try conditional.  If the inner try conditional does not
-catch an exception thrown in its try block or throws a new exception from one
-of its catch clauses or its finally clause, the outer try conditional is
-checked according to the rules above.  If the inner try conditional is in the
-try block of the outer try conditional, its catch clauses are checked, but
-otherwise only the finally clause is executed.  It does not matter for
-nesting, whether the inner try conditional is directly contained in the outer
-one, or whether the outer one sources a script or calls a function containing
-the inner try conditional.
-
-When none of the active try conditionals catches an exception, just their
-finally clauses are executed.  Thereafter, the script processing terminates.
-An error message is displayed in case of an uncaught exception explicitly
-thrown by a ":throw" command.  For uncaught error and interrupt exceptions
-implicitly raised by Vim, the error message(s) or interrupt message are shown
-as usual.
-
-For examples see |throw-catch|.
-
-
-EXAMINING EXCEPTION HANDLING CODE           *except-examine*
-
-Exception handling code can get tricky.  If you are in doubt what happens, set
-'verbose' to 13 or use the ":13verbose" command modifier when sourcing your
-script file.  Then you see when an exception is thrown, discarded, caught, or
-finished.  When using a verbosity level of at least 14, things pending in
-a finally clause are also shown.  This information is also given in debug mode
-(see |debug-scripts|).
-
-
-THROWING AND CATCHING EXCEPTIONS            *throw-catch*
-
-You can throw any number or string as an exception.  Use the |:throw| command
-and pass the value to be thrown as argument:
-    :throw 4711
-    :throw "string"
-*throw-expression*
-You can also specify an expression argument.  The expression is then evaluated
-first, and the result is thrown:
-    :throw 4705 + strlen("string")
-    :throw strpart("strings", 0, 6)
-
-An exception might be thrown during evaluation of the argument of the ":throw"
-command.  Unless it is caught there, the expression evaluation is abandoned.
-The ":throw" command then does not throw a new exception.
-   Example:
-
-    :function! Foo(arg)
-    :  try
-    :    throw a:arg
-    :  catch /foo/
-    :  endtry
-    :  return 1
-    :endfunction
-    :
-    :function! Bar()
-    :  echo "in Bar"
-    :  return 4710
-    :endfunction
-    :
-    :throw Foo("arrgh") + Bar()
-
-This throws "arrgh", and "in Bar" is not displayed since Bar() is not
-executed.
-    :throw Foo("foo") + Bar()
-however displays "in Bar" and throws 4711.
-
-Any other command that takes an expression as argument might also be
-abandoned by an (uncaught) exception during the expression evaluation.  The
-exception is then propagated to the caller of the command.
-   Example:
-
-    :if Foo("arrgh")
-    :  echo "then"
-    :else
-    :  echo "else"
-    :endif
-
-Here neither of "then" or "else" is displayed.
-
-*catch-order*
-Exceptions can be caught by a try conditional with one or more |:catch|
-commands, see |try-conditionals|.   The values to be caught by each ":catch"
-command can be specified as a pattern argument.  The subsequent catch clause
-gets executed when a matching exception is caught.
-   Example:
-
-    :function! Foo(value)
-    :  try
-    :    throw a:value
-    :  catch /^\d\+$/
-    :    echo "Number thrown"
-    :  catch /.*/
-    :    echo "String thrown"
-    :  endtry
-    :endfunction
-    :
-    :call Foo(0x1267)
-    :call Foo('string')
-
-The first call to Foo() displays "Number thrown", the second "String thrown".
-An exception is matched against the ":catch" commands in the order they are
-specified.  Only the first match counts.  So you should place the more
-specific ":catch" first.  The following order does not make sense:
-
-    :  catch /.*/
-    :    echo "String thrown"
-    :  catch /^\d\+$/
-    :    echo "Number thrown"
-
-The first ":catch" here matches always, so that the second catch clause is
-never taken.
-
-*throw-variables*
-If you catch an exception by a general pattern, you may access the exact value
-in the variable |v:exception|:
-
-    :  catch /^\d\+$/
-    :    echo "Number thrown.  Value is" v:exception
-
-You may also be interested where an exception was thrown.  This is stored in
-|v:throwpoint|.  Note that "v:exception" and "v:throwpoint" are valid for the
-exception most recently caught as long it is not finished.
-   Example:
-
-    :function! Caught()
-    :  if v:exception != ""
-    :    echo 'Caught "' . v:exception . '" in ' . v:throwpoint
-    :  else
-    :    echo 'Nothing caught'
-    :  endif
-    :endfunction
-    :
-    :function! Foo()
-    :  try
-    :    try
-    :      try
-    :    throw 4711
-    :      finally
-    :    call Caught()
-    :      endtry
-    :    catch /.*/
-    :      call Caught()
-    :      throw "oops"
-    :    endtry
-    :  catch /.*/
-    :    call Caught()
-    :  finally
-    :    call Caught()
-    :  endtry
-    :endfunction
-    :
-    :call Foo()
-
-This displays
-
-    Nothing caught
-    Caught "4711" in function Foo, line 4
-    Caught "oops" in function Foo, line 10
-    Nothing caught
-
-A practical example:  The following command ":LineNumber" displays the line
-number in the script or function where it has been used:
-
-    :function! LineNumber()
-    :    return substitute(v:throwpoint, '.*\D\(\d\+\).*', '\1', "")
-    :endfunction
-    :command! LineNumber try | throw "" | catch | echo LineNumber() | endtry
-
-*try-nested*
-An exception that is not caught by a try conditional can be caught by
-a surrounding try conditional:
-
-    :try
-    :  try
-    :    throw "foo"
-    :  catch /foobar/
-    :    echo "foobar"
-    :  finally
-    :    echo "inner finally"
-    :  endtry
-    :catch /foo/
-    :  echo "foo"
-    :endtry
-
-The inner try conditional does not catch the exception, just its finally
-clause is executed.  The exception is then caught by the outer try
-conditional.  The example displays "inner finally" and then "foo".
-
-*throw-from-catch*
-You can catch an exception and throw a new one to be caught elsewhere from the
-catch clause:
-
-    :function! Foo()
-    :  throw "foo"
-    :endfunction
-    :
-    :function! Bar()
-    :  try
-    :    call Foo()
-    :  catch /foo/
-    :    echo "Caught foo, throw bar"
-    :    throw "bar"
-    :  endtry
-    :endfunction
-    :
-    :try
-    :  call Bar()
-    :catch /.*/
-    :  echo "Caught" v:exception
-    :endtry
-
-This displays "Caught foo, throw bar" and then "Caught bar".
-
-*rethrow*
-There is no real rethrow in the Vim script language, but you may throw
-"v:exception" instead:
-
-    :function! Bar()
-    :  try
-    :    call Foo()
-    :  catch /.*/
-    :    echo "Rethrow" v:exception
-    :    throw v:exception
-    :  endtry
-    :endfunction
-*try-echoerr*
-Note that this method cannot be used to "rethrow" Vim error or interrupt
-exceptions, because it is not possible to fake Vim internal exceptions.
-Trying so causes an error exception.  You should throw your own exception
-denoting the situation.  If you want to cause a Vim error exception containing
-the original error exception value, you can use the |:echoerr| command:
-
-    :try
-    :  try
-    :    asdf
-    :  catch /.*/
-    :    echoerr v:exception
-    :  endtry
-    :catch /.*/
-    :  echo v:exception
-    :endtry
-
-This code displays
-
-    Vim(echoerr):Vim:E492: Not an editor command:   asdf
-
-
-CLEANUP CODE                        *try-finally*
-
-Scripts often change global settings and restore them at their end.  If the
-user however interrupts the script by pressing CTRL-C, the settings remain in
-an inconsistent state.  The same may happen to you in the development phase of
-a script when an error occurs or you explicitly throw an exception without
-catching it.  You can solve these problems by using a try conditional with
-a finally clause for restoring the settings.  Its execution is guaranteed on
-normal control flow, on error, on an explicit ":throw", and on interrupt.
-(Note that errors and interrupts from inside the try conditional are converted
-to exceptions.  When not caught, they terminate the script after the finally
-clause has been executed.)
-Example:
-
-    :try
-    :  let s:saved_ts = &ts
-    :  set ts=17
-    :
-    :  " Do the hard work here.
-    :
-    :finally
-    :  let &ts = s:saved_ts
-    :  unlet s:saved_ts
-    :endtry
-
-This method should be used locally whenever a function or part of a script
-changes global settings which need to be restored on failure or normal exit of
-that function or script part.
-
-*break-finally*
-Cleanup code works also when the try block or a catch clause is left by
-a ":continue", ":break", ":return", or ":finish".
-   Example:
-
-    :let first = 1
-    :while 1
-    :  try
-    :    if first
-    :      echo "first"
-    :      let first = 0
-    :      continue
-    :    else
-    :      throw "second"
-    :    endif
-    :  catch /.*/
-    :    echo v:exception
-    :    break
-    :  finally
-    :    echo "cleanup"
-    :  endtry
-    :  echo "still in while"
-    :endwhile
-    :echo "end"
-
-This displays "first", "cleanup", "second", "cleanup", and "end".
-
-    :function! Foo()
-    :  try
-    :    return 4711
-    :  finally
-    :    echo "cleanup\n"
-    :  endtry
-    :  echo "Foo still active"
-    :endfunction
-    :
-    :echo Foo() "returned by Foo"
-
-This displays "cleanup" and "4711 returned by Foo".  You don't need to add an
-extra ":return" in the finally clause.  (Above all, this would override the
-return value.)
-
-*except-from-finally*
-Using either of ":continue", ":break", ":return", ":finish", or ":throw" in
-a finally clause is possible, but not recommended since it abandons the
-cleanup actions for the try conditional.  But, of course, interrupt and error
-exceptions might get raised from a finally clause.
-   Example where an error in the finally clause stops an interrupt from
-working correctly:
-
-    :try
-    :  try
-    :    echo "Press CTRL-C for interrupt"
-    :    while 1
-    :    endwhile
-    :  finally
-    :    unlet novar
-    :  endtry
-    :catch /novar/
-    :endtry
-    :echo "Script still running"
-    :sleep 1
-
-If you need to put commands that could fail into a finally clause, you should
-think about catching or ignoring the errors in these commands, see
-|catch-errors| and |ignore-errors|.
-
-
-CATCHING ERRORS                     *catch-errors*
-
-If you want to catch specific errors, you just have to put the code to be
-watched in a try block and add a catch clause for the error message.  The
-presence of the try conditional causes all errors to be converted to an
-exception.  No message is displayed and |v:errmsg| is not set then.  To find
-the right pattern for the ":catch" command, you have to know how the format of
-the error exception is.
-   Error exceptions have the following format:
-
-    Vim({cmdname}):{errmsg}
-or
-    Vim:{errmsg}
-
-{cmdname} is the name of the command that failed; the second form is used when
-the command name is not known.  {errmsg} is the error message usually produced
-when the error occurs outside try conditionals.  It always begins with
-a capital "E", followed by a two or three-digit error number, a colon, and
-a space.
-
-Examples:
-
-The command
-    :unlet novar
-normally produces the error message
-    E108: No such variable: "novar"
-which is converted inside try conditionals to an exception
-    Vim(unlet):E108: No such variable: "novar"
-
-The command
-    :dwim
-normally produces the error message
-    E492: Not an editor command: dwim
-which is converted inside try conditionals to an exception
-    Vim:E492: Not an editor command: dwim
-
-You can catch all ":unlet" errors by a
-    :catch /^Vim(unlet):/
-or all errors for misspelled command names by a
-    :catch /^Vim:E492:/
-
-Some error messages may be produced by different commands:
-    :function nofunc
-and
-    :delfunction nofunc
-both produce the error message
-    E128: Function name must start with a capital: nofunc
-which is converted inside try conditionals to an exception
-    Vim(function):E128: Function name must start with a capital: nofunc
-or
-    Vim(delfunction):E128: Function name must start with a capital: nofunc
-respectively.  You can catch the error by its number independently on the
-command that caused it if you use the following pattern:
-    :catch /^Vim(\a\+):E128:/
-
-Some commands like
-    :let x = novar
-produce multiple error messages, here:
-    E121: Undefined variable: novar
-    E15: Invalid expression:  novar
-Only the first is used for the exception value, since it is the most specific
-one (see |except-several-errors|).  So you can catch it by
-    :catch /^Vim(\a\+):E121:/
-
-You can catch all errors related to the name "nofunc" by
-    :catch /\<nofunc\>/
-
-You can catch all Vim errors in the ":write" and ":read" commands by
-    :catch /^Vim(\(write\|read\)):E\d\+:/
-
-You can catch all Vim errors by the pattern
-    :catch /^Vim\((\a\+)\)\=:E\d\+:/
-
-*catch-text*
-NOTE: You should never catch the error message text itself:
-    :catch /No such variable/
-only works in the English locale, but not when the user has selected
-a different language by the |:language| command.  It is however helpful to
-cite the message text in a comment:
-    :catch /^Vim(\a\+):E108:/   " No such variable
-
-
-IGNORING ERRORS                     *ignore-errors*
-
-You can ignore errors in a specific Vim command by catching them locally:
-
-    :try
-    :  write
-    :catch
-    :endtry
-
-But you are strongly recommended NOT to use this simple form, since it could
-catch more than you want.  With the ":write" command, some autocommands could
-be executed and cause errors not related to writing, for instance:
-
-    :au BufWritePre * unlet novar
-
-There could even be such errors you are not responsible for as a script
-writer: a user of your script might have defined such autocommands.  You would
-then hide the error from the user.
-   It is much better to use
-
-    :try
-    :  write
-    :catch /^Vim(write):/
-    :endtry
-
-which only catches real write errors.  So catch only what you'd like to ignore
-intentionally.
-
-For a single command that does not cause execution of autocommands, you could
-even suppress the conversion of errors to exceptions by the ":silent!"
-command:
-    :silent! nunmap k
-This works also when a try conditional is active.
-
-
-CATCHING INTERRUPTS                 *catch-interrupt*
-
-When there are active try conditionals, an interrupt (CTRL-C) is converted to
-the exception "Vim:Interrupt".  You can catch it like every exception.  The
-script is not terminated, then.
-   Example:
-
-    :function! TASK1()
-    :  sleep 10
-    :endfunction
-
-    :function! TASK2()
-    :  sleep 20
-    :endfunction
-
-    :while 1
-    :  let command = input("Type a command: ")
-    :  try
-    :    if command == ""
-    :      continue
-    :    elseif command == "END"
-    :      break
-    :    elseif command == "TASK1"
-    :      call TASK1()
-    :    elseif command == "TASK2"
-    :      call TASK2()
-    :    else
-    :      echo "\nIllegal command:" command
-    :      continue
-    :    endif
-    :  catch /^Vim:Interrupt$/
-    :    echo "\nCommand interrupted"
-    :    " Caught the interrupt.  Continue with next prompt.
-    :  endtry
-    :endwhile
-
-You can interrupt a task here by pressing CTRL-C; the script then asks for
-a new command.  If you press CTRL-C at the prompt, the script is terminated.
-
-For testing what happens when CTRL-C would be pressed on a specific line in
-your script, use the debug mode and execute the |>quit| or |>interrupt|
-command on that line.  See |debug-scripts|.
-
-
-CATCHING ALL                        *catch-all*
-
-The commands
-
-    :catch /.*/
-    :catch //
-    :catch
-
-catch everything, error exceptions, interrupt exceptions and exceptions
-explicitly thrown by the |:throw| command.  This is useful at the top level of
-a script in order to catch unexpected things.
-   Example:
-
-    :try
-    :
-    :  " do the hard work here
-    :
-    :catch /MyException/
-    :
-    :  " handle known problem
-    :
-    :catch /^Vim:Interrupt$/
-    :    echo "Script interrupted"
-    :catch /.*/
-    :  echo "Internal error (" . v:exception . ")"
-    :  echo " - occurred at " . v:throwpoint
-    :endtry
-    :" end of script
-
-Note: Catching all might catch more things than you want.  Thus, you are
-strongly encouraged to catch only for problems that you can really handle by
-specifying a pattern argument to the ":catch".
-   Example: Catching all could make it nearly impossible to interrupt a script
-by pressing CTRL-C:
-
-    :while 1
-    :  try
-    :    sleep 1
-    :  catch
-    :  endtry
-    :endwhile
-
-
-EXCEPTIONS AND AUTOCOMMANDS             *except-autocmd*
-
-Exceptions may be used during execution of autocommands.  Example:
-
-    :autocmd User x try
-    :autocmd User x   throw "Oops!"
-    :autocmd User x catch
-    :autocmd User x   echo v:exception
-    :autocmd User x endtry
-    :autocmd User x throw "Arrgh!"
-    :autocmd User x echo "Should not be displayed"
-    :
-    :try
-    :  doautocmd User x
-    :catch
-    :  echo v:exception
-    :endtry
-
-This displays "Oops!" and "Arrgh!".
-
-*except-autocmd-Pre*
-For some commands, autocommands get executed before the main action of the
-command takes place.  If an exception is thrown and not caught in the sequence
-of autocommands, the sequence and the command that caused its execution are
-abandoned and the exception is propagated to the caller of the command.
-   Example:
-
-    :autocmd BufWritePre * throw "FAIL"
-    :autocmd BufWritePre * echo "Should not be displayed"
-    :
-    :try
-    :  write
-    :catch
-    :  echo "Caught:" v:exception "from" v:throwpoint
-    :endtry
-
-Here, the ":write" command does not write the file currently being edited (as
-you can see by checking 'modified'), since the exception from the BufWritePre
-autocommand abandons the ":write".  The exception is then caught and the
-script displays:
-
-    Caught: FAIL from BufWrite Auto commands for "*"
-
-*except-autocmd-Post*
-For some commands, autocommands get executed after the main action of the
-command has taken place.  If this main action fails and the command is inside
-an active try conditional, the autocommands are skipped and an error exception
-is thrown that can be caught by the caller of the command.
-   Example:
-
-    :autocmd BufWritePost * echo "File successfully written!"
-    :
-    :try
-    :  write /i/m/p/o/s/s/i/b/l/e
-    :catch
-    :  echo v:exception
-    :endtry
-
-This just displays:
-
-    Vim(write):E212: Can't open file for writing (/i/m/p/o/s/s/i/b/l/e)
-
-If you really need to execute the autocommands even when the main action
-fails, trigger the event from the catch clause.
-   Example:
-
-    :autocmd BufWritePre  * set noreadonly
-    :autocmd BufWritePost * set readonly
-    :
-    :try
-    :  write /i/m/p/o/s/s/i/b/l/e
-    :catch
-    :  doautocmd BufWritePost /i/m/p/o/s/s/i/b/l/e
-    :endtry
-
-You can also use ":silent!":
-
-    :let x = "ok"
-    :let v:errmsg = ""
-    :autocmd BufWritePost * if v:errmsg != ""
-    :autocmd BufWritePost *   let x = "after fail"
-    :autocmd BufWritePost * endif
-    :try
-    :  silent! write /i/m/p/o/s/s/i/b/l/e
-    :catch
-    :endtry
-    :echo x
-
-This displays "after fail".
-
-If the main action of the command does not fail, exceptions from the
-autocommands will be catchable by the caller of the command:
-
-    :autocmd BufWritePost * throw ":-("
-    :autocmd BufWritePost * echo "Should not be displayed"
-    :
-    :try
-    :  write
-    :catch
-    :  echo v:exception
-    :endtry
-
-*except-autocmd-Cmd*
-For some commands, the normal action can be replaced by a sequence of
-autocommands.  Exceptions from that sequence will be catchable by the caller
-of the command.
-   Example:  For the ":write" command, the caller cannot know whether the file
-had actually been written when the exception occurred.  You need to tell it in
-some way.
-
-    :if !exists("cnt")
-    :  let cnt = 0
-    :
-    :  autocmd BufWriteCmd * if &modified
-    :  autocmd BufWriteCmd *   let cnt = cnt + 1
-    :  autocmd BufWriteCmd *   if cnt % 3 == 2
-    :  autocmd BufWriteCmd *     throw "BufWriteCmdError"
-    :  autocmd BufWriteCmd *   endif
-    :  autocmd BufWriteCmd *   write | set nomodified
-    :  autocmd BufWriteCmd *   if cnt % 3 == 0
-    :  autocmd BufWriteCmd *     throw "BufWriteCmdError"
-    :  autocmd BufWriteCmd *   endif
-    :  autocmd BufWriteCmd *   echo "File successfully written!"
-    :  autocmd BufWriteCmd * endif
-    :endif
-    :
-    :try
-    :   write
-    :catch /^BufWriteCmdError$/
-    :  if &modified
-    :    echo "Error on writing (file contents not changed)"
-    :  else
-    :    echo "Error after writing"
-    :  endif
-    :catch /^Vim(write):/
-    :    echo "Error on writing"
-    :endtry
-
-When this script is sourced several times after making changes, it displays
-first
-    File successfully written!
-then
-    Error on writing (file contents not changed)
-then
-    Error after writing
-etc.
-
-*except-autocmd-ill*
-You cannot spread a try conditional over autocommands for different events.
-The following code is ill-formed:
-
-    :autocmd BufWritePre  * try
-    :
-    :autocmd BufWritePost * catch
-    :autocmd BufWritePost *   echo v:exception
-    :autocmd BufWritePost * endtry
-    :
-    :write
-
-
-EXCEPTION HIERARCHIES AND PARAMETERIZED EXCEPTIONS  *except-hier-param*
-
-Some programming languages allow to use hierarchies of exception classes or to
-pass additional information with the object of an exception class.  You can do
-similar things in Vim.
-   In order to throw an exception from a hierarchy, just throw the complete
-class name with the components separated by a colon, for instance throw the
-string "EXCEPT:MATHERR:OVERFLOW" for an overflow in a mathematical library.
-   When you want to pass additional information with your exception class, add
-it in parentheses, for instance throw the string "EXCEPT:IO:WRITEERR(myfile)"
-for an error when writing "myfile".
-   With the appropriate patterns in the ":catch" command, you can catch for
-base classes or derived classes of your hierarchy.  Additional information in
-parentheses can be cut out from |v:exception| with the ":substitute" command.
-   Example:
-
-    :function! CheckRange(a, func)
-    :  if a:a < 0
-    :    throw "EXCEPT:MATHERR:RANGE(" . a:func . ")"
-    :  endif
-    :endfunction
-    :
-    :function! Add(a, b)
-    :  call CheckRange(a:a, "Add")
-    :  call CheckRange(a:b, "Add")
-    :  let c = a:a + a:b
-    :  if c < 0
-    :    throw "EXCEPT:MATHERR:OVERFLOW"
-    :  endif
-    :  return c
-    :endfunction
-    :
-    :function! Div(a, b)
-    :  call CheckRange(a:a, "Div")
-    :  call CheckRange(a:b, "Div")
-    :  if (a:b == 0)
-    :    throw "EXCEPT:MATHERR:ZERODIV"
-    :  endif
-    :  return a:a / a:b
-    :endfunction
-    :
-    :function! Write(file)
-    :  try
-    :    execute "write" fnameescape(a:file)
-    :  catch /^Vim(write):/
-    :    throw "EXCEPT:IO(" . getcwd() . ", " . a:file . "):WRITEERR"
-    :  endtry
-    :endfunction
-    :
-    :try
-    :
-    :  " something with arithmetics and I/O
-    :
-    :catch /^EXCEPT:MATHERR:RANGE/
-    :  let function = substitute(v:exception, '.*(\(\a\+\)).*', '\1', "")
-    :  echo "Range error in" function
-    :
-    :catch /^EXCEPT:MATHERR/    " catches OVERFLOW and ZERODIV
-    :  echo "Math error"
-    :
-    :catch /^EXCEPT:IO/
-    :  let dir = substitute(v:exception, '.*(\(.\+\),\s*.\+).*', '\1', "")
-    :  let file = substitute(v:exception, '.*(.\+,\s*\(.\+\)).*', '\1', "")
-    :  if file !~ '^/'
-    :    let file = dir . "/" . file
-    :  endif
-    :  echo 'I/O error for "' . file . '"'
-    :
-    :catch /^EXCEPT/
-    :  echo "Unspecified error"
-    :
-    :endtry
-
-The exceptions raised by Vim itself (on error or when pressing CTRL-C) use
-a flat hierarchy:  they are all in the "Vim" class.  You cannot throw yourself
-exceptions with the "Vim" prefix; they are reserved for Vim.
-   Vim error exceptions are parameterized with the name of the command that
-failed, if known.  See |catch-errors|.
-
-
-PECULIARITIES
-*except-compat*
-The exception handling concept requires that the command sequence causing the
-exception is aborted immediately and control is transferred to finally clauses
-and/or a catch clause.
-
-        In the Vim script language there are cases where
-        scripts and
-        functions continue after an error: in functions without the "abort" flag or
-        in a command after ":silent!",
-        control flow goes to the following line, and
-        outside functions, control flow goes to the line following the outermost ":endwhile" or
-        ":endif".
-        On the other hand, errors should be catchable as exceptions (thus, requiring the immediate abortion).
-
-This problem has been solved by converting errors to exceptions and using
-immediate abortion (if not suppressed by ":silent!") only when a try
-conditional is active.  This is no restriction since an (error) exception can
-be caught only from an active try conditional.  If you want an immediate
-termination without catching the error, just use a try conditional without
-catch clause.  (You can cause cleanup code being executed before termination
-by specifying a finally clause.)
-
-When no try conditional is active, the usual abortion and continuation
-behavior is used instead of immediate abortion.  This ensures compatibility of
-scripts written for Vim 6.1 and earlier.
-
-However, when sourcing an existing script that does not use exception handling
-commands (or when calling one of its functions) from inside an active try
-conditional of a new script, you might change the control flow of the existing
-script on error.  You get the immediate abortion on error and can catch the
-error in the new script.  If however the sourced script suppresses error
-messages by using the ":silent!" command (checking for errors by testing
-|v:errmsg| if appropriate), its execution path is not changed.  The error is
-not converted to an exception.  (See |:silent|.)  So the only remaining cause
-where this happens is for scripts that don't care about errors and produce
-error messages.  You probably won't want to use such code from your new
-scripts.
-
-*except-syntax-err*
-Syntax errors in the exception handling commands are never caught by any of
-the ":catch" commands of the try conditional they belong to.  Its finally
-clauses, however, is executed.
-   Example:
-
-    :try
-    :  try
-    :    throw 4711
-    :  catch /\(/
-    :    echo "in catch with syntax error"
-    :  catch
-    :    echo "inner catch-all"
-    :  finally
-    :    echo "inner finally"
-    :  endtry
-    :catch
-    :  echo 'outer catch-all caught "' . v:exception . '"'
-    :  finally
-    :    echo "outer finally"
-    :endtry
-
-This displays:
-    inner finally
-    outer catch-all caught "Vim(catch):E54: Unmatched \("
-    outer finally
-The original exception is discarded and an error exception is raised, instead.
-
-*except-single-line*
-The ":try", ":catch", ":finally", and ":endtry" commands can be put on
-a single line, but then syntax errors may make it difficult to recognize the
-"catch" line, thus you better avoid this.
-   Example:
-    :try | unlet! foo # | catch | endtry
-raises an error exception for the trailing characters after the ":unlet!"
-argument, but does not see the ":catch" and ":endtry" commands, so that the
-error exception is discarded and the "E488: Trailing characters" message gets
-displayed.
-
-*except-several-errors*
-When several errors appear in a single command, the first error message is
-usually the most specific one and therefore converted to the error exception.
-   Example:
-    echo novar
-causes
-    E121: Undefined variable: novar
-    E15: Invalid expression: novar
-The value of the error exception inside try conditionals is:
-    Vim(echo):E121: Undefined variable: novar
-*except-syntax-error*
-But when a syntax error is detected after a normal error in the same command,
-the syntax error is used for the exception being thrown.
-   Example:
-    unlet novar #
-causes
-    E108: No such variable: "novar"
-    E488: Trailing characters
-The value of the error exception inside try conditionals is:
-    Vim(unlet):E488: Trailing characters
-This is done because the syntax error might change the execution path in a way
-not intended by the user.  Example:
-    try
-        try | unlet novar # | catch | echo v:exception | endtry
-    catch /.*/
-        echo "outer catch:" v:exception
-    endtry
-This displays "outer catch: Vim(unlet):E488: Trailing characters", and then
-a "E600: Missing :endtry" error message is given, see |except-single-line|.
-
-==============================================================================
-9. Examples                     *eval-examples*
-
-Printing in Binary
-
-  :" The function Nr2Bin() returns the binary string representation of a number.
-  :func Nr2Bin(nr)
-  :  let n = a:nr
-  :  let r = ""
-  :  while n
-  :    let r = '01'[n % 2] . r
-  :    let n = n / 2
-  :  endwhile
-  :  return r
-  :endfunc
-
-  :" The function String2Bin() converts each character in a string to a
-  :" binary string, separated with dashes.
-  :func String2Bin(str)
-  :  let out = ''
-  :  for ix in range(strlen(a:str))
-  :    let out = out . '-' . Nr2Bin(char2nr(a:str[ix]))
-  :  endfor
-  :  return out[1:]
-  :endfunc
-
-Example of its use:
-  :echo Nr2Bin(32)
-result: "100000"
-  :echo String2Bin("32")
-result: "110011-110010"
-
-
-Sorting lines
-
-This example sorts lines with a specific compare function.
-
-  :func SortBuffer()
-  :  let lines = getline(1, '$')
-  :  call sort(lines, function("Strcmp"))
-  :  call setline(1, lines)
-  :endfunction
-
-As a one-liner:
-  :call setline(1, sort(getline(1, '$'), function("Strcmp")))
-
-
-scanf() replacement
-*sscanf*
-There is no sscanf() function in Vim.  If you need to extract parts from a
-line, you can use matchstr() and substitute() to do it.  This example shows
-how to get the file name, line number and column number out of a line like
-"foobar.txt, 123, 45".
-   :" Set up the match bit
-   :let mx='\(\f\+\),\s*\(\d\+\),\s*\(\d\+\)'
-   :"get the part matching the whole expression
-   :let l = matchstr(line, mx)
-   :"get each item out of the match
-   :let file = substitute(l, mx, '\1', '')
-   :let lnum = substitute(l, mx, '\2', '')
-   :let col = substitute(l, mx, '\3', '')
-
-The input is in the variable "line", the results in the variables "file",
-"lnum" and "col". (idea from Michael Geddes)
-
-
-getting the scriptnames in a Dictionary
-*scriptnames-dictionary*
-The |:scriptnames| command can be used to get a list of all script files that
-have been sourced.  There is no equivalent function or variable for this
-(because it's rarely needed).  In case you need to manipulate the list this
-code can be used:
-    " Get the output of ":scriptnames" in the scriptnames_output variable.
-    let scriptnames_output = ''
-    redir => scriptnames_output
-    silent scriptnames
-    redir END
-
-    " Split the output into lines and parse each line.  Add an entry to the
-    " "scripts" dictionary.
-    let scripts = {}
-    for line in split(scriptnames_output, "\n")
-      " Only do non-blank lines.
-      if line =~ '\S'
-    " Get the first number in the line.
-    let nr = matchstr(line, '\d\+')
-    " Get the file name, remove the script number " 123: ".
-    let name = substitute(line, '.\+:\s*', '', '')
-    " Add an item to the Dictionary
-    let scripts[nr] = name
-      endif
-    endfor
-    unlet scriptnames_output
-
-==============================================================================
-The sandbox                 *eval-sandbox* *sandbox* *E48*
-
-The 'foldexpr', 'formatexpr', 'includeexpr', 'indentexpr', 'statusline' and
-'foldtext' options may be evaluated in a sandbox.  This means that you are
-protected from these expressions having nasty side effects.  This gives some
-safety for when these options are set from a modeline.  It is also used when
-the command from a tags file is executed and for CTRL-R = in the command line.
-The sandbox is also used for the |:sandbox| command.
-
-These items are not allowed in the sandbox:
-    - changing the buffer text
-    - defining or changing mapping, autocommands, user commands
-    - setting certain options (see |option-summary|)
-    - setting certain v: variables (see |v:var|)  *E794*
-    - executing a shell command
-    - reading or writing a file
-    - jumping to another buffer or editing a file
-    - executing Python, Perl, etc. commands
-This is not guaranteed 100% secure, but it should block most attacks.
-
-*:san* *:sandbox*
-:san[dbox] {cmd}    Execute {cmd} in the sandbox.  Useful to evaluate an
-            option that may have been set from a modeline, e.g.
-            'foldexpr'.
-
-*sandbox-option*
-A few options contain an expression.  When this expression is evaluated it may
-have to be done in the sandbox to avoid a security risk.  But the sandbox is
-restrictive, thus this only happens when the option was set from an insecure
-location.  Insecure in this context are:
-- sourcing a .nvimrc or .exrc in the current directory
-- while executing in the sandbox
-- value coming from a modeline
-- executing a function that was defined in the sandbox
-
-Note that when in the sandbox and saving an option value and restoring it, the
-option will still be marked as it was set in the sandbox.
-
-==============================================================================
-Textlock                            *textlock*
-
-In a few situations it is not allowed to change the text in the buffer,
-jump to another window and
-some other things that might confuse or  break what Vim is currently doing.
-This mostly applies to things that happen when Vim is actually doing something else.
-For  example,
-evaluating the 'balloonexpr' may happen any moment the mouse cursor  is resting at some position.
-
-This is not allowed when the textlock is active:
-    - changing the buffer text
-    - jumping to another buffer or window
-    - editing another file
-    - closing a window or quitting Vim
-    - etc.
-
-==============================================================================
-Command-line expressions highlighting       *expr-highlight*
-
-Expressions entered by the user in |i_CTRL-R_=|, |c_CTRL-\_e|, |quote=| are
-highlighted by the built-in expressions parser.  It uses highlight groups
-described in the table below, which may be overridden by colorschemes.
-*hl-NvimInvalid*
-Besides the "Nvim"-prefixed highlight groups described below, there are
-"NvimInvalid"-prefixed highlight groups which have the same meaning but
-indicate that the token contains an error or that an error occurred just
-before it.  They have mostly the same hierarchy, except that (by default) in
-place of any non-Nvim-prefixed group NvimInvalid linking to `Error` is used
-and some other intermediate groups are present.
-
-Group                              Default link            Colored expression
-*hl-NvimInternalError*               None, red/red           Parser bug
-
-*hl-NvimAssignment*                  Operator                Generic assignment
-*hl-NvimPlainAssignment*             NvimAssignment          `=` in |:let|
-*hl-NvimAugmentedAssignment*         NvimAssignment          Generic, `+=`/`-=`/`.=`
-*hl-NvimAssignmentWithAddition*      NvimAugmentedAssignment `+=` in |:let+=|
-*hl-NvimAssignmentWithSubtraction*   NvimAugmentedAssignment `-=` in |:let-=|
-*hl-NvimAssignmentWithConcatenation* NvimAugmentedAssignment `.=` in |:let.=|
-
-*hl-NvimOperator*                    Operator                Generic operator
-
-*hl-NvimUnaryOperator*               NvimOperator            Generic unary op
-*hl-NvimUnaryPlus*                   NvimUnaryOperator       |expr-unary-+|
-*hl-NvimUnaryMinus*                  NvimUnaryOperator       |expr-unary--|
-*hl-NvimNot*                         NvimUnaryOperator       |expr-!|
-
-*hl-NvimBinaryOperator*              NvimOperator            Generic binary op
-*hl-NvimComparison*                  NvimBinaryOperator      Any |expr4| operator
-*hl-NvimComparisonModifier*          NvimComparison          `#`/`?` near |expr4| op
-*hl-NvimBinaryPlus*                  NvimBinaryOperator      |expr-+|
-*hl-NvimBinaryMinus*                 NvimBinaryOperator      |expr--|
-*hl-NvimConcat*                      NvimBinaryOperator      |expr-.|
-*hl-NvimConcatOrSubscript*           NvimConcat              |expr-.| or |expr-entry|
-*hl-NvimOr*                          NvimBinaryOperator      |expr-barbar|
-*hl-NvimAnd*                         NvimBinaryOperator      |expr-&&|
-*hl-NvimMultiplication*              NvimBinaryOperator      |expr-star|
-*hl-NvimDivision*                    NvimBinaryOperator      |expr-/|
-*hl-NvimMod*                         NvimBinaryOperator      |expr-%|
-
-*hl-NvimTernary*                     NvimOperator            `?` in |expr1|
-*hl-NvimTernaryColon*                NvimTernary             `:` in |expr1|
-
-*hl-NvimParenthesis*                 Delimiter               Generic bracket
-*hl-NvimLambda*                      NvimParenthesis         `{`/`}` in |lambda|
-*hl-NvimNestingParenthesis*          NvimParenthesis         `(`/`)` in |expr-nesting|
-*hl-NvimCallingParenthesis*          NvimParenthesis         `(`/`)` in |expr-function|
-
-*hl-NvimSubscript*                   NvimParenthesis         Generic subscript
-*hl-NvimSubscriptBracket*            NvimSubscript           `[`/`]` in |expr-[]|
-*hl-NvimSubscriptColon*              NvimSubscript           `:` in |expr-[:]|
-*hl-NvimCurly*                       NvimSubscript           `{`/`}` in
-                                                           |curly-braces-names|
-
-*hl-NvimContainer*                   NvimParenthesis         Generic container
-*hl-NvimDict*                        NvimContainer           `{`/`}` in |dict| literal
-*hl-NvimList*                        NvimContainer           `[`/`]` in |list| literal
-
-*hl-NvimIdentifier*                  Identifier              Generic identifier
-*hl-NvimIdentifierScope*             NvimIdentifier          Namespace: letter
-                                                           before `:` in
-                                                           |internal-variables|
-*hl-NvimIdentifierScopeDelimiter*    NvimIdentifier          `:` after namespace
-                                                           letter
-*hl-NvimIdentifierName*              NvimIdentifier          Rest of the ident
-*hl-NvimIdentifierKey*               NvimIdentifier          Identifier after
-                                                           |expr-entry|
-
-*hl-NvimColon*                       Delimiter               `:` in |dict| literal
-*hl-NvimComma*                       Delimiter               `,` in |dict| or |list|
-                                                           literal or
-                                                           |expr-function|
-*hl-NvimArrow*                       Delimiter               `->` in |lambda|
-
-*hl-NvimRegister*                    SpecialChar             |expr-register|
-*hl-NvimNumber*                      Number                  Non-prefix digits
-                                                           in integer
-                                                           |expr-number|
-*hl-NvimNumberPrefix*                Type                    `0` for |octal-number|
-                                                           `0x` for |hex-number|
-                                                           `0b` for |binary-number|
-*hl-NvimFloat*                       NvimNumber              Floating-point
-                                                           number
-
-*hl-NvimOptionSigil*                 Type                    `&` in |expr-option|
-*hl-NvimOptionScope*                 NvimIdentifierScope     Option scope if any
-*hl-NvimOptionScopeDelimiter*        NvimIdentifierScopeDelimiter
-                                                           `:` after option scope
-*hl-NvimOptionName*                  NvimIdentifier          Option name
-
-*hl-NvimEnvironmentSigil*            NvimOptionSigil         `$` in |expr-env|
-*hl-NvimEnvironmentName*             NvimIdentifier          Env variable name
-
-*hl-NvimString*                      String                  Generic string
-*hl-NvimStringBody*                  NvimString              Generic string
-                                                           literal body
-*hl-NvimStringQuote*                 NvimString              Generic string quote
-*hl-NvimStringSpecial*               SpecialChar             Generic string
-                                                           non-literal body
-
-*hl-NvimSingleQuote*                 NvimStringQuote         `'` in |expr-'|
-*hl-NvimSingleQuotedBody*            NvimStringBody          Literal part of
-                                                           |expr-'| string body
-*hl-NvimSingleQuotedQuote*           NvimStringSpecial       `''` inside |expr-'|
-                                                           string body
-
-*hl-NvimDoubleQuote*                 NvimStringQuote         `"` in |expr-quote|
-*hl-NvimDoubleQuotedBody*            NvimStringBody          Literal part of
-                                                           |expr-quote| body
-*hl-NvimDoubleQuotedEscape*          NvimStringSpecial       Valid |expr-quote|
-                                                           escape sequence
-*hl-NvimDoubleQuotedUnknownEscape*   NvimInvalidValue        Unrecognized
-                                                           |expr-quote| escape
-                                                           sequence
-
- vim:tw=78:ts=8:noet:ft=help:norl:
-leo_DIY

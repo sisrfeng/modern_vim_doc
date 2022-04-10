@@ -43,10 +43,11 @@ characters to display them in.  When the last sign is unplaced   the column
 disappears again.  This behavior can be changed with the 'signcolumn' option.
 
 The color of the column is set with the SignColumn highlight group
-|hl-SignColumn|.  Example to set the color: >
+|hl-SignColumn|.  Example to set the color:
+
 
 	:highlight SignColumn guibg=darkgrey
-<
+
 							*sign-identifier*
 Each placed sign is identified by a number called the sign identifier. This
 identifier is used to jump to the sign or to remove the sign. The identifier
@@ -65,7 +66,7 @@ placed in the named group. The sign identifier is unique within a group. The
 sign group allows Vim plugins to use unique signs without interfering with
 other plugins using signs.
 
-							*sign-priority*
+*sign-priority*
 Each placed sign is assigned a priority value. When multiple signs are placed
 on the same line, the attributes of the sign with the highest priority is used
 independently of the sign group. The default priority for a sign is 10. The
@@ -83,14 +84,16 @@ the delete is undone the sign does not move back.
 2. Commands					*sign-commands* *:sig* *:sign*
 
 Here is an example that places a sign "piet", displayed with the text ">>", in
-line 23 of the current file: >
+line 23 of the current file:
+
 	:sign define piet text=>> texthl=Search
 	:exe ":sign place 2 line=23 name=piet file=" . expand("%:p")
 
-And here is the command to delete it again: >
+And here is the command to delete it again:
+
 	:sign unplace 2
 
-Note that the ":sign" command cannot be followed by another command or a
+The ":sign" command cannot be followed by another command or a
 comment.  If you do need that, use the |:execute| command.
 
 
@@ -112,7 +115,7 @@ See |sign_define()| for the equivalent Vim script function.
 		a full path.  The bitmap should fit in the place of two
 		characters.  This is not checked.  If the bitmap is too big it
 		will cause redraw problems.
-			toolkit		supports ~
+			toolkit		supports    
 			Win32		.bmp, .ico, .cur
 
 	linehl={group}
@@ -131,9 +134,10 @@ See |sign_define()| for the equivalent Vim script function.
 	texthl={group}
 		Highlighting group used for the text item.
 
-	Example: >
+	Example:
+
 		:sign define MySign text=>> texthl=Search linehl=DiffText
-<
+
 
 DELETING A SIGN						*:sign-undefine* *E155*
 
@@ -143,9 +147,10 @@ See |sign_undefine()| for the equivalent Vim script function.
 		Deletes a previously defined sign.  If signs with this {name}
 		are still placed this will cause trouble.
 
-		Example: >
+		Example:
+
 			:sign undefine MySign
-<
+
 
 LISTING SIGNS						*:sign-list* *E156*
 
@@ -189,20 +194,22 @@ See |sign_place()| for the equivalent Vim script function.
 		that is displayed when multiple signs are placed on the same
 		line.
 
-		Examples: >
+		Examples:
+
 			:sign place 5 line=3 name=sign1 file=a.py
 			:sign place 6 group=g2 line=2 name=sign2 file=x.py
 			:sign place 9 group=g2 priority=50 line=5
 							\ name=sign1 file=a.py
-<
+
 :sign place {id} line={lnum} name={name} [buffer={nr}]
 		Same, but use buffer {nr}.  If the buffer argument is not
 		given, place the sign in the current buffer.
 
-		Example: >
+		Example:
+
 			:sign place 10 line=99 name=sign3
 			:sign place 10 line=99 name=sign3 buffer=3
-<
+
 							*E885*
 :sign place {id} name={name} file={fname}
 		Change the placed sign {id} in file {fname} to use the defined
@@ -215,17 +222,19 @@ See |sign_place()| for the equivalent Vim script function.
 		"priority={prio}" attribute can be used to change the priority
 		of an existing sign.
 
-		Example: >
+		Example:
+
 			:sign place 23 name=sign1 file=/path/to/edit.py
-<
+
 :sign place {id} name={name} [buffer={nr}]
 		Same, but use buffer {nr}.  If the buffer argument is not
 		given, use the current buffer.
 
-		Example: >
+		Example:
+
 			:sign place 23 name=sign1
 			:sign place 23 name=sign1 buffer=7
-<
+
 
 REMOVING SIGNS						*:sign-unplace* *E159*
 
@@ -394,7 +403,8 @@ sign_define({list})
 		{list} is used, then returns a List of values one for each
 		defined sign.
 
-		Examples: >
+		Examples:
+
 			call sign_define("mySign", {
 				\ "text" : "=>",
 				\ "texthl" : "Error",
@@ -405,7 +415,7 @@ sign_define({list})
 				\ {'name' : 'sign2',
 				\  'text' : '!!'}
 				\ ])
-<
+
 sign_getdefined([{name}])				*sign_getdefined()*
 		Get a list of defined signs and their attributes.
 		This is similar to the |:sign-list| command.
@@ -430,13 +440,14 @@ sign_getdefined([{name}])				*sign_getdefined()*
 		Returns an empty List if there are no signs and when {name} is
 		not found.
 
-		Examples: >
+		Examples:
+
 			" Get a list of all the defined signs
 			echo sign_getdefined()
 
 			" Get the attribute of the sign named mySign
 			echo sign_getdefined("mySign")
-<
+
 sign_getplaced([{buf} [, {dict}]])			*sign_getplaced()*
 		Return a list of signs placed in a buffer or all the buffers.
 		This is similar to the |:sign-place-list| command.
@@ -476,7 +487,8 @@ sign_getplaced([{buf} [, {dict}]])			*sign_getplaced()*
 		Returns an empty list on failure or if there are no placed
 		signs.
 
-		Examples: >
+		Examples:
+
 			" Get a List of signs placed in eval.c in the
 			" global group
 			echo sign_getplaced("eval.c")
@@ -496,7 +508,7 @@ sign_getplaced([{buf} [, {dict}]])			*sign_getplaced()*
 
 			" Get a List of all the placed signs
 			echo sign_getplaced()
-<
+
 							*sign_jump()*
 sign_jump({id}, {group}, {buf})
 		Open the buffer {buf} or jump to the window that contains
@@ -508,10 +520,11 @@ sign_jump({id}, {group}, {buf})
 		Returns the line number of the sign. Returns -1 if the
 		arguments are invalid.
 
-		Example: >
+		Example:
+
 			" Jump to sign 10 in the current buffer
 			call sign_jump(10, '', '')
-<
+
 
 							*sign_place()*
 sign_place({id}, {group}, {name}, {buf} [, {dict}])
@@ -543,7 +556,8 @@ sign_place({id}, {group}, {name}, {buf} [, {dict}])
 
 		Returns the sign identifier on success and -1 on failure.
 
-		Examples: >
+		Examples:
+
 			" Place a sign named sign1 with id 5 at line 20 in
 			" buffer json.c
 			call sign_place(5, '', 'sign1', 'json.c',
@@ -561,7 +575,7 @@ sign_place({id}, {group}, {name}, {buf} [, {dict}])
 			" at line 40 in buffer json.c with priority 90
 			call sign_place(10, 'g3', 'sign4', 'json.c',
 					\ {'lnum' : 40, 'priority' : 90})
-<
+
 
 							*sign_placelist()*
 sign_placelist({list})
@@ -597,7 +611,8 @@ sign_placelist({list})
 		Returns a List of sign identifiers. If failed to place a
 		sign, the corresponding list item is set to -1.
 
-		Examples: >
+		Examples:
+
 			" Place sign s1 with id 5 at line 20 and id 10 at line
 			" 30 in buffer a.c
 			let [n1, n2] = sign_placelist([
@@ -621,7 +636,7 @@ sign_placelist({list})
 				\  'buffer' : 'a.c',
 				\  'lnum' : 50}
 				\ ])
-<
+
 
 sign_undefine([{name}])					*sign_undefine()*
 sign_undefine({list})
@@ -636,7 +651,8 @@ sign_undefine({list})
 		{list} call, returns a list of values one for each undefined
 		sign.
 
-		Examples: >
+		Examples:
+
 			" Delete a sign named mySign
 			call sign_undefine("mySign")
 
@@ -645,7 +661,7 @@ sign_undefine({list})
 
 			" Delete all the signs
 			call sign_undefine()
-<
+
 
 sign_unplace({group} [, {dict}])			*sign_unplace()*
 		Remove a previously placed sign in one or more buffers.  This
@@ -664,7 +680,8 @@ sign_unplace({group} [, {dict}])			*sign_unplace()*
 
 		Returns 0 on success and -1 on failure.
 
-		Examples: >
+		Examples:
+
 			" Remove sign 10 from buffer a.vim
 			call sign_unplace('', {'buffer' : "a.vim", 'id' : 10})
 
@@ -688,7 +705,7 @@ sign_unplace({group} [, {dict}])			*sign_unplace()*
 
 			" Remove all the placed signs from all the buffers
 			call sign_unplace('*')
-<
+
 sign_unplacelist({list})				*sign_unplacelist()*
 		Remove previously placed signs from one or more buffers.  This
 		is similar to the |sign_unplace()| function.
@@ -709,13 +726,14 @@ sign_unplacelist({list})				*sign_unplacelist()*
 		Returns a List where an entry is set to 0 if the corresponding
 		sign was successfully removed or -1 on failure.
 
-		Example: >
+		Example:
+
 			" Remove sign with id 10 from buffer a.vim and sign
 			" with id 20 from buffer b.vim
 			call sign_unplacelist([
 				\ {'id' : 10, 'buffer' : "a.vim"},
 				\ {'id' : 20, 'buffer' : 'b.vim'},
 				\ ])
-<
+
 
  vim:tw=78:ts=8:noet:ft=help:norl:

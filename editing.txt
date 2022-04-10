@@ -149,22 +149,29 @@ When writing the buffer to the current file name (with ":w!"), the "notedited"
 flag is reset.
 
 *abandon*
-Vim remembers whether you have changed the buffer.  You are protected from
-losing the changes you made.  If you try to quit without writing, or want to
-start editing another file, Vim will refuse this.  In order to overrule this
-protection, add a '!' to the command.  The changes will then be lost.  For
-example: ":q" will not work if the buffer was changed, but ":q!" will.  To see
-whether the buffer was changed use the "CTRL-G" command.  The message includes
-the string "[Modified]" if the buffer has been changed, or "+" if the 'm' flag
-is in 'shortmess'.
+    Vim remembers whether you have changed the buffer.
+    You are protected from  losing the changes you made.
+    If you try to quit without writing, or
+    want to  start editing another file,
+    Vim will refuse this.
+    In order to overrule this  protection, add a '!' to the command.
+    The changes will  then be lost.
+    For  example: ":q" will not work if the buffer was changed,
+    but ":q!" will.
+    To see  whether the buffer was changed use the "CTRL-G" command.
+    if the buffer has been changed
+        the message includes  the string "[Modified]"
+                               or "+" if the 'm' flag  is in 'shortmess'.
 
-If you want to automatically save the changes without asking, switch on the
-'autowriteall' option.  'autowrite' is the associated Vi-compatible option
-that does not work for all commands.
+    If you want to automatically save the changes without asking,
+    switch on the  'autowriteall' option.
+    'autowrite' is the associated Vi-compatible option that does not work for all commands.
 
-If you want to keep the changed buffer without saving it, switch on the
-'hidden' option.  See |hidden-buffer|.  Some commands work like this even when
-'hidden' is not set, check the help for the command.
+    If you want to keep the changed buffer without saving it,
+    switch on the  'hidden' option.
+    See |hidden-buffer|.
+    Some commands work like this even when  'hidden' is not set
+    see 'hidden'
 
 ==============================================================================
 2. Editing a file                                       *edit-a-file*
@@ -980,9 +987,9 @@ slower (but safer).
 WRITING WITH MULTIPLE BUFFERS                           *buffer-write*
 
 *:wa* *:wall*
-:wa[ll]                 Write all changed buffers.  Buffers without a file
-                        name cause an error message.  Buffers which are
-                        readonly are not written.
+:wa[ll]     
+    Write all changed buffers.  Buffers without a file  name cause an error message.
+    Buffers which are  readonly are not written.
 
 :wa[ll]!                Write all changed buffers, even the ones that are
                         readonly.  Buffers without a file name are not

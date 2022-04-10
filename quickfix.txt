@@ -1894,7 +1894,7 @@ parsing jade (see http://www.jclark.com/) errors is simple:
 *errorformat-LaTeX*
     The following is an example how an 'errorformat' string can be specified
     for the (La)TeX typesetting system which displays error messages over
-    multiple lines. 
+    multiple lines.
     The output of ":clist" and ":cc" etc. commands displays  multi-lines in a single line, leading white space is removed.
     It should be easy to adopt the above LaTeX errorformat to any compiler output
     consisting of multi-line errors.

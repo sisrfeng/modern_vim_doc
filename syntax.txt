@@ -3757,19 +3757,22 @@ DEFINING KEYWORDS                                       *:syn-keyword*
 
         This defines a number of keywords.
 
-        {group-name}    Is a syntax group name such as "Comment".
+        {group-name}    a syntax group name such as "Comment".
         [{options}]     See |:syn-arguments| below.
         {keyword} ..    Is a list of keywords which are part of this group.
 
         Example:
-  :syntax keyword   Type   int long char
+          :syntax keyword   Type   int long char
 
-        The {options} can be given anywhere in the line.  They will apply to
-        all keywords given, also for options that come after a keyword.
+        The {options} can be given anywhere in the line.
+        They will apply to  all keywords given,
+        also for options that come after a keyword.
         These examples do exactly the same:
-  :syntax keyword   Type   contained int long char
-  :syntax keyword   Type   int long contained char
-  :syntax keyword   Type   int long char contained
+
+            :syntax keyword   Type   `contained` int long char
+            :syntax keyword   Type   int long `contained` char
+            :syntax keyword   Type   int long char `contained`
+
 *E789* *E890*
         When you have a keyword with an optional tail, like Ex commands in
         Vim, you can put the optional characters inside [], to define all the
@@ -4028,8 +4031,8 @@ The maximum number of syntax groups is 19999.
 *conceal* *:syn-conceal*
         conceal
 
-                        When the "conceal" argument is given,
-                        the item is marked as concealable.
+                        Mark  the item  as concealable.
+
                         Whether or not it is actually concealed depends on the value of the 'conceallevel' option.
                         The 'concealcursor' option is used to decide whether concealable items in the current line are displayed unconcealed to be able to edit the line.
                         Another way to conceal text is with |matchadd()|.
@@ -4038,11 +4041,15 @@ The maximum number of syntax groups is 19999.
         concealends
 
                         When the "concealends" argument is given,
-                        the start and end matches of the region,
-                        but not the contents of the region,
-                        are marked as concealable.
+                            the start and end matches of the region
+                            are marked as concealable,
+                            but not the contents of the region.
+
+                            The ends of a region can only be concealed separately  in this way
+                            when they have their own highlighting via "matchgroup"
+
                         Whether or not they are actually concealed depends on the setting on the 'conceallevel' option.
-                        The ends of a region can only be concealed separately  in this way when they have their own highlighting via "matchgroup"
+
 
 *E844*  *:syn-cchar*
         cchar
@@ -4053,11 +4060,14 @@ The maximum number of syntax groups is 19999.
                                            :syntax match Entity "&amp;" conceal cchar=&
                                         See |hl-Conceal| for highlighting.
 
-        contained                                               *:syn-contained*
+        contained                                             
+        *:syn-contained*
 
-        When the "contained" argument is given, this item will not be recognized at
-        the top level, but only when it is mentioned in the "contains" field of
-        another match.  Example:
+        When the "contained" argument is given,
+            this item will not be recognized at the top level,
+            but only when it is mentioned in the "contains" field of another match.
+         Example:
+
            :syntax keyword Todo    TODO    contained
            :syntax match   Comment "//.*"  contains=Todo
 
@@ -4358,14 +4368,17 @@ The pattern can be followed by a character offset.
     tell where to continue looking for an end pattern.
 
 The offset takes the form of "{what}={offset}"
-    The {what} can be one of seven strings:
+    The {what} can be one of :
 
         ms      Match Start     offset for the start of the matched text
         me      Match End       offset for the end of the matched text
+
         hs      Highlight Start offset for where the highlighting starts
         he      Highlight End   offset for where the highlighting ends
+
         rs      Region Start    offset for where the body of a region starts
         re      Region End      offset for where the body of a region ends
+
         lc      Leading Context offset past "leading context" of pattern
 
     The {offset} can be:
@@ -4373,9 +4386,11 @@ The offset takes the form of "{what}={offset}"
         s       start of the matched pattern
         s+{nr}  start of the matched pattern plus {nr} chars to the right
         s-{nr}  start of the matched pattern plus {nr} chars to the left
+
         e       end of the matched pattern
         e+{nr}  end of the matched pattern plus {nr} chars to the right
         e-{nr}  end of the matched pattern plus {nr} chars to the left
+
         {nr}    (for "lc" only): start matching {nr} chars right of the start
 
 Examples: "ms=s+1", "hs=e-2", "lc=3".
@@ -4904,37 +4919,41 @@ also tell where it was last set.  Example:
 When ":hi clear" is used then the script where this command is used will be
 mentioned for the default values. See |:verbose-cmd| for more information.
 
-*highlight-args* *E416* *E417* *E423*
 There are two types of UIs for highlighting:
 cterm   terminal UI (|TUI|)
 gui     GUI or RGB-capable TUI ('termguicolors')
+*highlight-args* *E416* *E417* *E423*
 
-For each type the highlighting can be given.  This makes it possible to use
-the same syntax file on all UIs.
+
+
+For each type the highlighting can be given.
+This makes it possible to use  the same syntax file on all UIs.
 
 1. TUI highlight arguments
 
-*bold* *underline* *undercurl*
-*inverse* *italic* *standout*
-*nocombine* *strikethrough*
-cterm={attr-list}                       *attr-list* *highlight-cterm* *E418*
+
+*attr-list* *highlight-cterm* *E418*
+cterm={attr-list}                 
         attr-list is a comma separated list (without spaces) of the
         following items (in any order):
-                bold
-                underline
-                undercurl       curly underline
-                strikethrough
-                reverse
-                inverse         same as reverse
-                italic
-                standout
-                nocombine       override attributes instead of combining them
-                NONE            no attributes used (used to reset it)
+            *bold* 
+            *italic*
+            *standout*
+            *strikethrough*
+                https://github.com/microsoft/terminal/pull/7143
 
-        Note that "bold" can be used here and by using a bold font.  They
-        have the same effect.
-        "undercurl" falls back to "underline" in a terminal that does not
-        support it.  The color is set using |highlight-guisp|.
+            *underline* 
+            *undercurl*   underline curly (看不出和underline的区别)
+            *inverse*   *reverse* 一样
+            *nocombine*       override attributes instead of combining them
+            NONE            清除
+
+        Note that "bold" can be used here and by using a bold font.
+        They  have the same effect.
+
+        "undercurl" falls back to "underline" in a terminal that does not  support it.
+        The color is set using |highlight-guisp|.
+
 
 start={term-list}                               *highlight-start* *E422*
 stop={term-list}                                *term-list* *highlight-stop*
@@ -5038,8 +5057,10 @@ ctermbg={color-nr}                              *highlight-ctermbg*
 gui={attr-list}                                         *highlight-gui*
         These give the attributes to use in the GUI mode.
         See |attr-list| for a description.
-        Note that "bold" can be used here and by using a bold font.  They
-        have the same effect.
+        Note that "bold" can be used here
+        and by using a bold font.
+        They  have the same effect.
+        
         Note that the attributes are ignored for the "Normal" group.
 
 font={font-name}                                        *highlight-font*
@@ -5063,18 +5084,22 @@ font={font-name}                                        *highlight-font*
         Example:
             :hi comment font='Monospace 10'
 
-guifg={color-name}                                      *highlight-guifg*
-guibg={color-name}                                      *highlight-guibg*
-guisp={color-name}                                      *highlight-guisp*
-        These give the foreground (guifg), background (guibg) and special
-        (guisp) color to use in the GUI.  "guisp" is used for undercurl
-        and underline.
+*highlight-guifg*
+*highlight-guibg*
+*highlight-guisp*
+        These give the foreground (guifg), background (guibg) and special  (guisp) color to use in the GUI.
+        "guisp" is used for undercurl  and underline.
         There are a few special names:
+
                 NONE            no color (transparent)
+                                并不能隐藏文本啊
+
                 bg              use normal background color
-                background      use normal background color
+                background      
+
                 fg              use normal foreground color
-                foreground      use normal foreground color
+                foreground      
+
         To use a color name with an embedded space or other special character,
         put it in single quotes.  The single quote cannot be used then.
         Example:
@@ -5301,8 +5326,10 @@ Notes:                                                  *E414*
 
 *:hi-default* *:highlight-default*
     The [default] argument is used for setting the default highlighting for a group.
-    If highlighting has already been specified for the group the command will be ignored.
+
+    If highlighting has already been specified for the group 
     Also when there is an existing link.
+         the command will be ignored.
 
     Using [default] is especially useful to overrule the highlighting of a specific syntax file.
     For example,

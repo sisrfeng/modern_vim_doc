@@ -63,7 +63,7 @@ Help on help files                                      *helphelp*
                         where "ab" is the two-letter language code.  See
                         |help-translated|.
 
-                        Note that the longer the {subject} you give, the less
+                        The longer the {subject} you give, the less
                         matches will be found.  You can get an idea how this
                         all works by using commandline completion (type CTRL-D
                         after ":help subject" |c_CTRL-D|).
@@ -99,7 +99,7 @@ Help on help files                                      *helphelp*
 
                                 :help |
                                 :help k| only
-                       Note that a space before the '|' is seen as part of
+                       A space before the '|' is seen as part of
                         the ":help" argument.
                         You can also use <NL> or <CR> to separate the help
                         command from a following command.  You need to type
@@ -229,7 +229,7 @@ See |add-local-help|.
 
 To write a local help file, see |write-local-help|.
 
-Note that the title lines from the local help files
+The title lines from the local help files
     are automagically added to the "LOCAL ADDITIONS" section in the "help.txt" help file |local-additions|.
     This is done when viewing the file in Vim,
     the file itself is not changed.

@@ -48,7 +48,7 @@ A buffer can be in one of three states:
         hidden            no             yes              'h'
         inactive          no             no               ' '
 
-Note: All CTRL-W commands can also be executed with |:wincmd|, for those
+All CTRL-W commands can also be executed with |:wincmd|, for those
 places where a Normal mode command can't be used or is inconvenient.
 
 window的id vs  winnr
@@ -143,7 +143,7 @@ CTRL-W CTRL-S                                           *CTRL-W_CTRL-S*
                 is not loaded in any buffer, it will be read.  Else the new
                 window will use the already loaded buffer.
 
-                Note: CTRL-S does not work on all terminals and might block
+                CTRL-S does not work on all terminals and might block
                 further input, use CTRL-Q to get going again.
                 Also see |++opt| and |+cmd|.
 *E242*
@@ -161,7 +161,7 @@ CTRL-W v                                                *CTRL-W_v*
                 3. 'eadirection' isn't "ver", and
                 4. one of the other windows is wider than the current or new
                    window.
-                Note: In other places CTRL-Q does the same as CTRL-V, but here
+                In other places CTRL-Q does the same as CTRL-V, but here
                 it doesn't!
 
 CTRL-W n                                                *CTRL-W_n*
@@ -221,7 +221,7 @@ CTRL-W ge                                               *CTRL-W_ge*
                 Detach the current window as an external window.
                 Only available when using an UI with |ui-multigrid| support.
 
-Note that the 'splitbelow' and 'splitright' options influence where a new
+The 'splitbelow' and 'splitright' options influence where a new
 window will appear.
 
 *:vert* *:vertical*
@@ -288,7 +288,7 @@ CTRL-W CTRL-Q                                           *CTRL-W_CTRL-Q*
                 current buffer, it becomes hidden. When 'hidden' is not set,
                 and there is only one window for the current buffer, and the
                 buffer was changed, the command fails.
-                (Note: CTRL-Q does not work on all terminals).
+                (CTRL-Q does not work on all terminals).
                 If [count] is greater than the last window number the last
                 window will be closed:
 
@@ -773,7 +773,7 @@ The argument list and multiple windows
                         {cmd} can contain '|' to concatenate several commands.
                         {cmd} must not delete buffers or add buffers to the
                         buffer list.
-                        Note: While this command is executing, the Syntax
+                        While this command is executing, the Syntax
                         autocommand event is disabled by adding it to
                         'eventignore'.  This considerably speeds up editing
                         each buffer.
@@ -1100,7 +1100,7 @@ values:
                 if it wasn't listed yet.  If the buffer was previously
                 deleted, not wiped, it will be made listed again.
                 If "lnum" is specified, the cursor will be positioned at that
-                line when the buffer is first entered.  Note that other
+                line when the buffer is first entered.  Other
                 commands after the + will be ignored.
 
 *:balt*
@@ -1147,8 +1147,8 @@ values:
     Like |:bdelete|,
     but really delete the buffer.
     Everything related to the buffer is lost:
-        All marks in this buffer become invalid,
-        option settings are lost, etc.
+        marks
+        option settings
     Don't use this unless you know what you are doing.
     Examples:
                     :.+,$bwipeout   " wipe out all buffers after the current  " one
@@ -1158,7 +1158,7 @@ values:
 :bun[load][!] [N]
     Unload buffer [N] (default:  current buffer).
     The memory allocated for this buffer will be freed.
-    The buffer remains  in the buffer list.
+    🔑The buffer remains  in the buffer list🔑.
     if the buffer was changed:
         if no [!]:
             this fails,
@@ -1196,7 +1196,7 @@ values:
                 Edit buffer for {bufname} from the buffer list.  A partial
                 name also works, so long as it is unique in the list of
                 buffers.
-                Note that a buffer whose name is a number cannot be referenced
+                A buffer whose name is a number cannot be referenced
                 by that name; use the buffer number instead.
                 Insert a backslash before a space in a buffer name.
                 See |:buffer-!| for [!].
@@ -1216,7 +1216,7 @@ values:
                 Split window and edit buffer for |{bufname}| from the buffer
                 list.  This will also edit a buffer that is not in the buffer
                 list, without setting the 'buflisted' flag.
-                Note: If what you want to do is split the buffer, make a copy
+                If what you want to do is split the buffer, make a copy
                 under another name, you can do it this way:
 
                         :w foobar | sp #
@@ -1309,7 +1309,7 @@ buffer re window?
                 When the |:tab| modifier is used new windows are opened in a
                 new tab, up to 'tabpagemax'.
 
-Note: All the commands above that start editing another buffer, keep the
+All the commands above that start editing another buffer, keep the
 'readonly' flag as it was.  This differs from the ":edit" command, which sets
 the 'readonly' flag each time the file is read.
 

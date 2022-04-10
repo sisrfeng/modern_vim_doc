@@ -103,7 +103,7 @@ moves the cursor leftwards to the "e" where the yank started.
             Example: "}" moves to the first line after a paragraph,  but "d}" will not include that line.
 
 
-Note that when the operator is pending (the operator command is typed, but the
+When the operator is pending (the operator command is typed, but the
 motion isn't yet), a special set of mappings can be used.  See |:omap|.
 
 Instead of first giving the operator and then a motion you can use Visual
@@ -124,7 +124,7 @@ This cannot be repeated:
         d:if 1<CR>
            call search("f")<CR>
         endif<CR>
-Note that when using ":" any motion becomes charwise exclusive.
+When using ":" any motion becomes charwise exclusive.
 
 *forced-motion*
 FORCING A MOTION TO BE LINEWISE, CHARWISE OR BLOCKWISE
@@ -462,7 +462,7 @@ paragraphs
 *}*
 
 sections
-    Note that |exclusive-linewise| often applies.
+    |exclusive-linewise| often applies.
         先看第一个中括号, 决定是往回走 还是往前走
 
         同向: 开括号{ (夫妻同心, 开店大吉)
@@ -514,7 +514,7 @@ sections
     (These are nroff macros,
     so the dot must be in the first column).
     A section boundary is also a paragraph boundary.
-    Note that a blank line (only containing white space) is NOT a paragraph boundary.
+    A blank line (only containing white space) is NOT a paragraph boundary.
         但在vip vap等selection中, IS a boundary
     Note:
     this does not include a '{' or '}' in the first column.
@@ -535,7 +535,7 @@ sections
     To search for a '}' in the first column,
     the end of a C function,
     use "][" (forward) or "[]" (backward).
-    Note that the first character of the command determines the search direction.
+    The first character of the command determines the search direction.
 
     If your '{' or '}' are not in the first column,
     and you would like to use "[[" and "]]" anyway,
@@ -718,7 +718,7 @@ When start and end of the Visual area are not the same:
         level outwards.
 
 For illustration, here is a list of delete commands, grouped from small to big
-objects.  Note that for a single character and a whole line the existing vi
+objects.  For a single character and a whole line the existing vi
 movement commands are used.
         "dl"    delete character (alias: "x")           |dl|
         "diw"   delete inner word                       *diw*
@@ -791,7 +791,7 @@ m[  or  m]              Set the |'[| or |']| mark.  Useful when an operator is
 m<  or  m>              Set the |'<| or |'>| mark.  Useful to change what the
                         `gv` command selects.  (does not move the cursor, this
                         is not a motion command).
-                        Note that the Visual mode cannot be set, only the
+                        The Visual mode cannot be set, only the
                         start and end position.
 
 *:ma* *:mark* *E191*
@@ -1037,7 +1037,7 @@ These commands are not marks themselves, but jump to a mark:
                                 :call SetLastChange()
                                 :keepjumps exe "normal " . lnum . "G"
 
-                        Note that ":keepjumps" must be used for every command.
+                        ":keepjumps" must be used for every command.
                         When invoking a function the commands in that function
                         can still change the jumplist.  Also, for
                         ":keepjumps exe 'command '" the "command" won't keep
@@ -1103,7 +1103,7 @@ will cause the cursor position to be added to the jump list, so you can get
 back to the position before the CTRL-O.  In this case this is line 1167.
 
 With more CTRL-O commands you will go to lines 70 and 1.  If you use CTRL-I
-you can go back to 1154 and 1167 again.  Note that the number in the "jump"
+you can go back to 1154 and 1167 again.  The number in the "jump"
 column indicates the count for the CTRL-O or CTRL-I command that takes you to
 this position.
 
@@ -1222,7 +1222,7 @@ also isn't set a fixed number of 79 is used.  Detail: For the computations
 bytes are used, not characters, to avoid a speed penalty (this only matters
 for multibyte encodings).
 
-Note that when text has been inserted or deleted the cursor position might be
+When text has been inserted or deleted the cursor position might be
 a bit different from the position of the change.  Especially when lines have
 been deleted.
 
@@ -1284,7 +1284,7 @@ remembered.
                         is uneven and this line and the previous one does not
                         end in a backslash.  '(', '{', '[', ']', '}' and ')'
                         are also ignored (parens and braces inside single
-                        quotes).  Note that this works fine for C, but not for
+                        quotes).  This works fine for C, but not for
                         Perl, where single quotes are used for strings.
 
                         Nothing special is done for matches in comments.  You
