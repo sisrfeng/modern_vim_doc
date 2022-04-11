@@ -54,7 +54,7 @@ place to put autocommands is in your vimrc file.
         Add {cmd} to the list of commands that Vim will
         execute automatically on {event} for a file matching
         {pat} |autocmd-pattern|.
-        Note: A quote character is seen as argument to the
+        A quote character is seen as argument to the
         :autocmd and won't start a comment.
         Nvim always adds {cmd} after existing autocommands so
         they execute in the order in which they were defined.
@@ -89,7 +89,7 @@ Note:
                         :augroup mine | exe "au! BufRead *" | augroup END
                         :augroup mine | exe "au BufRead * set tw=70" | augroup END
 
-    Note that special characters (e.g.,  "%",  "<cword>") in the ":autocmd" arguments
+    Special characters (e.g.,  "%",  "<cword>") in the ":autocmd" arguments
     are not expanded when the autocommand is defined.
     These will be expanded when the Event is recognized,
     and the {cmd} is executed.
@@ -122,7 +122,7 @@ Note:
         :  au ...
         :endif
 
-        Note that [group] must have been defined before.
+        [group] must have been defined before.
 
         You cannot define a new group with ":au group ...";
         use ":augroup" for that.
@@ -213,7 +213,7 @@ Note:
     If you provide the [group] argument,
     Vim lists only the autocommands for [group]; otherwise,
     Vim lists the autocommands for ALL groups.
-    Note that this argument behavior differs from that for defining and
+    This argument behavior differs from that for defining and
     removing autocommands.
 
 In order to list buffer-local autocommands, use a pattern in the form <buffer>
@@ -251,10 +251,10 @@ See |:verbose-cmd| for more information.
         before and
         after reading the file.
 
-        Note that the autocommands for the *ReadPre events and
+        The autocommands for the *ReadPre events and
         all the Filter events are not allowed to change the current buffer (you will get an error message if this happens).
         This is to prevent the file to be read into the wrong buffer.
-        Note that the 'modified' flag is reset AFTER executing the BufReadPost and
+        The 'modified' flag is reset AFTER executing the BufReadPost and
         BufNewFile autocommands.
         But when the 'modified' option was set by
         the autocommands,
@@ -539,9 +539,9 @@ Names are case-insensitive.
            Internally the autocommand is triggered by the <CursorHold> key.
            In an expression mapping |getchar()| may see this character.
 
-            Note: Interactive commands cannot be used for  this event.
+            Interactive commands cannot be used for  this event.
                  There is no hit-enter prompt,  the screen is updated directly (when needed).
-                Note: In the future there will probably be another option to set the time.
+                In the future there will probably be another option to set the time.
                 Hint: to force an update of the status lines use:
                                                 :let &ro = &ro
 
@@ -561,7 +561,7 @@ Names are case-insensitive.
                                         pending, or when moving to another window while
                                         remaining at the same cursor position.
                                         For an example see |match-parens|.
-                                        Note: Cannot be skipped with |:noautocmd|.
+                                        Cannot be skipped with |:noautocmd|.
                                         Careful: This is triggered very often, don't
                                         do anything that the user does not expect or
                                         that is slow.
@@ -624,35 +624,34 @@ Names are case-insensitive.
                                         for really exiting.
                                         See also |QuitPre|, |WinClosed|.
     *FileChangedShell*
-        FileChangedShell                When Vim notices that the modification time of
-                                        a file has changed since editing started.
-                                        Also when the file attributes of the file
-                                        change or when the size of the file changes.
-                                        |timestamp|
-                                        Triggered for each changed file, after:
-                                        - executing a shell command
-                                        - |:checktime|
-                                        - |FocusGained|
-                                        Not used when 'autoread' is set and the buffer
-                                        was not changed.  If a FileChangedShell
-                                        autocommand exists the warning message and
-                                        prompt is not given.
-                                        |v:fcs_reason| indicates what happened. Set
-                                        |v:fcs_choice| to control what happens next.
-                                        NOTE: Current buffer "%" may be different from
-                                        the buffer that was changed "<afile>".
+
+        1. When Vim notices that the modification time of a file has changed since  editing started.
+        2.  when the file attributes of the file change or
+        3.  when the size of the file changes.
+
+        |timestamp| Triggered for each changed file,  after:
+        - executing a shell command |:checktime| |FocusGained|
+          Not used when 'autoread' is set and  the buffer was not changed.
+        If a FileChangedShell autocommand exists
+            the warning message and  prompt is not given.
+        |v:fcs_reason| indicates what happened.
+        Set |v:fcs_choice| to control what happens next.
+        NOTE:
+        Current buffer "%" may be different from the buffer that was changed "<afile>".
+
     *E246* *E811*
                                         Cannot switch, jump to or delete buffers.
                                         Non-recursive (event cannot trigger itself).
     *FileChangedShellPost*
-        FileChangedShellPost            After handling a file that was changed outside
-                                        of Vim.  Can be used to update the statusline.
+        After handling a file that was changed outside of Vim.
+        Can be used to update the statusline.
+
     *FileReadCmd*
         FileReadCmd                     Before reading a file with a ":read" command.
                                         Should do the reading of the file. |Cmd-event|
     *FileReadPost*
         FileReadPost                    After reading a file with a ":read" command.
-                                        Note that Vim sets the '[ and '] marks to the
+                                        Vim sets the '[ and '] marks to the
                                         first and last line of the read.  This can be
                                         used to operate on the lines just read.
     *FileReadPre*
@@ -800,7 +799,7 @@ Names are case-insensitive.
                                         the option. Similarly |v:option_oldglobal| is
                                         only set when |:set| or |:setglobal| was used.
 
-                                        Note that when setting a |global-local| string
+                                        When setting a |global-local| string
                                         option with |:set|, then |v:option_old| is the
                                         old global value. However, for all other kinds
                                         of options (local string options, global-local
@@ -815,7 +814,7 @@ Names are case-insensitive.
                                         options, create the directory if it doesn't
                                         exist yet.
 
-                                        Note: Do not reset the same option during this
+                                        Do not reset the same option during this
                                         autocommand, that may break plugins. You can
                                         always use |:noautocmd| to prevent triggering
                                         OptionSet.
@@ -864,7 +863,7 @@ Names are case-insensitive.
                                         <amatch> is equal to the {serverid} from which
                                         the reply was sent, and <afile> is the actual
                                         reply string.
-                                        Note that even if an autocommand is defined,
+                                        Even if an autocommand is defined,
                                         the reply should be read with |remote_read()|
                                         to consume it.
     *SessionLoadPost*
@@ -989,7 +988,7 @@ Names are case-insensitive.
                                         was defined).
                                         Not triggered when there is typeahead or when
                                         an operator is pending.
-                                        Note: Cannot be skipped with `:noautocmd`.
+                                        Cannot be skipped with `:noautocmd`.
                                         Careful: This is triggered very often, don't
                                         do anything that the user does not expect or
                                         that is slow.
@@ -1085,7 +1084,7 @@ Names are case-insensitive.
                                         If the window is for another buffer, Vim
                                         executes the BufEnter autocommands after the
                                         WinEnter autocommands.
-                                        Note: For split and tabpage commands the
+                                        For split and tabpage commands the
                                         WinEnter event is triggered after the split
                                         or tab command but before the file is loaded.
 
@@ -1178,7 +1177,7 @@ The pattern is interpreted like mostly used in file names:
         [ch]    matches 'c' or 'h'
         [^ch]   match any character but 'c' and 'h'
 
-Note that for all systems the '/' character is used for path separator (even
+For all systems the '/' character is used for path separator (even
 Windows). This was done because the backslash is difficult to use in a pattern
 and to make the autocommands portable across different systems.
 
@@ -1235,7 +1234,7 @@ simply use the special string instead of the pattern.  Examples:
     :au * <buffer>                   " list buffer-local autocommands for
                                      " current buffer
 
-Note that when an autocommand is defined for the current buffer, it is stored
+When an autocommand is defined for the current buffer, it is stored
 with the buffer number.  Thus it uses the form "<buffer=12>", where 12 is the
 number of the current buffer.  You will see this when listing autocommands,
 for example.
@@ -1246,7 +1245,7 @@ as follows:
     :if exists("#CursorHold#<buffer>") | ... | endif    " for current buffer
 
 When a buffer is wiped out its buffer-local autocommands are also gone, of
-course.  Note that when deleting a buffer, e.g., with ":bdel", it is only
+course.  When deleting a buffer, e.g., with ":bdel", it is only
 unlisted, the autocommands are still present.  In order to see the removal of
 buffer-local autocommands:
     :set verbose=6
@@ -1281,7 +1280,7 @@ buffer.
         💛The group name "end" is reserved (also in uppercase).💛
         The group name is case sensitive.
 
- Note that this is different from the event name!
+ This is different from the event name!
 
 *:aug* *:augroup*
 :aug[roup] {name}
@@ -1333,7 +1332,7 @@ Example:
         or when Vim has executed the wrong autocommands (e.g.,
         the file pattern match was wrong).
 
-        Note that the 'eventignore' option applies here too.
+        The 'eventignore' option applies here too.
         Events listed in this option
         will not cause any commands to be executed.
 
@@ -1380,7 +1379,7 @@ Example:
                 doautoall syntaxset FileType
                 一旦FileType被触发, syntaxset这个group也随之触发
 
-        Note that [fname] is used to
+        [fname] is used to
                 select the autocommands,
                 not the buffers to which they are applied.
         Example:
@@ -1421,7 +1420,7 @@ FileWriteCmd    FileWritePre    FileWritePost            any other file write
         the other events are not triggered.
         |Cmd-event|
 
-        Note that the *WritePost commands should undo any changes to the buffer that were caused by
+        The *WritePost commands should undo any changes to the buffer that were caused by
         the *WritePre commands;
         otherwise,
         writing the file will have the side effect of changing the buffer.
@@ -1616,7 +1615,7 @@ It is recommended that your first autocommand be used for all files by using
 here for any settings, and if there is another matching autocommand it will
 override these.  But if there is no other matching autocommand, then at least
 your default settings are recovered (if entering this file from another for
-which autocommands did match).  Note that "*" will also match files starting
+which autocommands did match).  "*" will also match files starting
 with ".", unlike Unix shells.
 
 *autocmd-searchpat*
@@ -1694,7 +1693,7 @@ with ".", unlike Unix shells.
 11. Disabling autocommands                              *autocmd-disable*
 
         To disable autocommands for some time use the 'eventignore' option.
-        Note that this may cause unexpected behavior,
+        This may cause unexpected behavior,
         make sure you restore 'eventignore' afterwards,
         using a |:try| block with |:finally|.
 
@@ -1709,7 +1708,7 @@ with ".", unlike Unix shells.
         This will write the file without triggering the autocommands defined by
         the gzip plugin.
 
-        Note that some autocommands are not triggered right away,
+        Some autocommands are not triggered right away,
         but only later.
         This specifically applies to |CursorMoved| and |TextChanged|.
 

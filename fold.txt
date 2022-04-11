@@ -35,15 +35,15 @@ There are six methods to select folds:
 
 MANUAL                                          *fold-manual*
 
-                Use commands to manually define the fold regions.
-                This can also be used by a script that parses text to find folds.
-                The level of a fold is only defined by its nesting.
-                To increase the fold level of a fold for a range of lines,
-                define a fold inside it that has the same lines.
+        Use commands to manually define the fold regions.
+        This can also be used by a script that parses text to find folds.
+        The level of a fold is only defined by its nesting.
+        To increase the fold level of a fold for a range of lines,
+        define a fold inside it that has the same lines.
 
-                The manual folds are lost when you abandon the file.
-                To save the folds use the |:mkview| command.
-                The view can be restored later with |:loadview|.
+        The manual folds are lost when you abandon the file.
+        To save the folds use the |:mkview| command.
+        The view can be restored later with |:loadview|.
 
 INDENT                                          *fold-indent*
 
@@ -92,7 +92,7 @@ EXPR                                            *fold-expr*
         This does the same:
                 :set foldexpr=getline(v:lnum-1)=~'^\\s*$'&&getline(v:lnum)=~'\\S'?'>1':1
 
-        Note that backslashes must be used to escape characters that ":set" handles differently (space,
+        Backslashes must be used to escape characters that ":set" handles differently (space,
         backslash,
         double quote,
         etc.,
@@ -158,7 +158,7 @@ EXPR                                            *fold-expr*
         However, this won't work for single line comments, strings, etc.
 
         |foldlevel()| can be useful to compute a fold level relative to a previous fold level.
-        But note that foldlevel() may return -1 if the level is not known yet.
+        But Foldlevel() may return -1 if the level is not known yet.
         And it returns the level at the start of the line,
         while a fold might end in that line.
 
@@ -205,15 +205,22 @@ other diff windows, so that the same text is visible.
 
 MARKER                                          *fold-marker*
 
-    Markers in the text tell where folds start and end.  This allows you to
-    precisely specify the folds.  This will allow deleting and putting a fold,
-    without the risk of including the wrong lines.  The 'foldtext' option is
-    normally set such that the text before the marker shows up in the folded line.
+    Markers in the text tell where folds start and end.
+    This allows you to precisely specify the folds.
+    This will allow deleting and
+    putting a fold,
+    without the risk of including the wrong lines.
+
+    The 'foldtext' option is normally set
+    such that the text before the marker shows up in the folded line.
     This makes it possible to give a name to the fold.
 
-    Markers can have a level included, or can use matching pairs.  Including a
-    level is easier, you don't have to add end markers and avoid problems with
-    non-matching marker pairs.  Example:
+    Markers can have a level included,
+                    or can use matching pairs.
+    Including a level is easier,
+        you don't have to add end markers and
+        avoid problems with non-matching marker pairs.
+    Example:
 
             /* global variables {{{1 */
             int varA, varB;
@@ -225,8 +232,9 @@ MARKER                                          *fold-marker*
             /* funcB() {{{2 */
             void funcB() {}
 
-    A fold starts at a "{{{" marker.  The following number specifies the fold
-    level.  What happens depends on the difference between the current fold level
+    A fold starts at a "{{{" marker.
+    The following number specifies the fold  level.
+    What happens depends on the difference between the current fold level
     and the level given by the marker:
     1. If a marker with the same fold level is encountered, the previous fold
        ends and another fold with the same level starts.
@@ -237,7 +245,7 @@ MARKER                                          *fold-marker*
     The number indicates the fold level.  A zero cannot be used (a marker with
     level zero is ignored).  You can use "}}}" with a digit to indicate the level
     of the fold that ends.  The fold level of the following line will be one less
-    than the indicated level.  Note that Vim doesn't look back to the level of the
+    than the indicated level.  Vim doesn't look back to the level of the
     matching marker (that would take too much time).  Example:
 
 
@@ -576,7 +584,7 @@ FOLDTEXT                                                *fold-foldtext*
     it is filled with the character specified by
     'fillchars'.
 
-    Note that backslashes need to be used for characters that the ":set" command handles differently:
+    Backslashes need to be used for characters that the ":set" command handles differently:
     Space,
     backslash and
     double-quote.

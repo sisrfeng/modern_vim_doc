@@ -32,7 +32,7 @@ An alternate file name is remembered for each window.
 
 *:keepalt* *:keepa*
 :keepalt {cmd}          Execute {cmd} while keeping the current alternate file
-                        name.  Note that commands invoked indirectly (e.g.,
+                        name.  Commands invoked indirectly (e.g.,
                         with a function) may still set the alternate file
                         name.
 
@@ -390,7 +390,7 @@ Finds files:
         /usr/include/types.h
         /usr/include/sys/types.h
         /usr/inc/old/types.h
-Note that the path with "/sys" is included because it does not need to match
+The path with "/sys" is included because it does not need to match
 "/inc".  Thus it's like matching "/usr/inc*/*/*...", not
 "/usr/inc*/inc*/inc*".
 
@@ -449,7 +449,7 @@ Note that the path with "/sys" is included because it does not need to match
         then names are to be separated with line  breaks.
     When the result is a |List| then each item is used as a name.  Line
     breaks also separate names.
-    Note that such expressions are only supported in places where a filename is
+    Such expressions are only supported in places where a filename is
     expected as an argument to an Ex-command.
 
 *++opt* *[++opt]*
@@ -490,17 +490,17 @@ appear before any |+cmd| argument.
 The argument of "++bad=" specifies what happens with characters that can't be
 converted and illegal bytes.  It can be one of three things:
     ++bad=X      A single-byte character that replaces each bad character.
-    ++bad=keep   Keep bad characters without conversion.  Note that this may
+    ++bad=keep   Keep bad characters without conversion.  This may
                  result in illegal bytes in your text!
     ++bad=drop   Remove the bad characters.
 
 The default is like "++bad=?": Replace each bad character with a question
 mark.  In some places an inverted question mark is used (0xBF).
 
-Note that not all commands use the ++bad argument, even though they do not
+Not all commands use the ++bad argument, even though they do not
 give an error when you add it.  E.g. |:write|.
 
-Note that when reading, the 'fileformat' and 'fileencoding' options will be
+When reading, the 'fileformat' and 'fileencoding' options will be
 set to the used format.  When writing this doesn't happen, thus a next write
 will use the old value of the option.  Same for the 'binary' option.
 
@@ -518,7 +518,7 @@ backslash.  Double the number of backslashes. >
         :edit  +/The\ book           file
         :edit  +/dir\ dirname\\      file
         :edit  +set\ dir=c:\\\\temp  file
-Note that in the last example the number of backslashes is halved twice: Once
+In the last example the number of backslashes is halved twice: Once
 for the "+cmd" argument and once for the ":set" command.
 
 *file-formats*
@@ -880,7 +880,7 @@ USING THE ARGUMENT LIST
                         occurred) becomes the current file.
                         {cmd} can contain '|' to concatenate several commands.
                         {cmd} must not change the argument list.
-                        Note: While this command is executing, the Syntax
+                        While this command is executing, the Syntax
                         autocommand event is disabled by adding it to
                         'eventignore'.  This considerably speeds up editing
                         each file.
@@ -905,7 +905,7 @@ flag is used for the ":substitute" command to avoid an error for files where
 ==============================================================================
 4. Writing                                      *writing* *save-file*
 
-Note: When the 'write' option is off, you are not able to write any file.
+When the 'write' option is off, you are not able to write any file.
 
 *:w* *:write*
 *E502* *E503* *E504* *E505*
@@ -920,7 +920,7 @@ Note: When the 'write' option is off, you are not able to write any file.
 :w[rite]! [++opt]       Like ":write", but forcefully write when 'readonly' is
                         set or there is another reason why writing was
                         refused.
-                        Note: This may change the permission and ownership of
+                        This may change the permission and ownership of
                         the file and break (symbolic) links.  Add the 'W' flag
                         to 'cpoptions' to avoid this.
 
@@ -965,7 +965,7 @@ used, for example, when the write fails and you want to try again later with
 ":w #".  This can be switched off by removing the 'A' flag from the
 'cpoptions' option.
 
-Note that the 'fsync' option matters here.  If it's set it may make writes
+The 'fsync' option matters here.  If it's set it may make writes
 slower (but safer).
 
 *:sav* *:saveas*
@@ -987,7 +987,7 @@ slower (but safer).
 WRITING WITH MULTIPLE BUFFERS                           *buffer-write*
 
 *:wa* *:wall*
-:wa[ll]     
+:wa[ll]
     Write all changed buffers.  Buffers without a file  name cause an error message.
     Buffers which are  readonly are not written.
 
@@ -1493,7 +1493,7 @@ Or, when starting gvim from a shell:
 
         gvim file.log -c "set buftype=nofile"
 
-Note that if a FileChangedShell autocommand is defined you will not get a
+If a FileChangedShell autocommand is defined you will not get a
 warning message or prompt.  The autocommand is expected to handle this.
 
 There is no warning for a directory (e.g., with |netrw-browse|).  But you do
@@ -1586,11 +1586,11 @@ There are three different types of searching:
 1) Downward search:                                     *starstar*
    Downward search uses the wildcards '*', '**' and possibly others
    supported by your operating system.  '*' and '**' are handled inside Vim,
-   so they work on all operating systems.  Note that "**" only acts as a
+   so they work on all operating systems.  "**" only acts as a
    special wildcard when it is at the start of a name.
 
    The usage of '*' is quite simple: It matches 0 or more characters.  In a
-   search pattern this would be ".*".  Note that the "." is not used for file
+   search pattern this would be ".*".  The "." is not used for file
    searching.
 
    '**' is more sophisticated:
@@ -1671,7 +1671,7 @@ There are three different types of searching:
         /u/user_x/**
    This searches the same directories, but in a different order.
 
-   Note that completion for ":find", ":sfind", and ":tabfind" commands do not
+   Completion for ":find", ":sfind", and ":tabfind" commands do not
    currently work with 'path' items that contain a URL or use the double star
    with depth limiter (/usr/**2) or upward search (;) notations.
 

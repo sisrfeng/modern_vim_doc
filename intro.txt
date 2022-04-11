@@ -197,235 +197,262 @@ Vim     Nvim is based on Vim.  https://www.vim.org/
 ==============================================================================
 Notation                                                *notation*
 
-When syntax highlighting is used to read this, text that is not typed
-literally is often highlighted with the Special group.  These are items in [],
-{} and <>, and CTRL-X.
+    When syntax highlighting is used to read this, text that is not typed
+    literally is often highlighted with the Special group.  These are items in [],
+    {} and <>, and CTRL-X.
 
-Vim uses all possible characters in commands.  Sometimes the [], {}
-and <> are part of what you type, the context should make this clear.
+    Vim uses all possible characters in commands.  Sometimes the [], {}
+    and <> are part of what you type, the context should make this clear.
 
 
-[]              Characters in square brackets are optional.
+    []              Characters in square brackets are optional.
 
-*count* *[count]*
-[count]         An optional number that may precede the command to multiply
-                or iterate the command.  If no number is given, a count of one
-                is used, unless otherwise noted.  In this manual the
-                [count] is not mentioned in the description of the command,
-                but only in the explanation.  This was done to make the
-                commands easier to look up.  If the 'showcmd' option is on,
-                the (partially) entered count is shown at the bottom of the
-                window.  You can use <Del> to erase the last digit (|N<Del>|).
+    *count* *[count]*
+    [count]         An optional number that may precede the command to multiply
+                    or iterate the command.  If no number is given, a count of one
+                    is used, unless otherwise noted.  In this manual the
+                    [count] is not mentioned in the description of the command,
+                    but only in the explanation.  This was done to make the
+                    commands easier to look up.  If the 'showcmd' option is on,
+                    the (partially) entered count is shown at the bottom of the
+                    window.  You can use <Del> to erase the last digit (|N<Del>|).
 
-*[quotex]*
-["x]            An optional register designation where text can be stored.
-                See |registers|.  The x is a single character between 'a' and
-                'z' or 'A' and 'Z' or '"', and in some cases (with the put
-                command) between '0' and '9', '%', '#', or others.  The
-                uppercase and lowercase letter designate the same register,
-                but the lowercase letter is used to overwrite the previous
-                register contents, while the uppercase letter is used to
-                append to the previous register contents.  Without the ""x" or
-                with """" the stored text is put into the unnamed register.
+    *[quotex]*
+    ["x]            An optional register designation where text can be stored.
+                    See |registers|.  The x is a single character between 'a' and
+                    'z' or 'A' and 'Z' or '"', and in some cases (with the put
+                    command) between '0' and '9', '%', '#', or others.  The
+                    uppercase and lowercase letter designate the same register,
+                    but the lowercase letter is used to overwrite the previous
+                    register contents, while the uppercase letter is used to
+                    append to the previous register contents.  Without the ""x" or
+                    with """" the stored text is put into the unnamed register.
 
-*{}*
-{}              Curly braces denote parts of the command which must appear,
-                but which can take a number of different values.  The
-                differences between Vim and Vi are also given in curly braces
-                (this will be clear from the context).
+    *{}*
+    {}              Curly braces denote parts of the command which must appear,
+                    but which can take a number of different values.  The
+                    differences between Vim and Vi are also given in curly braces
+                    (this will be clear from the context).
 
-*{char1-char2}*
-{char1-char2}   A single character from the range char1 to char2.  For
-                example: {a-z} is a lowercase letter.  Multiple ranges may be
-                concatenated.  For example, {a-zA-Z0-9} is any alphanumeric
-                character.
+    *{char1-char2}*
+    {char1-char2}   A single character from the range char1 to char2.  For
+                    example: {a-z} is a lowercase letter.  Multiple ranges may be
+                    concatenated.  For example, {a-zA-Z0-9} is any alphanumeric
+                    character.
 
-*{motion}* *movement*
-{motion}        A command that moves the cursor.  These are explained in
-                |motion.txt|.  Examples:
-                        w               to start of next word
-                        b               to begin of current word
-                        4j              four lines down
-                        /The<CR>        to next occurrence of "The"
-                This is used after an |operator| command to move over the text
-                that is to be operated upon.
-                - If the motion includes a count and the operator also has a
-                  count, the two counts are multiplied.  For example: "2d3w"
-                  deletes six words.
-                - The motion can be backwards, e.g. "db" to delete to the
-                  start of the word.
-                - The motion can also be a mouse click.  The mouse is not
-                  supported in every terminal though.
-                - The ":omap" command can be used to map characters while an
-                  operator is pending.
-                - Ex commands can be used to move the cursor.  This can be
-                  used to call a function that does some complicated motion.
-                  The motion is always charwise exclusive, no matter
-                  what ":" command is used.  This means it's impossible to
-                  include the last character of a line without the line break
-                  (unless 'virtualedit' is set).
-                  If the Ex command changes the text before where the operator
-                  starts or jumps to another buffer the result is
-                  unpredictable.  It is possible to change the text further
-                  down.  Jumping to another buffer is possible if the current
-                  buffer is not unloaded.
+    *{motion}* *movement*
+    {motion}        A command that moves the cursor.  These are explained in
+                    |motion.txt|.  Examples:
+                            w               to start of next word
+                            b               to begin of current word
+                            4j              four lines down
+                            /The<CR>        to next occurrence of "The"
+                    This is used after an |operator| command to move over the text
+                    that is to be operated upon.
+                    - If the motion includes a count and the operator also has a
+                      count, the two counts are multiplied.  For example: "2d3w"
+                      deletes six words.
+                    - The motion can be backwards, e.g. "db" to delete to the
+                      start of the word.
+                    - The motion can also be a mouse click.  The mouse is not
+                      supported in every terminal though.
+                    - The ":omap" command can be used to map characters while an
+                      operator is pending.
+                    - Ex commands can be used to move the cursor.  This can be
+                      used to call a function that does some complicated motion.
+                      The motion is always charwise exclusive, no matter
+                      what ":" command is used.  This means it's impossible to
+                      include the last character of a line without the line break
+                      (unless 'virtualedit' is set).
+                      If the Ex command changes the text before where the operator
+                      starts or jumps to another buffer the result is
+                      unpredictable.  It is possible to change the text further
+                      down.  Jumping to another buffer is possible if the current
+                      buffer is not unloaded.
 
-*{Visual}*
-{Visual}        A selected text area.  It is started with the "v", "V", or
-                CTRL-V command, then any cursor movement command can be used
-                to change the end of the selected text.
-                This is used before an |operator| command to highlight the
-                text that is to be operated upon.
-                See |Visual-mode|.
+    *{Visual}*
+    {Visual}        A selected text area.  It is started with the "v", "V", or
+                    CTRL-V command, then any cursor movement command can be used
+                    to change the end of the selected text.
+                    This is used before an |operator| command to highlight the
+                    text that is to be operated upon.
+                    See |Visual-mode|.
 
-*<character>*
-<character>     A special character from the table below, optionally with  modifiers.
-                Or a single ASCII character with modifiers.
+    *<character>*
+    <character>     A special character from the table below, optionally with  modifiers.
+                    Or a single ASCII character with modifiers.
 
-*'character'*
-'c'             A single ASCII character.
+    *'character'*
+    'c'             A single ASCII character.
 
-*CTRL-{char}*
-CTRL-{char}     {char} typed as a control character; that is, typing {char}
-                while holding the CTRL key down.  The case of {char} does not
-                matter; thus CTRL-A and CTRL-a are equivalent.  But on some
-                terminals, using the SHIFT key will produce another code,
-                don't use it then.
+    *CTRL-{char}*
+    CTRL-{char}     {char} typed as a control character; that is, typing {char}
+                    while holding the CTRL key down.  The case of {char} does not
+                    matter; thus CTRL-A and CTRL-a are equivalent.  But on some
+                    terminals, using the SHIFT key will produce another code,
+                    don't use it then.
 
-*'option'*
-'option'        An option, or parameter, that can be set to a value, is
-                enclosed in single quotes.  See |options|.
+    *'option'*
+    'option'        An option, or parameter, that can be set to a value, is
+                    enclosed in single quotes.  See |options|.
 
-*quotecommandquote*
-"command"       A reference to a command that you can type is enclosed in
-                double quotes.
-`command`       New style command, this distinguishes it from other quoted
-                text and strings.
+    *quotecommandquote*
+    "command"       A reference to a command that you can type is enclosed in
+                    double quotes.
+    `command`       New style command, this distinguishes it from other quoted
+                    text and strings.
 
-*key-notation* *key-codes* *keycodes*
-These names for keys are used in the documentation.
-They can also be used  with the ":map" command.
+    *key-notation* *key-codes* *keycodes*
+    These names for keys are used in the documentation.
+    They can also be used  with the ":map" command.
 
-notation        meaning             equivalent  decimal value(s)
------------------------------------------------------------------------
-vim里i_ctrl_v后ctrl+j, 得到 , 而非^J
-<Nul>           zero                    CTRL-@    0 (stored as 10)      *<Nul>*
-<BS>            backspace               CTRL-H    8                     *backspace*
-<Tab>           tab                     CTRL-I    9                     *tab* *Tab*
+    notation        meaning                    equivalent  decimal value(s)
+    -----------------------------------------------------------------------
+    vim里i_ctrl_v后ctrl+j, 得到 , 而非^J
+    <Nul>           zero                       CTRL-@    0 (stored as 10)      *<Nul>*
+    <BS>            backspace                  CTRL-H    8                     *backspace*
+    <Tab>           tab                        CTRL-I    9                     *tab* *Tab*
 
-<NL>            linefeed                CTRL-J   10 (used for <Nul>)    *linefeed*
-NL(没带括号) 等于<EOL>, depends on 'fileformat' ?
+    <NL>            linefeed                   CTRL-J   10 (used for <Nul>)    *linefeed*
+    NL(没带括号) 等于<EOL>, depends on 'fileformat' ?
 
-vim里i_ctrl_v后ctrl+m或enter, 得到 :
-<CR>            carriage return         CTRL-M   13                     *carriage-return*
-<Return>        same as <CR>                                            *<Return>*
-<Enter>         same as <CR>                                            *<Enter>*
+    vim里i_ctrl_v后ctrl+m或enter, 得到 :
+    <CR>            carriage return            CTRL-M   13                     *carriage-return*
+    <Return>        same as <CR>                                               *<Return>*
+    <Enter>         same as <CR>                                               *<Enter>*
 
-<Esc>           escape                  CTRL-[   27                     *escape* *<Esc>*
-<Space>         space                            32                     *space*
+    <Esc>           escape                     CTRL-[   27                     *escape* *<Esc>*
+    <Space>         space                               32                     *space*
 
-<lt>            less-than               <        60                     *<lt>*
-<Bslash>        backslash               \        92                     *backslash* *<Bslash>*
-没有<slash>  不需要?
+    <lt>            less-than                  <        60                     *<lt>*
+    <Bslash>        backslash                  \        92                     *backslash* *<Bslash>*
+    没有<slash>  不需要?
 
-<Bar>           vertical bar            |       124                     *<Bar>*
-<Del>           delete                          127
-<CSI>           command sequence intro  ALT-Esc 155                     *<CSI>*
-<xCSI>          CSI when typed in the GUI                               *<xCSI>*
-能插入
-*<EOL>*           end-of-line (can be <CR>, <NL> or <CR><NL>,
-                            depends on system and 'fileformat')
-<Ignore>        cancel wait-for-character               *<Ignore>*
-<NOP>           no-op: do nothing (useful in mappings)  *<Nop>*
+    <Bar>           vertical bar               |       124                     *<Bar>*
+    <Del>           delete                             127
+    <CSI>           command sequence intro     ALT-Esc 155                     *<CSI>*
+    <xCSI>          CSI when typed in the GUI                                  *<xCSI>*
+    能插入
+    *<EOL>*           end-of-line              (can be <CR>, <NL> or <CR><NL>,
+                                                depends on system and 'fileformat')
 
-<Up>            cursor-up                       *cursor-up* *cursor_up*
-<Down>          cursor-down                     *cursor-down* *cursor_down*
-<Left>          cursor-left                     *cursor-left* *cursor_left*
-<Right>         cursor-right                    *cursor-right* *cursor_right*
-<S-Up>          shift-cursor-up
-<S-Down>        shift-cursor-down
-<S-Left>        shift-cursor-left
-<S-Right>       shift-cursor-right
-<C-Left>        control-cursor-left
-<C-Right>       control-cursor-right
-<F1> - <F12>    function keys 1 to 12           *function_key* *function-key*
-<S-F1> - <S-F12> shift-function keys 1 to 12    *<S-F1>*
-<Help>          help key
-<Undo>          undo key
-<Insert>        insert key
-<Home>          home                            *home*
-<End>           end                             *end*
-<PageUp>        page-up                         *page_up* *page-up*
-<PageDown>      page-down                       *page_down* *page-down*
-<kUp>           keypad cursor-up                *keypad-cursor-up*
-<kDown>         keypad cursor-down              *keypad-cursor-down*
-<kLeft>         keypad cursor-left              *keypad-cursor-left*
-<kRight>        keypad cursor-right             *keypad-cursor-right*
-<kHome>         keypad home (upper left)        *keypad-home*
-<kEnd>          keypad end (lower left)         *keypad-end*
-<kOrigin>       keypad origin (middle)          *keypad-origin*
-<kPageUp>       keypad page-up (upper right)    *keypad-page-up*
-<kPageDown>     keypad page-down (lower right)  *keypad-page-down*
-<kDel>          keypad delete                   *keypad-delete*
-<kPlus>         keypad +                        *keypad-plus*
-<kMinus>        keypad -                        *keypad-minus*
-<kMultiply>     keypad *                        *keypad-multiply*
-<kDivide>       keypad /                        *keypad-divide*
-<kPoint>        keypad .                        *keypad-point*
-<kComma>        keypad ,                        *keypad-comma*
-<kEqual>        keypad =                        *keypad-equal*
-<kEnter>        keypad Enter                    *keypad-enter*
-<k0> - <k9>     keypad 0 to 9                   *keypad-0* *keypad-9*
 
-<S-…>           shift-key                       *shift* *<S-*
-<C-…>           control-key                     *control* *ctrl* *<C-*
-<M-…>           alt-key or meta-key             *META* *ALT* *<M-*
-<A-…>           same as <M-…>                   *<A-*
-<D-…>           command-key or "super" key      *<D-*
------------------------------------------------------------------------
+    <Up>            *cursor-up* *cursor_up*
+    <Down>          *cursor-down* *cursor_down*
+    <Left>          *cursor-left* *cursor_left*
+    <Right>         *cursor-right* *cursor_right*
+
+    <S-Up>          shift-cursor-up
+    <S-Down>        shift-cursor-down
+    <S-Left>        shift-cursor-left
+    <S-Right>       shift-cursor-right
+
+    <C-Up>          没提及
+    <C-Down>        没提及
+    <C-Left>        control-cursor-left
+    <C-Right>       control-cursor-right
+
+    <F1> - <F12>     function keys 1 to 12           *function_key* *function-key*
+    <S-F1> - <S-F12> shift-function keys 1 to 12    *<S-F1>*
+
+    <Insert>        insert key
+    <Home>          *home*
+    <End>           *end*
+    <PageUp>        *page_up* *page-up*
+    <PageDown>      *page_down* *page-down*
+
+    keypad的:
+    - If numlock is on
+          the |TUI| receives plain ASCII values,
+          so mapping <k0>,  <k1>, ..., <k9> and <kPoint> will not work.
+    <kUp>           *keypad-cursor-up*
+    <kDown>         *keypad-cursor-down*
+    <kLeft>         *keypad-cursor-left*
+    <kRight>        *keypad-cursor-right*
+    <kHome>         *keypad-home*
+    <kEnd>          *keypad-end*
+    <kOrigin>       keypad origin (middle)          *keypad-origin*
+    <kPageUp>       keypad page-up (upper right)    *keypad-page-up*
+    <kPageDown>     keypad page-down (lower right)  *keypad-page-down*
+    <kDel>          keypad delete                   *keypad-delete*
+    <kPlus>         keypad +                        *keypad-plus*
+    <kMinus>        keypad -                        *keypad-minus*
+    <kMultiply>     keypad *                        *keypad-multiply*
+    <kDivide>       keypad /                        *keypad-divide*
+    <kPoint>        keypad .                        *keypad-point*
+    <kComma>        keypad ,                        *keypad-comma*
+    <kEqual>        keypad =                        *keypad-equal*
+    <kEnter>        keypad Enter                    *keypad-enter*
+    <k0> - <k9>     keypad 0 to 9                   *keypad-0* *keypad-9*
+
+
+    <S-…>           shift-key                       *shift* *<S-*
+    <C-…>           control-key                     *control* *ctrl* *<C-*
+
+    <M-…>           alt-key or meta-key             *META* *ALT* *<M-*
+    <A-…>           same as <M-…>                   *<A-*
+
+    only available in MacVim?
+    <D-…>           command-key or "super" key      *<D-*
+
+    <Ignore>        cancel wait-for-character               *<Ignore>*
+    <NOP>           no-op: do nothing (useful in mappings)  *<Nop>*
+
+    - Availability of some keys (<Help>, <S-Right>, …) depends on the UI or host  terminal.
+    <Help>          help key
+    <Undo>          undo key
+
 
 Note:
 
-- Availability of some keys (<Help>, <S-Right>, …) depends on the UI or host  terminal.
-- If numlock is on the |TUI| receives plain ASCII values, so mapping <k0>,
-  <k1>, ..., <k9> and <kPoint> will not work.
-- Nvim supports mapping multibyte chars with modifiers such as `<M-ä>`.
-  Which  combinations actually work depends on the the UI or host terminal.
-- When a key is pressed using a meta or alt modifier and
-  no mapping exists  for that keypress,
-  Nvim behaves as though 🔑<Esc> was pressed before the key.🔑
 
-*<>*
-Examples are often given in the <> notation.
-Sometimes this is just to make  clear what you need to type,
-but often it can be typed literally, e.g., with  the ":map" command.  The rules are:
- 1.  Printable characters are typed directly, except :
-         Backslash is represented with "\\",
-         or "<Bslash>".
+    - Nvim supports mapping multibyte chars with modifiers such as `<M-ä>`.
+          Which  combinations actually work depends on the the UI or host terminal.
+    - When a key is pressed using a meta or alt modifier and
+          no mapping exists  for that keypress,
+          Nvim behaves as though `<Esc> was pressed before the key.`
 
-         Literal "<" is represented with "\<" or "<lt>".
-         When there is no  confusion possible
-             "<" can be used directly.
- 4.  "<key>" means the special key typed (see the table above).  Examples:
-           <Esc>                Escape key
-           <C-G>                CTRL-G
-           <Up>                 cursor up key
-           <C-LeftMouse>        Control- left mouse click
-           <S-F11>              Shifted function key 11
-           <M-a>                Meta- a  ('a' with bit 8 set)
-           <M-A>                Meta- A  ('A' with bit 8 set)
 
-The <> notation uses <lt> to escape the special meaning of key names.
-when 'cpoptions' does not include the 'B' flag.
-    Using a  backslash also works
+    *<>* notation.
+     1.   "<key>" means the special (non-printable?) key typed (see the table above).  Examples:
+               <Esc>                Escape key
+               <C-G>                CTRL-G
+               <Up>                 cursor up key
+               <C-LeftMouse>        Control- left mouse click
+               <S-F11>              Shifted function key 11
 
-    Examples to get six characters 💦<Home>💦:
-            :imap <C-l> \<Home>
-            :imap <C-l> <lt>Home>
+               <M-a>                Meta- a  ('a' with bit 8 set)
+               <M-A>                Meta- A  ('A' with bit 8 set,单个字节里的最高位设为1?)
+                   `nnor <M-A> :echom 'shift alt a'<cr>`
+                   `nnor <M-a> :echom 'alt a'<cr>`
 
-    To get a literal "<lt>" in a mapping:
+     2.  Printable characters are typed directly, 例如:
+                    `:imap <C-L>   l`
+         例外 :
+             Backslash 
+                    ('cpoptions'取默认值时, `\`在map时不用于escape )
+                     插入`\` 
+                         `:imap <C-L> \` 
+                         或
+                         `:imap <C-L> <Bslash>`   
+                     represented with "\\", 
+                     (只在cpoptions不包含B时成立?否则,请看:
+                             `:imap <C-L> \\`
+                         插入`\\` 
 
-            :map <C-L> <lt>lt>
+             Literal "<": 
+                 When there is no confusion:
+                     "<" can be used directly.
+                    `:imap <C-L> <hi>`
+                    `:imap <C-L> < C-M>`  插入 `< C-M>`
+                 " uses <lt> to escape the special meaning of key names: 
+                    `:imap <C-L> <lt>C-M>`  插入<C-M>
+                    `:imap <C-l> <lt>Home>`  插入 `<Home>`:
+                    `:imap <C-L>   <lt>lt>`  `插入<lt>`
+
+                    `:imap <C-L> \<C-M>` 会换行
+        ('cpoptions'取默认值时, `\`在map时不用于escape )
+                    `:imap <C-L> \< C-M>`  插入 `\< C-M>`
 
 ==============================================================================
 Modes, introduction                             *vim-modes-intro* *vim-modes*

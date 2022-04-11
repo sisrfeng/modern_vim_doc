@@ -1042,16 +1042,20 @@ dictwatcherdel({dict}, {pattern}, {callback})             *dictwatcherdel()*
         order for the watcher to be successfully deleted.
 
 *did_filetype()*
-did_filetype()  Returns |TRUE| when autocommands are being executed and the
-        FileType event has been triggered at least once.  Can be used
-        to avoid triggering the FileType event again in the scripts
-        that detect the file type. |FileType|
-        Returns |FALSE| when `:setf FALLBACK` was used.
-        When editing another file, the counter is reset, thus this
-        really checks if the FileType event has been triggered for the
-        current buffer.  This allows an autocommand that starts
-        editing another buffer to set 'filetype' and load a syntax
-        file.
+
+    Returns |TRUE| when
+    autocommands are being executed and
+    the FileType event has been triggered at least once.
+
+    Can be used to avoid triggering the FileType event again in the scripts that detect the file type.
+
+    Returns |FALSE|
+    when `:setf FALLBACK` was used.
+
+    When editing another file,
+        It is reset,
+        thus this really checks if the FileType event has been triggered for the current buffer.
+        This allows an autocommand that starts editing another buffer to set 'filetype' and load a syntax file.
 
 diff_filler({lnum})                 *diff_filler()*
         Returns the number of filler lines above line {lnum}.
@@ -3160,8 +3164,8 @@ histadd({history}, {item})              *histadd()*
             GetPattern()->histadd('search')
 
 histdel({history} [, {item}])               *histdel()*
-        Clear {history}, i.e. delete all its entries.  See |hist-names|
-        for the possible values of {history}.
+        Clear {history}, i.e. delete all its entries.
+        See |hist-names|  for the possible values of {history}.
 
         If the parameter {item} evaluates to a String,
             it is used as a  regular expression.
@@ -3176,21 +3180,20 @@ histdel({history} [, {item}])               *histdel()*
         otherwise FALSE  is returned.
 
         Examples:
-        Clear expression register history:
-            :call histdel("expr")
+            Clear expression register history:
+                `:call histdel("expr")`
 
-        Remove all entries starting with "*" from the search history:
-            :call histdel("/", '^\*')
+            Remove all entries starting with "*" from the search history:
+                `:call histdel("/", '^\*')`
 
-        The following three are equivalent:
-            :call histdel("search", histnr("search"))
-            :call histdel("search", -1)
-            :call histdel("search", '^'.histget("search", -1).'$')
+            The following three are equivalent:
+                :call histdel("search", histnr("search"))
+                :call histdel("search", -1)
+                :call histdel("search", '^'.histget("search", -1).'$')
 
-        To delete the last search pattern and use the last-but-one for
-        the "n" command and 'hlsearch':
-            :call histdel("search", -1)
-            :let @/ = histget("search", -1)
+            To delete the last search pattern and use the last-but-one for  the "n" command and 'hlsearch':
+                :call histdel("search", -1)
+                :let @/ = histget("search", -1)
 
         用作method:
             GetHistory()->histdel()
@@ -3502,8 +3505,7 @@ invert({expr})                      *invert()*
             :let bits = bits->invert()
 
 isdirectory({directory})                *isdirectory()*
-        The result is a Number, which is |TRUE| when a directory
-        with the name {directory} exists.  If {directory} doesn't
+        The result is a Number, which is |TRUE| when a directory  with the name {directory} exists.  If {directory} doesn't
         exist, or isn't a directory, the result is |FALSE|.  {directory}
         is any expression, which is used as a String.
 

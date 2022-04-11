@@ -22,111 +22,126 @@ SETTINGS                                                       *rust-settings*
 This plugin has a few variables you can define in your vimrc that change the
 behavior of the plugin.
 
-                                                                *g:rustc_path*
+*g:rustc_path*
 g:rustc_path~
 	Set this option to the path to rustc for use in the |:RustRun| and
-	|:RustExpand| commands. If unset, "rustc" will be located in $PATH: >
-	    let g:rustc_path = $HOME."/bin/rustc"
-<
+	|:RustExpand| commands. If unset, "rustc" will be located in $PATH:
 
-                                                  *g:rustc_makeprg_no_percent*
+	    let g:rustc_path = $HOME."/bin/rustc"
+
+
+*g:rustc_makeprg_no_percent*
 g:rustc_makeprg_no_percent~
 	Set this option to 1 to have 'makeprg' default to "rustc" instead of
-	"rustc %": >
+	"rustc %":
+
 	    let g:rustc_makeprg_no_percent = 1
-<
 
-                                                              *g:rust_conceal*
+
+*g:rust_conceal*
 g:rust_conceal~
-	Set this option to turn on the basic |conceal| support: >
-	    let g:rust_conceal = 1
-<
+	Set this option to turn on the basic |conceal| support:
 
-                                                     *g:rust_conceal_mod_path*
+	    let g:rust_conceal = 1
+
+
+*g:rust_conceal_mod_path*
 g:rust_conceal_mod_path~
 	Set this option to turn on |conceal| for the path connecting token
-	"::": >
+	"::":
+
 	    let g:rust_conceal_mod_path = 1
-<
 
-                                                          *g:rust_conceal_pub*
+
+*g:rust_conceal_pub*
 g:rust_conceal_pub~
-	Set this option to turn on |conceal| for the "pub" token: >
-	    let g:rust_conceal_pub = 1
-<
+	Set this option to turn on |conceal| for the "pub" token:
 
-                                                     *g:rust_recommended_style*
+	    let g:rust_conceal_pub = 1
+
+
+*g:rust_recommended_style*
 g:rust_recommended_style~
         Set this option to enable vim indentation and textwidth settings to
         conform to style conventions of the rust standard library (i.e. use 4
         spaces for indents and sets 'textwidth' to 99). This option is enabled
-	by default. To disable it: >
-	    let g:rust_recommended_style = 0
-<
+	by default. To disable it:
 
-                                                                 *g:rust_fold*
+	    let g:rust_recommended_style = 0
+
+
+*g:rust_fold*
 g:rust_fold~
-	Set this option to turn on |folding|: >
+	Set this option to turn on |folding|:
+
 	    let g:rust_fold = 1
-<
-	Value		Effect ~
+
+	Value		Effect
 	0		No folding
 	1		Braced blocks are folded. All folds are open by
 			default.
 	2		Braced blocks are folded. 'foldlevel' is left at the
 			global value (all folds are closed by default).
 
-                                                  *g:rust_bang_comment_leader*
+*g:rust_bang_comment_leader*
 g:rust_bang_comment_leader~
 	Set this option to 1 to preserve the leader on multi-line doc comments
-	using the /*! syntax: >
-	    let g:rust_bang_comment_leader = 1
-<
+	using the /*! syntax:
 
-                                                 *g:ftplugin_rust_source_path*
+	    let g:rust_bang_comment_leader = 1
+
+
+*g:ftplugin_rust_source_path*
 g:ftplugin_rust_source_path~
 	Set this option to a path that should be prepended to 'path' for Rust
-	source files: >
-	    let g:ftplugin_rust_source_path = $HOME.'/dev/rust'
-<
+	source files:
 
-                                                       *g:rustfmt_command*
+	    let g:ftplugin_rust_source_path = $HOME.'/dev/rust'
+
+
+*g:rustfmt_command*
 g:rustfmt_command~
 	Set this option to the name of the 'rustfmt' executable in your $PATH. If
-	not specified it defaults to 'rustfmt' : >
+	not specified it defaults to 'rustfmt' :
+
 	    let g:rustfmt_command = 'rustfmt'
-<
-                                                       *g:rustfmt_autosave*
+
+*g:rustfmt_autosave*
 g:rustfmt_autosave~
 	Set this option to 1 to run |:RustFmt| automatically when saving a
-	buffer. If not specified it defaults to 0 : >
+	buffer. If not specified it defaults to 0 :
+
 	    let g:rustfmt_autosave = 0
-<
-                                                       *g:rustfmt_fail_silently*
+
+*g:rustfmt_fail_silently*
 g:rustfmt_fail_silently~
 	Set this option to 1 to prevent 'rustfmt' from populating the
-	|location-list| with errors. If not specified it defaults to 0: >
+	|location-list| with errors. If not specified it defaults to 0:
+
 	    let g:rustfmt_fail_silently = 0
-<
-                                                       *g:rustfmt_options*
+
+*g:rustfmt_options*
 g:rustfmt_options~
 	Set this option to a string of options to pass to 'rustfmt'. The
 	write-mode is already set to 'overwrite'. If not specified it
-	defaults to '' : >
+	defaults to '' :
+
 	    let g:rustfmt_options = ''
-<
 
-                                                          *g:rust_playpen_url*
+
+*g:rust_playpen_url*
 g:rust_playpen_url~
-	Set this option to override the URL for the playpen to use: >
-	    let g:rust_playpen_url = 'https://play.rust-lang.org/'
-<
+	Set this option to override the URL for the playpen to use:
 
-                                                        *g:rust_shortener_url*
+	    let g:rust_playpen_url = 'https://play.rust-lang.org/'
+
+
+*g:rust_shortener_url*
 g:rust_shortener_url~
-	Set this option to override the URL for the URL shortener: >
+	Set this option to override the URL for the URL shortener:
+
 	    let g:rust_shortener_url = 'https://is.gd/'
-<
+
 
 
 ==============================================================================
@@ -227,13 +242,13 @@ It also has a few other mappings:
 
 							*rust_<D-r>*
 <D-r>			Executes |:RustRun| with no arguments.
-			Note: This binding is only available in MacVim.
+			This binding is only available in MacVim.
 
 							*rust_<D-R>*
 <D-R>			Populates the command line with |:RustRun|! using the
 			arguments given to the last invocation, but does not
 			execute it.
-			Note: This binding is only available in MacVim.
+			This binding is only available in MacVim.
 
 ==============================================================================
  vim:tw=78:sw=4:ts=8:noet:ft=help:norl:

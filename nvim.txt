@@ -24,12 +24,13 @@ If you are new to Vim, try the 30-minute tutorial:
 ==============================================================================
 Transitioning from Vim				*nvim-from-vim*
 
-1. To start the transition, create your |init.vim| (user config) file: >
+1. To start the transition, create your |init.vim| (user config) file:
 
     :call mkdir(stdpath('config'), 'p')
     :exe 'edit '.stdpath('config').'/init.vim'
 
-2. Add these contents to the file: >
+2. Add these contents to the file:
+
 
     set runtimepath^=~/.vim runtimepath+=~/.vim/after
     let &packpath = &runtimepath
@@ -50,20 +51,20 @@ consider guarding |'ttymouse'| in your configuration like so:
     if !has('nvim')
         set ttymouse=xterm2
     endif
-<
+
 Conversely, if you have Nvim specific configuration items, you could do
 this:
 >
     if has('nvim')
         tnoremap <Esc> <C-\><C-n>
     endif
-<
+
 For a more granular approach use |exists()|:
 >
     if exists(':tnoremap')
         tnoremap <Esc> <C-\><C-n>
     endif
-<
+
 Now you should be able to explore Nvim more comfortably. Check |nvim-features|
 for more information.
 
