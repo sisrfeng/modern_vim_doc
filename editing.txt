@@ -910,12 +910,15 @@ When the 'write' option is off, you are not able to write any file.
 *:w* *:write*
 *E502* *E503* *E504* *E505*
 *E512* *E514* *E667* *E796* *E949*
-:w[rite] [++opt]        Write the whole buffer to the current file.  This is
-                        the normal way to save changes to a file.  It fails
-                        when the 'readonly' option is set or when there is
-                        another reason why the file can't be written.
-                        For ++opt see |++opt|, but only ++bin, ++nobin, ++ff
-                        and ++enc are effective.
+:w[rite] [++opt]
+
+    Write the whole buffer to the current file.
+    This is the normal way to save changes to a file.
+    It fails when the 'readonly' option is set or when there is another reason why the file can't be written.
+    For ++opt see |++opt|,
+    but only ++bin,
+    ++nobin,
+    ++ff and ++enc are effective.
 
 :w[rite]! [++opt]       Like ":write", but forcefully write when 'readonly' is
                         set or there is another reason why writing was
@@ -1677,3 +1680,4 @@ There are three different types of searching:
 
  vim:tw=78:ts=8:noet:ft=help:norl:
 leo_DIY
+DIY_v2

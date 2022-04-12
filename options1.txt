@@ -689,7 +689,7 @@ moving the cursor to another line has the same effect,
 unless the 'I' flag is included in 'cpoptions'.
 
 When autoindent is on,
-formatting (with the "gq" command or when you reach 'textwidth' in Insert mode) uses the 💛indentation of the first line💛
+formatting (with the "gq" command or when you reach 'textwidth' in Insert mode) uses the `indentation of the first line`
 
 When 'smartindent' or 'cindent' is on the indent is changed in a different way.
 
@@ -1153,21 +1153,21 @@ It can consist of the following optional  items and must be separated by a comma
 
 *'buflisted'* *'bl'* *'nobuflisted'* *'nobl'* *E85*
 
-    boolean (default: on)
+    default: on
     local to buffer
+
     'hidden'是global的
 
     if 'buflisted':
         the buffer shows up in the buffer list
 
     If 'nobuflisted'
+        the buffer is not used for ":bnext", "ls",  the Buffers menu,  etc.
+        Set by Vim for buffers that are only used to `remember a file name or  marks.` (options呢?)
         see |unlisted-buffer|
 
-        the buffer is not used for ":bnext", "ls",  the Buffers menu,  etc.
-        set by Vim for buffers that are only used to 💛remember a file name or  marks.💛
-
     Vim sets 'buflisted' when starting to edit a buffer.
-    But not when moving to a buffer with "|:buffer|".
+        But not when using "|:buffer|".
 
 *'buftype'* *'bt'* *E382*
 'buftype' 'bt'          string (default: "")
@@ -2502,7 +2502,7 @@ vim里的这些option, nvim扔了:
                whenever a new buffer  is 🔑opened🔑.
                    that format will be used
                   'fileformat' is set accordingly for that buffer.
-              when a file is 💛read💛 into an existing  buffer,
+              when a file is `read` into an existing  buffer,
                   The  'fileformats' name will be used
                   no matter what 'fileformat' for that buffer is set to.
         - When more than one name is present,  separated by commas,
@@ -2735,7 +2735,7 @@ vim里的这些option, nvim扔了:
 *'foldignore'* *'fdi'*
     'foldignore' 'fdi'      string (default: "#")
                             local to window
-                Used only when 'foldmethod' is "💛indent💛".
+                Used only when 'foldmethod' is "`indent`".
 
                 Lines starting with characters in 'foldignore' will get their fold level from surrounding lines.
                 White space is skipped before checking for this character.
@@ -3883,7 +3883,7 @@ When the 'wrap' option is on:
     If 'linebreak' is on,
     Vim will wrap long lines at a character in 'breakat', rather than at the last character that fits on the screen.
 
-Unlike  'wrapmargin' and 'textwidth, this does 💛not insert <EOL>s💛 in the file,
+Unlike  'wrapmargin' and 'textwidth, this does `not insert <EOL>s` in the file,
 
 If 'breakindent' is set,
 line is visually indented.
@@ -3944,3 +3944,4 @@ Then, the value  of 'showbreak' is used to put in front of wrapped lines.
 
  vim:tw=78:ts=8:noet:ft=help:norl:
 leo_DIY
+DIY_v2

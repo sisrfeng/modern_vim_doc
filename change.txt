@@ -528,15 +528,17 @@ For example:
 4.1 FILTER COMMANDS
     *filter*
 
-    A filter is a program that accepts text at standard input,
-    changes it in some  way,
-    and sends it to standard output.
+    A filter is a program
+        that accepts text at standard input,
+        changes it in some  way,
+        and sends it to standard output.
+
     You can use the commands below to send  some text through a filter,
     so that it is replaced by the filter output.
 
     Examples of filters are
         "sort", which sorts lines alphabetically,
-        "indent", which formats C program files (you need a version of indent that  works like a filter; not all versions do).
+        "indent", which formats C program files (you need a version of indent that works like a filter; not all versions do).
 
     The 'shell' option specifies the  shell Vim uses to execute the filter command.
 
@@ -544,7 +546,7 @@ For example:
 
     Vim does not recognize a comment (starting with '"') after the  `:!` command.
 
-    各种filter命令
+    各种filter命令:
         *!*
         !{motion}{filter}
                 Filter {motion} text lines through the external  program {filter}.
@@ -560,22 +562,26 @@ For example:
 
         *:range!*
         :{range}![!]{filter} [!][arg]
-                    Filter {range} lines through the external program
-                    {filter}.  Vim replaces the optional bangs with the
-                    latest given command and appends the optional [arg].
-                    Vim saves the output of the filter command in a
-                    temporary file and then reads the file into the buffer
-                    |tempfile|.  Vim uses the 'shellredir' option to
-                    redirect the filter output to the temporary file.
-                    However, if the 'shelltemp' option is off then pipes
-                    are used when possible (on Unix).
-                    When the 'R' flag is included in 'cpoptions' marks in
-                    the filtered lines are deleted, unless the
-                    |:keepmarks| command is used.  Example:
+
+            Filter {range} lines through the external program {filter}.
+            Vim replaces the optional bangs with the latest given command
+            and appends the optional [arg].
+            Vim saves the output of the filter command in a temporary file
+                using the 'shellredir' option
+                and then reads the file into the buffer |tempfile|.
+
+            However,
+            if the 'shelltemp' option is off
+                then pipes are used when possible (on Unix).
+
+            When the 'R' flag is included in 'cpoptions' marks in the filtered lines are deleted,
+            unless the |:keepmarks| command is used.
+            Example:
 
                         :keepmarks '<,'>!sort
-                   When the number of lines after filtering is less than
-                    before, marks in the missing lines are deleted anyway.
+
+                   When the number of lines after filtering is less than  before,
+                   marks in the missing lines are deleted anyway.
 
         *=*
         ={motion}
@@ -600,12 +606,14 @@ For example:
             filtering,
             generating diffs,
             tempname().
-        For Unix, the file will be in a private directory (only  accessible by the current user) to avoid security problems
-        (e.g., a symlink  attack or other people reading your file).
-        When Vim exits the directory and  all files in it are deleted.
-        When Vim has the setuid bit set this may cause  problems,
-        the temp file is owned by the setuid user but
-        the filter command  probably runs as the original user.
+
+        For Unix,
+        the file will be in a private directory (only  accessible by the current user) to avoid security problems (e.g.,
+        a symlink  attack or other people reading your file).
+        When Vim exits
+            the directory and  all files in it are deleted.
+        When Vim has the `setuid bit` set this may cause  problems,
+            the temp file is owned by the setuid user but the filter command  probably runs as the original user.
         Directory for temporary files is created in the first suitable directory of:
 
             Unix:    $TMPDIR, /tmp, current-dir, $HOME
@@ -2305,3 +2313,4 @@ library function used.
 
  vim:tw=78:ts=8:noet:ft=help:norl:
 leo_DIY
+DIY_v2

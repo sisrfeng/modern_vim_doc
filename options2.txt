@@ -1608,11 +1608,12 @@ use:
                     number of buffers that are stored.
                     Without a number all  buffers are stored.
     *shada-'*
-            '       Maximum number of previously edited files for which the marks
-                    are remembered.  This parameter must always be included when
-                    'shada' is non-empty.
-                    Including this item also means that the |jumplist| and the
-                    |changelist| are stored in the shada file.
+            '       Maximum number of previously edited files for which
+                        marks
+                        |jumplist|
+                        |changelist|
+                     are remembered.
+                     This parameter must always be included when 'shada' is non-empty.
     *shada-/*
             /       Maximum number of items in the search pattern history to be
                     saved.  If non-zero, then the previous search and substitute
@@ -3700,3 +3701,4 @@ spelling mistakes.
  vim:tw=78:ts=8:noet:ft=help:norl:
 leo_DIY
 
+DIY_v2

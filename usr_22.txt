@@ -309,7 +309,7 @@ necessary to have one argument |-+c|.
 
 HIDDEN BUFFERS
     Suppose you are editing the file one.txt and
-    need to edit the file two.txt.
+        need to edit the file two.txt.
     You could simply use ":edit two.txt",
     but since
     you made changes to one.txt that won't work.
@@ -321,36 +321,7 @@ HIDDEN BUFFERS
     The buffer "one.txt" disappears from the screen,
     but Vim still knows that you are editing this buffer,
     so it keeps the modified text.
-    This is called a hidden buffer:
-    The buffer contains text,
-    but you can't see it.
 
-    The argument of ":hide" is another command.
-    ":hide" makes that command behave as if the 'hidden' option was set.
-
-    You could also set this option yourself.
-    The effect is that when any buffer is abandoned,
-    it becomes hidden.
-
-    When you have hidden buffers with changes,
-    don't exit Vim without making sure you have saved all the buffers.
-
-
-INACTIVE BUFFERS
-
-      When a buffer has been used once,
-    Vim remembers some information about it.
-    When it is not displayed in a window and
-    it is not hidden,
-    it is still in the buffer list.
-    This is called an inactive buffer.
-
-    The inactive buffers are remembered,
-    because Vim keeps information about them,
-    like marks.
-    And remembering the file name is useful too,
-    so that you can see which files you have edited.
-    And edit them again.
 
 LISTING BUFFERS
 
@@ -446,3 +417,4 @@ Note:
 Next chapter: |usr_23.txt|  Editing other files
 
 Copyright: see |manual-copyright|  vim:tw=78:ts=8:noet:ft=help:norl:
+DIY_v2

@@ -213,77 +213,80 @@ assuming that it sets  b:current_syntax.
 
 NAMING CONVENTIONS                  *group-name* *{group-name}* *E669* *W18*
 
-A syntax group name is to be used for syntax items that match the same kind of
-thing.  These are then linked to a highlight group that specifies the color.
-A syntax group name doesn't specify any color or attributes itself.
+    A syntax group name is to be used for syntax items that match the same kind of thing.
+    These are then linked to a highlight group that specifies the color.
+    A syntax group name doesn't specify any color or attributes itself.
 
-The name for a highlight or syntax group must consist of ASCII letters, digits
-and the underscore.  As a regexp: "[a-zA-Z0-9_]*".  However, Vim does not give
-an error when using other characters.
+    The name for a highlight or syntax group
+        As a regexp:
+        "[a-zA-Z0-9_]*".
+    However,  Vim does not give an error when using other characters.
 
-To be able to allow each user to pick their favorite set of colors, there must
-be preferred names for highlight groups that are common for many languages.
-These are the suggested group names (if syntax highlighting works properly
-you can see the actual color, except for "Ignore"):
+    To be able to allow each user to pick their favorite set of colors,
+    there must be preferred names for highlight groups that are common for many languages.
+    These are the `suggested` group names
+    (if syntax highlighting works properly you can see the actual color,
+    except for "Ignore"):
 
-        *Comment        any comment
+            *Comment        any comment
 
-        *Constant       any constant
-         String         a string constant: "this is a string"
-         Character      a character constant: 'c', '\n'
-         Number         a number constant: 234, 0xff
-         Boolean        a boolean constant: TRUE, false
-         Float          a floating point constant: 2.3e10
+            *Constant       any constant
+             String         a string constant: "this is a string"
+             Character      a character constant: 'c', '\n'
+             Number         a number constant: 234, 0xff
+             Boolean        a boolean constant: TRUE, false
+             Float          a floating point constant: 2.3e10
 
-        *Identifier     any variable name
-         Function       function name (also: methods for classes)
+            *Identifier     any variable name
+             Function       function name (also: methods for classes)
 
-        *Statement      any statement
-         Conditional    if, then, else, endif, switch, etc.
-         Repeat         for, do, while, etc.
-         Label          case, default, etc.
-         Operator       "sizeof", "+", "*", etc.
-         Keyword        any other keyword
-         Exception      try, catch, throw
+            *Statement      any statement
+             Conditional    if, then, else, endif, switch, etc.
+             Repeat         for, do, while, etc.
+             Label          case, default, etc.
+             Operator       "sizeof", "+", "*", etc.
+             Keyword        any other keyword
+             Exception      try, catch, throw
 
-        *PreProc        generic Preprocessor
-         Include        preprocessor #include
-         Define         preprocessor #define
-         Macro          same as Define
-         PreCondit      preprocessor #if, #else, #endif, etc.
+            *PreProc        generic Preprocessor
+             Include        preprocessor #include
+             Define         preprocessor #define
+             Macro          same as Define
+             PreCondit      preprocessor #if, #else, #endif, etc.
 
-        *Type           int, long, char, etc.
-         StorageClass   static, register, volatile, etc.
-         Structure      struct, union, enum, etc.
-         Typedef        A typedef
+            *Type           int, long, char, etc.
+             StorageClass   static, register, volatile, etc.
+             Structure      struct, union, enum, etc.
+             Typedef        A typedef
 
-        *Special        any special symbol
-         SpecialChar    special character in a constant
-         Tag            you can use CTRL-] on this
-         Delimiter      character that needs attention
-         SpecialComment special things inside a comment
-         Debug          debugging statements
+            *Special        any special symbol
+             SpecialChar    special character in a constant
+             Tag            you can use CTRL-] on this
+             Delimiter      character that needs attention
+             SpecialComment special things inside a comment
+             Debug          debugging statements
 
-        *Underlined     text that stands out, HTML links
+            *Underlined     text that stands out, HTML links
 
-        *Ignore         left blank, hidden  |hl-Ignore|
+            *Ignore         left blank, hidden  |hl-Ignore|
 
-        *Error          any erroneous construct
+            *Error          any erroneous construct
 
-        *Todo           anything that needs extra attention; mostly the
-                        keywords TODO FIXME and XXX
+            *Todo           anything that needs extra attention; mostly the
+                            keywords TODO FIXME and XXX
 
-The names marked with * are the preferred groups; the others are minor groups.
-For the preferred groups, the "syntax.vim" file contains default highlighting.
-The minor groups are linked to the preferred groups, so they get the same
-highlighting.  You can override these defaults by using ":highlight" commands
-after sourcing the "syntax.vim" file.
+        The names marked with * are the preferred groups;
+            the "syntax.vim" file contains default highlighting.
+        The others are minor groups.
+            linked to the preferred groups,
+        You can override these defaults by
+        using ":highlight" commands after sourcing the "syntax.vim" file.
 
-Note that highlight group names are not case sensitive.  "String" and "string"
-can be used for the same group.
+    Highlight group names are not case sensitive.  "String" and "string"
+    can be used for the same group.
 
-The following names are reserved and cannot be used as a group name:
-        NONE   ALL   ALLBUT   contains   contained
+    The following names are reserved and cannot be used as a group name:
+            NONE   ALL   ALLBUT   contains   contained
 
 *hl-Ignore*
 When using the Ignore group, you may also consider using the conceal
@@ -467,7 +470,7 @@ moves through the buffer, switches windows, and the like:
 
   vim -E -s -c "let g:html_no_progress=1" -c "syntax on" -c "set ft=c" -c "runtime syntax/2html.vim" -cwqa myfile.c
 
-Note that the -s flag prevents loading your vimrc and any plugins, so you
+The -s flag prevents loading your vimrc and any plugins, so you
 need to explicitly source/enable anything that will affect the HTML
 conversion. See |-E| and |-s-ex| for details. It is probably best to create a
 script to replace all the -c commands and use it with the -u flag instead of
@@ -633,7 +636,7 @@ When 1, use CSS 2.0 to allow the user to open a fold by moving the mouse
 cursor over the displayed fold text. This is useful to allow users with
 disabled javascript to view the folded text.
 
-Note that old browsers (notably Internet Explorer 6) will not support this
+Old browsers (notably Internet Explorer 6) will not support this
 feature.  Browser-specific markup for IE6 is included to fall back to the
 normal CSS1 styling so that the folds show up correctly for this browser, but
 they will not be openable without a foldcolumn.
@@ -696,7 +699,7 @@ number of space characters, or &nbsp; references if |g:html_no_pre| is 1.
 When 0, if |g:html_no_pre| is 0 or unset, <Tab> characters in the buffer text
 are included as-is in the generated HTML. This is useful for when you want to
 allow copy and paste from a browser without losing the actual whitespace in
-the source document. Note that this can easily break text alignment and
+the source document. This can easily break text alignment and
 indentation in the HTML, unless set by default.
 
 Force |2html.vim| to keep <Tab> characters:
@@ -764,7 +767,7 @@ TOhtml will by default use UTF-8 for all Unicode/UCS encodings. To use UTF-16
 and UTF-32 instead, use:
    :let g:html_charset_override = {'ucs-4': 'UTF-32', 'utf-16': 'UTF-16'}
 
-Note that documents encoded in either UTF-32 or UTF-16 have known
+Documents encoded in either UTF-32 or UTF-16 have known
 compatibility problems with some major browsers.
 
 *g:html_font*
@@ -874,7 +877,7 @@ The most flexible is to add a line in your assembly file containing:
         asmsyntax=nasm
 Replace "nasm" with the name of the real assembly syntax.  This line must be
 one of the first five lines in the file.  No non-white text must be
-immediately before or after this text.  Note that specifying asmsyntax=foo is
+immediately before or after this text.  Specifying asmsyntax=foo is
 equivalent to setting ft=foo in a |modeline|, and that in case of a conflict
 between the two settings the one from the modeline will take precedence (in
 particular, if you have ft=asm in the modeline, you will get the GNU syntax
@@ -944,7 +947,7 @@ Folding can be enabled for embedded SQL blocks as SELECT, SELECTDO,
 SELECTEMPTY, ... The indentation preceding the begin/end keywords has to
 match (spaces are not considered equal to a tab).
         let baan_fold_sql=1
-Note: Block folding can result in many small folds. It is suggested to |:set|
+Block folding can result in many small folds. It is suggested to |:set|
 the options 'foldminlines' and 'foldnestmax' in |init.vim| or use |:setlocal|
 in .../after/syntax/baan.vim (see |after-directory|). Eg:
         set foldminlines=5
@@ -1116,7 +1119,7 @@ reader macro".
         #_(defn foo [x]
             (println x))
 
-Note that this option will not correctly highlight stacked discard macros
+This option will not correctly highlight stacked discard macros
 (e.g. `#_#_`).
 
 
@@ -1154,7 +1157,7 @@ cpp_no_cpp20            don't highlight C++20 standard items
 
 CSH                                             *csh.vim* *ft-csh-syntax*
 
-This covers the shell named "csh".  Note that on some systems tcsh is actually
+This covers the shell named "csh".  On some systems tcsh is actually
 used.
 
 Detecting whether a file is csh or tcsh is notoriously hard.  Some systems
@@ -1230,7 +1233,7 @@ according to freedesktop.org standard:
 https://specifications.freedesktop.org/desktop-entry-spec/latest/
 To highlight nonstandard extensions that does not begin with X-, set
         let g:desktop_enable_nonstd = 1
-Note that this may cause wrong highlight.
+This may cause wrong highlight.
 To highlight KDE-reserved features, set
         let g:desktop_enable_kde = 1
 g:desktop_enable_kde follows g:desktop_enable_nonstd if not supplied
@@ -1516,7 +1519,7 @@ redefine the following syntax groups:
     - formType
     - formString
 
-Note that the form.vim syntax file implements FORM preprocessor commands and
+The form.vim syntax file implements FORM preprocessor commands and
 directives per default in the same syntax group.
 
 A predefined enhanced color mode for FORM is available to distinguish between
@@ -1546,7 +1549,7 @@ should be appropriate for most users most of the time because Fortran 2008 is
 almost a superset of previous versions (Fortran 2003, 95, 90, and 77).
 
 Fortran source code form
-Fortran code can be in either fixed or free source form.  Note that the
+Fortran code can be in either fixed or free source form.  The
 syntax highlighting will not be correct if the form is incorrectly set.
 
 When you create a new fortran file, the syntax script assumes fixed source
@@ -1559,7 +1562,7 @@ in your vimrc prior to the :syntax on command.
 
 If the form of the source code depends, in a non-standard way, upon the file
 extension, then it is most convenient to set fortran_free_source in a ftplugin
-file.  For more information on ftplugin files, see |ftplugin|. Note that this
+file.  For more information on ftplugin files, see |ftplugin|. This
 will work only if the "filetype plugin indent on" command precedes the "syntax
 on" command in your .vimrc file.
 
@@ -1604,7 +1607,7 @@ case constructs.  If you also set the variable
 fortran_fold_multilinecomments with a command such as
     :let fortran_fold_multilinecomments=1
 then fold regions will also be defined for three or more consecutive comment
-lines.  Note that defining fold regions can be slow for large files.
+lines.  Defining fold regions can be slow for large files.
 
 If fortran_fold, and possibly fortran_fold_conditionals and/or
 fortran_fold_multilinecomments, have been set, then vim will fold your file if
@@ -1647,7 +1650,7 @@ contain the code
     else
         unlet! b:fortran_dialect
     endif
-Note that this will work only if the "filetype plugin indent on" command
+This will work only if the "filetype plugin indent on" command
 precedes the "syntax on" command in your vimrc file.
 
 Finer control is necessary if the file extension does not uniquely identify
@@ -1783,7 +1786,7 @@ Known tag names are colored the same way as statements in C.  Unknown tag
 names are colored with the same color as the <> or </> respectively which
 makes it easy to spot errors
 
-Note that the same is true for argument (or attribute) names.  Known attribute
+The same is true for argument (or attribute) names.  Known attribute
 names are colored differently than unknown ones.
 
 Some HTML tags are used to change the rendering of text.  The following tags
@@ -1826,7 +1829,7 @@ ends with -->) you can define
 
 JavaScript and Visual Basic embedded inside HTML documents are highlighted as
 'Special' with statements, comments, strings and so on colored as in standard
-programming languages.  Note that only JavaScript and Visual Basic are currently
+programming languages.  Only JavaScript and Visual Basic are currently
 supported, no other scripting language has been added yet.
 
 Embedded and inlined cascading style sheets (CSS) are highlighted too.
@@ -2832,7 +2835,7 @@ To use color highlighting for emphasis text:
 To enable folding of sections:
         let rst_fold_enabled = 1
 
-Note that folding can cause performance issues on some platforms.
+Folding can cause performance issues on some platforms.
 
 
 REXX                                            *rexx.vim* *ft-rexx-syntax*
@@ -3016,7 +3019,7 @@ defined for you)
 Known tag names are colored the same way as statements in C.  Unknown tag
 names are not colored which makes it easy to spot errors.
 
-Note that the same is true for argument (or attribute) names.  Known attribute
+The same is true for argument (or attribute) names.  Known attribute
 names are colored differently than unknown ones.
 
 Some SGML tags are used to change the rendering of text.  The following tags
@@ -3537,7 +3540,7 @@ your vimrc.  Example:
         :let xf86conf_xfree86_version=3
 When using a mix of versions, set the b:xf86conf_xfree86_version variable.
 
-Note that spaces and underscores in option names are not supported.  Use
+Spaces and underscores in option names are not supported.  Use
 "SyncOnGreen" instead of "__s yn con gr_e_e_n" if you want the option name
 highlighted.
 
@@ -3607,7 +3610,7 @@ pyyaml          In addition to core schema supports highlighting timestamps,
 
 Default schema is `core`.
 
-Note that schemas are not actually limited to plain scalars, but this is the
+Schemas are not actually limited to plain scalars, but this is the
 only difference between schemas defined in YAML specification and the only
 difference defined in the syntax file.
 
@@ -3790,7 +3793,7 @@ DEFINING KEYWORDS                                       *:syn-keyword*
         keyword is used if more than one item matches.  Keywords do not nest
         and a keyword can't contain anything else.
 
-        Note that when you have a keyword that is the same as an option (even
+        When you have a keyword that is the same as an option (even
         one that isn't allowed here), you can not use it.  Use a match
         instead.
 
@@ -3898,7 +3901,7 @@ DEFINING REGIONS        *:syn-region* *:syn-start* *:syn-skip* *:syn-end*
         you want.  The skip pattern doesn't avoid a match of an end pattern in
         the next line.  Use single-line patterns to avoid trouble.
 
-        Note: The decision to start a region is only based on a matching start
+        The decision to start a region is only based on a matching start
         pattern.  There is no check for a matching end pattern.  This does NOT
         work:
                 :syn region First  start="("  end=":"
@@ -4060,7 +4063,7 @@ The maximum number of syntax groups is 19999.
                                            :syntax match Entity "&amp;" conceal cchar=&
                                         See |hl-Conceal| for highlighting.
 
-        contained                                             
+        contained
         *:syn-contained*
 
         When the "contained" argument is given,
@@ -4231,7 +4234,7 @@ The maximum number of syntax groups is 19999.
         The contained groups will also match in the start and end patterns of a
         region.  If this is not wanted, the "matchgroup" argument can be used
         |:syn-matchgroup|.  The "ms=" and "me=" offsets can be used to change the
-        region where contained items do match.  Note that this may also limit the
+        region where contained items do match.  This may also limit the
         area that is highlighted
 
 
@@ -4248,7 +4251,7 @@ The maximum number of syntax groups is 19999.
         of that item.  For example, to highlight a word in a C comment after loading
         the C syntax:
                         :syn keyword myword HELP containedin=cComment contained
-        Note that "contained" is also used, to avoid that the item matches at the top
+        "contained" is also used, to avoid that the item matches at the top
         level.
 
         Matches for "containedin" are added to the other places where the item can
@@ -4312,10 +4315,10 @@ The maximum number of syntax groups is 19999.
           :syn match ifstart "\<if.*"     nextgroup=ifline skipwhite skipempty
           :syn match ifline  "[^ \t].*" nextgroup=ifline skipwhite skipempty contained
           :syn match ifline  "endif"    contained
-        Note that the "[^ \t].*" match matches all non-white text.  Thus it would also
+        The "[^ \t].*" match matches all non-white text.  Thus it would also
         match "endif".  Therefore the "endif" match is put last, so that it takes
         precedence.
-        Note that this example doesn't work for nested "if"s.  You need to add
+        This example doesn't work for nested "if"s.  You need to add
         "contains" arguments to make that work (omitted for simplicity of the
         example).
 
@@ -4438,7 +4441,7 @@ A more complicated Example:
 
 Leading context                 *:syn-lc* *:syn-leading* *:syn-context*
 
-Note: This is an obsolete feature, only included for backwards compatibility
+This is an obsolete feature, only included for backwards compatibility
 with previous Vim versions.  It's now recommended to use the |/\@<=| construct
 in the pattern.
 
@@ -4513,7 +4516,7 @@ first external sub-expression in the start pattern.  External references can
 also be used in skip patterns:
   :syn region foo start="start \(\I\i*\)" skip="not end \z1" end="end \z1"
 
-Note that normal and external sub-expressions are completely orthogonal and
+Normal and external sub-expressions are completely orthogonal and
 indexed separately; for instance, if the pattern "\z(..\)\(..\)" is applied
 to the string "aabb", then \1 will refer to "bb" and \z1 will refer to "aa".
 Note also that external sub-expressions cannot be accessed as back-references
@@ -4521,7 +4524,7 @@ within the same pattern like normal sub-expressions.  If you want to use one
 sub-expression as both a normal and an external sub-expression, you can nest
 the two, as in "\(\z(...\)\)".
 
-Note that only matches within a single line can be used.  Multi-line matches
+Only matches within a single line can be used.  Multi-line matches
 cannot be referred to.
 
 ==============================================================================
@@ -4691,7 +4694,7 @@ lines.  The "minlines" argument can be used to at least start a number of
 lines back (e.g., for when there is some construct that only takes a few
 lines, but it hard to sync on).
 
-Note: Syncing on a C comment doesn't work properly when strings are used
+Syncing on a C comment doesn't work properly when strings are used
 that cross a line and contain a "*/".  Since letting strings cross a line
 is a bad programming habit (many compilers give a warning message), and the
 chance of a "*/" appearing inside a comment is very small, this restriction
@@ -4857,7 +4860,7 @@ in their own color.
 
     To customize a color scheme use another name,
     e.g.
-    "~/.config/nvim/colors/mine.vim",
+        "~/.config/nvim/colors/mine.vim",
     and use `:runtime` to  load the original colorscheme:
             runtime colors/evening.vim
             hi Statement ctermfg=Blue guifg=Blue
@@ -4904,7 +4907,7 @@ a file with ":highlight" commands such as this:
 
    :hi Comment  gui=bold
 
-Note that all settings that are not included remain the same, only the
+All settings that are not included remain the same, only the
 specified field is used, and settings are merged with previous ones.  So, the
 result is like this single command has been used:
    :hi Comment  ctermfg=Cyan guifg=#80a0ff gui=bold
@@ -4933,22 +4936,22 @@ This makes it possible to use  the same syntax file on all UIs.
 
 
 *attr-list* *highlight-cterm* *E418*
-cterm={attr-list}                 
+cterm={attr-list}
         attr-list is a comma separated list (without spaces) of the
         following items (in any order):
-            *bold* 
+            *bold*
             *italic*
             *standout*
             *strikethrough*
                 https://github.com/microsoft/terminal/pull/7143
 
-            *underline* 
+            *underline*
             *undercurl*   underline curly (看不出和underline的区别)
             *inverse*   *reverse* 一样
             *nocombine*       override attributes instead of combining them
             NONE            清除
 
-        Note that "bold" can be used here and by using a bold font.
+        "bold" can be used here and by using a bold font.
         They  have the same effect.
 
         "undercurl" falls back to "underline" in a terminal that does not  support it.
@@ -5014,11 +5017,11 @@ ctermbg={color-nr}                              *highlight-ctermbg*
         "cterm=" argument AFTER the "ctermfg=" or "ctermbg=" argument.  Or use
         a number instead of a color name.
 
-        Note that for 16 color ansi style terminals (including xterms), the
+        For 16 color ansi style terminals (including xterms), the
         numbers in the NR-8 column is used.  Here '*' means 'add 8' so that Blue
         is 12, DarkGray is 8 etc.
 
-        Note that for some color terminals these names may result in the wrong
+        For some color terminals these names may result in the wrong
         colors!
 
         You can also use "NONE" to remove the color.
@@ -5047,7 +5050,7 @@ ctermbg={color-nr}                              *highlight-ctermbg*
         colors for the Normal group and for the MS-Windows console.  Example,
         for reverse video:
             :highlight Visual ctermfg=bg ctermbg=fg
-        Note that the colors are used that are valid at the moment this
+        The colors are used that are valid at the moment this
         command are given.  If the Normal group colors are changed later, the
         "fg" and "bg" colors will not be adjusted.
 
@@ -5057,11 +5060,11 @@ ctermbg={color-nr}                              *highlight-ctermbg*
 gui={attr-list}                                         *highlight-gui*
         These give the attributes to use in the GUI mode.
         See |attr-list| for a description.
-        Note that "bold" can be used here
+        "bold" can be used here
         and by using a bold font.
         They  have the same effect.
-        
-        Note that the attributes are ignored for the "Normal" group.
+
+        The attributes are ignored for the "Normal" group.
 
 font={font-name}                                        *highlight-font*
         font-name is the name of a font, as it is used on the system Vim
@@ -5095,10 +5098,10 @@ font={font-name}                                        *highlight-font*
                                 并不能隐藏文本啊
 
                 bg              use normal background color
-                background      
+                background
 
                 fg              use normal foreground color
-                foreground      
+                foreground
 
         To use a color name with an embedded space or other special character,
         put it in single quotes.  The single quote cannot be used then.
@@ -5131,7 +5134,7 @@ blend={integer}                                 *highlight-blend*
         is set for the menu or window. See the help at the respective option.
 
 *highlight-groups* *highlight-default*
-These are the builtin highlighting groups.  Note that the highlighting depends
+These are the builtin highlighting groups.  The highlighting depends
 on the value of 'background'.  You can see the current settings with the
 ":highlight" command.
 *hl-ColorColumn*
@@ -5327,7 +5330,7 @@ Notes:                                                  *E414*
 *:hi-default* *:highlight-default*
     The [default] argument is used for setting the default highlighting for a group.
 
-    If highlighting has already been specified for the group 
+    If highlighting has already been specified for the group
     Also when there is an existing link.
          the command will be ignored.
 
@@ -5380,26 +5383,28 @@ the autocommands that load the syntax files:
 
 What this command actually does, is executing the command
   :source $VIMRUNTIME/syntax/nosyntax.vim
-See the "nosyntax.vim" file for details.  Note that for this to work
+See the "nosyntax.vim" file for details.  For this to work
 $VIMRUNTIME must be valid.  See |$VIMRUNTIME|.
 
 *:syntax-reset* *:syn-reset*
-If you have changed the colors and messed them up, use this command to get the
-defaults back:
+    If you have changed the colors and messed them up, use this command to get the
+    defaults back:
+          :syntax reset
 
-  :syntax reset
+    It is a bit of a wrong name,
+    since it does not reset any syntax items,
+    it only affects the highlighting.
 
-It is a bit of a wrong name, since it does not reset any syntax items, it only
-affects the highlighting.
+    The syntax colors that you set in your vimrc file will also be reset back to their Vim default.
+    If you are using a color scheme,
+        the colors defined by the color scheme for syntax highlighting will be lost.
 
-Note that the syntax colors that you set in your vimrc file will also be reset
-back to their Vim default.
-Note that if you are using a color scheme, the colors defined by the color
-scheme for syntax highlighting will be lost.
-
-Note that when a color scheme is used, there might be some confusion whether
-your defined colors are to be used or the colors from the scheme.  This
-depends on the color scheme file.  See |:colorscheme|.
+    When a color scheme is used,
+    there might be some confusion
+        whether your defined colors are to be used
+        or the colors from the scheme.
+    This depends on the color scheme file.
+    See |:colorscheme|.
 
 ==============================================================================
 16. Highlighting tags                                   *tag-highlight*
@@ -5455,7 +5460,7 @@ This will set the "w:current_syntax" variable to "foo".  The value of
 restoring "b:current_syntax", since the syntax files do set
 "b:current_syntax".  The value set by the syntax file is assigned to
 "w:current_syntax".
-Note: This resets the 'spell', 'spellcapcheck' and 'spellfile' options.
+This resets the 'spell', 'spellcapcheck' and 'spellfile' options.
 
 Once a window has its own syntax, syntax commands executed from other windows
 on the same buffer (including :syntax clear) have no effect. Conversely,
@@ -5533,3 +5538,4 @@ literal text specify the size of that text (in bytes):
 
  vim:tw=78:sw=4:ts=8:noet:ft=help:norl:
 leo_DIY
+DIY_v2
